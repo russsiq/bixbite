@@ -12,10 +12,12 @@ Run: `cd blog` and  `npm install`. If you are developing on a Windows system or 
 
 Run if need or having difficulty: 
 
-```npm audit fix
+```
+npm audit fix
 npm i -f
 npm i -g cross-env
-npm i -g webpack@latest```
+npm i -g webpack@latest
+```
 
 Create DB in localhost. 
 
