@@ -1,6 +1,21 @@
 ## Install BixBite
 
+Create DB in localhost. Run command string:
+
 ```composer create-project russsiq/bixbite blog -s dev```
+
+When `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?` Choose `n`.
+
+Run:
+
+```cd blog```
+
+Run:
+```npm install```
+
+If you are developing on a Windows system or you are running your VM on a Windows host system, you may need to run:
+
+```npm install --no-bin-links```
 
 ## About Laravel
 
