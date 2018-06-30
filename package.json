@@ -21,8 +21,11 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
+    "baguettebox.js" : "^1.10.0",
+    "ckeditor": "^4.9.2",
     "bootstrap": "^4.1.1",
     "cross-env": "^5.2.0",
+    "font-awesome": "^4.7.0",
     "laravel-mix": "^2.1.11",
     "lodash": "^4.17.10",
     "popper.js": "^1.14.3"
