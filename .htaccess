@@ -1,0 +1,50 @@
+AddDefaultCharset utf-8
+Options -MultiViews -Indexes
+DirectoryIndex index.php
+
+# Hide a specific file.
+order deny,allow
+<FilesMatch "\.(?i:htaccess|env|php|cgi|pl|p?html?|sql|md|json)$">
+    deny from all
+</FilesMatch>
+<FilesMatch "^artisan$">
+    deny from all
+</FilesMatch>
+<FilesMatch "^index\.php$">
+    allow from all
+</FilesMatch>
+
+# Include this html verify pages.
+# <FilesMatch "^yandex_XXXXXXXX\.html$">
+#     allow from all
+# </FilesMatch>
+
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+
+    # If install in subdirectory.
+    # RewriteBase /
+
+    # www to w/o www.
+    # RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+    # RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+    # http to https.
+    # RewriteCond %{SERVER_PORT} !^443$
+    # RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+    # DO NOT UNCOMMENT BELLOW STRING - FORBID TO ALL.
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-l
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

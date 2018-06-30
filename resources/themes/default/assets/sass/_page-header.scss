@@ -1,0 +1,78 @@
+.page-header {
+    background-color: $white
+}
+
+.header-top {
+    background-color: $white;
+    padding: 8px 0 4px;
+    box-shadow: $box-shadow;
+    font-size: .88rem;
+}
+
+.header-top__inner,
+.header-area__inner {
+    @extend .row;
+    align-items: center;
+}
+
+.header-area__inner {
+    padding: 20px 0 25px;
+}
+
+.header-top__item-left,
+.header-area__item-left {
+    @extend .col-md-6;
+    text-align: left;
+}
+
+.header-top__item-right,
+.header-area__item-right {
+    @extend .col-md-6;
+    text-align: right;
+}
+
+@media screen and (max-width: 600px) {
+    .header__top {
+        text-align: center
+    }
+}
+
+.header-area {
+    
+}
+
+.header-area__form {
+    display: flex;
+    justify-content: flex-end;
+}
+.header-area__input-group {
+    @extend .input-group;
+    width: auto;
+}
+.header-area__input-group-append {
+    @extend .input-group-append;
+}
+.header-area__input {
+    @extend .form-control;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.header-area__submit {
+    @extend .btn;
+    @extend .btn-outline-primary;
+}
+.site-title {
+    font-size: 2.25rem;
+    display: inline-block;
+}
+.site-description {
+    margin: 0;
+    padding: 0;
+}
+
+.header-navbar {
+    @extend .navbar-expand-lg;
+    @extend .navbar-dark;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1) inset;
+    background-color: #232323;
+    border-top: 3px solid $primary;
+}

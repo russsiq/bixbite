@@ -1,0 +1,169 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap with Bootswatch theme yeti
+// npm install bootswatch
+@import "~bootstrap/scss/bootstrap";
+
+// fontawesome
+// npm install font-awesome@4.7.0
+$fa-font-path: "./fonts/font-awesome" !default;
+@import "~font-awesome/scss/font-awesome";
+
+html {
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    scroll-behavior:smooth;
+}
+
+body {
+    background-color: #eaeaea;
+    padding: 10px 0;
+    background-size: cover
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: #444;
+    word-wrap: break-word;
+}
+
+a {
+    color: $primary;
+    text-decoration: none;
+}
+
+a:focus {
+    outline: thin dotted;
+}
+
+a:hover,
+a:active {
+    outline: 0;
+    text-decoration: none;
+}
+
+ol {
+    list-style: decimal
+}
+
+input[type="reset"], input[type="button"], input[type="submit"], button {
+    background-color: $primary;
+    border: 0;
+    cursor: pointer;
+}
+
+input[type="reset"]:active, input[type="button"]:active, input[type="submit"]:active {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3)
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: top;
+}
+.figure {
+    max-width: 100%;
+}
+.wp-smiley {
+    border: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0
+}
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto
+}
+
+.inner-wrap {
+    margin: 0 auto;
+    max-width: 1140px;
+    display: block;
+    position: relative;
+}
+
+.inner-wrap:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+}
+
+@media screen and (max-width: 1190px) {
+    .page {
+        width: 97%
+    }
+    .inner-wrap {
+        width: 94%
+    }
+}
+
+.divider {
+    display: block;
+    width: 6rem;
+    height: 0.3rem;
+    background-color: #dfe1e5;
+    margin: 2rem auto
+}
+
+.moder-panel {
+    
+}
+
+/* CLEARFIX */
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+.clearfix {
+	display: block;
+}
+
+/* Page structure */
+@import "page-header";
+@import "page-body";
+/* @import "page-main"; */
+@import "page-footer";
+
+/* Plugins */
+@import "comments";
+
+/* Widgets */
+@import "widget";
+@import "widget-comments";
+@import "widget-beside-slider";
+@import "widget-related";
+@import "widget-featured";
+
+/* Partials */
+@import "notify";
+@import "captcha";
+@import "loading-layer";

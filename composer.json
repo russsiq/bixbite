@@ -1,0 +1,78 @@
+{
+    "name": "russsiq/bixbite",
+    "description": "BixBite web application.",
+    "keywords": ["framework", "laravel", "bixbite"],
+    "license": "MIT",
+    "type": "project",
+    "version": "dev-master",
+    "authors": [
+        {
+            "name": "russsiq",
+            "email": "rusiq@list.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "fideloper/proxy": "~4.0",
+        "laravel/framework": "5.6.*",
+        "laravel/tinker": "~1.0",
+        "russsiq/bixbite": "dev-master"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.1",
+        "filp/whoops": "~2.0",
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "~1.0",
+        "nunomaduro/collision": "~2.0",
+        "phpunit/phpunit": "~7.0",
+        "symfony/thanks": "^1.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/russsiq/bixbite"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "psr-4": {
+            "BBCMS\\": "app/"
+        },
+        "files": [
+            "app/Support/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

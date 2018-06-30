@@ -1,0 +1,17 @@
+/resources/themes/bixbite
+/resources/themes/vlad-stroi
+
+/uploads
+/node_modules
+/public
+/storage/*.key
+/vendor
+/.idea
+/.vscode
+/.vagrant
+npm-debug.log
+yarn-error.log
+composer.lock
+.env
+
+!storage/app/uploads/avatars/noavatar.png

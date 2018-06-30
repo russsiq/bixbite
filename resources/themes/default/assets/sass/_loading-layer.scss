@@ -1,0 +1,13 @@
+#loading-layer {
+    display: none;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #222;
+    color: $white;
+    background-color: #444;
+    z-index: 99999 !important;
+}
+
+#loading-layer i.fa {
+    margin-right: 8px;
+}

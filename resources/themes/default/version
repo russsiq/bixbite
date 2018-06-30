@@ -1,0 +1,18 @@
+id=default
+version=0.1
+reldate=2018-05-10
+author=RusiQ
+author_url=http://bixbite.site/
+screenshot=images/screenshot.png
+
+[modules]
+articles=
+
+[assets]
+bootstrap=4.0
+
+[title]
+ru="Новостной шаблон"
+
+[description]
+ru="Описание шаблона на локальном языке из файла version."

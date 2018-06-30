@@ -1,0 +1,75 @@
+AddDefaultCharset utf-8
+Options -ExecCGI -MultiViews -Indexes
+
+# Hide a specific file
+order deny,allow
+<FilesMatch "\.(?i:htaccess|env|php|cgi|pl|p?html?|sql)$">
+    deny from all
+</FilesMatch>
+allow from all
+
+# Or show a specific file
+# order deny,allow
+# deny from all
+# <FilesMatch "\.(xml|css|jpe?g|png|gif|js)$">
+#   allow from all
+# </FilesMatch>
+
+# Browser Caching
+<IfModule mod_mime.c>
+    AddType image/x-icon .ico
+    AddType image/svg+xml .svg .svgz
+    AddType image/gif .gif
+    AddType image/jpeg .jpg .jpeg .jpe
+    AddType image/png .png
+    AddType text/css .css
+    AddType application/x-javascript .js
+    AddType text/xml .xml
+    AddType application/x-font-ttf .ttf .ttc
+    AddType video/quicktime .mov .qt
+    AddType audio/mpeg .mp3 .m4a
+    AddType video/mp4 .mp4 .m4v
+    AddType video/mpeg .mpeg .mpg .mpe
+    AddType application/zip .zip
+</ifModule>
+<ifModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access 3 days"
+    ExpiresByType image/x-icon "access plus 1 months"
+    ExpiresByType image/svg+xml "access plus 1 months"
+    ExpiresByType image/gif "access plus 1 months"
+    ExpiresByType image/jpeg "access plus 1 months"
+    ExpiresByType image/png "access plus 1 months"
+    ExpiresByType text/css "access plus 1 months"
+    ExpiresByType application/x-javascript "access plus 1 months"
+    ExpiresByType text/xml "access plus 1 months"
+    ExpiresByType application/x-font-ttf "access plus 1 months"
+    ExpiresByType video/quicktime "access plus 1 months"
+    ExpiresByType audio/mpeg "access plus 1 months"
+    ExpiresByType video/mp4 "access plus 1 months"
+    ExpiresByType video/mpeg "access plus 1 months"
+    ExpiresByType application/zip "access plus 1 months"
+</ifModule>
+
+# Compress HTML, CSS, JavaScript, Text, XML and fonts
+<ifModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE text/xml application/xml application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject application/x-font-ttf font/opentype font/otf font/ttf image/svg+xml image/x-icon
+    # Remove browser bugs (only needed for really old browsers)
+    <IfModule mod_setenvif.c>
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+        Header append Vary User-Agent
+    </IfModule>
+</ifModule>
+
+# Force Files to Download
+<FilesMatch "\.(mov|mp3|pdf)$">
+    ForceType application/octet-stream
+    Header set Content-Disposition attachment
+</FilesMatch>

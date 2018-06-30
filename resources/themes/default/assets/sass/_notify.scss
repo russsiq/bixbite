@@ -1,0 +1,55 @@
+/* notify */
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both
+}
+
+@-webkit-keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0)
+    }
+    100% {
+        opacity: 1;
+        transform: none
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0)
+    }
+    100% {
+        opacity: 1;
+        transform: none
+    }
+}
+
+.fadeInDown {
+    animation-name: fadeInDown
+}
+
+@-webkit-keyframes fadeOutUp {
+    from {
+        opacity: 1
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0)
+    }
+}
+
+@keyframes fadeOutUp {
+    from {
+        opacity: 1
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0)
+    }
+}
+
+.fadeOutUp {
+    animation-name: fadeOutUp
+}

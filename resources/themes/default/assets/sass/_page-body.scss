@@ -1,0 +1,35 @@
+.page-body {
+    padding: 2.5rem 0;
+    background-color: $white;
+}
+
+.page-body__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.mainblock,
+.sidebar-right {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+    .layout-right .mainblock {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    .layout-right .sidebar-right {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}
+
+.sidebar {
+    margin-top: 1rem;
+}
