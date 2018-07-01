@@ -16,9 +16,12 @@ ide-php, language-blade.
 
 ## Установка BixBite
 
-Запустить командную строку, выполнить:
+Запустить командную строку с правами администратора, выполнить:
 
-```composer create-project russsiq/bixbite blog -s dev```
+```
+cd C:\xampp\htdocs
+composer create-project russsiq/bixbite blog -s dev
+```
 
 При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`.
 
