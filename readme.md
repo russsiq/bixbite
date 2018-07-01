@@ -101,4 +101,4 @@ We would like to extend our thanks to the following sponsors for helping fund on
 
 ## Лицензия
 
-BixBite - программное обеспечение с открытым исходным кодом? распространяещееся по лицензии [MIT license](https://choosealicense.com/licenses/mit/).
+BixBite - программное обеспечение с открытым исходным кодом, распространяющееся по лицензии [MIT license](https://choosealicense.com/licenses/mit/).
