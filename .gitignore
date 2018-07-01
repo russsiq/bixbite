@@ -1,6 +1,6 @@
+# remove files and folders
 /resources/themes/bixbite
 /resources/themes/vlad-stroi
-
 /uploads
 /node_modules
 /public
@@ -9,10 +9,10 @@
 /.idea
 /.vscode
 /.vagrant
+composer.lock
 npm-debug.log
 yarn-error.log
-composer.lock
 .env
 
-!vendor/.htaccess
-!storage/app/uploads/avatars/noavatar.png
+!/vendor/.htaccess
+!/storage/app/uploads/avatars/noavatar.png
