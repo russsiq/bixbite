@@ -1,16 +1,17 @@
 ## Install BixBite
 
-Run command string:
+Запустить командную строку, выполнить: ```composer create-project russsiq/bixbite blog -s dev```
 
-```composer create-project russsiq/bixbite blog -s dev```
+При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`.
 
-When `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, choose `n`.
+Выполнить:
 
+```cd blog
+composer update```
 
+`npm install --no-bin-links` при использовании системы ***Windows***.
 
-Run: `cd blog` and  `npm install`. If you are developing on a ***Windows system*** or you are running your VM on a Windows host system, you may need to run: `npm install --no-bin-links`.
-
-Run if need or having difficulty: 
+При возникновении сложностей или ошибок на данном этапе: 
 
 ```
 npm audit fix
@@ -19,7 +20,9 @@ npm i -g cross-env
 npm i -g webpack@latest
 ```
 
-Create DB *http://localhost/phpmyadmin/server_databases.php* with utf8_unicode_ci. Follow the link *http://localhost/blog/*
+Создать БД *http://localhost/phpmyadmin/server_databases.php* с кодировкой utf8_unicode_ci. Перейти по ссылке *http://localhost/blog/* и следовать инструкциям по установке.
+
+Отредактировать файлы robots.txt, .htaccess.
 
 ## About Laravel
 
