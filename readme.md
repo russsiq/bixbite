@@ -1,13 +1,17 @@
 ## Install BixBite
 
-Запустить командную строку, выполнить: ```composer create-project russsiq/bixbite blog -s dev```
+Запустить командную строку, выполнить:
+
+```composer create-project russsiq/bixbite blog -s dev```
 
 При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`.
 
 Выполнить:
 
-```cd blog
-composer update```
+```
+cd blog
+composer update
+```
 
 `npm install --no-bin-links` при использовании системы ***Windows***.
 
