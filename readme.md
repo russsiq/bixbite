@@ -19,7 +19,7 @@ npm i -g cross-env
 npm i -g webpack@latest
 ```
 
-Create DB in localhost. 
+Create DB in localhost. Follow the link *http://localhost/blog/*
 
 ## About Laravel
 
