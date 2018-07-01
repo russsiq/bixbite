@@ -4,7 +4,7 @@ Run command string:
 
 ```composer create-project russsiq/bixbite blog -s dev```
 
-When `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?` Choose `n`.
+When `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, choose `n`.
 
 
 
