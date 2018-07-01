@@ -1,6 +1,4 @@
-<p align="center"><img src="https://bixbite.site/logo-git-tmp.png"></p>
-
-# BixBite
+<img src="https://bixbite.site/logo-git-tmp.png">
 
 Система расчитана на оперативное развертывание простейших сайтов на shared хостингах. Но этим не ограничивается, благодаря использованию Laravel в качестве ядра.
 
