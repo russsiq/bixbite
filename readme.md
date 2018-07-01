@@ -60,11 +60,9 @@ APP_ENV=dev
 
 Выполнить `npm run watch`. Отредактировать тему. По завершению редактирования в командной строке прервать наблюдения командой *Ctrl+C*. Выполнить `npm run production`. Вы всегда можете вернуться к редактированию темы, запустив команду `npm run watch`, не забывайте - по завершению `npm run production` - для сжатия и компиляции стилей и скриптов.
 
-## About Laravel
+## Несколько слов о фреймворке Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects.
-
-## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
 
