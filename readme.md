@@ -14,6 +14,8 @@
 Небольшой список рекомендуемых пакетов для редактора Atom: atom-beautify, atom-ide-ui, docblockr, emmet, file-icons, highlight-selected, 
 ide-php, language-blade.
 
+*Предостережение:* выполняйте команды и установку программного обеспечения только поэтапно, не выполняйте всё разом! 
+
 ## Установка BixBite
 
 Запустить командную строку с правами администратора, выполнить:
@@ -24,8 +26,6 @@ composer create-project russsiq/bixbite blog -s dev
 cd blog
 npm install --no-bin-links
 ```
-
-***Не выполняйте все команды разом!***
 
 При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`. Аргументы `--no-bin-links` при использовании операционной системы ***Windows***. При возникновении сложностей на данном этапе, выполнить команды: 
 
