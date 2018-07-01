@@ -19,7 +19,7 @@ npm i -g cross-env
 npm i -g webpack@latest
 ```
 
-Create DB *http://localhost/phpmyadmin/server_databases.php*. Follow the link *http://localhost/blog/*
+Create DB *http://localhost/phpmyadmin/server_databases.php* with utf8_unicode_ci. Follow the link *http://localhost/blog/*
 
 ## About Laravel
 
