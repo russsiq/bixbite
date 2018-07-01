@@ -8,7 +8,7 @@ When `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, ch
 
 
 
-Run: `cd blog` and  `npm install`. If you are developing on a Windows system or you are running your VM on a Windows host system, you may need to run: `npm install --no-bin-links`.
+Run: `cd blog` and  `npm install`. If you are developing on a ***Windows system*** or you are running your VM on a Windows host system, you may need to run: `npm install --no-bin-links`.
 
 Run if need or having difficulty: 
 
