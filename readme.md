@@ -1,4 +1,6 @@
-## Install BixBite
+# BixBite
+
+## Установка BixBite
 
 Запустить командную строку, выполнить:
 
@@ -11,9 +13,9 @@
 ```
 cd blog
 composer update
+npm install --no-bin-links
 ```
-
-`npm install --no-bin-links` при использовании системы ***Windows***.
+Аргументы `--no-bin-links` при использовании операционной системы ***Windows***.
 
 При возникновении сложностей или ошибок на данном этапе: 
 
