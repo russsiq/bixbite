@@ -27,7 +27,7 @@ cd blog
 npm install --no-bin-links
 ```
 
-При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`, для сохранения системы контроля версий.
+При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n` для сохранения системы контроля версий.
 
 Аргументы `--no-bin-links` при использовании операционной системы ***Windows***. При возникновении сложностей на данном этапе, выполнить команды: 
 
