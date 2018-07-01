@@ -14,7 +14,6 @@
 
 ```
 cd blog
-composer update
 npm install --no-bin-links
 ```
 
