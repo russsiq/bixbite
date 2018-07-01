@@ -21,18 +21,11 @@ ide-php, language-blade.
 ```
 cd C:\xampp\htdocs
 composer create-project russsiq/bixbite blog -s dev
-```
-
-При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`.
-
-Выполнить:
-
-```
 cd blog
 npm install --no-bin-links
 ```
 
-Аргументы `--no-bin-links` при использовании операционной системы ***Windows***. При возникновении сложностей на данном этапе: 
+При запросе `Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]?`, выбрать `n`. Аргументы `--no-bin-links` при использовании операционной системы ***Windows***. При возникновении сложностей на данном этапе: 
 
 ```
 npm i -f
