@@ -2,6 +2,18 @@
 
 Система расчитана на оперативное развертывание простейших сайтов на shared хостингах. Но этим не ограничивается, благодаря использованию <a href="https://github.com/laravel/laravel">Laravel</a> в качестве ядра.
 
+## Необходимый набор инструментов
+
+Ссылки на ресурсы носят сугубо субъективный характер.
+
+- <a href="https://www.apachefriends.org/ru/index.html">XAMPP</a> - локальная среда веб разработки;
+- <a href="https://getcomposer.org/Composer-Setup.exe">Composer</a> - пакетный менеджер для PHP;
+- <a href="https://nodejs.org/en/download/">npm</a> - пакетный менеджер node.js;
+- <a href="https://atom.io/">Atom</a> - текстовый редактор с поддержкой управления Git.
+
+Небольшой список рекомендуемых пакетов для редактора Atom: atom-beautify, atom-ide-ui, docblockr, emmet, file-icons, highlight-selected, 
+ide-php, language-blade.
+
 ## Установка BixBite
 
 Запустить командную строку, выполнить:
