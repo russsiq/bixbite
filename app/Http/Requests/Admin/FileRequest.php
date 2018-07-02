@@ -51,7 +51,7 @@ class FileRequest extends Request
             'attachment_id' => ['nullable','integer'],
             'attachment_type' => ['nullable','alpha_dash'],
             'name' => ['sometimes','required','string','alpha_dash'],
-            'title' => ['required','string','max:255','regex:/^[\w\s-_\.]+$/u'],
+            'title' => ['required','string','max:255','regex:/^[\w\s\,\-\_\?\!]+$/u'],
             'description' => ['nullable','string'],
         ];
     }
