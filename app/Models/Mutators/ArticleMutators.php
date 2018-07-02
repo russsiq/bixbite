@@ -30,7 +30,7 @@ trait ArticleMutators
      */
     public function getCreatedAttribute()
     {
-        return $this->created_at->diffForHumans();
+        return empty($this->attributes['created_at']) ? null : $this->created_at->diffForHumans();
     }
 
     /**
@@ -39,7 +39,7 @@ trait ArticleMutators
      */
     public function getUpdatedAttribute()
     {
-        return $this->updated_at->diffForHumans();
+        return empty($this->attributes['updated_at']) ? null : $this->updated_at->diffForHumans();
     }
 
     /**
@@ -48,7 +48,7 @@ trait ArticleMutators
      */
     public function getDateCreatedAttribute()
     {
-        return $this->created_at->toIso8601String();
+        return empty($this->attributes['created_at']) ? null : $this->created_at->toIso8601String();
     }
 
     /**
@@ -57,7 +57,7 @@ trait ArticleMutators
      */
     public function getDatePublishedAttribute() // ToDo: create column published_at.
     {
-        return $this->created_at->toIso8601String();
+        return empty($this->attributes['created_at']) ? null : $this->created_at->toIso8601String();
     }
 
     /**
@@ -66,6 +66,6 @@ trait ArticleMutators
      */
     public function getDateModifiedAttribute()
     {
-        return $this->updated_at->toIso8601String();
+        return empty($this->attributes['updated_at']) ? null : $this->updated_at->toIso8601String();
     }
 }
