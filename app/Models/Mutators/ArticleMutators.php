@@ -4,6 +4,7 @@ namespace BBCMS\Models\Mutators;
 
 /**
  * https://schema.org/Article
+ * https://github.com/russsiq/art-schema-markup
  */
 
 trait ArticleMutators
