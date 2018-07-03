@@ -1,5 +1,5 @@
-<aside class="widget widget-notes clearfix">
-    <div class="widget-body">
+<aside class="widget widget_notes clearfix">
+    <div class="widget_body">
         <table class="table notes-list">
             <tbody>
             @forelse ($widget->items as $key => $note)

@@ -1,5 +1,5 @@
-<aside class="widget widget-notes clearfix">
-    <div class="widget-body">
+<aside class="widget widget_notes clearfix">
+    <div class="widget_body">
         <form action="" method="post" accept-charset="UTF-8">
             @csrf
             <table class="table notes-list">
