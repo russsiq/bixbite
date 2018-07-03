@@ -625,10 +625,10 @@ if (! function_exists('teaser')) {
             return $text;
         }
         $text = mb_substr($text, 0, $length, 'UTF-8');
-        $text = rtrim($text, ' !,.-\xC2\xA0');
+        $text = rtrim($text, ' :!,.-\xC2\xA0');
         if (strpos($text, ' ')) {
             $text = mb_substr($text, 0, mb_strrpos($text, ' ', 'UTF-8'), 'UTF-8');
-            $text = rtrim($text, ' !,.-\xC2\xA0');
+            $text = rtrim($text, ' :!,.-\xC2\xA0');
         }
 
         return trim($text) ? $text.$finisher : null;
