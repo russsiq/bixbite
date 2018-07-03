@@ -12,6 +12,7 @@ class ArticlesNeighboringWidget extends WidgetAbstract
         'active' => 'boolean',
         'template' => 'string',
         'cache_time' => 'integer',
+        'title' => 'string',
         'current_id' => 'integer',
     ];
     protected $template = 'widgets.articles_neighboring';
@@ -26,18 +27,6 @@ class ArticlesNeighboringWidget extends WidgetAbstract
         parent::__construct($params);
     }
 
-    protected function rules()
-    {
-        return [
-            // Frequent
-            'active' => ['required', 'boolean'],
-            'template' => ['required', 'string'],
-            'cache_time' => ['required', 'integer'],
-
-            'current_id' => ['required', 'integer'],
-        ];
-    }
-
     protected function default()
     {
         return [
@@ -45,8 +34,22 @@ class ArticlesNeighboringWidget extends WidgetAbstract
             'active' => true,
             'template' => $this->template,
             'cache_time' => $this->cacheTime,
+            'title' => setting('articles.widget_title', trans('articles.widget_title')),
 
             'current_id' => pageinfo('article')->id,
+        ];
+    }
+
+    protected function rules()
+    {
+        return [
+            // Frequent
+            'active' => ['required', 'boolean'],
+            'template' => ['required', 'string'],
+            'cache_time' => ['required', 'integer'],
+            'title' => ['required', 'string', 'regex:/^[\w\s\.-_]+$/u'],
+
+            'current_id' => ['required', 'integer'],
         ];
     }
 
@@ -70,7 +73,8 @@ class ArticlesNeighboringWidget extends WidgetAbstract
             ->get();
 
         return $output->count() ? [
-                'previous' => $output->first()->id < $id ? $output->first() : null,
+                'title' => $this->params['title'],
+                'prev' => $output->first()->id < $id ? $output->first() : null,
                 'next' => $output->last()->id > $id ? $output->last() : null,
             ] : '';
     }
