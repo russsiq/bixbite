@@ -4,10 +4,7 @@
 }
 
 .page-body__wrap {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    @extend .row;
 }
 
 .mainblock,
@@ -28,8 +25,4 @@
         flex: 0 0 30%;
         max-width: 30%;
     }
-}
-
-.sidebar {
-    margin-top: 1rem;
 }

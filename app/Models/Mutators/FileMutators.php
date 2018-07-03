@@ -64,8 +64,8 @@ trait FileMutators
             }
         }
 
-        $srcset .= '<img src="'.$this->url.'" alt="'.$this->title.'" class="figure-img img-fluid">'; // rounded
+        $srcset .= '<img src="'.$this->url.'" alt="'.$this->title.'" class="single_article_image__img">'; // rounded
 
-        return html_raw('<picture>'.$srcset.'</picture>');
+        return html_raw('<picture class="single_article_image__inner">'.$srcset.'</picture>');
     }
 }

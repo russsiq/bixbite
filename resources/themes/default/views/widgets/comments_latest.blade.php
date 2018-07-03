@@ -2,7 +2,7 @@
     <div class="widget__inner">
         <div class="widget__header">
             @role('owner')
-                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder-panel pull-right">≡</a>
+                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">≡</a>
             @endrole
             <h4 class="widget__title">{{ $widget->title }}</h4>
         </div>
@@ -10,16 +10,16 @@
             <ul class="widget__list">
                 @forelse($widget->items as $item)
                     <li class="widget__item">
-                        <a href="{{ $item->article->url}}#li-comment-{{ $item->id }}" class="widget-item__inner">
-                            <figure class="widget-item__image widget-comments-item__image">
-                                <img src="{{ $item->author->avatar }}" alt="{{ $item->author->name }}" width="33px" class="widget-item-image__thumbnail widget-comments-item-image__thumbnail" />
+                        <a href="{{ $item->article->url}}#li-comment-{{ $item->id }}" class="widget_item__inner">
+                            <figure class="widget_item__image widget_comments-item__image">
+                                <img src="{{ $item->author->avatar }}" alt="{{ $item->author->name }}" width="33px" class="widget_item_image__thumbnail widget_comments-item-image__thumbnail" />
                             </figure>
-                            <header class="widget-item__header widget-comments-item__header">
-                                <b class="widget-item__title">{{ $item->author->name }}</b>
-                                <p class="widget-item__subtitle">{{ $item->created }}</p>
+                            <header class="widget_item__header widget_comments-item__header">
+                                <i class="widget_item__title">{{ $item->author->name }}</i>
+                                <p class="widget_item__subtitle">{{ $item->created }}</p>
                             </header>
-                            <p class="widget-item__content widget-comments-item__content">
-                                <span class="widget-item__title">{{ $item->article->title }}</span>
+                            <p class="widget_item__content widget_comments-item__content">
+                                <span class="widget_item__title">{{ $item->article->title }}</span>
                                 <i>{{ teaser($item->content, 68) }}</i>
                             </p>
                         </a>

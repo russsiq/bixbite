@@ -1,6 +1,6 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,600");
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,600);
 
 // Variables
 @import "variables";
@@ -15,6 +15,8 @@ $fa-font-path: "./fonts/font-awesome" !default;
 @import "~font-awesome/scss/font-awesome";
 
 html {
+    height: 100%;
+    width: 100%;
     overflow-y: scroll;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -22,6 +24,8 @@ html {
 }
 
 body {
+    height: 100%;
+    width: 100%;
     background-color: #eaeaea;
     padding: 10px 0;
     background-size: cover
@@ -73,15 +77,6 @@ img {
     height: auto;
     vertical-align: top;
 }
-.figure {
-    max-width: 100%;
-}
-.wp-smiley {
-    border: none;
-    margin-bottom: 0;
-    margin-top: 0;
-    padding: 0
-}
 
 .page {
     max-width: 1200px;
@@ -121,8 +116,19 @@ img {
     margin: 2rem auto
 }
 
-.moder-panel {
-    
+.moder_panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 4px 8px;
+    z-index: 3;
+    background: $white;
+    opacity: .28;
+    transition: $transition-fade;
+}
+.moder_panel:hover {
+    opacity: 1;
+    transition: $transition-fade;
 }
 
 /* CLEARFIX */
@@ -153,17 +159,19 @@ img {
 /* @import "page-main"; */
 @import "page-footer";
 
+/* Articles content */
+@import "articles";
+
 /* Plugins */
 @import "comments";
 
 /* Widgets */
 @import "widget";
-@import "widget-comments";
-@import "widget-beside-slider";
-@import "widget-related";
-@import "widget-featured";
+@import "widget_comments";
+@import "widget_beside-slider";
+@import "widget_related";
+@import "widget_featured";
+@import "widget_neighboring";
 
 /* Partials */
-@import "notify";
-@import "captcha";
-@import "loading-layer";
+@import "partials";

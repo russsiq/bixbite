@@ -1,0 +1,22 @@
+.widget_neighboring__body {
+    border-color: $gray-100;
+    box-shadow: $box-shadow;
+    position: relative;
+    line-height: 1.6;
+}
+.widget_neighboring__list {
+    @extend .row;
+    padding: .75rem 0;
+}
+.widget_neighboring__item {
+    @extend .col-md-6;
+    padding: 0 1rem;
+}
+.widget_neighboring__item-previous {
+    display: block;
+}
+.widget_neighboring__item-next {
+    display: block;
+    margin-left: auto;
+    text-align: right;
+}

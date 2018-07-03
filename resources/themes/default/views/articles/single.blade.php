@@ -1,53 +1,43 @@
-<article id="article-{{ $article->id }}" class="article single__article">
-    <header class="article__header">
-        <h2 class="article__title">{{ $article->title }}</h2>
-        <p class="article__teaser">{{ $article->teaser }}</p>
-        @if ($article->image)
-            <figure class="article__image">
-                {{ $article->image->picture_box }}
-                <figcaption class="figure-caption text-right">{{ $article->image->title }}</figcaption>
-            </figure>
-        @endif
+<article id="article-{{ $article->id }}" class="single_article single_article__{{ $article->category->slug }}">
+    <header class="single_article__header">
+        @can ('admin.articles.update', $article)
+            <a href="{{ route('admin.articles.edit', $article) }}" class="moder_panel"><i class="fa fa-edit"></i></a>
+        @endcan
+        <h2 class="single_article__title">{{ $article->title }}</h2>
+        <p class="single_article__teaser">{{ $article->teaser }}</p>
     </header>
 
-    <section>
+    @if ($article->image)
+        <figure class="single_article__image">
+            {{ $article->image->picture_box }}
+            <figcaption class="single_article_image__caption">{{ $article->image->title }}</figcaption>
+        </figure>
+    @endif
+
+    <section class="single_article__info">
+        <span class="single_article__meta">{{ $article->user->name }},</span>
+        <span class="single_article__meta">{{ $article->created }}</span>
+        <span class="single_article__meta-right"><i class="fa fa-eye"></i> {{ $article->views }}</span>
+        @if ($article->comments_count)
+            <span class="single_article__meta-right"><i class="fa fa-comments-o"></i> {{ $article->comments_count }}</span>
+        @endif
+    </section>
+
+    <section class="single_article__content">
         {!! $article->content !!}
     </section>
 
-    <footer>
-
+    <footer class="single_article__info">
+        <span class="single_article__meta"><i class="fa fa-folder-open-o"></i>
+            {{ wrap_attr($article->categories, '<a href="%url" rel="category">%title</a>','&nbsp;') }}
+        </span>
+        <span class="single_article__meta-right"><i class="fa fa-tags"></i>
+            {{ wrap_attr($article->tags, '<a href="%url" rel="tag">%title</a>', ', ') }}
+        </span>
     </footer>
-
-    <div class="article-content clearfix">
-        <div class="above-entry-meta">
-            {{ wrap_attr($article->categories,
-                '<span class="cat-links"><a href="%url" style="background:#888fce" rel="category">%title</a></span>',
-                '&nbsp;') }}
-        </div>
-        <div class="below-entry-meta">
-            <span class="posted-on">
-                <i class="fa fa-calendar-o"></i>&nbsp;
-                <time class="entry-date published" datetime="{{ $article->created_at->toIso8601String() }}" title="{{ $article->created_at }}">
-                    {{ $article->created }}
-                </time>
-            </span>
-            <span class="byline"><span class="author vcard"><i class="fa fa-user"></i> {{ $article->user->name }}</span></span>
-            <span class="comments"><i class="fa fa-comment"></i> {{ $article->comments_count }}</span>
-            <span class="comments"><i class="fa fa-eye"></i> {{ $article->views or '0' }}</span>
-            <span class="tag-links"><i class="fa fa-tags"></i>
-                {{ wrap_attr($article->tags, '<a href="%url" rel="tag">%title</a>', ', ') }}
-            </span>
-            @can ('admin.articles.update', $article)
-                <span class="edit-link"><i class="fa fa-edit"></i><a class="post-edit-link" href="{{ route('admin.articles.edit', $article) }}">Edit</a></span>
-            @endcan
-        </div>
-        <div class="entry-content clearfix"></div>
-    </div>
 </article>
 
-@widget('articles.neighboring', [
-    'active' => true,
-])
+@widget('articles.neighboring')
 
 @widget('articles.related', [
     'active' => true,

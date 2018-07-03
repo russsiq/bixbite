@@ -1,20 +1,21 @@
-<div class="clearfix" style="position: relative;">
-    <ul class="list-unstyled clearfix mb-0">
-        @role('owner')
-            <li style="position:absolute; right: 8px; top: 8px;">
-                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="pull-right">≡</a>
-            </li>
-        @endrole
-
-        @isset($widget->previous)
-            <li class="previous">
-                <a href="{{ $widget->previous->url }}" rel="prev"><span class="meta-nav">&laquo;</span> {{ $widget->previous->title }}</a>
-            </li>
-        @endisset
-        @isset($widget->next)
-            <li class="next">
-                <a href="{{ $widget->next->url }}" rel="next">{{ $widget->next->title }} <span class="meta-nav">&raquo;</span></a>
-            </li>
-        @endisset
-    </ul><!-- #prev and next -->
-</div>
+<section class="widget widget_neighboring">
+    <div class="widget__inner">
+        <div class="widget__body widget_neighboring__body">
+            @role('owner')
+                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">≡</a>
+            @endrole
+            <ul class="widget__list widget_neighboring__list">
+                <li class="widget_neighboring__item">
+                    @isset($widget->prev)
+                        <a href="{{ $widget->prev->url }}" class="widget_neighboring__item-prev" rel="prev">←&nbsp;{{ $widget->prev->title }}</a>
+                    @endisset
+                </li>
+                <li class="widget_neighboring__item">
+                    @isset($widget->next)
+                        <a href="{{ $widget->next->url }}" class="widget_neighboring__item-next" rel="next">{{ $widget->next->title }}&nbsp;→</a>
+                    @endisset
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

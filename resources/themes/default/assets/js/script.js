@@ -8,15 +8,15 @@ $(function() {
         reloadCaptcha();
     });
 
-    $(document).on('keypress', '#comment_form textarea[name=content]', function (e) {
+    $(document).on('keypress', '#respond__form textarea[name=content]', function (e) {
         if(e.keyCode==10 || (e.ctrlKey && e.keyCode==13)) {
-            $('#comment_form').submit();
+            $('#respond__form').submit();
         }
     });
 
-    $(document).on('click', '.comment-reply-link, #cancel-comment-reply-link', function(e) {
+    $(document).on('click', '.comment__reply_link, #comment__reply_link-cancel', function(e) {
         e.preventDefault();
-        $("#cancel-comment-reply-link").hide();
+        $("#comment__reply_link-cancel").hide();
         var clone = $('#respond').clone(true);
         $('#respond').slideUp("slow", function() {$(this).remove();});
         var mid = $(this).attr('data-respond');
@@ -25,16 +25,16 @@ $(function() {
                 $("textarea[name=content]").focus();
             });
             $("input[name=parent_id]").val(mid);
-            $("#cancel-comment-reply-link").show();
+            $("#comment__reply_link-cancel").show();
             $('html, body').animate({scrollTop: $(clone).offset().top - 87}, 888);
         } else {
-            $(clone).insertAfter('.comments-list:last').hide().slideDown('slow');
+            $(clone).insertAfter('.comments__list:last').hide().slideDown('slow');
             $("input[name=parent_id]").val('');
         }
     });
     
     /** Ajax send_comment */
-    $(document).on('submit', '#comment_form', function(e) {
+    $(document).on('submit', '#respond__form', function(e) {
         showLoadingLayer();
         axios({
             method: 'post',
@@ -45,12 +45,12 @@ $(function() {
             $.notify({message: response.data.message}, {type: 'success'});
             $("textarea[name=content]").val('');
             var comment = $("input[name=parent_id]").val() > ''
-                ? $('<ul class="children">' + response.data.comment + '</ul>')
-                : $('<ol class="comments-list">' + response.data.comment + '</ol>');
+                ? $('<ul class="comments_list__children">' + response.data.comment + '</ul>')
+                : $('<ol class="comments__list">' + response.data.comment + '</ol>');
             comment.insertBefore($('#respond')).hide().slideDown('slow');
             $('html, body').animate({scrollTop: comment.offset().top - 87}, 888);
             if (($("input[name=captcha]").length > 0)){reloadCaptcha();}
-            if (($("input[name=parent_id]").val() > '')) $("#cancel-comment-reply-link").click();
+            if (($("input[name=parent_id]").val() > '')) $("#comment__reply_link-cancel").click();
         })
         .catch(function (error) {
             console.log(error);

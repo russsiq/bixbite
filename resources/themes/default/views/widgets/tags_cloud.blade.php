@@ -2,7 +2,7 @@
     <div class="widget__inner">
         <div class="widget__header">
             @role('owner')
-                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder-panel pull-right">≡</a>
+                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">≡</a>
             @endrole
             <h4 class="widget__title">{{ $widget->title }}</h4>
         </div>
