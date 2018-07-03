@@ -94,8 +94,9 @@ class ArticlesFeaturedWidget extends WidgetAbstract
 
     public function execute()
     {
+        // Поменяешь 0 на false - поменяешь ключ кэша.
         $this->params['sub_day'] = $this->params['sub_day']
-            ? new \DateTime('-'.$this->params['sub_day'].' day'): false;
+            ? new \DateTime('-'.$this->params['sub_day'].' day'): 0;
 
         return [
             'title' => $this->params['title'],

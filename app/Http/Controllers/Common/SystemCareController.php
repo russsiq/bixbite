@@ -29,13 +29,15 @@ class SystemCareController extends BaseController
 
     public function clearCache(string $key = null)
     {
-        if (is_null($key)) {
+        if (empty($key)) {
             return redirect()->back()->withStatus(
                 $this->artisanCall('cache:clear')
             );
         }
 
-        cache()->forget($key);
+        foreach (explode('|', $key) as $k) {
+            cache()->forget($k);
+        }
 
         if (! request()->ajax()) {
             return redirect()->back()->withStatus('complete');

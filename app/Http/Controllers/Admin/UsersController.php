@@ -5,7 +5,6 @@ namespace BBCMS\Http\Controllers\Admin;
 use Validator;
 
 use BBCMS\Models\User;
-use BBCMS\Models\Privilege;
 use BBCMS\Http\Requests\Admin\UserRequest;
 use BBCMS\Http\Requests\Admin\UsersRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
@@ -16,16 +15,14 @@ class UsersController extends AdminController
     protected $roles;
     protected $template = 'users';
 
-    public function __construct(User $model, Privilege  $privileges)
+    public function __construct(User $model)
     {
         parent::__construct();
 
         $this->authorizeResource(User::class);
 
         $this->model = $model;
-
-        // Except 'owner' role. On the ground (view) will understand
-        $this->roles = array_diff($privileges->roles(), ['owner']);
+        $this->roles = cache('roles');
     }
 
     /**

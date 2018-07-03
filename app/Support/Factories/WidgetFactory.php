@@ -113,7 +113,7 @@ class WidgetFactory
     protected function getContent()
     {
         $widget = (object) $this->widget->execute();
-        $widget->cache_key = $this->widget->cacheKey();
+        $widget->cache_key = $this->widget->cacheKeys();
 
         return trim(preg_replace('/(\s|\r|\n)+</', '<',
             view($this->widget->template(), compact('widget'))->render()

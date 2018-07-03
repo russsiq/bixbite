@@ -85,25 +85,48 @@ abstract class WidgetAbstract
     }
 
     /**
-     * Get a unique key for the widget.
+     * Get a unique key of the widget for caching.
      * @return string
      */
     public function cacheKey()
     {
-        return $this->cacheKey ?? $this->cacheKey = $this->generateCacheKey();
+        $this->cacheKey = $this->cacheKey ??
+            $this->generateCacheKey(
+                auth()->guest() ? 'guest' : auth()->user()->role
+            );
+
+        return $this->cacheKey;
+    }
+
+
+    /**
+     * Get all keys of the widget for clearing cache.
+     * @return string
+     */
+    public function cacheKeys()
+    {
+        $keys = [];
+        $roles = array_merge(cache('roles'), ['guest']);
+
+        foreach ($roles as $role) {
+            $keys[] = $this->generateCacheKey($role);
+        }
+
+        return implode('|', $keys);
     }
 
     /**
      * Generate a unique cache key depending on the input parameters.
+     * @param  string $role
      * @return string
      */
-    protected function generateCacheKey()
+    protected function generateCacheKey(string $role)
     {
         return md5(serialize(array_merge($this->params, [
             'widget' => get_class($this),
             'app_theme' => app_theme(),
             'app_locale' => app_locale(),
-            'role' => auth()->guest() ? 'guest' : auth()->user()->role,
+            'role' => $role,
         ])));
     }
 

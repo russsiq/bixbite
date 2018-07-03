@@ -2,6 +2,8 @@
 
 namespace BBCMS\Providers;
 
+use BBCMS\Models\Privilege;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -29,6 +31,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Check the existence of the cache.
+        if (! cache()->has('roles')) {
+            (new Privilege)->roles();
+        }
 
         $this->registerPolicies();
         $this->registerGlobalPolicies();

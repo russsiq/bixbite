@@ -26,11 +26,9 @@ class Privilege extends BaseModel
 
     protected function getRoles()
     {
-        // Except unnecessary columns with role 'owner'. Not available for editing.
-
         return array_diff(
             Schema::getColumnListing($this->table),
-            ['owner', 'id', 'privilege', 'description', 'created_at', 'updated_at', 'deleted_at']
+            ['id', 'privilege', 'description', 'created_at', 'updated_at', 'deleted_at']
         );
     }
 
@@ -43,7 +41,9 @@ class Privilege extends BaseModel
 
     public function saveTable(array $table)
     {
-        foreach ($this->roles() as $role) {
+        $roles = array_diff($this->roles(), ['owner']);
+
+        foreach ($roles as $role) {
             if (isset($table[$role])) {
                 $this->whereIn('id', $table[$role])->update([$role => 1]);
                 $this->whereNotIn('id', $table[$role])->update([$role => null]);

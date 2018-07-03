@@ -13,18 +13,15 @@
 			<div class="col-sm-7"><input type="email" name="email" value="{{ old('email', optional($user)->email) }}" class="form-control" required /></div>
 		</div>
 
-		{{-- Только собственник может менять группу пользователю --}}
-		@if (user('id') != optional($user)->id and ('owner' != optional($user)->role or 'owner' == user('role')))
+		{{-- Только собственник может менять группу пользователю. --}}
+		@if ('owner' == user('role'))
 			<div class="form-group row{{ $errors->has('role') ? ' has-error' : '' }}">
 				<label for="role" class="col-sm-5">@lang('role')</label>
 				<div class="col-sm-7">
 					<select id="role" name="role" class="form-control">
 						@foreach (array_reverse($roles) as $role)
-							<option value="{{ $role }}" @if(old('role', $role == optional($user)->role)) selected @endif>@lang($role)</option>
+							<option value="{{ $role }}" {{ $role == old('role', optional($user)->role) ? 'selected' : ''}}>@lang($role)</option>
 						@endforeach
-						@if ('owner' == user('role'))
-							<option value="owner" @if(old('role', 'owner' == optional($user)->role)) selected @endif>@lang('owner')</option>
-						@endif
 					</select>
 				</div>
 			</div>

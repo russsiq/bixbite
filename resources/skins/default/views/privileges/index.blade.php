@@ -57,7 +57,12 @@
                             @foreach($roles as $role)
                             <td>
                                 <label class="control-label" style="cursor:pointer">
-                                    <input type="checkbox" name="{{ $role }}[]" value="{{ $privilege->id }}" @if($privilege->$role) checked @endif />
+                                    <input
+                                        type="checkbox"
+                                        name="{{ $role }}[]"
+                                        value="{{ $privilege->id }}"
+                                        {{ $privilege->$role or 'owner' == $role ? 'checked' : '' }}
+                                        {{ 'owner' == $role ? 'disabled' : '' }} />
                                 </label>
                             </td>
                             @endforeach

@@ -2,8 +2,6 @@
 
 namespace BBCMS\Http\Requests\Admin;
 
-use BBCMS\Models\User;
-use BBCMS\Models\Privilege;
 use BBCMS\Http\Requests\Request;
 
 class UserRequest extends Request
