@@ -5,7 +5,7 @@ return [
     'no' => 'Нет',
     'loading' => 'Пожалуйста, подождите . . .',
     'read_more' => 'Подробнее ...',
-    'powered_by' => 'Powered by <a href="https://bixbite.site/" target="_blank" class="page-footer__link">BixBite</a>.',
+    'powered_by' => 'Powered by <a href="https://bixbite.site/" target="_blank" class="page_footer__link">BixBite</a>.',
 
     'search' => 'Поиск',
     'articles' => 'Записи',
@@ -29,6 +29,7 @@ return [
 
     // Messages
     'msg' => [
+        'complete' => 'Успешно выполнено.',
         'error' => '<pre><font color="red">%s</font></pre>',
         'not_found' => '<p class="alert alert-info text-center">Нет информации для отображения.</p>',
     ],

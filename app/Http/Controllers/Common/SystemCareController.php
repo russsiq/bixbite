@@ -19,7 +19,7 @@ class SystemCareController extends BaseController
         $this->clearXCache();
         $this->clearOpCache();
 
-        return redirect()->back()->withStatus('complete');
+        return redirect()->back()->withStatus(__('common.msg.complete'));
     }
 
     public function clearStat()
@@ -40,7 +40,7 @@ class SystemCareController extends BaseController
         }
 
         if (! request()->ajax()) {
-            return redirect()->back()->withStatus('complete');
+            return redirect()->back()->withStatus(__('common.msg.complete'));
         }
     }
 
