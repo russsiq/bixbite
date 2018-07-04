@@ -34,7 +34,7 @@ class DatabaseRequest extends Request
     protected function validationData()
     {
         return $this->merge([
-            'DB_CONNECTION' => $this->input('DB_CONNECTION', 'mysql'),
+            'DB_CONNECTION' => 'mysql',
             'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
             'DB_PORT' => $this->input('DB_PORT', '3306'),
         ])->all();
@@ -48,7 +48,9 @@ class DatabaseRequest extends Request
     public function rules()
     {
         return [
+            'DB_CONNECTION' => ['bail', 'required', 'string', 'in:mysql', ],
             'DB_HOST' => ['bail', 'required', 'string', ],
+            'DB_PORT' => ['bail', 'required', 'integer', ],
             'DB_DATABASE' => ['bail', 'required', 'string', ],
             'DB_PREFIX' => ['bail', 'required', 'string', ],
             'DB_USERNAME' => ['bail', 'required', 'string', ],
@@ -76,7 +78,9 @@ class DatabaseRequest extends Request
     public function attributes()
     {
         return [
+            'DB_CONNECTION' => __('DB_CONNECTION'),
             'DB_HOST' => __('DB_HOST'),
+            'DB_PORT' => __('DB_PORT'),
             'DB_DATABASE' => __('DB_DATABASE'),
             'DB_PREFIX' => __('DB_PREFIX'),
             'DB_USERNAME' => __('DB_USERNAME'),
@@ -100,20 +104,23 @@ class DatabaseRequest extends Request
                     $data = $this->validated();
 
                     // Set temporary DB connection
-                    config(['database.connections.mysql' => [
-                        'driver' => $this->input('DB_CONNECTION'),
+                    config(['database.connections.install' => [
+                        'driver' => 'mysql',
                         'host' =>  $data['DB_HOST'],
                         'database' => $data['DB_DATABASE'],
                         'prefix' => $data['DB_PREFIX'],
                         'username' => $data['DB_USERNAME'],
                         'password' => $data['DB_PASSWORD'],
+                        'charset' => 'utf8',
+                        'collation' => 'utf8_unicode_ci',
+                        'strict' => true,
+                        'engine' => 'InnoDB',
                     ]]);
 
                     // Check DB connection and exists table
-                    \DB::reconnect();
+                    \DB::reconnect('install');
                     \DB::setTablePrefix($data['DB_PREFIX']);
-                    \DB::connection('mysql')->getPdo();
-                    if (is_null(\DB::connection('mysql')->getDatabaseName())) {
+                    if (is_null(\DB::connection('install')->getDatabaseName())) {
                         throw new InstallerFailed(__('msg.not_dbconnect'));
                     }
 
