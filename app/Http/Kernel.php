@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'debugbar.disable' => \BBCMS\Http\Middleware\DebugbarDisable::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \BBCMS\Http\Middleware\RedirectIfAuthenticated::class,
         'role' => \BBCMS\Http\Middleware\CheckRole::class,
