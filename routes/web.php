@@ -5,12 +5,14 @@
  * @see also BBCMS\Http\Kernel - middleware.
  */
 
-Route::get('/', 'HomeController@index')->name('home');
 Auth::routes();
 Route::fallback('NotFoundController');
+Route::get('/', 'HomeController@index')->name('home');
 
 // sitemap-image.xml https://support.google.com/webmasters/answer/178636?hl=ru
+// Route::get('sitemap-image.xml', 'SitemapController@images')->name('sitemap-image.xmll');
 // sitemap.xml https://yandex.ru/support/webmaster/controlling-robot/sitemap.html
+// Route::get('sitemap.xml', 'SitemapController@articles')->name('sitemap.xml');
 
 // First always.
 Route::group(['prefix' => 'app_common', 'namespace' => 'Common'], function () {
@@ -18,7 +20,7 @@ Route::group(['prefix' => 'app_common', 'namespace' => 'Common'], function () {
     Route::post('feedback', 'FeedbackController@send')->name('feedback.send')->middleware(['throttle:5,1']);
     Route::put('toggle/{model}/{id}/{attribute}', 'ToggleController@attribute')->name('toggle.attribute')->middleware(['auth', 'can:global.admin']);
 
-    // System care.
+    // System care. Only user with role owner.
     Route::get('clearcache/{key?}', 'SystemCareController@clearCache')->name('system_care.clearcache')->middleware(['role:owner']);
     Route::get('clearviews', 'SystemCareController@clearViews')->name('system_care.clearviews')->middleware(['role:owner']);
     Route::get('optimize', 'SystemCareController@complexOptimize')->name('system_care.optimize')->middleware(['role:owner']);
@@ -30,6 +32,7 @@ Route::post(
 )->name('comment.store');
 
 Route::get('articles', 'ArticlesController@index')->name('articles.index');
+Route::get('search', 'ArticlesController@search')->name('articles.search');
 Route::post('search', 'ArticlesController@search')->name('articles.search');
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
