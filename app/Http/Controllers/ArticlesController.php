@@ -72,6 +72,7 @@ class ArticlesController extends SiteController
 
         pageinfo([
             'title' => $tag->title,
+            'description' => __('common.tag').' '.$tag->title,
             'robots' => 'noindex, follow',
             'url' => $tag->url,
             'section' => [
@@ -97,6 +98,7 @@ class ArticlesController extends SiteController
 
         pageinfo([
             'title' => $keyword ?? __('common.search'),
+            'description' => __('common.search').' '.$keyword,
             'robots' => 'noindex, follow',
             'section' => [
                 'title' => $keyword ? __('common.search') : null,
@@ -121,7 +123,7 @@ class ArticlesController extends SiteController
 
         pageinfo([
             'title' => $article->title,
-            'description' => $article->description,
+            'description' => $article->description ?? $article->teaser,
             'keywords' => $article->keywords,
             'robots' => $article->robots ?? 'all',
             'url' => $article->url,
