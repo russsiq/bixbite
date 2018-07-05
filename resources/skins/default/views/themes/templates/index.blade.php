@@ -232,14 +232,14 @@
     @endpush
 
     <div id="hotkeys" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4>@lang('help')</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    <h4>Горячие клавиши codemirror</h4>
+                    <h4>Сочетания клавиш codemirror</h4>
                     <div class="row">
                         <div class="col col-xs-6">
                             <table class="table table-sm"><tbody>
