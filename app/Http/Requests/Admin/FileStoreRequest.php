@@ -44,7 +44,8 @@ class FileStoreRequest extends Request
         $type = self::getFileType($mime_type, $extension);
 
         $title = $this->input('title', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $title = preg_replace('/[-_х\d]+$/', '', $title);
+        // NB.: En. and rus. x letter.
+        $title = preg_replace('/[-_хx\d]+$/', '', $title);
         if ('image' == $type) {
             // Get info from image file.
             [$width, $height] = getimagesize($file->getPathname());
