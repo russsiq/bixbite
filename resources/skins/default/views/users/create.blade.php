@@ -10,7 +10,7 @@
 
 @section('mainblock')
     <!-- Info content -->
-    <div class="page-main">
+    <div class="page_main">
         <div class="row">
             <!-- MAIN CONTENT -->
         	<div class="col col-sm-6">

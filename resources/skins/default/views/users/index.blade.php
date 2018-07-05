@@ -10,7 +10,7 @@
 
 @section('mainblock')
     <!-- Info content -->
-    <div class="page-main">
+    <div class="page_main">
     	<div class="card card-table">
     		<div class="card-header d-flex d-print-none">
                 @can ('admin.users.create')

@@ -23,7 +23,7 @@
             <a href="{{ $item->url }}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a>
 
             @can ('admin.categories.update', $item)
-                <a href="{{ route('admin.articles.edit', $item) }}" class="btn btn-link"><i class="fa fa-pencil"></i></a>
+                <a href="{{ route('admin.categories.edit', $item) }}" class="btn btn-link"><i class="fa fa-pencil"></i></a>
             @endcan
             @can ('admin.categories.delete', $item)
                 <button type="submit" class="btn btn-link"
