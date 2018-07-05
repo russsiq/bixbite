@@ -50,7 +50,10 @@ class ResetPasswordController extends SiteController
      */
     public function showResetForm(Request $request, $token = null)
     {
-        pageinfo()->make(['title' => __('Reset')]);
+        pageinfo()->make([
+            'title' => __('auth.reset'),
+            'robots' => 'noindex, follow',
+        ]);
 
         return $this->renderOutput('passwords.reset', ['token' => $token, 'email' => $request->email]);
     }

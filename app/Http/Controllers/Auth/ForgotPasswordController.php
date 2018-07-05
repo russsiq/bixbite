@@ -39,7 +39,10 @@ class ForgotPasswordController extends SiteController
      */
     public function showLinkRequestForm()
     {
-        pageinfo()->make(['title' => __('Reset')]);
+        pageinfo()->make([
+            'title' => __('auth.reset'),
+            'robots' => 'noindex, follow',
+        ]);
 
         return $this->renderOutput('passwords.email');
     }

@@ -49,7 +49,10 @@ class RegisterController extends SiteController
      */
     public function showRegistrationForm()
     {
-        pageinfo()->make(['title' => __('Register')]);
+        pageinfo()->make([
+            'title' => __('auth.register'),
+            'robots' => 'noindex, follow',
+        ]);
 
         return $this->renderOutput('register');
     }

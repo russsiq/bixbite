@@ -47,7 +47,10 @@ class LoginController extends SiteController
 
     public function showLoginForm()
     {
-        pageinfo()->make(['title' => __('Login')]);
+        pageinfo()->make([
+            'title' => __('auth.login'),
+            'robots' => 'noindex, follow',
+        ]);
 
         return $this->renderOutput('login');
     }

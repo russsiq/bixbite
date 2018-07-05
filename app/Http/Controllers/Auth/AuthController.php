@@ -55,7 +55,7 @@ class AuthController extends Controller
                     ? $this->loginView : '';
 
         if (view()->exists($view)) {
-            return view($view)->with('title', 'Вход на сайт');
+            return view($view)->with('title', __('auth.login'));
         }
 
         abort(404);
