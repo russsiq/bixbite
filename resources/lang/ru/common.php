@@ -7,7 +7,8 @@ return [
     'read_more' => 'Подробнее ...',
     'powered_by' => 'Powered by <a href="https://bixbite.site/" target="_blank" class="page_footer__link">BixBite</a>.',
 
-    'search' => 'Поиск',
+    'search' => 'Поиск по сайту',
+    'query' => 'Введите запрос ...',
     'articles' => 'Записи',
     'article' => 'Запись',
     'categories' => 'Категории',
@@ -16,11 +17,6 @@ return [
     'comment' => 'Комментарий',
     'tags' => 'Теги',
     'tag' => 'Тег',
-
-    // Inputs
-    'placeholder' => [
-        'query' => 'Запрос ...',
-    ],
 
     // Buttons
     'btn' => [

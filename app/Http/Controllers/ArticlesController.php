@@ -53,7 +53,6 @@ class ArticlesController extends SiteController
             'url' => $category->url,
             'img' => $category->img,
             'is_category' => true,
-
             'category' => $category,
         ]);
 
@@ -87,26 +86,24 @@ class ArticlesController extends SiteController
 
     public function search()
     {
-        $keyword = html_secure(request('query'));
-        $articles = $keyword
+        $query = html_secure(request('query'));
+        $articles = $query
             ? $this->model->shortArticle()
-                ->selectRaw('MATCH (title, content) AGAINST (? IN BOOLEAN MODE) as REL', [$keyword])
-                ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$keyword])
+                ->selectRaw('MATCH (title, content) AGAINST (? IN BOOLEAN MODE) as REL', [$query])
+                ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$query])
                 ->orderBy('REL', 'desc')
                 ->paginate(setting('articles.paginate', 8))
             : collect([]);
 
         pageinfo([
-            'title' => $keyword ?? __('common.search'),
-            'description' => __('common.search').' '.$keyword,
+            'title' => __('common.search'),
+            'description' => __('common.search').' '.$query,
             'robots' => 'noindex, follow',
-            'section' => [
-                'title' => $keyword ? __('common.search') : null,
-            ],
             'is_search' => true,
+            'query' => $query,
         ]);
 
-        return $this->renderOutput('index', compact('articles'));
+        return $this->renderOutput('index', compact('articles', 'query'));
     }
 
     public function article($category_slug, $article_id, $article_slug = '')
