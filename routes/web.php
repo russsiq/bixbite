@@ -32,8 +32,7 @@ Route::post(
 )->name('comment.store');
 
 Route::get('articles', 'ArticlesController@index')->name('articles.index');
-Route::get('search', 'ArticlesController@search')->name('articles.search');
-Route::post('search', 'ArticlesController@search')->name('articles.search');
+Route::match(['get','post'], 'search', 'ArticlesController@search')->name('articles.search');
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
 
