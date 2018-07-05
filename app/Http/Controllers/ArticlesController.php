@@ -87,17 +87,19 @@ class ArticlesController extends SiteController
     public function search()
     {
         $keyword = html_secure(request('query'));
-        $articles = $this->model->shortArticle()
-            ->selectRaw('MATCH (title, content) AGAINST (? IN BOOLEAN MODE) as REL', [$keyword])
-            ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$keyword])
-            ->orderBy('REL', 'desc')
-            ->paginate(setting('articles.paginate', 8));
+        $articles = $keyword
+            ? $this->model->shortArticle()
+                ->selectRaw('MATCH (title, content) AGAINST (? IN BOOLEAN MODE) as REL', [$keyword])
+                ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$keyword])
+                ->orderBy('REL', 'desc')
+                ->paginate(setting('articles.paginate', 8))
+            : collect([]);
 
         pageinfo([
-            'title' => $keyword,
+            'title' => $keyword ?? __('common.search'),
             'robots' => 'noindex, follow',
             'section' => [
-                'title' => __('common.search'),
+                'title' => $keyword ? __('common.search') : null,
             ],
             'is_search' => true,
         ]);
