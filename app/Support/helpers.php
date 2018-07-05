@@ -760,7 +760,7 @@ if (! function_exists('wrap_attr')) {
         $entities = implode($separator, $output);
 
         return html_raw(
-            $wrapper ? str_replace('%entities', $entities, $wrapper) : $entities
+            ($wrapper and $entities) ? str_replace('%entities', $entities, $wrapper) : $entities
         );
     }
 }
