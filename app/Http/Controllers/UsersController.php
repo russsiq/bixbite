@@ -39,6 +39,7 @@ class UsersController extends SiteController
 
     public function show(User $user)
     {
+        // Лишний запрос.
         $user = $user->where('id', $user->id)->withCount(['articles', 'comments'])->first();
 
         pageinfo([
