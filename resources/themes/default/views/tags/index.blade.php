@@ -1,18 +1,16 @@
-<div id="primary">
-    <div id="content" class="clearfix">
-        <header class="page-header">
-            <h1 class="page-title" style="border-bottom: 2px solid #289dcc;">
-                {{ pageinfo('title') }}
-                {{ pageinfo('page') ? '. Страница ' . pageinfo('page'): '' }}
-            </h1>
-        </header><!-- .page-header -->
-        <div class="article-container clearfix">
+<section class="archive_page">
+    <div class="archive_page__inner">
+        <header class="archive_page__header">
+            <h2 class="archive_page__title">{{ pageinfo('title') }}</h2>
+        </header>
+
+        <div class="archive_page__content">
             @empty ($tags->count())
                 @lang('common.msg.not_found')
             @else
-                {{ wrap_attr($tags, '<a href="%url" class="mb-1 btn btn-sm btn-outline-dark" rel="tag">%title</a>', ' ') }}
+                {{ wrap_attr($tags, '<a href="%url" class="my-1 btn btn-sm btn-outline-dark" rel="tag">%title</a>', ' ') }}
+                {{ $tags->links('components.pagination') }}
             @endforelse
         </div>
-        <div class="general-pagination group">{{ $tags->links('components.pagination') }}</div><!-- .pagination -->
     </div>
-</div>
+</section>

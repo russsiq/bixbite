@@ -1,12 +1,10 @@
 <li id="li-comment-{{ $comment->id }}" class="comment" itemscope itemtype="http://schema.org/Comment">
     <article id="comment-{{ $comment->id }}" class="comment__inner">
-
-        <figure class="comment__image">
-            <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33px" class="widget_item_image__thumbnail widget_comments-item-image__thumbnail" />
+        <figure class="comment__avatar">
+            <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33px" class="comment_avatar__thumbnail" />
         </figure>
-
-        <header class="widget_item__header widget_comments-item__header {{ $comment->by_author ?  'by_author' : ''}}">
-            <span class="comment__reply_link" data-respond="{{ $comment->id }}">@lang('comments.btn.reply')</span>
+        <header class="comment__header {{ $comment->by_author ?  'by_author' : ''}}">
+            <span class="comment__reply" data-respond="{{ $comment->id }}">@lang('comments.btn.reply')</span>
             @if ($comment->by_user)
                 <a href="#" title="@lang('auth.profile')" class="comment-author-link">
                     <i class="widget_item__title" itemprop="author">
@@ -21,7 +19,6 @@
             @endif
             <p class="widget_item__subtitle">{{ $comment->created }}</p>
         </header>
-
         <p class="comment__content" itemprop="text">{{ $comment->content }}</p>
     </article>
 

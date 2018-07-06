@@ -1,7 +1,7 @@
 <section class="comments">
     <div class="comments__inner">
         <div class="comments__header">
-            <h4 class="comments__title">Комментарии</h4>
+            <h4 class="comments__title">@lang('comments.title')</h4>
         </div>
 
         @if ($entity->comments_count)
@@ -24,37 +24,40 @@
                         <div class="alert alert-info">@lang('comments.msg.disallow_com')</div>
                     @else
                         @guest
-                        <div class="row">
-                            <div class="col-md-4 ">
-                                <div class="form-group">
-                                    <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="@lang('auth.name')" class="form-control" required />
-                                    @if ($errors->has('name'))<span class="invalid-feedback d-block">{{ $errors->first('name') }}</span>@endif
+                            <div class="row">
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="@lang('auth.name')" class="form-control" required />
+                                        @if ($errors->has('name'))<span class="invalid-feedback d-block">{{ $errors->first('name') }}</span>@endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 ">
-                                <div class="form-group">
-                                    <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="@lang('auth.email')" class="form-control" required />
-                                    @if ($errors->has('email'))<span class="invalid-feedback d-block">{{ $errors->first('email') }}</span>@endif
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="@lang('auth.email')" class="form-control" required />
+                                        @if ($errors->has('email'))<span class="invalid-feedback d-block">{{ $errors->first('email') }}</span>@endif
+                                    </div>
                                 </div>
+                                @setting('system.captcha_used')
+                                    <div class="col-md-4">@captcha('components.partials.captcha')</div>
+                                @endsetting
                             </div>
-                            @setting('system.captcha_used')
-                                <div class="col-md-4">@captcha('components.partials.captcha')</div>
-                            @endsetting
-                        </div>
                         @endguest
 
                         <div class="form-group">
                             <textarea id="content" name="content" rows="8" placeholder="@lang('comments.content')" class="form-control" required>{{ old('content') }}</textarea>
                             @if ($errors->has('content'))<span class="invalid-feedback d-block">{{ $errors->first('content') }}</span>@endif
                         </div>
-                        <p class="form-group">@lang('comments.msg.rules')</p>
+
+                        <div class="form-group">
+                            @lang('comments.msg.rules')
+                        </div>
 
                         <div class="form-group-last">
                             <input type="hidden" name="parent_id" value="{{ old('parent_id') }}" />
-                            <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">
+                            <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-outline-dark">
                                 @lang('comments.btn.post')
                             </button>
-                            <button id="comment__reply_link-cancel" type="button" class="btn btn-primary" style="display:none;">
+                            <button id="comment_reply-cancel" type="button" class="btn btn-outline-dark" style="display:none;">
                                 @lang('comments.btn.reply_cancel')
                             </button>
                         </div>

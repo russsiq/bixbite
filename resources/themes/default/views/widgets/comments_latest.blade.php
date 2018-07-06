@@ -10,7 +10,7 @@
             <ul class="widget__list">
                 @forelse($widget->items as $item)
                     <li class="widget__item">
-                        <a href="{{ $item->article->url}}#li-comment-{{ $item->id }}" class="widget_item__inner">
+                        <a href="{{ $item->article->url}}#comment-{{ $item->id }}" class="widget_item__inner">
                             <figure class="widget_item__image widget_comments-item__image">
                                 <img src="{{ $item->author->avatar }}" alt="{{ $item->author->name }}" width="33px" class="widget_item_image__thumbnail widget_comments-item-image__thumbnail" />
                             </figure>

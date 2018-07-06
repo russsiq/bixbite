@@ -1,9 +1,9 @@
-.page-body {
+.page_body {
     padding: 2.5rem 0;
     background-color: $white;
 }
 
-.page-body__wrap {
+.page_body__wrap {
     @extend .row;
 }
 

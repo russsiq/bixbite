@@ -1,4 +1,4 @@
-<header class="page-header">
+<header class="page_header">
     <h2 class="section-title">@lang('auth.reset')</h2>
 </header>
 

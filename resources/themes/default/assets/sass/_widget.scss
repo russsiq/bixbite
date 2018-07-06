@@ -2,7 +2,7 @@
     /* wrap */
 }
 .widget {
-    font-size: .88rem;
+    font-size: .8rem;
     line-height: 1;
 }
 .widget__inner {
@@ -83,6 +83,9 @@
     font-weight: 100;
     line-height: 1;
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 .widget_item__content {
     width: 100%;

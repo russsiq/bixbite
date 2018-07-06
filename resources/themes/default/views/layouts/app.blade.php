@@ -19,14 +19,14 @@
         <div id="app" class="page">
             @if ($errors->any()) @each('components.alert', $errors->all(), 'message') @endif
             @if ($message = session('status') or $message = session('message')) @include('components.alert', ['type' => 'success', 'message' => trim($message)]) @endif
-            <header class="page-header">
+            <header class="page_header">
                 @yield('sidebar_header')
                 @yield('header')
             </header>
 
-            <section class="page-body">
+            <section class="page_body">
                 <div class="inner-wrap">
-                    <div class="page-body__wrap @yield('page-layout')">
+                    <div class="page_body__wrap @yield('page-layout')">
                         @yield('sidebar_left')
                         <main class="mainblock">
                             @yield('mainblock')
@@ -36,7 +36,7 @@
                 </div>
             </section>
 
-            <footer class="page-footer">
+            <footer class="page_footer">
                 @yield('sidebar_footer')
                 @yield('footer')
             </footer>

@@ -1,0 +1,29 @@
+.action_page {
+    box-shadow: $box-shadow;
+    margin: 0 0 2.5rem 0;
+}
+.action_page__inner {
+    
+}
+.action_page__header {
+    position: relative;
+    margin: 0;
+    padding: 1rem;
+}
+.action_page__title {
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+.action_page__content {
+    border-top: 1px solid $gray-200;
+    margin: 0 0 2.5rem 0;
+    padding: 1rem;
+}
+.action_page__result {
+    box-shadow: $box-shadow;
+    margin: 0 0 2.5rem 0;
+    padding: 1rem;
+}

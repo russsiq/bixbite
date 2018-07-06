@@ -1,67 +1,67 @@
-.page-footer {
-    font-size: .88rem;
+.page_footer {
+    font-size: .8rem;
+    color: #888;
 }
 
-.page-footer__link {
+.page_footer__link {
     color: #e4e4e4;
     &:hover {
         color: $white;
     }
 }
 
-.footer-area {
+.footer_area {
     background-color: #303440;
     padding: 2.5rem 0 0;
-    color: #ccc;
 }
-.footer-area__inner {
+.footer_area__inner {
     @extend .row;
 }
-.footer-area__about {
+.footer_area__about {
     @extend .col-sm-5;
     margin-bottom: 2.5rem;
 }
-.footer-area__contact {
+.footer_area__contact {
     @extend .col-sm-3;
     margin-bottom: 2.5rem;
 }
-.footer-area__feedback {
+.footer_area__feedback {
     @extend .col-sm-3;
     margin-bottom: 2.5rem;
 }
 
-.footer-area__title {
+.footer_area__title {
     color: #e4e4e4;
     font-size: 1.4rem;
 }
-.footer-area__list {
+.footer_area__list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.footer-copyrights {
+.footer__copyrights {
     background-color: #232323;
 }
 
-.footer-copyrights__inner {
+.footer_copyrights__inner {
     @extend .row;
     align-items: center;
     padding: 1.2rem 0;
 }
 
-.footer-copyrights__item-left {
+.footer_copyrights__item-left {
     @extend .col-md-6;
     text-align: left;
 }
 
-.footer-copyrights__item-right {
+.footer_copyrights__item-right {
     @extend .col-md-6;
     text-align: right;
 }
 
 @media screen and (max-width: 600px) {
-    .footer-copyrights {
+    .footer__copyrights {
         text-align: center
     }
 }

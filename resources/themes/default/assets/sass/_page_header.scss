@@ -1,32 +1,32 @@
-.page-header {
+.page_header {
     background-color: $white
 }
 
-.header-top {
+.header__top {
     background-color: $white;
     padding: 8px 0 4px;
     box-shadow: $box-shadow;
-    font-size: .88rem;
+    font-size: .8rem;
 }
 
-.header-top__inner,
-.header-area__inner {
+.header_top__inner,
+.header_area__inner {
     @extend .row;
     align-items: center;
 }
 
-.header-area__inner {
+.header_area__inner {
     padding: 20px 0 25px;
 }
 
-.header-top__item-left,
-.header-area__item-left {
+.header_top__item-left,
+.header_area__item-left {
     @extend .col-md-6;
     text-align: left;
 }
 
-.header-top__item-right,
-.header-area__item-right {
+.header_top__item-right,
+.header_area__item-right {
     @extend .col-md-6;
     text-align: right;
 }
@@ -37,28 +37,28 @@
     }
 }
 
-.header-area {
+.header_area {
     
 }
 
-.header-area__form {
+.header_area__form {
     display: flex;
     justify-content: flex-end;
 }
-.header-area__input-group {
+.header_area__input-group {
     @extend .input-group;
     width: auto;
 }
-.header-area__input-group-append {
+.header_area__input-group-append {
     @extend .input-group-append;
 }
-.header-area__input {
+.header_area__input {
     @extend .form-control;
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
-.header-area__submit {
+.header_area__submit {
     @extend .btn;
-    @extend .btn-outline-primary;
+    @extend .btn-outline-dark;
 }
 .site-title {
     font-size: 2.25rem;
@@ -72,7 +72,7 @@
 .header-navbar {
     @extend .navbar-expand-lg;
     @extend .navbar-dark;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: $box-shadow;
     background-color: #232323;
     border-top: 3px solid $primary;
 }

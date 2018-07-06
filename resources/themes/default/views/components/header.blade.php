@@ -5,7 +5,7 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             @if (pageinfo('navigation_categories'))
-                @each('components.partials.navigation_categories', pageinfo('navigation_categories'), 'item')
+                @each('components.partials.categories', pageinfo('navigation_categories'), 'item')
             @endif
         </ul>
             <!-- Authentication Links -->
@@ -14,8 +14,8 @@
                 <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">@lang('auth.profile')</a>
                 <div class="dropdown-menu dropdown-menu-right">
                     @guest
-                        <a href="{{ route('login') }}" class="dropdown-item">@lang('auth.login')</a>
-                        <a href="{{ route('register') }}" class="dropdown-item">@lang('auth.register')</a>
+                        <a href="{{ route('login') }}" class="dropdown-item">@lang('auth.btn.login')</a>
+                        <a href="{{ route('register') }}" class="dropdown-item">@lang('auth.btn.register')</a>
                     @else
                         @can ('admin.articles.create')
                             <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>
