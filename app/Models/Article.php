@@ -4,15 +4,16 @@ namespace BBCMS\Models;
 
 use BBCMS\Models\BaseModel;
 use BBCMS\Models\User;
-use BBCMS\Models\File;
 use BBCMS\Models\Mutators\ArticleMutators;
-use BBCMS\Models\Relations\Taggable;
-use BBCMS\Models\Relations\Fileable;
-use BBCMS\Models\Relations\Imageable;
-use BBCMS\Models\Relations\Commentable;
-use BBCMS\Models\Relations\Categoryable;
 use BBCMS\Models\Scopes\FilterScope;
 use BBCMS\Models\Scopes\PublishedScope;
+
+use BBCMS\Models\Relations\Fileable;
+use BBCMS\Models\Relations\Imageable;
+
+use BBCMS\Models\Relations\Taggable;
+use BBCMS\Models\Relations\Commentable;
+use BBCMS\Models\Relations\Categoryable;
 
 class Article extends BaseModel
 {
@@ -40,7 +41,7 @@ class Article extends BaseModel
         'url', 'created', 'updated',
     ];
     protected $fillable = [
-        'user_id', 'title', 'slug', 'image_id', 'teaser', 'content', 'description', 'keywords',
+        'user_id', 'image_id', 'title', 'slug', 'teaser', 'content', 'description', 'keywords',
         // Flags ?
         'allow_com', 'state', 'robots', 'on_mainpage', 'is_favorite', 'is_pinned', 'is_catpinned',
         // Extension

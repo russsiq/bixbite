@@ -76,22 +76,16 @@ class ArticleRequest extends Request
     public function rules()
     {
         return [
-            // Main content
-            'title'             => ['required', 'string', 'max:255', // 'bail',
-                                    'unique:articles,title'.
-                                    (isset($this->article->id) ? ','.$this->article->id.',id' : ''),
-                                ],
-            'slug'              => ['required', 'string', 'max:255',
-                                    'unique:articles,slug'.
-                                    (isset($this->article->id) ? ','.$this->article->id.',id' : ''),
-                                    // to get from ROUTE admin/articles/{article}/edit
-                                    // use Illuminate\Validation\Rule;
-                                    // Rule::unique('articles')->ignore($this->article->id),
-                                ],
+            // Main content.
+            'title'             => ['required', 'string', 'max:255', 'unique:articles,title'.
+                                    (isset($this->article->id) ? ','.$this->article->id.',id' : '')],
+            'slug'              => ['required', 'string', 'max:255', 'unique:articles,slug'.
+                                    (isset($this->article->id) ? ','.$this->article->id.',id' : '')],
             'teaser' => ['nullable', 'string', 'max:255', ],
             'content' => ['nullable', 'string', ],
             'description' => ['nullable', 'string', 'max:255', ],
             'keywords' => ['nullable', 'string', 'max:255', ],
+
             // Flags ?
             'state' => ['required', 'string', 'in:draft,unpublished,published', ],
             'on_mainpage' => ['nullable', 'boolean', ],
@@ -99,16 +93,18 @@ class ArticleRequest extends Request
             'is_pinned' => ['nullable', 'boolean', ],
             'is_catpinned' => ['nullable', 'boolean', ],
             'currdate' => ['nullable', 'boolean', ],
-            // DateTime
+
+            // DateTime.
             'customdate' => ['nullable', 'boolean', ],
             'created_at' => ['nullable', 'date_format:"Y-m-d H:i:s"', 'required_with:customdate', ],
-            // Extension
+            
+            // Extension.
             'allow_com' => ['required', 'numeric', 'in:0,1,2', ],
             'views' => ['nullable', 'integer', ],
             'votes' => ['nullable', 'integer', ],
             'rating' => ['nullable', 'integer', ],
 
-            // Relations types
+            // Relations types.
             // 'images' => ['nullable', 'string', 'max:255', ],
             // 'files'          => ['nullable', 'string', 'max:255', ],
             'image_id' => ['nullable', 'integer', ],
@@ -119,20 +115,5 @@ class ArticleRequest extends Request
             'tags' => ['nullable', 'array', ],
             'tags.*' => ['nullable', 'string', 'max:255', 'regex:/^[\w\s-_\.]+$/u', ],
         ];
-    }
-
-    /**
-    * Configure the validator instance.
-    *
-    * @param  \Illuminate\Validation\Validator  $validator
-    * @return void
-    */
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-
-        });
-
-        return $validator;
     }
 }

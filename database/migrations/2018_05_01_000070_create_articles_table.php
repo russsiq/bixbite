@@ -68,6 +68,7 @@ class CreateArticlesTable extends Migration
             // $table->dropPrimary(['id']); // ALTER TABLE table_name CHANGE key_field_name key_field_name INTEGER NOT NULL;
 
             $table->dropForeign(['user_id']);
+            $table->dropForeign(['image_id']);
             // $table->dropUnique(['slug']);
             // $table->dropIndex(['state']);
             // $table->dropIndex(['user_id']);
