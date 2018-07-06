@@ -37,10 +37,9 @@ class UsersController extends SiteController
         return $this->renderOutput('index', compact('users'));
     }
 
-    public function show(User $user)
+    public function show(int $id)
     {
-        // Лишний запрос.
-        $user = $user->where('id', $user->id)->withCount(['articles', 'comments'])->first();
+        $user = $this->model->where('id', (int) $id)->withCount(['articles', 'comments'])->first();
 
         pageinfo([
             'title' => $user->name,
