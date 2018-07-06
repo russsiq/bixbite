@@ -93,6 +93,7 @@ class ArticlesController extends SiteController
                 ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$query])
                 ->orderBy('REL', 'desc')
                 ->paginate(setting('articles.paginate', 8))
+                ->appends(['query' => $query])
             : collect([]);
 
         pageinfo([
