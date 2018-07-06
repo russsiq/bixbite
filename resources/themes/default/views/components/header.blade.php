@@ -11,25 +11,28 @@
             <!-- Authentication Links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">@lang('auth.profile')</a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    @guest
+                @guest
+                    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">@lang('auth.profile') </a>
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a href="{{ route('login') }}" class="dropdown-item">@lang('auth.btn.login')</a>
                         <a href="{{ route('register') }}" class="dropdown-item">@lang('auth.btn.register')</a>
-                    @else
-                        @can ('admin.articles.create')
-                            <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>
-                        @endcan
+                    </div>
+                @else
+                    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ user('name') }} </a>
+                    <div class="dropdown-menu dropdown-menu-right">
                         @can ('global.admin')
                             <a href="{{ route('admin.dashboard') }}" class="dropdown-item">@lang('auth.dashboard')</a>
                         @endcan
-                        <a href="{{-- route('profile') --}}" class="dropdown-item">@lang('auth.profile-settings') {{-- auth()->user()->name --}}</a>
+                        @can ('admin.articles.create')
+                            <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>
+                        @endcan
+                        <a href="{{ user()->profile }}" class="dropdown-item">@lang('auth.profile')</a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="post">
                             <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="dropdown-item">@lang('auth.logout')</button>
                         </form>
-                    @endguest
-                </div>
+                    </div>
+                @endguest
             </li>
         </ul>
     </div>

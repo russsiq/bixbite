@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
     protected $fillable = [
         'name', 'email', 'avatar', 'password', 'last_ip', 'logined_at',
+        'where_from', 'info',
         //  'role' - is guarded, but F12 and final. Remember about safety
     ];
     protected $appends = [

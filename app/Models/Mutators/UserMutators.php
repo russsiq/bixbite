@@ -4,6 +4,11 @@ namespace BBCMS\Models\Mutators;
 
 trait UserMutators
 {
+    public function getProfileAttribute()
+    {
+        return action('UsersController@show', $this);
+    }
+
     public function getCreatedAttribute()
     {
         return is_null($this->created_at) ? null : $this->asDateTime($this->created_at)->diffForHumans();

@@ -25,11 +25,19 @@ class UserRequest extends Request
             'updated_at',
         ]);
 
-        if (! is_null($input['password'])) {
-            $input['password'] = $input['password'];
-        } else {
+        if (empty($input['password'])) {
             unset($input['password']);
         }
+
+        if (! empty($input['info'])) {
+            $input['info'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['info']);
+        }
+
+        if (! empty($input['where_from'])) {
+            $input['where_from'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['where_from']);
+        }
+
+        // !!! ДОБАВИТЬ ВСЕ ПРОВЕРКИ И САНИТАЦИИ - ЭТО Э ПОЛЬЗОВАТЕЛИ !!!
 
         return $this->replace($input)->all();
     }
@@ -46,6 +54,7 @@ class UserRequest extends Request
                 'required',
                 'string',
                 'between:3,255',
+                'alpha_num',
             ],
             'email' => [
                 'required',
@@ -65,6 +74,18 @@ class UserRequest extends Request
                 'string',
                 'max:255',
                 'in:' . implode(',', cache('roles')),
+            ],
+            'where_from' => [
+                'nullable',
+                'string',
+                'max:255',
+                'alpha_num',
+            ],
+            'info' => [
+                'nullable',
+                'string',
+                'max:500',
+                'alpha_num',
             ],
             'avatar' => [
                 'nullable',

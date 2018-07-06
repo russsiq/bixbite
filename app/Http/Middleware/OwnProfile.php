@@ -4,7 +4,7 @@ namespace BBCMS\Http\Middleware;
 
 use Closure;
 
-class CheckRole
+class OwnProfile
 {
     /**
      * Handle the incoming request.
@@ -14,9 +14,9 @@ class CheckRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
-        if ($request->user() and $request->user()->hasRole($role)) {
+        if (auth()->check() and user()->id === $request->route('user')->id) {
             return $next($request);
         }
 

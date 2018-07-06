@@ -60,7 +60,7 @@ class UsersController extends AdminController
     {
         $this->model->manageFromRequest($request);
 
-        return redirect()->route('admin.users.index')->with('status', 'store!');
+        return redirect()->route('admin.users.index')->withStatus('store!');
     }
 
     /**
@@ -99,7 +99,7 @@ class UsersController extends AdminController
     {
         $user->manageFromRequest($request);
 
-        return redirect()->route('admin.users.index')->with('status', 'store!');
+        return redirect()->route('admin.users.index')->withStatus('Update!');
     }
 
     /**
@@ -115,7 +115,7 @@ class UsersController extends AdminController
             $user->delete();
             \DB::commit();
 
-            return redirect()->route('admin.users.index')->with('status', 'no destroy!');
+            return redirect()->route('admin.users.index')->withStatus('no destroy!');
         }
         catch (\Exception $e) {
             \DB::rollback();
@@ -171,7 +171,7 @@ class UsersController extends AdminController
         if (count($messages)) {
             return redirect()->back()->withErrors($messages)->withInput();
         } else {
-            return redirect()->route('admin.users.index')->with('status', $data['mass_action']);
+            return redirect()->route('admin.users.index')->withStatus($data['mass_action']);
         }
     }
 }

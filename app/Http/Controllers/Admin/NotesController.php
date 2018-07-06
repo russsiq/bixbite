@@ -55,7 +55,7 @@ class NotesController extends AdminController
     {
         $note = user()->notes()->create($request->all());
 
-        return redirect()->route('admin.notes.index')->with('status', 'store!');
+        return redirect()->route('admin.notes.index')->withStatus('store!');
     }
 
     /**
@@ -95,7 +95,7 @@ class NotesController extends AdminController
     {
         $note->update($data = $request->all());
         
-        return redirect()->route('admin.notes.index')->with('status', 'store!');
+        return redirect()->route('admin.notes.index')->withStatus('store!');
     }
 
     /**
@@ -112,6 +112,6 @@ class NotesController extends AdminController
 
         $note->delete();
 
-        return redirect()->route('admin.notes.index')->with('status', 'destroy!');
+        return redirect()->route('admin.notes.index')->withStatus('destroy!');
     }
 }

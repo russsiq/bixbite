@@ -36,6 +36,11 @@ Route::match(['get','post'], 'search', 'ArticlesController@search')->name('artic
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
 
+Route::get('users', 'UsersController@index')->name('users.index');
+Route::get('profile/{user}', 'UsersController@show')->name('profile');
+Route::get('profile/{user}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
+Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
+
 // Last always.
 Route::get('{category}', 'ArticlesController@category')->name('articles.category');
 Route::get('{category}/{id}-{article}.html', 'ArticlesController@article')->name('articles.article');

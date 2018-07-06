@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \BBCMS\Http\Middleware\RedirectIfAuthenticated::class,
         'role' => \BBCMS\Http\Middleware\CheckRole::class,
+        'own_profile' => \BBCMS\Http\Middleware\OwnProfile::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];

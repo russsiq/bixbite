@@ -20,6 +20,7 @@ return [
 
     // Buttons
     'btn' => [
+        'save' => 'Сохранить',
         'search' => 'Найти',
     ],
 

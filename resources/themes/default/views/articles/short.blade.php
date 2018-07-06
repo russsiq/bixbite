@@ -16,7 +16,7 @@
                 <h2 class="short_article__title">{{ $article->title }}</h2>
             </a>
             <p class="short_article__subtitle">
-                <span class="short_article__meta">{{ $article->user->name }}, {{ $article->created }}</span>
+                <span class="short_article__meta"><a href="{{ $article->user->profile }}">{{ $article->user->name }}</a>, {{ $article->created }}</span>
                 <span class="short_article__meta-right"><i class="fa fa-eye"></i> {{ $article->views }}</span>
                 @if ($article->comments_count)
                     <span class="short_article__meta-right"><i class="fa fa-comments-o"></i> {{ $article->comments_count }}</span>

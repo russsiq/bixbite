@@ -6,12 +6,9 @@
         <header class="comment__header {{ $comment->by_author ?  'by_author' : ''}}">
             <span class="comment__reply" data-respond="{{ $comment->id }}">@lang('comments.btn.reply')</span>
             @if ($comment->by_user)
-                <a href="#" title="@lang('auth.profile')" class="comment-author-link">
+                <a href="{{ $comment->user->profile }}" title="@lang('auth.profile')">
                     <i class="widget_item__title" itemprop="author">
-                        {{ $comment->author->name }}
-                        @if($comment->author->isOnline)
-                            <b class="text-success" style="text-shadow: 0 0 8px #28a745;">&nbsp;•&nbsp;</b>
-                        @endif
+                        {{ $comment->author->name }} <b class="{{ $comment->author->isOnline ? 'is_online' : '' }}"></b>
                     </i>
                 </a>
             @else

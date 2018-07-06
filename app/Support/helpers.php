@@ -726,6 +726,9 @@ if (! function_exists('user')) {
             return is_null($attribute) ? \Auth::user() : \Auth::user()->getAttribute($attribute);
         }
 
+        // Temporally.
+        return null;
+
         throw new BadLogic();
     }
 }

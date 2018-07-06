@@ -17,8 +17,10 @@
     </head>
     <body>
         <div id="app" class="page">
-            @if ($errors->any()) @each('components.alert', $errors->all(), 'message') @endif
-            @if ($message = session('status') or $message = session('message')) @include('components.alert', ['type' => 'success', 'message' => trim($message)]) @endif
+            @each('components.alert', $errors->all(), 'message')
+            @if ($message = session('status') ?? session('message'))
+                @include('components.alert', ['type' => 'success', 'message' => trim($message)])
+            @endif
             <header class="page_header">
                 @yield('sidebar_header')
                 @yield('header')

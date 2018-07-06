@@ -16,7 +16,7 @@
 
         <section class="single_article__content">
             <div class="single_article__info">
-                <span class="single_article__meta">{{ $article->user->name }},</span>
+                <span class="single_article__meta"><a href="{{ $article->user->profile }}">{{ $article->user->name }}</a>,</span>
                 <span class="single_article__meta">{{ $article->created }}</span>
                 <span class="single_article__meta-right"><i class="fa fa-eye"></i> {{ $article->views }}</span>
                 @if ($article->comments_count)
