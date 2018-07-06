@@ -39,7 +39,7 @@ class UsersController extends SiteController
 
     public function show(int $id)
     {
-        $user = $this->model->where('id', (int) $id)->withCount(['articles', 'comments'])->first();
+        $user = $this->model->where('id', (int) $id)->withCount(['articles', 'comments'])->firstOrFail();
 
         pageinfo([
             'title' => $user->name,
