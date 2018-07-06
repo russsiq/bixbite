@@ -12,6 +12,11 @@
                     <i class="fa fa-info"></i>
                 </button>
             @endif
+            @if($item->image)
+                <button type="button" title="" class="btn btn-link text-dark" readonly>
+                    <i class="fa fa-file-image-o"></i>
+                </button>
+            @endif
             @can ('admin.categories.update', $item)
                 <button type="submit" class="btn btn-link"
                     formaction="{{ route('toggle.attribute', ['Category', $item->id, 'show_in_menu']) }}"

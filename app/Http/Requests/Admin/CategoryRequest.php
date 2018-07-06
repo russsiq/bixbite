@@ -1,11 +1,11 @@
 <?php
 
-namespace BBCMS\Http\Requests;
+namespace BBCMS\Http\Requests\Admin;
 
 use BBCMS\Models\Category;
 use BBCMS\Http\Requests\Request;
 
-class CategoriesRequest extends Request
+class CategoryRequest extends Request
 {
     public function authorize()
     {
@@ -18,12 +18,14 @@ class CategoriesRequest extends Request
 
         $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
         $input['slug'] = string_slug($this->input('slug') ?? $this->input('title'));
-        if (!empty($input['alt_url'])) {
+        if (! empty($input['alt_url'])) {
             $input['alt_url'] = filter_var($input['alt_url'], FILTER_SANITIZE_URL, FILTER_FLAG_EMPTY_STRING_NULL);
         }
         $input['description'] = teaser($input['description'], 255);
         $input['keywords'] = teaser($input['keywords'], 255);
-        if (!empty($input['info'])) {
+
+        if (! empty($input['info'])) {
+            // Delete all scripts from info sector.
             $input['info'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['info']);
         }
 
@@ -41,16 +43,11 @@ class CategoriesRequest extends Request
     public function rules()
     {
         return [
-            'title'         => ['required', 'string', 'max:255',
-                                'unique:categories,title'.
-                                (isset($this->category->id) ? ",".$this->category->id.",id" : ''),
-                                ],
-            'slug'          => ['required', 'string', 'max:255',
-                                'unique:categories,slug'.
-                                (isset($this->category->id) ? ",".$this->category->id.",id" : ''),
-                                ],
+            'title'         => ['required', 'string', 'max:255', 'unique:categories,title'.
+                                (isset($this->category->id) ? ','.$this->category->id.',id' : '')],
+            'slug'          => ['required', 'string', 'max:255', 'unique:categories,slug'.
+                                (isset($this->category->id) ? ','.$this->category->id.',id' : '')],
             'alt_url'       => ['nullable', 'string', 'max:255',],
-            // 'img'        => 'alpha_num',
             'description'   => ['nullable', 'string', 'max:255',],
             'keywords'      => ['nullable', 'string', 'max:255',],
             'info'          => ['nullable', 'string', 'max:500',],
@@ -60,6 +57,9 @@ class CategoriesRequest extends Request
             'order_by'      => ['nullable', 'string',],
             'direction'     => ['required', 'string', 'in:desc,asc',],
             'template'      => ['nullable', 'alpha_dash',],
+
+            // Relations types.
+            'image_id' => ['nullable', 'integer',],
         ];
     }
 }

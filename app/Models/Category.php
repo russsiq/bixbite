@@ -2,20 +2,25 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\{BaseModel, Article};
+use BBCMS\Models\BaseModel;
+use BBCMS\Models\Article;
 use BBCMS\Models\Mutators\CategoryMutators;
 use BBCMS\Models\Collections\CategoryCollection;
 use BBCMS\Models\Traits\CacheForgetByKeysTrait;
+
+use BBCMS\Models\Relations\Fileable;
+use BBCMS\Models\Relations\Imageable;
 
 class Category extends BaseModel
 {
     use CategoryMutators;
     use CacheForgetByKeysTrait;
+    use Fileable, Imageable;
 
     protected $primaryKey = 'id';
     protected $table = 'categories';
     protected $casts = [
-        'img' => 'array',
+        'image_id' => 'integer',
         'root' => 'boolean',
         'show_in_menu' => 'boolean',
         'url' => 'string',
@@ -24,7 +29,7 @@ class Category extends BaseModel
         'root', 'url',
     ];
     protected $fillable = [
-        'parent_id', 'position', 'title', 'slug', 'alt_url', 'description', 'keywords',
+        'parent_id', 'position', 'image_id', 'title', 'slug', 'alt_url', 'description', 'keywords',
         'info', 'img', 'show_in_menu', 'paginate', 'order_by', 'direction',
         'template',
     ];
@@ -34,6 +39,21 @@ class Category extends BaseModel
     protected $keysToForgetCache = [
         'navigation_categories', 'categories',
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($category) {
+            $category->articles()->detach();
+            $category->image()->get()->each->delete();
+        });
+    }
 
     public function getRouteKeyName()
     {

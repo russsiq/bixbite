@@ -75,6 +75,17 @@ class ArticlesController extends AdminController
     {
         $article = $this->model->create($request->all());
 
+        // Image.
+        if ($request->image_id) {
+            // Get related Model.
+            $image = $article->files()->getRelated();
+            // Create new acosiation. associate($request->image_id)
+            $image->whereId($request->image_id)->update([
+                'attachment_type' => $article->getMorphClass(),
+                'attachment_id' => $article->id
+            ]);
+        }
+
         $article->categories()->sync($request->categories);
 
         // Tags. Always synchronise !!!
@@ -110,19 +121,18 @@ class ArticlesController extends AdminController
     {
         $article->update($request->all());
 
-        // Banner. Image. Teaser image.
-        // Only if empty image_id, then keep previos image_id.
+        // Image. Only if empty image_id, then keep previos image_id.
         if ($request->image_id) {
             // Get related Model.
             $image = $article->files()->getRelated();
-            // Delete acosiation with old.
+            // Delete acosiation with old. dissociate($request->image_id)
             if ($article->image_id) {
                 $image->whereId($article->image_id)->update([
                     'attachment_type' => null,
                     'attachment_id' => null
                 ]);
             }
-            // Create new associate.
+            // Create new acosiation. associate($request->image_id)
             $image->whereId($request->image_id)->update([
                 'attachment_type' => $article->getMorphClass(),
                 'attachment_id' => $article->id

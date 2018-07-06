@@ -55,7 +55,10 @@ class FilesController extends AdminController
         return $this->renderOutput('index', [
             'filetype' => request('filetype', false),
             'files' => $this->model
+                // Show files only to current user.
                 ->where('user_id', user('id'))
+                // Show files only to aticles.
+                ->where('attachment_type', (new Article)->getMorphClass())
                 ->filter(request(['filetype', 'user']))
                 ->latest()
                 ->paginate(18)

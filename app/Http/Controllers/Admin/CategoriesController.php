@@ -3,7 +3,7 @@
 namespace BBCMS\Http\Controllers\Admin;
 
 use BBCMS\Models\Category;
-use BBCMS\Http\Requests\CategoriesRequest;
+use BBCMS\Http\Requests\Admin\CategoryRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
 
 use Illuminate\Http\Request;
@@ -45,26 +45,59 @@ class CategoriesController extends AdminController
         ]);
     }
 
-    public function store(CategoriesRequest $request)
+    public function store(CategoryRequest $request)
     {
-        $this->model->create($request->all());
+        $category = $this->model->create($request->all());
 
-        return redirect()->route('admin.categories.index')->with('status', 'msg.complete_create');
+        // Image.
+        if ($request->image_id) {
+            // Get related Model.
+            $image = $category->files()->getRelated();
+            // Create new acosiation. associate($request->image_id)
+            $image->whereId($request->image_id)->update([
+                'attachment_type' => $category->getMorphClass(),
+                'attachment_id' => $category->id
+            ]);
+        }
+
+        return redirect()->route('admin.categories.index')->withStatus('msg.complete_create');
     }
 
     public function edit(Category $category)
     {
+        $category->when($category->image_id, function ($query) {
+            $query->with(['image']);
+        });
+
         return $this->renderOutput('edit', [
             'template_list' => select_dir('custom_views', true),
             'category' => $category,
         ]);
     }
 
-    public function update(CategoriesRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->all());
 
-        return redirect()->route('admin.categories.index')->with('status', __('msg.complete_attributes', ['title' => $category->title]));
+        // Image. Only if empty image_id, then keep previos image_id.
+        if ($request->image_id) {
+            // Get related Model.
+            $image = $category->files()->getRelated();
+            // Delete acosiation with old. dissociate($request->image_id)
+            if ($category->image_id) {
+                $image->whereId($category->image_id)->update([
+                    'attachment_type' => null,
+                    'attachment_id' => null
+                ]);
+            }
+            // Create new acosiation. associate($request->image_id)
+            $image->whereId($request->image_id)->update([
+                'attachment_type' => $category->getMorphClass(),
+                'attachment_id' => $category->id
+            ]);
+        }
+
+        return redirect()->route('admin.categories.index')->withStatus(__('msg.complete_attributes', ['title' => $category->title]));
     }
 
     public function destroy(Category $category)
@@ -72,11 +105,10 @@ class CategoriesController extends AdminController
         if ($this->model->where('parent_id', $category->id)->count() or $category->articles->count()) {
             return redirect()->back()->withErrors(['msg.not_empty']);
         }
-        
-        $category->articles()->detach();
+
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('status', 'msg.complete_destroy');
+        return redirect()->route('admin.categories.index')->withStatus('msg.complete_destroy');
     }
 
     public function positionReset(Request $request)
@@ -84,7 +116,7 @@ class CategoriesController extends AdminController
         $this->authorize('otherUpdate', Category::class);
         $this->model->positionReset();
 
-        return redirect()->route('admin.categories.index')->with('status', 'msg.complete_position_reset');
+        return redirect()->route('admin.categories.index')->withStatus('msg.complete_position_reset');
     }
 
     public function positionUpdate(Request $request)

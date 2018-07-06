@@ -54,10 +54,14 @@
 				<small class="form-text text-muted">@lang('image#descr')</small>
 			</label>
 			<div class="col-sm-5">
-				<div class="btn btn-outline-dark btn-fileinput form-control">
-						<span>@lang('attach.new')</span>
-						<input type="file" name="img" id="img" onchange="validateFile(this);">
-					</div>
+				<image-uploader
+					:post_url="'{{ route('admin.files.upload') }}'"
+					@if (! empty($category->image_id) and optional($category->image)->url)
+						:url="'{{ $category->image->url }}'"
+						:state="'uploaded'"
+					@endif
+					:input_name="'image_id'"
+				></image-uploader>
 			</div>
 		</div>
 

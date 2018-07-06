@@ -16,13 +16,13 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->unsignedInteger('parent_id')->default(0); // id родителя
+            $table->integer('image_id')->unsigned()->nullable();
+            $table->unsignedInteger('parent_id')->default(0);
             $table->unsignedInteger('position')->length(10)->nullable();
 
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->string('alt_url')->nullable();
-            $table->string('img')->nullable();
             $table->string('description')->nullable();
             $table->string('keywords')->nullable();
             $table->text('info')->length(500)->nullable();
@@ -37,6 +37,7 @@ class CreateCategoriesTable extends Migration
 
             $table->index('parent_id');
             $table->index('position');
+            $table->foreign('image_id')->references('id')->on('files')->onDelete('set null');
 
             $table->timestamps();
         });
@@ -50,6 +51,10 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
+        Schema::table('categories', function(Blueprint $table) {
+            $table->dropForeign(['image_id']);
+        });
+
         Schema::dropIfExists('categories');
     }
 }

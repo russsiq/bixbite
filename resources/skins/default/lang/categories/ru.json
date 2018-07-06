@@ -20,7 +20,7 @@
     "order_by": "Сортировка записей на странице",
     "direction": "Порядок сортировки",
     "template": "Активный шаблон",
-    "template#descr": "Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_alt}</code>.",
+    "template#descr": "Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.",
 
     "msg.complete_attributes": "Изменены свойства для категории",
     "msg.complete_create": "Категория успешна создана",
