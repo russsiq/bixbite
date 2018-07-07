@@ -31,21 +31,15 @@ class CommentsController extends SiteController
     public function store(CommentsRequest $request)
     {
         $comment = $this->model->create($request->all());
-
-        // ->{$request->commentable_type}()->getRelated()
-        // ->select(['id', 'user_id'])->where('id', $request->commentable_id)->firstOrFail();
-        // $comment = $entity->comments()->save($comment);
-
-        $entity = app($comment->getActualClassNameForMorph($request->commentable_type))
-            ->where('id', $request->commentable_id)->firstOrFail();
+        $entity = $comment->commentable;
 
         // Not save this data in the database because we already
         // have $user->id. This data is for display only.
         // And -1 sql query
         if ($user = auth()->user()) {
+            $comment->user = $user;
             $comment->name = $user->name;
             $comment->email = $user->email;
-            $comment->user = $user;
         }
 
         if ($request->ajax()) {

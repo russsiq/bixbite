@@ -22,12 +22,12 @@ class CommentsLatestWidget extends WidgetAbstract
     {
         return [
             // Frequent
-            'active'            => ['required', 'boolean'],
-            'template'          => ['required', 'string'],
-            'cache_time'        => ['required', 'integer'],
-            'title'             => ['required', 'string', 'regex:/^[\w\s\.-_]+$/u'],
-            'limit'             => ['required', 'integer'],
-            'content_length'    => ['required', 'integer'],
+            'active' => ['required', 'boolean'],
+            'template' => ['required', 'string'],
+            'cache_time' => ['required', 'integer'],
+            'title' => ['required', 'string', 'regex:/^[\w\s\.\-\_]+$/u'],
+            'limit' => ['required', 'integer'],
+            'content_length' => ['required', 'integer'],
         ];
     }
 
@@ -35,12 +35,12 @@ class CommentsLatestWidget extends WidgetAbstract
     {
         return [
             // Frequent
-            'active'            => setting('comments.widget_used', true),
-            'template'          => $this->template,
-            'cache_time'        => $this->cacheTime,
-            'title'             => setting('comments.widget_title', trans('comments.widget_title')),
-            'limit'             => setting('comments.widget_count', 4),
-            'content_length'    => setting('comments.widget_content_length', 150),
+            'active' => setting('comments.widget_used', true),
+            'template' => $this->template,
+            'cache_time' => $this->cacheTime,
+            'title' => setting('comments.widget_title', trans('comments.widget_title')),
+            'limit' => setting('comments.widget_count', 4),
+            'content_length' => setting('comments.widget_content_length', 150),
         ];
     }
 
