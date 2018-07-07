@@ -24,12 +24,12 @@ class CommentsRequest extends Request
     public function sanitize()
     {
         $input = $this->except(['_token', '_method', /*'created_at', 'deleted_at', 'updated_at',*/ 'submit']);
-        if (! auth()->check()) {
+        if ($user = auth()->user()) {
+            $input['user_id'] = $user->id;
+        } else {
             $input['name'] = teaser($input['name'], 255);
             $input['email'] = filter_var($input['email'], FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL);
             $input['captcha'] = filter_var($input['captcha'], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_EMPTY_STRING_NULL);
-        } elseif ($user = auth()->user()) {
-            $input['user_id'] = $user->id;
         }
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
 

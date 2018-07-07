@@ -34,11 +34,10 @@ class CommentsController extends SiteController
 
         // ->{$request->commentable_type}()->getRelated()
         // ->select(['id', 'user_id'])->where('id', $request->commentable_id)->firstOrFail();
+        // $comment = $entity->comments()->save($comment);
 
         $entity = app($comment->getActualClassNameForMorph($request->commentable_type))
             ->where('id', $request->commentable_id)->firstOrFail();
-
-        $comment = $entity->comments()->save($comment);
 
         // Not save this data in the database because we already
         // have $user->id. This data is for display only.
