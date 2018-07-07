@@ -20,7 +20,7 @@
         </form>
         @endif
 
-        @foreach ($user->posts as $key => $post)
+        @forelse ($user->posts as $key => $post)
             <article id="comment-{{ $post->id }}" class="wall__post">
                 <div class="wall_post__inner">
                     <figure class="wall_post__avatar">
@@ -87,6 +87,8 @@
                     @endif
                 </div>
             </article>
-        @endforeach
+        @empty
+            @lang('common.msg.not_found')
+        @endforelse
     </div>
 </div>
