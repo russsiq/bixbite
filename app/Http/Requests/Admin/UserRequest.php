@@ -54,7 +54,7 @@ class UserRequest extends Request
                 'required',
                 'string',
                 'between:3,255',
-                'alpha_num',
+                'regex:/^[\w\s\.\,\-\_]+$/u',
             ],
             'email' => [
                 'required',
