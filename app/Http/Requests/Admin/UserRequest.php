@@ -85,7 +85,7 @@ class UserRequest extends Request
                 'nullable',
                 'string',
                 'max:500',
-                'alpha_num',
+                'regex:/^[\w\s\.\,\-\_\?\!\r\n]+$/u',
             ],
             'avatar' => [
                 'nullable',
