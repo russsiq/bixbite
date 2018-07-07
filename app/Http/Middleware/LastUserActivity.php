@@ -3,9 +3,6 @@
 namespace BBCMS\Http\Middleware;
 
 use Closure;
-use Auth;
-use Cache;
-use Carbon\Carbon;
 
 class LastUserActivity
 {
@@ -19,7 +16,9 @@ class LastUserActivity
     public function handle($request, Closure $next)
     {
         if ($request->user()) {
-            cache(['user-is-online-'.$request->user()->id => true], now()->addMinutes(15));
+            cache()->put($request->user()->isOnlineKey(), true,
+                now()->addMinutes($request->user()->isOnlineMinutes())
+            );
         }
 
         return $next($request);

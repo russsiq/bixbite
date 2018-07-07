@@ -9,6 +9,8 @@ use BBCMS\Models\Comment;
 use BBCMS\Models\Privilege;
 use BBCMS\Models\Mutators\UserMutators;
 
+use \File as FileSystem;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -31,6 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'email', 'password', 'remember_token', 'role',
     ];
+
+    protected $isOnlinePrefix = 'user-is-online-';
+    protected $isOnlineMinutes = 15;
 
     protected static function boot()
     {
@@ -81,10 +86,43 @@ class User extends Authenticatable
         return $this->hasMany(Note::class);
     }
 
-    // Check if user is online
+    // Check if user is online.
     public function isOnline()
     {
-        return cache()->has('user-is-online-' . $this->id);
+        return cache()->has($this->isOnlineKey());
+    }
+
+    // Get key to check if user is online.
+    public function isOnlineKey()
+    {
+        return $this->isOnlinePrefix.$this->id;
+    }
+
+    // Time in minutes when user can be considered online.
+    public function isOnlineMinutes()
+    {
+        return setting('users.online_minutes', $this->isOnlineMinutes);
+    }
+
+    // Last time when user was active.
+    public function lastActive()
+    {
+        if ($this->isOnline()) {
+            // $parts and $path from protected method
+            // (\Illuminate\Cache\FileStore)->path($key).
+            $hash = sha1($this->isOnlineKey());
+            $parts = array_slice(str_split($hash, 2), 0, 2);
+            $path = config('cache.stores.file.path').DS.implode(DS, $parts).DS.$hash;
+
+            if (FileSystem::exists($path)) {
+                // Get the expiration time.
+                return Carbon::createFromTimestamp(
+                        substr(FileSystem::get($path), 0, 10)
+                    )->subMinutes($this->isOnlineMinutes())->diffForHumans();
+            }
+        }
+
+        return $this->logined;
     }
 
     public function manageFromRequest($request)

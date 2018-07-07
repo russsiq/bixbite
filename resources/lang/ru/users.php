@@ -15,16 +15,17 @@ return [
         'user' => 'Пользователь',
         'guest' => 'Гость',
     ],
-    'where_from' => 'Откуда',
-    'info' => 'Информация',
-    'avatar' => 'Аватар',
-    'delete_avatar' => 'Удалить аватар',
     'created_at' => 'Зарегистрирован',
-    'logined_at' => 'Был в сети',
+    'logined_at' => 'Последний вход',
+    'last_active' => 'Был в сети',
     'articles_count' => 'Добавил записей',
     'comments_count' => 'Добавил комментариев',
+    'where_from' => 'Откуда',
+    'info' => 'Информация',
 
     'edit_page' => 'Редактирование профиля',
+    'avatar' => 'Аватар',
+    'delete_avatar' => 'Удалить аватар',
 
     'btn' => [
         'profile' => [
