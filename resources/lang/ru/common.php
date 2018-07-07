@@ -22,6 +22,7 @@ return [
     'btn' => [
         'save' => 'Сохранить',
         'search' => 'Найти',
+        'cancel' => 'Отмена',
     ],
 
     // Messages

@@ -81,8 +81,9 @@
     		</div>
 
             <div class="form-group row">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('common.btn.save')</button></td>
+                <div class="col-md-6 offset-md-4 d-flex">
+                    <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('common.btn.save')</button>
+                    <a href="{{ $user->profile }}" class="btn btn-outline-dark ml-auto">@lang('common.btn.cancel')</a>
                 </div>
             </div>
         </form>

@@ -15,11 +15,12 @@ return [
         'user' => 'Пользователь',
         'guest' => 'Гость',
     ],
-    'created_at' => 'Зарегистрирован',
-    'logined_at' => 'Последний вход',
-    'last_active' => 'Был в сети',
-    'articles_count' => 'Добавил записей',
-    'comments_count' => 'Добавил комментариев',
+    'created_at' => 'Регистрация',
+    'logined_at' => 'Захаживал',
+    'last_active' => 'Был&nbsp;в&nbsp;сети',
+    'never_been' => 'Не был ни разу',
+    'articles_count' => 'Записей',
+    'comments_count' => 'Комментариев',
     'where_from' => 'Откуда',
     'info' => 'Информация',
 
@@ -30,6 +31,7 @@ return [
     'btn' => [
         'profile' => [
             'edit' => 'Редактировать',
+            'post' => 'Поделиться',
         ],
     ],
 ];

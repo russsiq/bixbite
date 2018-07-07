@@ -39,7 +39,17 @@ class UsersController extends SiteController
 
     public function show(int $id)
     {
-        $user = $this->model->where('id', (int) $id)->withCount(['articles', 'comments'])->firstOrFail();
+        $user = $this->model
+            ->where('id', (int) $id)
+            ->withCount([
+                'articles', 'comments', 'posts'
+            ])
+            ->firstOrFail();
+
+        $user->posts = $user->posts_count
+            ? $user->posts()->with([
+                'user:users.id,users.name,users.email,users.avatar'
+            ])->latest()->get()->treated(true) : [];
 
         pageinfo([
             'title' => $user->name,
@@ -72,7 +82,7 @@ class UsersController extends SiteController
     {
         $user->manageFromRequest($request);
 
-        return redirect()->route('profile', $user)->withStatus('Update!');
+        return redirect()->route('profile', $user)->withStatus(__('common.msg.complete'));
     }
 
     public function destroy(User $user)

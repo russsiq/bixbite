@@ -9,7 +9,7 @@
                     <img src="{{ $user->avatar }}" alt="{{ $user->name }}" width="64" class="profile_page__avatar" />
                 </figure>
                 <div class="profile_page__name_wrapper">
-                    <div class="profile_page__name">{{ $user->name }}</div>
+                    <div class="profile_page__name">{{ $user->name }} <b class="{{ $user->isOnline() ? 'is_online' : '' }}"></b></div>
                     <div class="profile_page__role">@lang('users.role.'.$user->role)</div>
                 </div>
 
@@ -34,36 +34,25 @@
         </header>
 
 
-        {{-- <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a href="#profile" class="nav-link active" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+        <ul class="profile_page__tabs nav" role="tablist">
+            <li class="profile_page_tabs__item">
+                <a href="#wall" class="profile_page_tabs__link active" data-toggle="tab" role="tab">Wall</a>
+            </li>
+            <li class="profile_page_tabs__item">
+                <a href="#profile" class="profile_page_tabs__link" data-toggle="tab" role="tab">Profile</a>
+            </li>
+            {{-- <li class="nav-item">
+                <a href="#friends" class="nav-link" data-toggle="tab" role="tab" aria-controls="friends">Friends</a>
             </li>
             <li class="nav-item">
-                <a href="#wall" class="nav-link" data-toggle="tab" role="tab" aria-controls="profile">Wall</a>
-            </li>
-            <li class="nav-item">
-                <a href="#friends" class="nav-link" data-toggle="tab" role="tab" aria-controls="contact">Friends</a>
-            </li>
-            <li class="nav-item">
-                <a href="#media" class="nav-link" data-toggle="tab" role="tab" aria-controls="contact">Media</a>
-            </li>
+                <a href="#media" class="nav-link" data-toggle="tab" role="tab" aria-controls="media">Media</a>
+            </li> --}}
         </ul>
         <div class="tab-content">
-            <div id="profile" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">Profile</div>
-            <div id="wall" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">Wall</div>
-            <div id="friends" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">Friends</div>
-            <div id="media" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">Media</div>
-        </div> --}}
-
-        <table class="table table-sm profile_page__about">
-            <tr><td>@lang('users.name')</td><td>{{ $user->name }}</td></tr>
-            <tr><td>@lang('users.group')</td><td>@lang('users.role.'.$user->role)</td></tr>
-            <tr><td>@lang('users.created_at')</td><td>{{ $user->created }}</td></tr>
-            <tr><td>@lang('users.logined_at')</td><td>{{ $user->logined ?? 'Не был ни разу' }}</td></tr>
-            <tr><td>@lang('users.where_from')</td><td>{{ $user->where_from ?? '...' }}</td></tr>
-            <tr><td>@lang('users.info')</td><td>{{ $user->info ?? '...' }}</td></tr>
-            <tr><td>@lang('users.articles_count')</td><td>{{ $user->articles_count ?? '...' }}</td></tr>
-            <tr><td>@lang('users.comments_count')</td><td>{{ $user->comments_count ?? '...' }}</td></tr>
-        </table>
+            <div id="wall" class="tab-pane fade show active" role="tabpanel">@include('users.partials.wall')</div>
+            <div id="profile" class="tab-pane fade" role="tabpanel">@include('users.partials.profile')</div>
+            {{-- <div id="friends" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">@include('users.partials.friends')</div>
+            <div id="media" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">@include('users.partials.media')</div> --}}
+        </div>
     </div>
 </section>

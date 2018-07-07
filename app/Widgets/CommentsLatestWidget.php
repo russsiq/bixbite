@@ -55,6 +55,7 @@ class CommentsLatestWidget extends WidgetAbstract
                     'article:articles.id,articles.title,articles.slug',
                     'article.categories:categories.id,categories.slug',
                 ])
+                ->where('commentable_type', 'articles')
                 ->limit($this->params['limit'])
                 ->get()
                 ->treated(false),

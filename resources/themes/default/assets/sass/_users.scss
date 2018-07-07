@@ -15,7 +15,7 @@
     text-shadow: $text-shadow;
     box-shadow: $box-shadow;
     position: relative;
-    margin: 0 0 2.5rem 0;
+    margin: 0;
 }
 .profile_page__picture {
     min-height: 300px;
@@ -73,3 +73,151 @@
     margin-left: auto;
     /* align-self: center; */
 }
+
+/* About user */
+.profile_page__profile {
+    @extend .table;
+    @extend .table-sm;
+}
+.profile_page__profile th,
+.profile_page__profile td {
+    border-top: 0;
+    border-bottom: 1px solid $gray-200;
+    vertical-align: top;
+    padding: 0.3rem;
+}
+/* Profile tabs */
+.profile_page__tabs {
+    border: none;
+    display: flex;
+    list-style: none;
+    margin: 0 0 2.5rem 0;
+    padding: 0;
+}
+.profile_page_tabs__item {
+    /* margin-bottom: -1px; */
+}
+.profile_page_tabs__link,
+.profile_page_tabs__link.active {
+    color: $gray-600;
+    display: block;
+    padding: .5rem 1rem;
+    border-bottom: 2px solid transparent;
+}
+.profile_page_tabs__link:hover {
+    color: $gray-800;
+}
+.profile_page_tabs__link.active {
+    color: $primary;
+    border-bottom-color: $primary;
+    font-weight: bold;
+}
+
+/* Wall */
+.profile_page__wall {
+    
+}
+.wall__inner {
+    
+}
+.wall__form {
+    position: relative;
+    border-radius: 3px;
+    background: $white;
+    border-top: 3px solid $primary;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    box-shadow: $box-shadow;
+}
+.wall_form__content {
+    @extend .form-control;
+    border-color: $gray-200;
+    max-width: 100%;
+    min-height: 2.3rem;
+}
+.wall_form__content:focus {
+    box-shadow: none;
+}
+.wall_form__footer {
+    display: flex;
+    background: $gray-100;
+    border: 1px solid $gray-200;
+    border-top: none;
+    margin: 0 0 1rem 0;
+    padding: .75rem 1rem;
+}
+.wall_form__pills {
+    margin: 0 0 0 auto;
+}
+.wall_form_pills__item {
+    float: left;
+    position: relative;
+    display: block;
+}
+.wall_form_pills__item a {
+    @extend .btn;
+    @extend .btn-sm;
+    position: relative;
+    display: block;
+    color: $gray-400;
+    border: 1px solid transparent;
+    background-color: $gray-100;
+}
+.wall_form_pills__item a:hover {
+    text-decoration: none;
+    color: $gray-800;
+    border-color: $gray-200;
+}
+.wall_form__submit {
+    @extend .btn;
+    @extend .btn-sm;
+    @extend .btn-outline-primary;
+}
+
+/* Post */
+.wall__post {
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+.wall_post__inner {
+    color: #888;
+    background: $white;
+    position: relative;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-top: 3px solid $gray-400;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: $box-shadow;
+}
+.wall_post__avatar {
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding: .75rem;
+}
+.wall_post__header {
+    color: #444;
+    display: block;
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    overflow: hidden;
+    line-height: 1.2;
+    flex: 1;
+    max-width: 100%;
+    padding: .75rem;
+}
+.wall_post__content {
+    width: 100%;
+    border-top: 1px solid $gray-200;
+    padding: .75rem;
+}
+
+
+
+
+
+
+

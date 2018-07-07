@@ -33,9 +33,10 @@ class CommentsController extends SiteController
         $comment = $this->model->create($request->all());
 
         // ->{$request->commentable_type}()->getRelated()
+        // ->select(['id', 'user_id'])->where('id', $request->commentable_id)->firstOrFail();
 
         $entity = app($comment->getActualClassNameForMorph($request->commentable_type))
-            ->select(['id', 'user_id'])->where('id', $request->commentable_id)->firstOrFail();
+            ->where('id', $request->commentable_id)->firstOrFail();
 
         $comment = $entity->comments()->save($comment);
 

@@ -74,6 +74,22 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    // Posts - this is a comments on wall of user profile page.
+    public function posts()
+    {
+        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
+    }
+
+    /**
+     * Get a non-existing attribute $entity->comment_store_action for html-form.
+     *
+     * @return string
+     */
+    public function getCommentStoreActionAttribute()
+    {
+        return route('comment.store', [$this->getMorphClass(), $this->id]);
+    }
+
     // OneToMany - один пользователь может добавить несколько заметок
     public function files()
     {

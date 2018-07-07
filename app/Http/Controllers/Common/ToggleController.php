@@ -39,7 +39,7 @@ class ToggleController extends BaseController
             // Update attribute, if exists.
             $item->update([$attribute => ! $item->{$attribute}]);
 
-            return redirect()->back()->withStatus(__('msg.complete'));
+            return redirect()->back()->withStatus(__('common.msg.complete'));
         } catch (\Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
