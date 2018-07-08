@@ -86,9 +86,9 @@ class File extends BaseModel
     // Filter
     public function scopeFilter($query, $filters)
     {
-        if ($filetype = $filters['filetype'] ?? false) {
-            $query->where('type', $filetype);
-        }
+        $query->when($filters['filetype'] ?? false, function($query) use ($filters) {
+            $query->where('type', $filters['filetype']);
+        });
     }
 
     public function storageDisk(string $disk = null)
