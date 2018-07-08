@@ -5,7 +5,7 @@ return [
     'no' => 'Нет',
     'loading' => 'Пожалуйста, подождите . . .',
     'read_more' => 'Подробнее ...',
-    'powered_by' => 'Powered by <a href="https://bixbite.site/" target="_blank" class="page_footer__link">BixBite</a>.',
+    'powered_by' => 'Powered by <a href="https://github.com/russsiq/bixbite" target="_blank" class="page_footer__link">BixBite</a>.',
 
     'search' => 'Поиск по сайту',
     'query' => 'Введите запрос ...',
