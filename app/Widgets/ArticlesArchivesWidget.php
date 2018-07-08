@@ -54,7 +54,11 @@ class ArticlesArchivesWidget extends WidgetAbstract
                 ->groupBy('year', 'month')
                 ->orderByRaw('min(created_at) desc')
                 ->limit($this->params['limit'])
-                ->get(),
+                ->get()
+                ->transform(function ($item, $key) {
+                    $item->monthname = __('common.'.$item->month);
+                    return $item;
+                }),
         ];
     }
 }

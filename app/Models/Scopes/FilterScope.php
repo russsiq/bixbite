@@ -9,16 +9,15 @@ trait FilterScope
     // Filter
     public function scopeFilter($query, $filters)
     {
-        if (! empty($filters['month']) and $month = $filters['month']) {
-            $query->whereMonth('created_at', Carbon::parse($month)->month);
-        }
-        if (! empty($filters['year']) and $year = $filters['year']) {
-            $query->whereYear('created_at', $year);
-        }
-        if (! empty($filters['user']) and $user = $filters['user']) {
-            $query->where('user_id', (int) $user);
-                // ->orWhere();
-        }
+        $query->when($filters['month'] ?? false, function($query) use ($filters) {
+            $query->whereMonth('created_at', Carbon::parse($filters['month'])->month);
+        })
+        ->when($filters['year'] ?? false, function($query) use ($filters) {
+            $query->whereYear('created_at', $filters['year']);
+        })
+        ->when($filters['user_id'] ?? false, function($query) use ($filters) {
+            $query->where('user_id', (int) $filters['user_id']);
+        });
 
         // $query->when(request('filter_by') == 'likes', function ($q) {
         //     return $q->where('likes', '>', request('likes_amount', 0));
