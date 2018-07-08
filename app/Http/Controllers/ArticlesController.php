@@ -48,7 +48,7 @@ class ArticlesController extends SiteController
 
         pageinfo([
             'title' => $category->title,
-            'description' => $category->description,
+            'description' => $category->description ?? $category->info,
             'keywords' => $category->keywords,
             'url' => $category->url,
             'img' => $category->img,
