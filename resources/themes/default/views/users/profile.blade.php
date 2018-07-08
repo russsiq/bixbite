@@ -41,6 +41,9 @@
             <li class="profile_page_tabs__item">
                 <a href="#profile" class="profile_page_tabs__link" data-toggle="tab" role="tab">Profile</a>
             </li>
+            <li class="profile_page_tabs__item">
+                <a href="{{ route('articles.index', ['user_id' => $user->id])}}" class="profile_page_tabs__link" role="tab">Articles</a>
+            </li>
             {{-- <li class="nav-item">
                 <a href="#friends" class="nav-link" data-toggle="tab" role="tab" aria-controls="friends">Friends</a>
             </li>

@@ -20,17 +20,17 @@ class ArticlesController extends SiteController
     public function index()
     {
         $articles = $this->model->shortArticle()
-            ->filter(request(['month', 'year', 'user']))
+            ->filter(request(['month', 'year', 'user_id']))
             ->where('on_mainpage', 1)
             ->orderBy('is_pinned', 'desc')
-            // ->orderBy('updated_at', 'desc')->orderBy('created_at', 'desc')
             ->orderBy(setting('articles.order_by', 'id'), setting('articles.direction', 'desc'))
             ->paginate(setting('articles.paginate', 8));
 
         pageinfo([
             'title' => setting('articles.meta_title', 'Articles'),
-            'description' => setting('articles.meta_description', 'Articles'),
-            'keywords' => setting('articles.meta_keywords', 'articles'),
+            'description' => null,
+            'keywords' => null,
+            'robots' => 'noindex, follow',
             'url' => route('articles.index'),
             'is_index' => true,
             // 'onMainPage' => $articles->onFirstPage() and empty(request()->query()),
