@@ -22,12 +22,11 @@
     "template": "Активный шаблон",
     "template#descr": "Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.",
 
-    "msg.complete_attributes": "Изменены свойства для категории",
-    "msg.complete_create": "Категория успешна создана",
-    "msg.complete_destroy": "Категория удалена",
-    "msg.complete_position_reset": "Позиции категорий сброшены",
-    "msg.complete_position_update": "Позиции категорий обновлены",
+    "msg.position_reset": "Позиции категорий сброшены",
+    "msg.position_update": "Позиции категорий обновлены",
     "msg.not_empty": "Категория не пустая!",
 
-    "msg.example": "Пример сообщения. Без запятой в конце."
+    "msg.store": "Категория создана: <a href=\"%s\" class=\"alert-link\">просмотр</a>, <a href=\"%s\" class=\"alert-link\">редактирование</a>",
+    "msg.update": "Категория обновлена: <a href=\"%s\" class=\"alert-link\">просмотр</a>, <a href=\"%s\" class=\"alert-link\">редактирование</a>",
+    "msg.destroy": "Категория удалена."
 }

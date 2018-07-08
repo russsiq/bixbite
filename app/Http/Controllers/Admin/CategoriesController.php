@@ -60,7 +60,9 @@ class CategoriesController extends AdminController
             ]);
         }
 
-        return redirect()->route('admin.categories.index')->withStatus('msg.complete_create');
+        return redirect()->route('admin.categories.index')->withStatus(sprintf(
+                __('msg.store'), $category->url, route('admin.categories.edit', $category)
+            ));
     }
 
     public function edit(Category $category)
@@ -97,7 +99,9 @@ class CategoriesController extends AdminController
             ]);
         }
 
-        return redirect()->route('admin.categories.index')->withStatus(__('msg.complete_attributes', ['title' => $category->title]));
+        return redirect()->route('admin.categories.index')->withStatus(sprintf(
+                __('msg.update'), $category->url, route('admin.categories.edit', $category)
+            ));
     }
 
     public function destroy(Category $category)
@@ -108,7 +112,7 @@ class CategoriesController extends AdminController
 
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->withStatus('msg.complete_destroy');
+        return redirect()->route('admin.categories.index')->withStatus(__('msg.destroy'));
     }
 
     public function positionReset(Request $request)
@@ -116,7 +120,7 @@ class CategoriesController extends AdminController
         $this->authorize('otherUpdate', Category::class);
         $this->model->positionReset();
 
-        return redirect()->route('admin.categories.index')->withStatus('msg.complete_position_reset');
+        return redirect()->route('admin.categories.index')->withStatus('msg.position_reset');
     }
 
     public function positionUpdate(Request $request)
@@ -127,7 +131,7 @@ class CategoriesController extends AdminController
         ]);
 
         if ($this->model->positionUpdate($request)) {
-            return response()->json(['status' => true, 'message' => __('msg.complete_position_update')], 200);
+            return response()->json(['status' => true, 'message' => __('msg.position_update')], 200);
         }
 
         return response()->json(['status' => false, 'message' => __('msg.not_complete')], 200);
