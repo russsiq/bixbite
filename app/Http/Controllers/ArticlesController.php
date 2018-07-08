@@ -60,7 +60,7 @@ class ArticlesController extends SiteController
             $this->template = 'custom_views.'.$category->template.'.'.$this->template;
         }
 
-        return $this->renderOutput('index', compact('articles'));
+        return $this->renderOutput('index', compact('category', 'articles'));
     }
 
     public function tag(Tag $tag)

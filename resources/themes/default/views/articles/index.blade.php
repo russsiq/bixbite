@@ -1,6 +1,11 @@
 <section class="archive_page">
     <div class="archive_page__inner">
         <header class="archive_page__header">
+            @if(pageinfo('is_category'))
+                @can ('admin.categories.update', $category)
+                    <a href="{{ route('admin.categories.edit', $category) }}" class="moder_panel"><i class="fa fa-edit"></i></a>
+                @endcan
+            @endif
             <h2 class="archive_page__title">{{ pageinfo('title') }}</h2>
 
             {{-- Если текущая страница - это страница первая страница категории,
