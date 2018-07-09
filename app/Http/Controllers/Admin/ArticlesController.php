@@ -29,7 +29,7 @@ class ArticlesController extends AdminController
     public function index()
     {
         // Если название метода контроллера совпадает с названием метода политики
-        $this->authorize(Article::class);
+        $this->authorize($this->model);
 
         $articles = $this->model
             ->withCount('comments')
@@ -168,7 +168,7 @@ class ArticlesController extends AdminController
      */
     public function massUpdate(ArticlesRequest $request)
     {
-        $this->authorize('otherUpdate', Article::class);
+        $this->authorize('otherUpdate', $this->model);
 
         $articles = $this->model->whereIn('id', $request->articles);
         $messages = [];

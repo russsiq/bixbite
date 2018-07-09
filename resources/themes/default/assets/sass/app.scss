@@ -44,25 +44,30 @@ textarea {
     word-wrap: break-word;
 }
 
-body::-webkit-scrollbar {
-    width: 12px;
-}
-
 ::-webkit-scrollbar {
     width: 8px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
     background: #ddd;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
     background: #ddd;
+}
+
+pre::-webkit-scrollbar {
+    width: 2px !important;
+    height: 4px !important;
+}
+pre::-webkit-scrollbar-thumb {
+    background: $primary !important;
 }
 
 a {

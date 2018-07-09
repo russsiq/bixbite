@@ -94,6 +94,8 @@ class SettingsTableSeeder extends Seeder
                 'name' => 'nested', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
             ['module_name' => 'comments', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
                 'name' => 'regonly', 'type' => 'bool', 'value' => '0', 'html_flags' => '',],
+            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
+                'name' => 'moderate', 'type' => 'bool', 'value' => '0', 'html_flags' => '',],
             // widget
             ['module_name' => 'comments', 'action' => 'setting', 'section' => 'widget', 'fieldset' => 'general',
                 'name' => 'widget_used', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],

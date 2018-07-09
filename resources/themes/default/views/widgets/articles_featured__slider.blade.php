@@ -5,7 +5,9 @@
                     height: 375px;
                     background-size:cover;
                     background-position: center center;
-                    background-image: url({{ $item->image ? $item->image->getUrlAttribute('medium') : '' }})
+                    @if ($item->image)
+                        background-image: url({{ $item->image->getUrlAttribute('medium') ?? $item->image->getUrlAttribute('small') }})
+                    @endif
                 ">
                 {{-- @if ($item->image)
                     <img

@@ -62,7 +62,7 @@ class LoginController extends SiteController
      */
     public function redirectTo()
     {
-        if ('owner' === $this->guard()->user()->role) {
+        if ($this->guard()->user()->hasRole('owner')) {
             return property_exists($this, 'redirectToOwner') ? $this->redirectToOwner : '/admin';
         }
 

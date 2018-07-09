@@ -2,8 +2,6 @@
 
 namespace BBCMS\Http\Controllers\Admin;
 
-use Validator;
-
 use BBCMS\Models\Note;
 use BBCMS\Http\Requests\Admin\NoteRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
@@ -16,8 +14,8 @@ class NotesController extends AdminController
     public function __construct(Note $model)
     {
         parent::__construct();
-
         $this->authorizeResource(Note::class);
+        
         $this->model = $model;
     }
 
@@ -53,7 +51,7 @@ class NotesController extends AdminController
      */
     public function store(NoteRequest $request)
     {
-        $note = user()->notes()->create($request->all());
+        $note = auth()->user()->notes()->create($request->all());
 
         return redirect()->route('admin.notes.index')->withStatus('store!');
     }
@@ -94,7 +92,7 @@ class NotesController extends AdminController
     public function update(NoteRequest $request, Note $note)
     {
         $note->update($data = $request->all());
-        
+
         return redirect()->route('admin.notes.index')->withStatus('store!');
     }
 

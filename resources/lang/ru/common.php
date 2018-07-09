@@ -30,6 +30,7 @@ return [
         'complete' => 'Успешно выполнено.',
         'error' => '<pre><font color="red">%s</font></pre>',
         'not_found' => '<p class="alert alert-info text-center">Нет информации для отображения.</p>',
+        'unauthorized' => 'У вас ограничен доступ к выполнению данной операции.',
     ],
 
     'January' => 'Январь',

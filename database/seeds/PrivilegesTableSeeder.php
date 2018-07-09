@@ -46,6 +46,8 @@ class PrivilegesTableSeeder extends Seeder
             ['privilege' => 'admin.categories.other_update'],
             ['privilege' => 'admin.categories.delete'],
 
+            ['privilege' => 'admin.comments.other_update'],
+
             // ['privilege' => 'admin.files.index'],
             // ['privilege' => 'admin.files.view'],
             // ['privilege' => 'admin.files.create'],

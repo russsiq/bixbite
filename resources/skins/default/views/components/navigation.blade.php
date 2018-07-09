@@ -8,9 +8,10 @@
 
         <div id="navbar_main" class="collapse navbar-collapse">
             <ul class="navbar-nav d-none d-md-flex">
-                <li class="nav-item -active"><a href="{{ route('admin.files.index') }}" class="nav-link">@lang('files')</a></li>
-                <li class="nav-item"><a href="{{ route('admin.categories.index') }}" class="nav-link">@lang('categories')</a></li>
                 <li class="nav-item"><a href="{{ route('admin.articles.index') }}" class="nav-link">@lang('articles')</a></li>
+                <li class="nav-item"><a href="{{ route('admin.categories.index') }}" class="nav-link">@lang('categories')</a></li>
+                <li class="nav-item"><a href="{{ route('admin.comments.index') }}" class="nav-link">@lang('comments')</a></li>
+                <li class="nav-item -active"><a href="{{ route('admin.files.index') }}" class="nav-link">@lang('files')</a></li>
                 <li class="nav-item"><a href="{{ route('admin.notes.index') }}" class="nav-link">@lang('notes')</a></li>
             </ul>
 

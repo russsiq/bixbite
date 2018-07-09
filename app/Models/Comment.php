@@ -14,17 +14,47 @@ class Comment extends BaseModel
     protected $table = 'comments';
     protected $casts = [
         'is_approved' => 'boolean',
+        'user_id' => 'integer',
+        'parent_id' => 'integer',
+        'commentable_type' => 'string',
+        'commentable_id' => 'integer',
+        'name' => 'string',
+        'email' => 'string',
+        'content' => 'string',
+
+        'url' => 'string',
+        'created' => 'timestamp',
+        'updated' => 'timestamp',
+        'by_user' => 'string',
+        'by_author' => 'string',
     ];
     protected $appends = [
-        'created', 'updated', 'by_user'
+        'url',
+        'created',
+        'updated',
+        'by_user',
+        'by_author',
     ];
     protected $fillable = [
-        'name','email','site','content','user_id','article_id','parent_id', 'commentable_type', 'commentable_id',
+        'is_approved',
+        'parent_id',
+        'user_id',
+        'commentable_type',
+        'commentable_id',
+        'name',
+        'email',
+        'user_ip',
+        'content',
+    ];
+
+    // Not used.
+    protected $with = [
+        // 'commentable'
     ];
 
     /**
      * All of the relationships to be touched.
-     * Automatically "touch" the updated_at timestamp of the owning Forum
+     * Automatically "touch" the updated_at timestamp of the owning Forum.
      *
      * @var array
      */

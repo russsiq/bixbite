@@ -16,7 +16,7 @@
             @endif
             <p class="widget_item__subtitle">{{ $comment->created }}</p>
         </header>
-        <p class="comment__content" itemprop="text">{{ $comment->content }}</p>
+        <div class="comment__content" itemprop="text">{!! $comment->content !!}</div>
     </article>
 
     @if($comment->children)

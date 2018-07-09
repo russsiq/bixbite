@@ -3,7 +3,8 @@
 namespace BBCMS\Http\Controllers;
 
 use BBCMS\Models\Comment;
-use BBCMS\Http\Requests\CommentsRequest;
+use BBCMS\Http\Requests\CommentStoreRequest;
+use BBCMS\Http\Requests\CommentUpdateRequest;
 
 class CommentsController extends SiteController
 {
@@ -28,7 +29,7 @@ class CommentsController extends SiteController
         //
     }
 
-    public function store(CommentsRequest $request)
+    public function store(CommentStoreRequest $request)
     {
         $comment = $this->model->create($request->all());
         $entity = $comment->commentable;
@@ -36,7 +37,10 @@ class CommentsController extends SiteController
         // Not save this data in the database because we already
         // have $user->id. This data is for display only.
         // And -1 sql query
-        if ($user = auth()->user()) {
+        if ($user = user()) {
+            if ($comment->user_id === $entity->user_id) {
+                $comment->update(['is_approved' => true]);
+            }
             $comment->user = $user;
             $comment->name = $user->name;
             $comment->email = $user->email;
@@ -50,7 +54,7 @@ class CommentsController extends SiteController
             ], 200);
         }
 
-        return redirect()->to(url()->previous() . '#comment-' . $comment->id)->with('comment_add_success', __('comments.msg.add_success'));
+        return redirect()->to(url()->previous().'#comment-'.$comment->id)->with('comment_add_success', __('comments.msg.add_success'));
     }
 
     public function show(Comment $comment)
@@ -63,7 +67,7 @@ class CommentsController extends SiteController
         //
     }
 
-    public function update(CommentsRequest $request, Comment $comment)
+    public function update(CommentUpdateRequest $request, Comment $comment)
     {
         //
     }

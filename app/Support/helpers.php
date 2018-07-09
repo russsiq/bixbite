@@ -260,7 +260,7 @@ if (! function_exists('html_secure')) {
         } else {
             return null;
         }
-
+        
         return $text;
     }
 }
@@ -715,21 +715,21 @@ if (! function_exists('skin_path')) {
 
 if (! function_exists('user')) {
     /**
-     * Return curent logined user.
-     *
-     * @throws BadLogic Used only in admin panel, only registered user.
-     * @return User
+     * Return attribute for currently logined user.
+     * @throws BadLogic When requesting hidden attributes.
+     * @return string|null
      */
     function user(string $attribute = null)
     {
-        if (\Auth::check()) {
-            return is_null($attribute) ? \Auth::user() : \Auth::user()->getAttribute($attribute);
+        if (in_array($attribute, ['password', 'remember_token'])) {
+            throw new BadLogic();
         }
 
-        // Temporally.
-        return null;
+        if (auth()->check()) {
+            return $attribute ? auth()->user()->getAttribute($attribute) : auth()->user();
+        }
 
-        throw new BadLogic();
+        return null;
     }
 }
 

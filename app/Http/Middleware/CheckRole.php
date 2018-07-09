@@ -21,10 +21,14 @@ class CheckRole
         }
 
         if ($request->ajax() or $request->wantsJson()) {
-            return response('Unauthorized.', 401);
+            return response(
+                __('common.msg.unauthorized'), 401
+            );
         }
 
-        return redirect()->to('/')->withErrors(['Unauthorized.']);
+        return redirect()->to('/')->withErrors(
+            __('common.msg.unauthorized')
+        );
     }
 
 }

@@ -16,15 +16,19 @@ class OwnProfile
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() and user()->id === $request->route('user')->id) {
+        if ($request->user() and $request->user()->id === $request->route('user')->id) {
             return $next($request);
         }
 
         if ($request->ajax() or $request->wantsJson()) {
-            return response('Unauthorized.', 401);
+            return response(
+                __('common.msg.unauthorized'), 401
+            );
         }
 
-        return redirect()->to('/')->withErrors(['Unauthorized.']);
+        return redirect()->to('/')->withErrors(
+            __('common.msg.unauthorized')
+        );
     }
 
 }

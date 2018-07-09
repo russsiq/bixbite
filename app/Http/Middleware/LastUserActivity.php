@@ -15,9 +15,9 @@ class LastUserActivity
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()) {
-            cache()->put($request->user()->isOnlineKey(), true,
-                now()->addMinutes($request->user()->isOnlineMinutes())
+        if ($user = $request->user()) {
+            cache()->put($user->isOnlineKey(), true,
+                now()->addMinutes($user->isOnlineMinutes())
             );
         }
 

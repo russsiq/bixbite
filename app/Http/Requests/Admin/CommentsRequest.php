@@ -2,10 +2,10 @@
 
 namespace BBCMS\Http\Requests\Admin;
 
-use BBCMS\Models\Article;
+use BBCMS\Models\Comment;
 use BBCMS\Http\Requests\Request;
 
-class ArticlesRequest extends Request
+class CommentsRequest extends Request
 {
     public function authorize()
     {
@@ -15,17 +15,17 @@ class ArticlesRequest extends Request
     public function rules()
     {
         return [
-            'articles' => [
+            'comments' => [
                 'required',
                 'array',
             ],
-            'articles.*' => [
+            'comments.*' => [
                 'integer',
             ],
             'mass_action' => [
                 'required',
                 'string',
-                'in:published,unpublished,draft,on_mainpage,not_on_mainpage,allow_com,disallow_com,currdate,delete,delete_drafts',
+                'in:published,unpublished,delete',
             ],
         ];
     }
@@ -33,7 +33,7 @@ class ArticlesRequest extends Request
     public function messages()
     {
         return [
-            'articles.*' => __('msg.validate.articles'),
+            'comments.*' => __('msg.validate.comments'),
             'mass_action.*' => __('msg.validate.mass_action'),
         ];
     }

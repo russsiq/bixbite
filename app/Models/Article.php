@@ -21,8 +21,6 @@ class Article extends BaseModel
     use FilterScope, PublishedScope; // ArchiveScope,
     use Taggable, Fileable, Imageable, Commentable, Categoryable;
 
-    // protected $with = ['media'];
-
     protected $primaryKey = 'id';
     protected $table = 'articles';
     public $timestamps = false;
@@ -48,6 +46,10 @@ class Article extends BaseModel
         'views', 'votes', 'rating',
         // Dates
         'created_at', 'updated_at',
+    ];
+
+    protected $with = [
+        'categories:categories.id,categories.slug,categories.title'
     ];
 
     /**

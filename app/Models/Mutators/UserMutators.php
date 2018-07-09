@@ -9,6 +9,11 @@ trait UserMutators
         return action('UsersController@show', $this);
     }
 
+    public function getUrlAttribute()
+    {
+        return $this->profile;
+    }
+
     public function getCreatedAttribute()
     {
         return is_null($this->created_at) ? null : $this->asDateTime($this->created_at)->diffForHumans();

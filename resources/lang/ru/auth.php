@@ -20,7 +20,6 @@ return [
     'reset' => 'Сброс пароля',
     'dashboard' => 'Админ. панель',
     'profile' => 'Профиль',
-    'profile-settings' => 'Настройки профиля',
     'logout' => 'Выход',
 
     'btn' => [

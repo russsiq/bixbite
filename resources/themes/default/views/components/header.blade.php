@@ -26,7 +26,7 @@
                         @can ('admin.articles.create')
                             <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>
                         @endcan
-                        <a href="{{ user()->profile }}" class="dropdown-item">@lang('auth.profile')</a>
+                        <a href="{{ user('profile') }}" class="dropdown-item">@lang('auth.profile')</a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="post">
                             <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="dropdown-item">@lang('auth.logout')</button>

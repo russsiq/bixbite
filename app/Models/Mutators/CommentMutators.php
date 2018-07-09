@@ -4,6 +4,11 @@ namespace BBCMS\Models\Mutators;
 
 trait CommentMutators
 {
+    public function getUrlAttribute()
+    {
+        return $this->commentable->url.'#comment-'.$this->id;
+    }
+
     public function setUpdatedAtAttribute($value)
     {
         return 'null';

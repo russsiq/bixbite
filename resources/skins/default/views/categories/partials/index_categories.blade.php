@@ -21,7 +21,7 @@
                 <button type="submit" class="btn btn-link"
                     formaction="{{ route('toggle.attribute', ['Category', $item->id, 'show_in_menu']) }}"
                     name="_method" value="PUT">
-                    <i class="fa {{ $item->show_in_menu ? 'fa-eye text-success' : 'fa-eye-slash text-muted' }}"></i>
+                    <i class="fa {{ $item->show_in_menu ? 'fa-eye text-success' : 'fa-eye-slash text-danger' }}"></i>
                 </button>
             @endcan
 

@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         \BBCMS\Models\Article::class => \BBCMS\Policies\ArticlePolicy::class,
         \BBCMS\Models\Category::class => \BBCMS\Policies\CategoryPolicy::class,
+        \BBCMS\Models\Comment::class => \BBCMS\Policies\CommentPolicy::class,
         \BBCMS\Models\File::class => \BBCMS\Policies\FilePolicy::class,
         \BBCMS\Models\Note::class => \BBCMS\Policies\NotePolicy::class,
         \BBCMS\Models\Privilege::class => \BBCMS\Policies\PrivilegePolicy::class,
@@ -45,6 +46,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->registerAdminArticles();
         $this->registerAdminCategories();
+        $this->registerAdminComments();
         $this->registerAdminFiles();
         $this->registerAdminNotes();
         $this->registerAdminPrivileges();
@@ -113,6 +115,16 @@ class AuthServiceProvider extends ServiceProvider
             'index' => 'index',
             'view' => 'view',
             'create' => 'create',
+            'update' => 'update',
+            'other_update' => 'otherUpdate',
+            'delete' => 'delete',
+        ]);
+    }
+
+    protected function registerAdminComments()
+    {
+        Gate::resource('admin.comments', \BBCMS\Policies\CommentPolicy::class, [
+            'index' => 'index',
             'update' => 'update',
             'other_update' => 'otherUpdate',
             'delete' => 'delete',

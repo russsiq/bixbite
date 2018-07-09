@@ -12,6 +12,7 @@ Route::post('{module}/settings', 'SettingsController@moduleUpdate')->name('admin
 Route::post('articles/mass_update', 'ArticlesController@massUpdate')->name('admin.articles.mass_update');
 Route::get('categories/position_reset', 'CategoriesController@positionReset')->name('admin.categories.position_reset'); // NEED to Formaction button //
 Route::post('categories/position_update', 'CategoriesController@positionUpdate')->name('admin.categories.position_update'); // NEED to Formaction button //
+Route::post('comments/mass_update', 'CommentsController@massUpdate')->name('admin.comments.mass_update');
 Route::post('files/upload', 'FilesController@upload')->name('admin.files.upload');
 Route::post('privileges/mass_update', 'PrivilegesController@massUpdate')->name('admin.privileges.mass_update');
 Route::post('users/mass_update', 'UsersController@massUpdate')->name('admin.users.mass_update');
@@ -19,6 +20,7 @@ Route::post('users/mass_update', 'UsersController@massUpdate')->name('admin.user
 Route::name('admin.')->group(function () {
     Route::resource('articles', 'ArticlesController')->except(['show'])->names(['destroy' => 'articles.delete']);
     Route::resource('categories', 'CategoriesController')->except(['show'])->names(['destroy' => 'categories.delete']);
+    Route::resource('comments', 'CommentsController')->only(['index','edit','update','destroy'])->names(['destroy' => 'comments.delete']);
     Route::resource('files', 'FilesController')->names(['destroy' => 'files.delete']);
     Route::resource('notes', 'NotesController')->names(['destroy' => 'notes.delete']);
     Route::resource('privileges', 'PrivilegesController')->except(['show', 'destroy']);

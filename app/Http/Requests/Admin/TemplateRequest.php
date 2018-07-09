@@ -13,7 +13,7 @@ class TemplateRequest extends Request
      */
     public function authorize()
     {
-        return user()->hasRole('owner');
+        return $this->user()->hasRole('owner');
     }
 
     public function rules()

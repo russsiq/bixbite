@@ -26,7 +26,14 @@ class ArticleRequest extends Request
         $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
         $input['slug'] = string_slug($this->input('slug') ?? $this->input('title'));
         $input['teaser'] = html_clean($input['teaser']);
+
+        $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
+            function ($match) {
+                return '<pre>' . html_secure($match[1]) . '</pre>';
+            }, $this->input('content')
+        );
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
+
         $input['description'] = teaser($input['description'], 255);
         $input['keywords'] = teaser($input['keywords'], 255);
         $input['tags'] = array_map(
@@ -97,7 +104,7 @@ class ArticleRequest extends Request
             // DateTime.
             'customdate' => ['nullable', 'boolean', ],
             'created_at' => ['nullable', 'date_format:"Y-m-d H:i:s"', 'required_with:customdate', ],
-            
+
             // Extension.
             'allow_com' => ['required', 'numeric', 'in:0,1,2', ],
             'views' => ['nullable', 'integer', ],

@@ -48,8 +48,10 @@
                         <div class="icon-block">
                             <a href="{{ route('admin.settings.module', $module) }}" title="@lang('settings')" class="btn"><i class="fa fa-cogs"></i></a>
 
-                            @if ('users' == $module->name and user()->canDo('admin.privileges.index'))
-                                <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn"><i class="fa fa-user-secret"></i></a>
+                            @if ('users' == $module->name))
+                                @can ('admin.privileges.index')
+                                    <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn"><i class="fa fa-user-secret"></i></a>
+                                @endcan
                             @endif
 
                             @if ('users' == $module->name or 'articles' == $module->name)

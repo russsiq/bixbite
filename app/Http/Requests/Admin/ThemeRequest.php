@@ -13,7 +13,7 @@ class ThemeRequest extends Request
      */
     public function authorize()
     {
-        return user()->hasRole('owner');
+        return $this->user()->hasRole('owner');
     }
 
     public function sanitize()
