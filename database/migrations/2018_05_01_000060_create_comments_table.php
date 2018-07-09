@@ -18,17 +18,18 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
 
             $table->boolean('is_approved')->nullable()->default(0);
-            $table->integer('user_id')->unsigned()->nullable(); // if auth user add comment
             $table->integer('parent_id')->unsigned()->nullable(); // if not replies
+            $table->integer('user_id')->unsigned()->nullable(); // if auth user add comment
             $table->morphs('commentable');
 
             $table->string('name')->nullable(); // if guest add comment
             $table->string('email')->nullable(); // if guest add comment
+            $table->ipAddress('user_ip')->nullable();
             $table->text('content');
 
-            $table->index('user_id');
             $table->index('is_approved');
             $table->index('parent_id');
+            $table->index('user_id');
             $table->index('commentable_id');
             $table->index('commentable_type');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
