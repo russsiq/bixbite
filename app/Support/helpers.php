@@ -801,7 +801,7 @@ if (! function_exists('cache_expired')) {
     {
         $hash = sha1($key);
         $parts = array_slice(str_split($hash, 2), 0, 2);
-        $path = config('cache.stores.file.path').DS.implode(DS, $parts).DS.$hash;
+        $path = cache()->store('file')->getDirectory().DS.implode(DS, $parts).DS.$hash;
 
         if (\File::exists($path)) {
             return \Carbon\Carbon::createFromTimestamp(
