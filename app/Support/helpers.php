@@ -793,7 +793,7 @@ if (! function_exists('parse_ini')) {
 if (! function_exists('cache_expired')) {
     /**
      * Get the expiration time from cache file by key.
-     * $parts and $path from protected (\Illuminate\Cache\FileStore)->path($key).
+     * $hash, $parts, $path from (\Illuminate\Cache\FileStore)->path($key).
      * @param  string $key
      * @return \Carbon\Carbon|null
      */
