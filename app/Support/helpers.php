@@ -260,7 +260,7 @@ if (! function_exists('html_secure')) {
         } else {
             return null;
         }
-        
+
         return $text;
     }
 }
@@ -775,78 +775,110 @@ if (! function_exists('wrap_attr')) {
 //     $mappedProduce[] = compact('id', 'name', 'type');
 // }
 
-function parse_ini($file_path)
-{
-    if (! file_exists($file_path)) {
-        throw new Exception("File not exists ${file_path}");
-    }
-    $text = fopen($file_path, 'r');
-    while ($line = fgets($text)) {
-        list($key, $param) = explode('=', $line);
-        yield $key => $param;
+if (! function_exists('parse_ini')) {
+    function parse_ini($file_path)
+    {
+        if (! file_exists($file_path)) {
+            throw new Exception("File not exists ${file_path}");
+        }
+
+        $text = fopen($file_path, 'r');
+        while ($line = fgets($text)) {
+            list($key, $param) = explode('=', $line);
+            yield $key => $param;
+        }
     }
 }
-/*//
-// Generate info / error message
-// $mode - working mode
-//			0 - use SITE theme
-//			1 - use ADMIN PANEL skin
-// $disp - flag [display mode]:
-//		 -1 - automatic mode
-//			0 - add into mainblock
-//			1 - print
-//			2 - return as result
-//          3 - redirect
-function msg($params, $mode = 0, $disp = -1)
-{
-    global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
 
-    // Set AUTO mode if $disp == -1
-    if ($disp == -1)
-        $mode = defined('ADMIN') ? 1 : 0;
+if (! function_exists('cache_expired')) {
+    /**
+     * Get the expiration time from cache file by key.
+     * $parts and $path from protected method (\Illuminate\Cache\FileStore)->path($key).
+     * @param  string $key [description]
+     * @return \Carbon\Carbon|null
+     */
+    function cache_expired(string $key)
+    {
+        $hash = sha1($key);
+        $parts = array_slice(str_split($hash, 2), 0, 2);
+        $path = config('cache.stores.file.path').DS.implode(DS, $parts).DS.$hash;
 
-    // Choose working mode
-    $type = isset($params['type']) ? $params['type'] : 'success';
-    $title = isset($params['title']) ? $params['title'] : __($type);
-    $message = isset($params['message']) ? $params['message'] : '';
-    $referer = isset($params['referer']) ? $params['referer'] : null;
+        if (\File::exists($path)) {
+            return \Carbon\Carbon::createFromTimestamp(
+                    substr(\File::get($path), 0, 10)
+                );
+        }
 
-    if (3 == $disp) {
-        $tVars = array(
-            'title' => $title,
-            'type' => $type,
-            'message' => trim(db_squote($message), "'"),
-            'linktext' => home_title,
-            'link' => ! empty($referer) ? trim(db_squote($referer), "'") : home,
-        );
-        $SUPRESS_TEMPLATE_SHOW = 1;
-        $template['vars']['mainblock'] = $twig->render('redirect.tpl', $tVars);
-        return 1;
-    } else {
-        $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
-            'id' => rand(8, 888),
-            'type' => $type,
-            'title' => trim(db_squote($title), "'"),
-            'message' => trim(db_squote($message), "'"),
-            ));
+        return null;
     }
+}
 
-    switch($disp) {
-        case 0:
-            $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-            break;
-        case 1:
-            print $msg;
-            break;
-        case 2:
-            return $msg;
-            break;
-        default:
-            if ($mode) {
-                print $msg;
-            } else {
+if (! function_exists('msg')) {
+    /**
+     * Generate info / error message.
+     * @param  array  $params [description]
+     * @param  integer $mode   Working mode.
+     *      0 - use SITE theme
+     *      1 - use ADMIN PANEL skin
+     * @param  integer $disp   Flag [display mode].
+     *     -1 - automatic mode
+     *      0 - add into mainblock
+     *      1 - print
+     *      2 - return as result
+     *      3 - redirect
+     * @return mixed
+     */
+    function msg(array $params, $mode = 0, $disp = -1)
+    {
+        global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
+
+        // Set AUTO mode if $disp == -1
+        if ($disp == -1)
+            $mode = defined('ADMIN') ? 1 : 0;
+
+        // Choose working mode
+        $type = isset($params['type']) ? $params['type'] : 'success';
+        $title = isset($params['title']) ? $params['title'] : __($type);
+        $message = isset($params['message']) ? $params['message'] : '';
+        $referer = isset($params['referer']) ? $params['referer'] : null;
+
+        if (3 == $disp) {
+            $tVars = array(
+                'title' => $title,
+                'type' => $type,
+                'message' => trim(db_squote($message), "'"),
+                'linktext' => home_title,
+                'link' => ! empty($referer) ? trim(db_squote($referer), "'") : home,
+            );
+            $SUPRESS_TEMPLATE_SHOW = 1;
+            $template['vars']['mainblock'] = $twig->render('redirect.tpl', $tVars);
+            return 1;
+        } else {
+            $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
+                'id' => rand(8, 888),
+                'type' => $type,
+                'title' => trim(db_squote($title), "'"),
+                'message' => trim(db_squote($message), "'"),
+                ));
+        }
+
+        switch($disp) {
+            case 0:
                 $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-            }
-            break;
+                break;
+            case 1:
+                print $msg;
+                break;
+            case 2:
+                return $msg;
+                break;
+            default:
+                if ($mode) {
+                    print $msg;
+                } else {
+                    $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
+                }
+                break;
+        }
     }
-}*/
+}
