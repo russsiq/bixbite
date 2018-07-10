@@ -123,22 +123,9 @@ class User extends Authenticatable
     // Last time when user was active.
     public function lastActive()
     {
-        if ($this->isOnline()) {
-            // $parts and $path from protected method
-            // (\Illuminate\Cache\FileStore)->path($key).
-            $hash = sha1($this->isOnlineKey());
-            $parts = array_slice(str_split($hash, 2), 0, 2);
-            $path = config('cache.stores.file.path').DS.implode(DS, $parts).DS.$hash;
-
-            if (FileSystem::exists($path)) {
-                // Get the expiration time.
-                return Carbon::createFromTimestamp(
-                        substr(FileSystem::get($path), 0, 10)
-                    )->subMinutes($this->isOnlineMinutes())->diffForHumans();
-            }
-        }
-
-        return $this->logined;
+        return $this->isOnline()
+            ? cache($this->isOnlineKey())->diffForHumans()
+            : $this->logined;
     }
 
     public function manageFromRequest($request)
