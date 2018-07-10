@@ -34,7 +34,7 @@ class User extends Authenticatable
         'email', 'password', 'remember_token', 'role',
     ];
 
-    protected $isOnlinePrefix = 'user-is-online-';
+    protected $isOnlinePrefix = 'users.is-online-';
     protected $isOnlineMinutes = 15;
 
     protected static function boot()
