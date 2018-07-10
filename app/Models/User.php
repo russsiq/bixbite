@@ -87,7 +87,7 @@ class User extends Authenticatable
      */
     public function getCommentStoreActionAttribute()
     {
-        return route('comment.store', [$this->getMorphClass(), $this->id]);
+        return route('comments.store', [$this->getMorphClass(), $this->id]);
     }
 
     // OneToMany - один пользователь может добавить несколько заметок

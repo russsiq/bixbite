@@ -6,7 +6,7 @@ use BBCMS\Models\BaseModel;
 use BBCMS\Models\Article;
 use BBCMS\Models\Mutators\CategoryMutators;
 use BBCMS\Models\Collections\CategoryCollection;
-use BBCMS\Models\Traits\CacheForgetByKeysTrait;
+use BBCMS\Models\Traits\CacheForgetByKeys;
 
 use BBCMS\Models\Relations\Fileable;
 use BBCMS\Models\Relations\Imageable;
@@ -14,7 +14,7 @@ use BBCMS\Models\Relations\Imageable;
 class Category extends BaseModel
 {
     use CategoryMutators;
-    use CacheForgetByKeysTrait;
+    use CacheForgetByKeys;
     use Fileable, Imageable;
 
     protected $primaryKey = 'id';

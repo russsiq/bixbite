@@ -66,7 +66,7 @@
                         </div>
                     @endif
 
-                    @if (user())
+                    @auth
                         <div class="box-footer" style="display: block; width: 100%;">
                             <form action="{{ $user->comment_store_action }}" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -84,7 +84,7 @@
                                 </div>
                             </form>
                         </div>
-                    @endif
+                    @endauth
                 </div>
             </article>
         @empty

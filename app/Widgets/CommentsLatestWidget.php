@@ -7,7 +7,7 @@ use BBCMS\Support\WidgetAbstract;
 
 class CommentsLatestWidget extends WidgetAbstract
 {
-    protected $cacheTime = 15;
+    protected $cacheTime = 30;
     protected $casts = [
         'active' => 'boolean',
         'template' => 'string',

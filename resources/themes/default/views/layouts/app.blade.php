@@ -16,12 +16,12 @@
         @stack('styles')
     </head>
     <body>
-        <div id="app" class="page">
+        <div id="app" class="page" itemscope itemtype="http://schema.org/WebPage">
             @each('components.alert', $errors->all(), 'message')
             @if ($message = session('status') ?? session('message'))
                 @include('components.alert', ['type' => 'success', 'message' => trim($message)])
             @endif
-            <header class="page_header">
+            <header class="page_header" itemscope itemtype="http://schema.org/WPHeader">
                 @yield('sidebar_header')
                 @yield('header')
             </header>
@@ -38,7 +38,7 @@
                 </div>
             </section>
 
-            <footer class="page_footer">
+            <footer class="page_footer" itemscope itemtype="http://schema.org/WPFooter">
                 @yield('sidebar_footer')
                 @yield('footer')
             </footer>

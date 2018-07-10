@@ -36,6 +36,6 @@ trait Commentable
      */
     public function getCommentStoreActionAttribute()
     {
-        return route('comment.store', [$this->getMorphClass(), $this->id]);
+        return route('comments.store', [$this->getMorphClass(), $this->id]);
     }
 }

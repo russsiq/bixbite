@@ -1,27 +1,34 @@
-<li id="li-comment-{{ $comment->id }}" class="comment" itemscope itemtype="http://schema.org/Comment">
-    <article id="comment-{{ $comment->id }}" class="comment__inner">
+<li id="comment-{{ $comment->id }}" class="comment" itemscope itemtype="http://schema.org/Comment">
+    <article class="comment__inner">
         <figure class="comment__avatar">
             <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33px" class="comment_avatar__thumbnail" />
         </figure>
+
         <header class="comment__header {{ $comment->by_author ?  'by_author' : ''}}">
             <span class="comment__reply" data-respond="{{ $comment->id }}">@lang('comments.btn.reply')</span>
-            @if ($comment->by_user)
-                <a href="{{ $comment->user->profile }}" title="@lang('auth.profile')">
-                    <i class="widget_item__title" itemprop="author">
-                        {{ $comment->author->name }} <b class="{{ $comment->author->isOnline ? 'is_online' : '' }}"></b>
-                    </i>
-                </a>
-            @else
-                <i class="widget_item__title" itemprop="author">{{ $comment->author->name }}</i>
-            @endif
+            @if ($comment->by_user)<a href="{{ $comment->author->profile }}" title="@lang('auth.profile')">@endif
+                <i class="widget_item__title" itemprop="creator">
+                    {{ $comment->author->name }} <b class="{{ $comment->author->isOnline ? 'is_online' : '' }}"></b>
+                </i>
+            @if ($comment->by_user)</a>@endif
             <p class="widget_item__subtitle">{{ $comment->created }}</p>
         </header>
+
         <div class="comment__content" itemprop="text">{!! $comment->content !!}</div>
+
+        {{-- Moder panel --}}
+        @can ('comments.update', $comment)
+            <a href="{{ route('comments.edit', $comment) }}" class="btn btn-link">@lang('common.btn.edit')</a>
+        @endcan
+        @can ('comments.delete', $comment)
+            <form action="{{ route('comments.delete', $comment) }}" method="post" onsubmit="return confirm('@lang('common.msg.sure_del')');">
+                <input type="hidden" name="_method" value="DELETE" />
+                <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-link">@lang('common.btn.delete')</button>
+            </form>
+        @endcan
     </article>
 
-    @if($comment->children)
-        <ul class="comments_list__children">
-            @each('comments.show', $comment->children, 'comment')
-        </ul>
-    @endif
+    <ul class="comments_list__children">
+        @each('comments.show', $comment->children, 'comment')
+    </ul>
 </li>

@@ -39,11 +39,16 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->registerPolicies();
         $this->registerGlobalPolicies();
+
+        // Front-end policies.
+        $this->registerComments();
+
+        // Back-end policies.
         $this->registerAdminDashboardPolicies();
         $this->registerAdminSettingsPolicies();
         $this->registerAdminThemesPolicies();
         $this->registerAdminXFieldsPolicies();
-
+        
         $this->registerAdminArticles();
         $this->registerAdminCategories();
         $this->registerAdminComments();
@@ -61,6 +66,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('global.admin', function ($user) {
             return $user->canDo('global.admin');
         });
+    }
+
+    protected function registerComments()
+    {
+        Gate::resource('comments', \BBCMS\Policies\CommentPolicy::class, [
+            'update' => 'update',
+            'delete' => 'delete',
+        ]);
     }
 
     public function registerAdminDashboardPolicies()

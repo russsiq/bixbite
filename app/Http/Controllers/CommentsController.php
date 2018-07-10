@@ -47,6 +47,7 @@ class CommentsController extends SiteController
         }
 
         if ($request->ajax()) {
+            $comment->children = [];
             return response()->json([
                 'status' => true,
                 'message' => __('comments.msg.add_success'),
@@ -62,18 +63,56 @@ class CommentsController extends SiteController
         // return view($this->template . '.show', compact('comment', 'entity'))->render();
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \BBCMS\Models\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
     public function edit(Comment $comment)
     {
-        //
+        $this->authorize($this->model);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'content' => $comment->content,
+            ], 200);
+        }
+
+        return $this->renderOutput('edit', compact('comment'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \BBCMS\Http\Requests\CommentUpdateRequest  $request
+     * @param  \BBCMS\Models\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
-        //
+        $this->authorize($this->model);
+
+        $comment->update($request->only(['content']));
+
+        return redirect()->to($comment->url)->withStatus(__('comments.msg.update'));
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \BBCMS\Models\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize($this->model);
+
+        $url = $comment->commentable->url;
+
+        $comment->delete();
+
+        return redirect()->to($url)->withStatus(__('comments.msg.destroy'));
     }
 }

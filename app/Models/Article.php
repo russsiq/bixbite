@@ -5,8 +5,7 @@ namespace BBCMS\Models;
 use BBCMS\Models\BaseModel;
 use BBCMS\Models\User;
 use BBCMS\Models\Mutators\ArticleMutators;
-use BBCMS\Models\Scopes\FilterScope;
-use BBCMS\Models\Scopes\PublishedScope;
+use BBCMS\Models\Scopes\ArticleScopes;
 
 use BBCMS\Models\Relations\Fileable;
 use BBCMS\Models\Relations\Imageable;
@@ -17,9 +16,8 @@ use BBCMS\Models\Relations\Categoryable;
 
 class Article extends BaseModel
 {
-    use ArticleMutators;
-    use FilterScope, PublishedScope; // ArchiveScope,
-    use Taggable, Fileable, Imageable, Commentable, Categoryable;
+    use ArticleMutators, ArticleScopes;
+    use Fileable, Imageable, Taggable, Commentable, Categoryable;
 
     protected $primaryKey = 'id';
     protected $table = 'articles';
@@ -36,16 +34,34 @@ class Article extends BaseModel
         'updated_at' => 'datetime',
     ];
     protected $appends = [
-        'url', 'created', 'updated',
+        'url',
+        'created',
+        'updated',
     ];
     protected $fillable = [
-        'user_id', 'image_id', 'title', 'slug', 'teaser', 'content', 'description', 'keywords',
-        // Flags ?
-        'allow_com', 'state', 'robots', 'on_mainpage', 'is_favorite', 'is_pinned', 'is_catpinned',
+        'user_id',
+        'image_id',
+        'title',
+        'slug',
+        'teaser',
+        'content',
+        'description',
+        'keywords',
+        // Flags
+        'allow_com',
+        'state',
+        'robots',
+        'on_mainpage',
+        'is_favorite',
+        'is_pinned',
+        'is_catpinned',
         // Extension
-        'views', 'votes', 'rating',
+        'views',
+        'votes',
+        'rating',
         // Dates
-        'created_at', 'updated_at',
+        'created_at',
+        'updated_at',
     ];
 
     protected $with = [
@@ -68,11 +84,6 @@ class Article extends BaseModel
             $article->image()->get()->each->delete();
             $article->files()->get()->each->delete();
         });
-
-        // // Order by name ASC
-        // static::addGlobalScope('order', function (Builder $builder) {
-        //     $builder->orderBy('name', 'asc');
-        // });
     }
 
     /**
@@ -93,42 +104,5 @@ class Article extends BaseModel
     public function settings()
     {
         return $this->hasMany(Setting::class, 'module_name');
-    }
-
-    public function scopeShortArticle($query, ...$filters)
-    {
-        return $query
-            ->select([
-                'articles.id','articles.user_id','articles.image_id',
-                'articles.slug','articles.title','articles.content',
-                'articles.created_at','articles.updated_at',
-                'articles.views',
-            ])
-            ->with([
-                'image',
-                'categories:categories.id,categories.slug,categories.title',
-                'user:users.id,users.name', // ,users.email,users.avatar
-            ])
-            ->withCount(['comments'])
-            ->where('articles.state', 'published');
-    }
-
-    public function scopeFullArticle($query, $article_id)
-    {
-        return $query
-            ->with([
-                'categories:categories.id,categories.title,categories.slug',
-                'user:users.id,users.name,users.email,users.avatar',
-            ])
-            ->withCount(['comments', 'tags'])
-            ->where('articles.state', 'published')
-            ->where('articles.id', $article_id);
-    }
-
-    public function scopeSearchByKeyword($query, $keyword) // ToDo Add new xfields
-    {
-        return $query
-            ->where('title', 'like', '%' . $keyword . '%')
-            ->orWhere('content', 'like', '%' . $keyword . '%');
     }
 }

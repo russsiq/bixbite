@@ -35,16 +35,16 @@ class CommentStoreRequest extends Request
             ]);
         }
 
-        $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
-            function ($match) {
-                return '<pre>' . html_secure($match[1]) . '</pre>';
-            }, $this->input('content')
-        );
-        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
-
         if (! setting('comments.use_html', false)) {
             $input['content'] = html_clean($input['content']);
         }
+
+        $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
+            function ($match) {
+                return '<pre>' . html_secure($match[1]) . '</pre>';
+            }, $input['content']
+        );
+        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
 
         return $this->replace($input)->all();
     }
@@ -64,7 +64,7 @@ class CommentStoreRequest extends Request
             'commentable_id' => $this->route('commentable_id'),
             'commentable_type' => string_slug($this->route('commentable_type'), '_'),
             // Aditional default value.
-            // 'user_ip' => $this->ip(),
+            'user_ip' => $this->ip(),
         ])->all();
     }
 
@@ -115,9 +115,9 @@ class CommentStoreRequest extends Request
                 'email',
                 'unique:users,email',
             ],
-            // 'user_ip' => [
-            //     'required',
-            // ],
+            'user_ip' => [
+                'required',
+            ],
             'captcha' => [
                 (auth()->check() ? 'sometimes' : 'required'),
                 'digits:4',

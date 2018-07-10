@@ -53,6 +53,20 @@ class Comment extends BaseModel
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($comment) {
+            $comment->where('parent_id', $comment->id)->get(['id'])->each->delete();
+        });
+    }
+
+    /**
      * All of the relationships to be touched.
      * Automatically "touch" the updated_at timestamp of the owning Forum.
      *

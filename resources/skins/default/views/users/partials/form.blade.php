@@ -14,7 +14,7 @@
 		</div>
 
 		{{-- Только собственник может менять группу пользователю. --}}
-		@if ('owner' == user('role'))
+		@if ('owner' == user('role') and optional($user)->id != user('id'))
 			<div class="form-group row{{ $errors->has('role') ? ' has-error' : '' }}">
 				<label for="role" class="col-sm-5">@lang('role')</label>
 				<div class="col-sm-7">

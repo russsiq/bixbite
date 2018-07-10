@@ -73,8 +73,9 @@
                                                 <a href="{{ route('admin.comments.edit', $comment) }}"
                                                     class="btn btn-link"
                                                     data-action="{{ route('admin.comments.update', $comment) }}"
-                                                    data-toggle="modal"
-                                                    data-target="#exampleModal">
+                                                    {{-- data-toggle="modal"
+                                                    data-target="#exampleModal" --}}
+                                                    >
                                                     <i class="fa fa-pencil"></i></a>
                                             @endcan
                                             @can ('admin.comments.delete', $comment)

@@ -29,7 +29,8 @@ Route::group(['prefix' => 'app_common', 'namespace' => 'Common'], function () {
 // Route::get('{commentable_type}/{commentable_id}/comments/{comment}', function ($postId, $commentId) {});
 Route::post(
     'comments/{commentable_type}/{commentable_id}/store', 'CommentsController@store'
-)->name('comment.store');
+)->name('comments.store');
+Route::resource('comments', 'CommentsController')->only(['edit','update','destroy'])->names(['destroy' => 'comments.delete']);
 
 Route::get('articles', 'ArticlesController@index')->name('articles.index');
 Route::match(['get','post'], 'search', 'ArticlesController@search')->name('articles.search');

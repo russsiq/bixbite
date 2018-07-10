@@ -5,11 +5,11 @@ namespace BBCMS\Models;
 use Schema;
 
 use BBCMS\Models\BaseModel;
-use BBCMS\Models\Traits\CacheForgetByKeysTrait;
+use BBCMS\Models\Traits\CacheForgetByKeys;
 
 class Privilege extends BaseModel
 {
-    use CacheForgetByKeysTrait;
+    use CacheForgetByKeys;
 
     // Очищаем кеш по этим ключам всегда
     // при нахождении в разделе привилегий ад.панели

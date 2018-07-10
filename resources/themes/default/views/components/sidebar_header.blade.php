@@ -12,9 +12,9 @@
         <div class="header_area__inner">
             <div class="header_area__item-left">
                 <a href="{{ route('home') }}" rel="home">
-                    <h1 class="site-title">{{ setting('system.app_name') }}</h1>
+                    <h1 class="site-title" itemprop="name">{{ setting('system.app_name') }}</h1>
                 </a>
-                <p class="site-description">От блога до портала</p>
+                <p class="site-description" itemprop="description">От блога до портала</p>
             </div>
             <div class="header_area__item-right">
                 <form action="{{ route('articles.search') }}" method="post" class="header_area__form">

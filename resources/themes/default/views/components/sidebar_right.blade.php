@@ -1,4 +1,4 @@
-<aside class="sidebar sidebar-right">
+<aside class="sidebar sidebar-right" itemscope itemtype="http://schema.org/WPSideBar">
     @widget(' articles.featured', [
         'active' => true,
         'limit' => 5,

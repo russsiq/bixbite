@@ -40,7 +40,7 @@ class SystemCareController extends BaseController
         }
 
         if (! request()->ajax()) {
-            return redirect()->back()->withStatus(__('common.msg.complete'));
+            return redirect()->back()->withStatus(__('common.msg.cache_clear'));
         }
     }
 

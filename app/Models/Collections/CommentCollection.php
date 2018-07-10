@@ -21,6 +21,8 @@ class CommentCollection extends Collection
             // Formatting of a comment tree, if this need.
             if ($nested and $collection->firstWhere('parent_id', $comment->id)) {
                 $comment->children = $collection->where('parent_id', $comment->id);
+            } else {
+                $comment->children = [];
             }
 
             return $comment;

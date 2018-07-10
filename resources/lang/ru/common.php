@@ -21,13 +21,18 @@ return [
     // Buttons
     'btn' => [
         'save' => 'Сохранить',
+        'edit' => 'Редактировать',
+        'delete' => 'Удалить',
         'search' => 'Найти',
         'cancel' => 'Отмена',
     ],
 
     // Messages
     'msg' => [
+        'sure' => 'Вы уверены?',
+        'sure_del' => 'Хотите удалить?',
         'complete' => 'Успешно выполнено.',
+        'cache_clear' => 'Кэш успешно очищен.',
         'error' => '<pre><font color="red">%s</font></pre>',
         'not_found' => '<p class="alert alert-info text-center">Нет информации для отображения.</p>',
         'unauthorized' => 'У вас ограничен доступ к выполнению данной операции.',

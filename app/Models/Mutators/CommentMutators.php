@@ -29,6 +29,7 @@ trait CommentMutators
     {
         return (object) [
             'name' => is_int($this->user_id) ? $this->user->name : $this->name,
+            'profile' => is_int($this->user_id) ? $this->user->profile : $this->name,
             'avatar' => is_int($this->user_id) ? $this->user->avatar : get_avatar($this->email),
             'isOnline' => is_int($this->user_id) ? $this->user->isOnline() : false,
         ];
