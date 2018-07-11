@@ -72,6 +72,7 @@ APP_ENV=dev
 - *storage/framework/cache/data*,
 - *storage/framework/views*,
 - *storage/logs*.
+
 При удалении пропускайте (не удаляйте) *.gitignore*.
 
 2 Следующее - удалим папку *storage/app/uploads/image* со всем содержимым в ней.
