@@ -66,7 +66,13 @@ APP_ENV=dev
 
 ## Перенос дистрибутива на shared хостинг
 
-1 Перед тем как выполнить перенос, подчистим кэш, т.е. вручную удалим файлы в папках: *bootstrap/cache*, *storage/debugbar*, *storage/framework/cache/data*, *storage/framework/views*, *storage/logs*. При удалении пропускайте (не удаляйте) *.gitignore*.
+1 Перед тем как выполнить перенос, подчистим кэш, т.е. вручную удалим файлы в папках:
+- *bootstrap/cache*,
+- *storage/debugbar*,
+- *storage/framework/cache/data*,
+- *storage/framework/views*,
+- *storage/logs*.
+При удалении пропускайте (не удаляйте) *.gitignore*.
 
 2 Следующее - удалим папку *storage/app/uploads/image* со всем содержимым в ней.
 
