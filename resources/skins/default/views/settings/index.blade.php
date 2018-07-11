@@ -19,7 +19,7 @@
 		</div>
 
         <!-- Main content form -->
-		<form id="form_action" name="export" action="{{ route('admin.settings.export') }}" method="post" accept-charset="UTF-8" onsubmit="return confirm('@lang('msg.sure')');" class="form-horizontal">
+		<form id="form_action" name="export" action="{{-- route('admin.settings.export') --}}" method="post" accept-charset="UTF-8" onsubmit="return confirm('@lang('msg.sure')');" class="form-horizontal">
 			@csrf
 
             <!-- List of settings: BEGIN -->

@@ -790,95 +790,124 @@ if (! function_exists('parse_ini')) {
     }
 }
 
+// @NB:: need to create CacheFile extends Cache ???
+if (! function_exists('cache_created')) {
+    /**
+     * Get datetime of created cache file by key.
+     * @param  string $key
+     * @return \Carbon\Carbon|null
+     */
+    function cache_created(string $key)
+    {
+        $path = cache_file($key);
+
+        return $path
+            ? \Carbon\Carbon::createFromTimestamp(
+                \File::lastModified($path)
+            ) : null;
+    }
+}
+
 if (! function_exists('cache_expired')) {
     /**
      * Get the expiration time from cache file by key.
-     * $hash, $parts, $path from (\Illuminate\Cache\FileStore)->path($key).
      * @param  string $key
      * @return \Carbon\Carbon|null
      */
     function cache_expired(string $key)
     {
+        $path = cache_file($key);
+
+        return $path
+            ? \Carbon\Carbon::createFromTimestamp(
+                substr(\File::get($path), 0, 10)
+            ) : null;
+    }
+}
+
+if (! function_exists('cache_file')) {
+    /**
+     * Get the cache file by key.
+     * `$hash, $parts, $path` from **\Illuminate\Cache\FileStore**->path($key).
+     * @param  string $key
+     * @return string|null
+     */
+    function cache_file(string $key)
+    {
         $hash = sha1($key);
         $parts = array_slice(str_split($hash, 2), 0, 2);
         $path = cache()->store('file')->getDirectory().DS.implode(DS, $parts).DS.$hash;
 
-        if (\File::exists($path)) {
-            return \Carbon\Carbon::createFromTimestamp(
-                    substr(\File::get($path), 0, 10)
-                );
-        }
-
-        return null;
+        return \File::exists($path) ? $path : null;
     }
 }
 
-if (! function_exists('msg')) {
-    /**
-     * Generate info / error message.
-     * @param  array  $params [description]
-     * @param  integer $mode   Working mode.
-     *      0 - use SITE theme
-     *      1 - use ADMIN PANEL skin
-     * @param  integer $disp   Flag [display mode].
-     *     -1 - automatic mode
-     *      0 - add into mainblock
-     *      1 - print
-     *      2 - return as result
-     *      3 - redirect
-     * @return mixed
-     */
-    function msg(array $params, $mode = 0, $disp = -1)
-    {
-        global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
-
-        // Set AUTO mode if $disp == -1
-        if ($disp == -1)
-            $mode = defined('ADMIN') ? 1 : 0;
-
-        // Choose working mode
-        $type = isset($params['type']) ? $params['type'] : 'success';
-        $title = isset($params['title']) ? $params['title'] : __($type);
-        $message = isset($params['message']) ? $params['message'] : '';
-        $referer = isset($params['referer']) ? $params['referer'] : null;
-
-        if (3 == $disp) {
-            $tVars = array(
-                'title' => $title,
-                'type' => $type,
-                'message' => trim(db_squote($message), "'"),
-                'linktext' => home_title,
-                'link' => ! empty($referer) ? trim(db_squote($referer), "'") : home,
-            );
-            $SUPRESS_TEMPLATE_SHOW = 1;
-            $template['vars']['mainblock'] = $twig->render('redirect.tpl', $tVars);
-            return 1;
-        } else {
-            $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
-                'id' => rand(8, 888),
-                'type' => $type,
-                'title' => trim(db_squote($title), "'"),
-                'message' => trim(db_squote($message), "'"),
-                ));
-        }
-
-        switch($disp) {
-            case 0:
-                $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-                break;
-            case 1:
-                print $msg;
-                break;
-            case 2:
-                return $msg;
-                break;
-            default:
-                if ($mode) {
-                    print $msg;
-                } else {
-                    $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-                }
-                break;
-        }
-    }
-}
+// if (! function_exists('msg')) {
+//     /**
+//      * Generate info / error message.
+//      * @param  array  $params [description]
+//      * @param  integer $mode   Working mode.
+//      *      0 - use SITE theme
+//      *      1 - use ADMIN PANEL skin
+//      * @param  integer $disp   Flag [display mode].
+//      *     -1 - automatic mode
+//      *      0 - add into mainblock
+//      *      1 - print
+//      *      2 - return as result
+//      *      3 - redirect
+//      * @return mixed
+//      */
+//     function msg(array $params, $mode = 0, $disp = -1)
+//     {
+//         global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
+//
+//         // Set AUTO mode if $disp == -1
+//         if ($disp == -1)
+//             $mode = defined('ADMIN') ? 1 : 0;
+//
+//         // Choose working mode
+//         $type = isset($params['type']) ? $params['type'] : 'success';
+//         $title = isset($params['title']) ? $params['title'] : __($type);
+//         $message = isset($params['message']) ? $params['message'] : '';
+//         $referer = isset($params['referer']) ? $params['referer'] : null;
+//
+//         if (3 == $disp) {
+//             $tVars = array(
+//                 'title' => $title,
+//                 'type' => $type,
+//                 'message' => trim(db_squote($message), "'"),
+//                 'linktext' => home_title,
+//                 'link' => ! empty($referer) ? trim(db_squote($referer), "'") : home,
+//             );
+//             $SUPRESS_TEMPLATE_SHOW = 1;
+//             $template['vars']['mainblock'] = $twig->render('redirect.tpl', $tVars);
+//             return 1;
+//         } else {
+//             $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
+//                 'id' => rand(8, 888),
+//                 'type' => $type,
+//                 'title' => trim(db_squote($title), "'"),
+//                 'message' => trim(db_squote($message), "'"),
+//                 ));
+//         }
+//
+//         switch($disp) {
+//             case 0:
+//                 $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
+//                 break;
+//             case 1:
+//                 print $msg;
+//                 break;
+//             case 2:
+//                 return $msg;
+//                 break;
+//             default:
+//                 if ($mode) {
+//                     print $msg;
+//                 } else {
+//                     $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
+//                 }
+//                 break;
+//         }
+//     }
+// }

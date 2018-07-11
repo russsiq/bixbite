@@ -140,7 +140,7 @@ class SystemInstall extends SetupController
             'APP_ENV=production' . PHP_EOL .
             'APP_KEY="'.$key . '"' . PHP_EOL .
             'APP_LOCALE='.app_locale() . PHP_EOL .
-            'APP_NAME=BBCMS' . PHP_EOL .
+            'APP_NAME=BixBite' . PHP_EOL .
             'APP_THEME=default' . PHP_EOL .
             'APP_URL=' . app('url')->to('/') . PHP_EOL .
 

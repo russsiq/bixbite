@@ -14,129 +14,130 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        // \Artisan::call('config:clear');
+        $default = [
+            'module_name' => null,
+            'action' => 'setting',
+            'section' => 'main',
+            'fieldset' => 'general',
+            'name' => null,
+            'type' => 'string',
+            'value' => null,
+            'params' => null, // '{"id":"id"}'
+            'html_flags' => 'required',
+        ];
 
-        // NEED TODO: $settings = array_merge($nullable_with_all_attribute, [...])
-        \DB::table('settings')->insert([
-            // System module
-                // general
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                    'name' => 'app_name', 'type' => 'string', 'value' => env('APP_NAME'), 'html_flags' => 'required',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                    'name' => 'app_url', 'type' => 'url', 'value' => env('APP_URL'), 'html_flags' => 'required readonly',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                    'name' => 'app_locale', 'type' => 'select-lang', 'value' => app_locale(), 'html_flags' => 'required',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                    'name' => 'app_theme', 'type' => 'select-themes', 'value' => app_theme(), 'html_flags' => 'required',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                    'name' => 'app_skin', 'type' => 'select-skins', 'value' => 'default', 'html_flags' => 'required',],
-                // locked
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'locked',
-                    'name' => 'lock', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'locked',
-                    'name' => 'reason', 'type' => 'string', 'value' => 'Upgrading Database! Retry later.', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'locked',
-                    'name' => 'retry', 'type' => 'integer', 'value' => '3600', 'html_flags' => '',],
-                // captcha
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'captcha',
-                    'name' => 'captcha_used', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'captcha',
-                    'name' => 'captcha_width', 'type' => 'integer', 'value' => '68', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'captcha',
-                    'name' => 'captcha_height', 'type' => 'integer', 'value' => '38', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'captcha',
-                    'name' => 'captcha_font_family', 'type' => 'select-fonts', 'value' => 'blowbrush', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'security', 'fieldset' => 'captcha',
-                    'name' => 'captcha_font_size', 'type' => 'integer', 'value' => '20', 'html_flags' => '',],
-                // meta
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                    'name' => 'meta_title', 'type' => 'string', 'value' => env('APP_NAME'), 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                    'name' => 'meta_title_delimiter', 'type' => 'string', 'value' => ' — ', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                    'name' => 'meta_title_reverse', 'type' => 'bool', 'value' => '0', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                    'name' => 'meta_description', 'type' => 'text-inline', 'value' => 'BixBite - Content Management System', 'html_flags' => '',],
-                ['module_name' => 'system', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                    'name' => 'meta_keywords', 'type' => 'text-inline', 'value' => 'BixBite CMS, BBCMS, CMS', 'html_flags' => '',],
-            ]);
+        // System module.
+        $system = [];
+        $default['module_name'] = 'system';
+        $system[] = array_merge($default, ['name' => 'app_name', 'value' => env('APP_NAME'), ]);
+        $system[] = array_merge($default, ['name' => 'app_url', 'value' => env('APP_URL'), 'type' => 'url', 'html_flags' => 'required readonly', ]);
+        $system[] = array_merge($default, ['name' => 'app_locale', 'value' => app_locale(), ]);
+        $system[] = array_merge($default, ['name' => 'app_theme', 'value' => app_theme(), 'type' => 'select-themes', ]);
+        $system[] = array_merge($default, ['name' => 'app_skin', 'value' => 'default', 'type' => 'select-skins', ]);
 
-        // Articles module
-        \DB::table('settings')->insert([
-            // general
-            // meta
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                'name' => 'meta_title', 'type' => 'string', 'value' => __('common.articles'), 'html_flags' => '', 'params' => null],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                'name' => 'meta_description', 'type' => 'text-inline', 'value' => 'BixBite - Content Management System', 'html_flags' => '', 'params' => null],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'meta',
-                'name' => 'meta_keywords', 'type' => 'text-inline', 'value' => 'BixBite CMS, BBCMS, CMS', 'html_flags' => '', 'params' => null],
-            // display
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'display',
-                'name' => 'paginate', 'type' => 'integer', 'value' => '8', 'html_flags' => '', 'params' => null],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'display',
-                'name' => 'order_by', 'type' => 'select', 'value' => 'id', 'html_flags' => '', 'params' => '{"id":"id","title":"title","created_at":"created_at","updated_at":"updated_at","votes":"votes","rating":"rating","views":"views","comments_count":"comments_count"}'],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'display',
-                'name' => 'direction', 'type' => 'select', 'value' => 'desc', 'html_flags' => '', 'params' => '{"desc":"desc","asc":"asc"}'],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'display',
-                'name' => 'teaser_length', 'type' => 'integer', 'value' => '150', 'html_flags' => '', 'params' => null],
-            // create
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'create', 'fieldset' => 'general',
-                'name' => 'manual_slug', 'type' => 'bool', 'value' => '0', 'html_flags' => '', 'params' => null],
-            ['module_name' => 'articles', 'action' => 'setting', 'section' => 'create', 'fieldset' => 'general',
-                'name' => 'manual_meta', 'type' => 'bool', 'value' => '1', 'html_flags' => '', 'params' => null],
-        ]);
+        $default['fieldset'] = 'meta';
+        $system[] = array_merge($default, ['name' => 'meta_title', 'value' => env('APP_NAME'), 'type' => 'string', ]);
+        $system[] = array_merge($default, ['name' => 'meta_title_delimiter', 'value' => ' — ', 'type' => 'string', ]);
+        $system[] = array_merge($default, ['name' => 'meta_title_reverse', 'value' => false, 'type' => 'bool', ]);
+        $system[] = array_merge($default, ['name' => 'meta_description', 'value' => 'BixBite - Content Management System', 'type' => 'text-inline', ]);
+        $system[] = array_merge($default, ['name' => 'meta_keywords', 'value' => 'BixBite CMS, BBCMS, CMS', 'type' => 'text-inline', ]);
 
-        // Comments module
-        \DB::table('settings')->insert([
-            // general
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'nested', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'regonly', 'type' => 'bool', 'value' => '0', 'html_flags' => '',],
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'moderate', 'type' => 'bool', 'value' => '0', 'html_flags' => '',],
-            // widget
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'widget', 'fieldset' => 'general',
-                'name' => 'widget_used', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'widget', 'fieldset' => 'general',
-                'name' => 'widget_title', 'type' => 'string', 'value' => trans('comments.widget_title'), 'html_flags' => '',],
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'widget', 'fieldset' => 'general',
-                'name' => 'widget_count', 'type' => 'integer', 'value' => '8', 'html_flags' => '',],
-            ['module_name' => 'comments', 'action' => 'setting', 'section' => 'widget', 'fieldset' => 'general',
-                'name' => 'widget_content_length', 'type' => 'integer', 'value' => '150', 'html_flags' => '',],
-        ]);
+        $default['section'] = 'security';
+        $default['fieldset'] = 'locked';
+        $system[] = array_merge($default, ['name' => 'lock', 'value' => true, 'type' => 'bool', ]);
+        $system[] = array_merge($default, ['name' => 'reason', 'value' => 'Upgrading Database! Retry later.', ]);
+        $system[] = array_merge($default, ['name' => 'retry', 'value' => '3600', 'type' => 'integer', ]);
 
-        // Files module
-        \DB::table('settings')->insert([
-            ['module_name' => 'files', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'nested', 'type' => 'bool', 'value' => '1', 'html_flags' => '',],
-        ]);
+        $default['fieldset'] = 'captcha';
+        $system[] = array_merge($default, ['name' => 'captcha_used', 'value' => true, 'type' => 'bool', ]);
+        $system[] = array_merge($default, ['name' => 'captcha_width', 'value' => 68, 'type' => 'integer', ]);
+        $system[] = array_merge($default, ['name' => 'captcha_height', 'value' => 38, 'type' => 'integer', ]);
+        $system[] = array_merge($default, ['name' => 'captcha_font_family', 'value' => 'blowbrush', 'type' => 'select-fonts', ]);
+        $system[] = array_merge($default, ['name' => 'captcha_font_size', 'value' => 20, 'type' => 'integer', ]);
 
-        // Tags module
-        \DB::table('settings')->insert([
-            ['module_name' => 'tags', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'delimiter', 'type' => 'string', 'value' => '-', 'html_flags' => 'required',],
-        ]);
+        $default['section'] = 'sitemap';
+        $default['fieldset'] = 'sitemap_home';
+        $system[] = array_merge($default, ['name' => 'home_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
+            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']);
+        $system[] = array_merge($default, ['name' => 'home_priority', 'value' => 0.9, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]);
+        $default['fieldset'] = 'sitemap_categories';
+        $system[] = array_merge($default, ['name' => 'categories_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
+            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']);
+        $system[] = array_merge($default, ['name' => 'categories_priority', 'value' => 0.6, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]);
+        $default['fieldset'] = 'sitemap_articles';
+        $system[] = array_merge($default, ['name' => 'articles_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
+            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']);
+        $system[] = array_merge($default, ['name' => 'articles_priority', 'value' => 0.4, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]);
 
-        // Users module
-        \DB::table('settings')->insert([
-            ['module_name' => 'users', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'general',
-                'name' => 'login_username', 'type' => 'select', 'value' => 'name', 'html_flags' => 'required', 'params' => '{"name":"name","email":"email"}'],
+        // Articles module.
+        $articles = [];
+        $default['module_name'] = 'articles';
+        $default['action'] = 'setting';
+        $default['section'] = 'main';
+        $default['fieldset'] = 'meta';
+        $articles[] = array_merge($default, ['name' => 'meta_title', 'value' => __('common.articles'), ]);
+        $articles[] = array_merge($default, ['name' => 'meta_description', 'value' => 'Articles - content management system.', 'type' => 'text-inline', ]);
+        $articles[] = array_merge($default, ['name' => 'meta_keywords', 'value' => 'articles, BixBite, CMS', 'type' => 'text-inline', ]);
 
-            ['module_name' => 'users', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'avatar',
-                'name' => 'avatar_max_width', 'type' => 'integer', 'value' => '140', 'html_flags' => 'required', 'params' => null,],
-            ['module_name' => 'users', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'avatar',
-                'name' => 'avatar_max_height', 'type' => 'integer', 'value' => '140', 'html_flags' => 'required', 'params' => null,],
+        $default['fieldset'] = 'display';
+        $articles[] = array_merge($default, ['name' => 'paginate', 'value' => 8, 'type' => 'integer', ]);
+        $articles[] = array_merge($default, ['name' => 'order_by', 'value' => 'id', 'type' => 'select', 'params' =>
+            '{"id":"id","title":"title","created_at":"created_at","updated_at":"updated_at","votes":"votes","rating":"rating","views":"views","comments_count":"comments_count"}', ]);
+        $articles[] = array_merge($default, ['name' => 'direction', 'value' => 'desc', 'type' => 'select', 'params' => '{"desc":"desc","asc":"asc"}', ]);
+        $articles[] = array_merge($default, ['name' => 'teaser_length', 'value' => 150, 'type' => 'integer', ]);
 
-            ['module_name' => 'users', 'action' => 'setting', 'section' => 'main', 'fieldset' => 'avatar',
-                'name' => 'gravatar_used', 'type' => 'bool', 'value' => '0', 'html_flags' => 'required', 'params' => null,],
-        ]);
+        $default['section'] = 'create';
+        $default['fieldset'] = 'general';
+        $articles[] = array_merge($default, ['name' => 'manual_slug', 'value' => false, 'type' => 'bool', ]);
+        $articles[] = array_merge($default, ['name' => 'manual_meta', 'value' => true, 'type' => 'bool', ]);
 
-        // // Example module
-        // \DB::table('settings')->insert([
-        //     ['module_name' => , 'action' => , 'section' => , 'fieldset' => ,
-        //         'name' => , 'type' => , 'value' => , 'params' => , 'html_flags' => ,],
-        // ]);
+        // Comments module.
+        $comments = [];
+        $default['module_name'] = 'comments';
+        $default['action'] = 'setting';
+        $default['section'] = 'main';
+        $default['fieldset'] = 'general';
+        $comments[] = array_merge($default, ['name' => 'regonly', 'value' => false, 'type' => 'bool', ]);
+        $comments[] = array_merge($default, ['name' => 'moderate', 'value' => false, 'type' => 'bool', ]);
+
+        $default['fieldset'] = 'display';
+        $comments[] = array_merge($default, ['name' => 'nested', 'value' => true, 'type' => 'bool', ]);
+
+        $default['section'] = 'widget';
+        $default['fieldset'] = 'general';
+        $comments[] = array_merge($default, ['name' => 'widget_used', 'value' => 8, 'type' => 'bool', ]);
+        $comments[] = array_merge($default, ['name' => 'widget_title', 'value' => trans('comments.widget_title'), ]);
+        $comments[] = array_merge($default, ['name' => 'widget_count', 'value' => 8, 'type' => 'integer', ]);
+        $comments[] = array_merge($default, ['name' => 'widget_content_length', 'value' => 150, 'type' => 'integer', ]);
+
+        // Files module.
+        $files = [];
+        $default['module_name'] = 'files';
+        $default['action'] = 'setting';
+        $default['section'] = 'main';
+        $default['fieldset'] = 'general';
+        $files[] = array_merge($default, ['name' => 'nested', 'value' => false, 'type' => 'bool', ]);
+
+        // Tags module.
+        $tags = [];
+        $default['module_name'] = 'tags';
+        $tags[] = array_merge($default, ['name' => 'delimiter', 'value' => '-', ]);
+
+        // Users module.
+        $users = [];
+        $default['module_name'] = 'users';
+        $users[] = array_merge($default, ['name' => 'login_username', 'value' => 'name', 'type' => 'select', 'params' => '{"name":"name","email":"email"}', ]);
+
+        $default['fieldset'] = 'avatar';
+        $users[] = array_merge($default, ['name' => 'avatar_max_width', 'value' => 140, 'type' => 'integer', ]);
+        $users[] = array_merge($default, ['name' => 'avatar_max_height', 'value' => 140, 'type' => 'integer', ]);
+        $users[] = array_merge($default, ['name' => 'gravatar_used', 'value' => false, 'type' => 'bool', ]);
+
+        \DB::table('settings')->insert($system);
+        \DB::table('settings')->insert($articles);
+        \DB::table('settings')->insert($comments);
+        \DB::table('settings')->insert($files);
+        \DB::table('settings')->insert($tags);
+        \DB::table('settings')->insert($users);
     }
 }

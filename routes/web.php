@@ -1,18 +1,21 @@
 <?php
 
 /**
- * @see also BBCMS\Providers\RouteServiceProvider.
  * @see also BBCMS\Http\Kernel - middleware.
+ * @see also BBCMS\Providers\RouteServiceProvider.
  */
 
 Auth::routes();
 Route::fallback('NotFoundController');
 Route::get('/', 'HomeController@index')->name('home');
 
-// sitemap-image.xml https://support.google.com/webmasters/answer/178636?hl=ru
-// Route::get('sitemap-image.xml', 'SitemapController@images')->name('sitemap-image.xmll');
-// sitemap.xml https://yandex.ru/support/webmaster/controlling-robot/sitemap.html
-// Route::get('sitemap.xml', 'SitemapController@articles')->name('sitemap.xml');
+// Sitemap controllers. https://www.sitemaps.org/protocol.html.
+Route::group(['namespace' => 'Common'], function () {
+    Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.xml');
+    Route::get('sitemap/home.xml', 'SitemapController@home')->name('sitemap.home.xml');
+    Route::get('sitemap/articles.xml', 'SitemapController@articles')->name('sitemap.articles.xml');
+    Route::get('sitemap/categories.xml', 'SitemapController@categories')->name('sitemap.categories.xml');
+});
 
 // First always.
 Route::group(['prefix' => 'app_common', 'namespace' => 'Common'], function () {

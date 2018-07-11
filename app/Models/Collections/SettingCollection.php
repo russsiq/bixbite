@@ -54,7 +54,7 @@ class SettingCollection extends Collection
                 return ['type' => 'html', 'input' => $field->value];
             }
 
-            // Preparespecific variables with attribute parameters.
+            // Prepare specific variables with attribute parameters.
             if (in_array($field->type, ['select-lang', 'select-skins', 'select-themes'])) {
                 $field->params = select_dir(app()->resourcePath(str_replace('select-', '', $field->type)));
                 $field->type = 'select-with';
@@ -102,8 +102,8 @@ class SettingCollection extends Collection
                 case 'double':
                 case 'number':
                     $type = ' type="number"';
-                    $step = isset($field->step) ? (float) $field->step : 'any';
-                    $input = '<input'.$type.$name.' value="'.(float) $field->value.'" step="'.$step.'"'.$class.$html_flags.'>';
+                    $step = str_contains($html_flags, 'step=') ? '' : ('step=" '.(isset($field->step) ? (float) $field->step : 'any').'" ');
+                    $input = '<input'.$type.$name.' value="'.(float) $field->value.'" '.$step.$class.$html_flags.'>';
                     break;
 
                 case 'enum':
@@ -111,7 +111,7 @@ class SettingCollection extends Collection
                 case 'select':
                     $input = '<select'.$name.$class.$html_flags.'>';
                     foreach ($params as $k => $v) {
-                        $input .= '<option value="'.$k.'" '.($k == $field->value ? 'selected ' : '').'>'.__($field->name.'.'.$v).'</option>';
+                        $input .= '<option value="'.$k.'" '.($k == $field->value ? 'selected ' : '').'>'.__($v).'</option>';
                     }
                     $input .= '</select>';
                     break;

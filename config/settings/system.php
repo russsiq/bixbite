@@ -1,6 +1,6 @@
 <?php return array (
   'app_name' => 'BixBite',
-  'app_url' => 'http://localhost/bbcms',
+  'app_url' => 'http://localhost/bixbite',
   'app_locale' => 'ru',
   'app_theme' => 'default',
   'app_skin' => 'default',
@@ -17,4 +17,10 @@
   'captcha_height' => '38',
   'captcha_font_family' => 'blowbrush',
   'captcha_font_size' => '20',
+  'home_changefreq' => 'daily',
+  'home_priority' => '0.9',
+  'categories_changefreq' => 'daily',
+  'categories_priority' => '0.6',
+  'articles_changefreq' => 'daily',
+  'articles_priority' => '0.4',
 );
