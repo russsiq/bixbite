@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>{{ url('/') }}</loc>
+        <lastmod>{{ $lastmod->tz('UTC')->toAtomString() }}</lastmod>
         <changefreq>{{ setting('sitemap.home_changefreq', 'daily') }}</changefreq>
         <priority>{{ setting('sitemap.home_priority', '0.9') }}</priority>
     </url>

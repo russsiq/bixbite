@@ -5,10 +5,10 @@
     </sitemap>
     <sitemap>
         <loc>{{ route('sitemap.articles.xml') }}</loc>
-        <lastmod>{{ $articles->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        <lastmod>{{ ($articles->updated_at ?? $articles->created_at)->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
         <loc>{{ route('sitemap.categories.xml') }}</loc>
-        <lastmod>{{ $categories->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        <lastmod>{{ ($categories->updated_at ?? $categories->created_at)->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
 </sitemapindex>

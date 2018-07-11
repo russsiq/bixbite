@@ -29,6 +29,7 @@ class SitemapController
         return [
             'articles' => Article::select([
                     'articles.state',
+                    'articles.created_at',
                     'articles.updated_at',
                 ])
                 ->where('articles.state', 'published')
@@ -36,6 +37,7 @@ class SitemapController
                 ->first(),
 
             'categories' => Category::select([
+                    'categories.created_at',
                     'categories.updated_at',
                 ])
                 ->orderBy('updated_at', 'desc')
@@ -46,7 +48,7 @@ class SitemapController
     protected static function getHome()
     {
         return [
-            //
+            'lastmod' => static::lastmod(),
         ];
     }
 
@@ -131,8 +133,8 @@ class SitemapController
         }
 
         return max([
-            $index['articles']->updated_at,
-            $index['categories']->updated_at
+            $index['articles']->updated_at ?? $index['articles']->created_at,
+            $index['categories']->updated_at ?? $index['categories']->created_at
         ]);
     }
 

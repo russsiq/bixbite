@@ -54,12 +54,12 @@ class TestContentSeeder extends Seeder
 
         // Preparing categories
         $categories = [
-            ['title' => 'Бизнес', 'slug' => 'business', ],
-            ['title' => 'Политика', 'slug' => 'politics', ],
-            ['title' => 'Спорт', 'slug' => 'sports', ],
-            ['title' => 'Мода', 'slug' => 'fashion', ],
-            ['title' => 'Развлечения', 'slug' => 'entertainment', ],
-            ['title' => 'Вне категории', 'slug' => 'other', ],
+            ['title' => 'Бизнес', 'slug' => 'business', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Политика', 'slug' => 'politics', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Спорт', 'slug' => 'sports', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Мода', 'slug' => 'fashion', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Развлечения', 'slug' => 'entertainment', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Вне категории', 'slug' => 'other', 'created_at' => date('Y-m-d H:i:s'), ],
         ];
 
         // Preparing atach categories
