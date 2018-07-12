@@ -20,7 +20,9 @@
                                 <h5 class="widget_item__title">{{ $item->title }}</h5>
                                 <p class="widget_item__subtitle">
                                     <span>{{ $item->updated ?? $item->created }}</span>
-                                    <span><i class="fa fa-eye"></i> {{ $item->views }}</span>
+                                    @if ($item->views)
+                                        <span><i class="fa fa-eye"></i> {{ $item->views }}</span>
+                                    @endif
                                     {{-- <span class="pull-right"><i class="fa fa-comment"></i> {{ $item->comments_count }} •&nbsp;</span> --}}
                                 </p>
                             </header>

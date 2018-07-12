@@ -21,7 +21,9 @@
                                 <h5 class="widget_related_item__title">{{ $item->title }}</h5>
                                 <p class="widget_related_item__subtitle">
                                     <span>{{ $item->updated ?? $item->created }}</span>
-                                    <span><i class="fa fa-eye"></i> {{ $item->views }}</span>
+                                    @if ($item->views)
+                                        <span><i class="fa fa-eye"></i> {{ $item->views }}</span>
+                                    @endif
                                 </p>
                             </header>
                         </a>
