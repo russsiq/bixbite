@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support\Services;
+namespace BBCMS\Support;
 
 use BBCMS\Exceptions\MethodNotExist;
 use BBCMS\Exceptions\MethodNotAvailable;
