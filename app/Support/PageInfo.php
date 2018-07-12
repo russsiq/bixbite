@@ -86,6 +86,34 @@ class PageInfo
     }
 
     /**
+     * Set the attributes if the condition is truthy.
+     *
+     * @param  bool  $condition
+     * @param  array  $data
+     * @return mixed
+     */
+    public function when($condition, array $data)
+    {
+        if ($this->has($condition)) {
+            return $this->make($data);
+        }
+    }
+
+    /**
+     * Set the attributes if the condition is not truthy.
+     *
+     * @param  bool  $condition
+     * @param  array  $data
+     * @return mixed
+     */
+    public function unless($condition, array $data)
+    {
+        if (! $this->has($condition)) {
+            return $this->make($data);
+        }
+    }
+
+    /**
      * Dynamically retrieve attributes.
      *
      * @param string $key

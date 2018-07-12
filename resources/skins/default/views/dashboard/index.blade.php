@@ -36,7 +36,6 @@
         @foreach ($modules as $key => $module)
             <div class="col-md-4">
     			<div class="card card-module">
-    				{{-- <div class="card-header"><i class="{{ $module->icon }} fa-2x rounded-circle"></i> @lang($module->name)</div> --}}
                     <img class="card-img-background" src="{{ skin_asset('images/background_module.jpg') }}" alt="{{ $module->title ?? $module->name }}">
                     <a href="{{
                         \Route::has('admin.'.$module->name.'.index')

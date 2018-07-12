@@ -9,7 +9,7 @@
 					<image-uploader
 				        :post_url="'{{ route('admin.files.upload') }}'"
 				        @if (! empty($article->image_id) and optional($article->image)->url)
-				        	:url="'{{ $article->image->url }}'"
+				        	:url="'{{ $article->image->getUrlAttribute('thumb') }}'"
 				        	:state="'uploaded'"
 				        @endif
 				        :input_name="'image_id'"
@@ -48,6 +48,19 @@
 		</div>
 
 		<div id="accordion">
+			{{-- <div class="card mb-0">
+				<div class="card-header">
+					<a href="#card_tags" data-toggle="collapse" data-target="#card_tags" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
+				</div>
+				<div id="card_tags" class="collapse" data-parent="#accordion" aria-expanded="false">
+					<div class="card-body">
+						<div class="form-group {{ $errors->has('tags') ? ' has-error' : '' }}">
+							<input type="file" name="files[]" />
+						</div>
+					</div>
+				</div>
+			</div> --}}
+
 			@if (setting('articles.manual_meta', true))
 				<div class="card mb-0">
 					<div class="card-header">

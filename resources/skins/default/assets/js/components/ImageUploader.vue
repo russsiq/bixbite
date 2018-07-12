@@ -14,33 +14,6 @@
     </label>
 </template>
 
-<style scoped>
-    label.image-uploader {
-        cursor: pointer;
-        display: block;
-    }
-    .image-uploader-variant {
-        min-height: 178px;
-    }
-    .image-uploader-wait {
-        color: #e1e1e1;
-    }
-    .image-uploader-success {
-        color: #43ac6a;
-        border-radius: 0.25rem;
-        overflow: hidden;
-        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.25);
-    }
-    input.image-uploader-file {
-        display: none;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-    }
-</style>
-
 <script>
     export default {
         props: {
@@ -115,3 +88,30 @@
         }
     }
 </script>
+
+<style scoped>
+    label.image-uploader {
+        cursor: pointer;
+        display: block;
+    }
+    .image-uploader-variant {
+        min-height: 178px;
+    }
+    .image-uploader-wait {
+        color: #e1e1e1;
+    }
+    .image-uploader-success {
+        color: #43ac6a;
+        border-radius: 0.25rem;
+        overflow: hidden;
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.25);
+    }
+    input.image-uploader-file {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+</style>

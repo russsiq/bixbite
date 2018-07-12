@@ -4,6 +4,9 @@
     "theme.version": "Версия",
     "theme.reldate": "Выпуск",
     
+    "home_page_personalized": "Использовать персонализированную домашнюю страницу",
+    "home_page_personalized#descr": "Нет - выводить последнии записи.",
+    
     "template": "Шаблон",
     
     "code-editor": "Редактор шаблонов",

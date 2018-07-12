@@ -2,6 +2,8 @@
 
 namespace BBCMS\Http\Controllers;
 
+use BBCMS\Models\Article;
+
 class HomeController extends SiteController
 {
     protected $template = 'home';
@@ -24,6 +26,10 @@ class HomeController extends SiteController
             'keywords' => setting('system.meta_keywords', 'BixBite CMS, BBCMS, CMS'),
             'onHomePage' => true,
         ]);
+
+        if (! setting('themes.home_page_personalized', false)) {
+            return (new ArticlesController(new Article))->index();
+        }
 
         return $this->renderOutput('index', []);
     }

@@ -38,7 +38,7 @@
                     ] as $type)
                     <li class="nav-item">
                         <a href="{{ route('admin.files.index', ['filetype' => $type['name']]) }}" class="btn btn-link">
-                            <i class="fa {{ $type['icon'] }}"></i> @lang('filetype-'.$type['name'])
+                            <i class="fa {{ $type['icon'] }}"></i> <span class="d-none d-md-inline-block">@lang('filetype-'.$type['name'])</span>
                         </a>
                     </li>
                 @endforeach

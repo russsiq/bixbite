@@ -26,14 +26,13 @@ class ArticlesController extends SiteController
             ->orderBy(setting('articles.order_by', 'id'), setting('articles.direction', 'desc'))
             ->paginate(setting('articles.paginate', 8));
 
-        pageinfo([
+        pageinfo()->unless('onHomePage', [
             'title' => setting('articles.meta_title', 'Articles'),
             'description' => null,
             'keywords' => null,
             'robots' => 'noindex, follow',
             'url' => route('articles.index'),
             'is_index' => true,
-            // 'onMainPage' => $articles->onFirstPage() and empty(request()->query()),
         ]);
 
         return $this->renderOutput('index', compact('articles'));
