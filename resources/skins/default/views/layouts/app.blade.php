@@ -14,7 +14,7 @@
     </head>
     <body>
         <div id="app">
-            @include('components.navigation')
+            @include('components.header')
 
             <main class="container">
                 @yield('breadcrumb')

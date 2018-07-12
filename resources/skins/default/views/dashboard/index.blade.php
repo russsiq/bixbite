@@ -39,7 +39,7 @@
     				{{-- <div class="card-header"><i class="{{ $module->icon }} fa-2x rounded-circle"></i> @lang($module->name)</div> --}}
                     <img class="card-img-background" src="{{ skin_asset('images/background_module.jpg') }}" alt="{{ $module->title ?? $module->name }}">
                     <a href="{{
-                        (\Route::has('admin.'.$module->name.'.index'))
+                        \Route::has('admin.'.$module->name.'.index')
                         ? route('admin.'.$module->name.'.index')
                         : route('admin.settings.module', $module)
                         }}" class="card-module-icon"><i class="{{ $module->icon }}"></i></a>
@@ -48,7 +48,7 @@
                         <div class="icon-block">
                             <a href="{{ route('admin.settings.module', $module) }}" title="@lang('settings')" class="btn"><i class="fa fa-cogs"></i></a>
 
-                            @if ('users' == $module->name))
+                            @if ('users' == $module->name)
                                 @can ('admin.privileges.index')
                                     <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn"><i class="fa fa-user-secret"></i></a>
                                 @endcan
@@ -58,10 +58,10 @@
                                 <a href="{{-- route('admin.xfields.module', $module) --}}" title="@lang('xfields')" class="btn"><i class="fa fa-columns"></i></a>
                             @endif
 
-                            @if ('system' == $module->name)
-                                <a href="{{-- route('admin.database.index') --}}" title="@lang('database')" class="btn"><i class="fa fa-database"></i></a>
-                                <a href="{{-- route('admin.routing.index') --}}" title="@lang('routing')" class="btn"><i class="fa fa-map-signs"></i></a>
-                            @endif
+                            {{-- @if ('system' == $module->name)
+                                <a href="{{ route('admin.database.index') }}" title="@lang('database')" class="btn"><i class="fa fa-database"></i></a>
+                                <a href="{{ route('admin.routing.index') }}" title="@lang('routing')" class="btn"><i class="fa fa-map-signs"></i></a>
+                            @endif --}}
                         </div>
                     </div>
     			</div>

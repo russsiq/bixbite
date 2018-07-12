@@ -33,11 +33,14 @@
                         <a href="{{ route('system_care.optimize') }}" class="dropdown-item">@lang('Complex optimize')</a>
                     </div>
                 </li>
+                <li class="nav-item"><a href="{{ route('admin.settings.module', 'system') }}" title="@lang('settings')" class="nav-link"><i class="fa fa-cogs"></i> </a></li>
                 <li class="nav-item"><a href="{{-- route('admin.dashboard') --}}" title="@lang('help')" class="nav-link"><i class="fa fa-leanpub"></i> </a></li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-toggle="modal" data-target="#user_menu">
-                        <img src="{{ user('avatar') }}" class="rounded-circle" alt="User Image" width="20" height="20">
-                        <sup class="badge badge-pill badge-dark">3</sup>
+                        <img src="{{ user('avatar') }}" alt="{{ user('name') }}" class="rounded-circle" width="20" height="20" />
+                        @if ($unpublished->count())
+                            <sup class="badge badge-pill badge-dark">{{ $unpublished->count() }}</sup>
+                        @endif
                     </a>
                 </li>
             </ul>
