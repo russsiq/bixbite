@@ -30,7 +30,7 @@ class NoteRequest extends Request
                 'sometimes',
                 'string',
                 'max:125',
-                'regex:/^[\pL\s]+$/u',
+                'regex:/^[\pL\s\d]+$/u',
                 'unique:notes',
             ],
             'descr' => [
