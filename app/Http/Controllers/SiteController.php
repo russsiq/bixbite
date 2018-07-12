@@ -3,7 +3,7 @@
 namespace BBCMS\Http\Controllers;
 
 use BBCMS\Models\Category;
-use BBCMS\Support\Services\PageInfo;
+use BBCMS\Support\PageInfo;
 
 class SiteController extends BaseController
 {

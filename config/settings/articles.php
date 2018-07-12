@@ -1,8 +1,8 @@
 <?php return array (
   'meta_title' => 'Записи',
-  'meta_description' => 'BixBite - Content Management System',
-  'meta_keywords' => 'BixBite CMS, BBCMS, CMS',
-  'paginate' => '8',
+  'meta_description' => 'Articles - content management system.',
+  'meta_keywords' => 'articles, BixBite, CMS',
+  'paginate' => '10',
   'order_by' => 'id',
   'direction' => 'desc',
   'teaser_length' => '150',

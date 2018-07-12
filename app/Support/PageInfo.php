@@ -20,7 +20,7 @@ class PageInfo
         $this->set('locale', app_locale());
         $this->set('csrf_token', csrf_token());
         $this->set('page', request('page') ?? null);
-        $this->set('app_name', setting('system.app_name', 'BBCMS'));
+        $this->set('app_name', setting('system.app_name', 'BixBite'));
     }
 
     public function make(array $data)
@@ -32,28 +32,26 @@ class PageInfo
 
     public function makeTitles()
     {
-        if ($this->get('onHomePage') and $this->get('title')) {
-            $titles = $this->get('title');
-        } else {
-            // Keys are shown for visual perception.
-            $titles = [
-                'header' => $this->get('app_name'),
-                'section' => $this->get('section')->title ?? null,
-                'title' => $this->get('title') ?? null,
-            ];
-            $titles = cluster(
-                setting('system.meta_title_reverse', false) ? array_reverse($titles) : $titles,
-                setting('system.meta_title_delimiter', ' — ')
-            );
+        if ($this->get('onHomePage') and $title = $this->get('title')) {
+            return $title;
         }
 
-        return $titles;
+        // Keys are shown for visual perception.
+        $titles = [
+            'header' => $this->get('app_name'),
+            'section' => $this->get('section')->title ?? null,
+            'title' => $this->get('title') ?? null,
+        ];
+        return cluster(
+            setting('system.meta_title_reverse', false) ? array_reverse($titles) : $titles,
+            setting('system.meta_title_delimiter', ' — ')
+        );
     }
 
     protected function set(string $key, $value = null)
     {
-        if (trim($key) and !is_null($value)) {
-            $this->attributes[trim($key)] = $value;
+        if ($key = trim($key) and ! is_null($value)) {
+            $this->attributes[$key] = $value;
         }
     }
 
@@ -77,7 +75,9 @@ class PageInfo
             return $this->get($key)[$subKey[0]];
         }
 
-        throw new MethodNotExist(sprintf('Call to undefined method %s::%s!', static::class, $method));
+        throw new MethodNotExist(sprintf(
+            'Call to undefined method %s::%s!', static::class, $method
+        ));
     }
 
     public function has(string $key)
@@ -98,7 +98,9 @@ class PageInfo
 
     public function __set($key, $value)
     {
-        throw new MethodNotAvailable(sprintf('%s::%s not available!', static::class, '__set'));
+        throw new MethodNotAvailable(sprintf(
+            '%s::%s not available!', static::class, '__set'
+        ));
     }
 
     public function __call($method, $arguments)
@@ -107,24 +109,8 @@ class PageInfo
             return $this->getSubAttribute($method, $arguments);
         }
 
-        // throw new MethodNotExist(sprintf('Call to undefined method %s::%s!', static::class, $method));
+        throw new MethodNotExist(sprintf(
+            'Call to undefined method %s::%s!', static::class, $method
+        ));
     }
-
-
-    /**
-     * Determine if the current request URI matches a pattern.
-     *
-     * @param dynamic $patterns
-     * @return bool
-     */
-/*public function is(...$patterns)
-{
-    foreach ($patterns as $pattern) {
-        if (Str::is($pattern, $this->decodedPath())) {
-            return true;
-        }
-    }
-
-    return false;
-}*/
 }

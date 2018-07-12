@@ -315,7 +315,7 @@ if (! function_exists('pageinfo')) {
      *
      * @param array|string          $data
      * @throws MethodNotAvailable   If $data not a string or array.
-     * @return BBCMS\Support\Services\PageInfo|BBCMS\Support\Contracts\PageInfoContract
+     * @return BBCMS\Support\PageInfo|BBCMS\Support\Contracts\PageInfoContract
      */
     function pageinfo($data = null)
     {

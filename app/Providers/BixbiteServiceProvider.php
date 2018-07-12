@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 // use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-use BBCMS\Support\Services\PageInfo;
+use BBCMS\Support\PageInfo;
 use BBCMS\Support\Factories\WidgetFactory;
 
 class BixbiteServiceProvider extends ServiceProvider

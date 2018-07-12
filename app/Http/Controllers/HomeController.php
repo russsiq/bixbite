@@ -18,7 +18,7 @@ class HomeController extends SiteController
      */
     public function index()
     {
-        pageinfo()->make([
+        pageinfo([
             'title' => setting('system.meta_title', 'BixBite'),
             'description' => setting('system.meta_description', 'BixBite - Content Management System'),
             'keywords' => setting('system.meta_keywords', 'BixBite CMS, BBCMS, CMS'),

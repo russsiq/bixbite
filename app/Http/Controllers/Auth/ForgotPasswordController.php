@@ -39,7 +39,7 @@ class ForgotPasswordController extends SiteController
      */
     public function showLinkRequestForm()
     {
-        pageinfo()->make([
+        pageinfo([
             'title' => __('auth.reset'),
             'robots' => 'noindex, follow',
         ]);
