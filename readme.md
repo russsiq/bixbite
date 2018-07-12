@@ -117,17 +117,17 @@
 ## Требования
 
 Во время установки производится проверка по минимальным требованиям:
-✓ PHP >= 7.2.0
-✓ PDO mySql/MariaDB
-✓ OpenSSL
-✓ GD
-✓ Fileinfo
-✓ Mbstring
-✓ Tokenizer
-✓ Ctype
-✓ JSON
-✓ XML
-✓ ZLib
+- ✓ PHP >= 7.2.0
+- ✓ PDO mySql/MariaDB
+- ✓ OpenSSL
+- ✓ GD
+- ✓ Fileinfo
+- ✓ Mbstring
+- ✓ Tokenizer
+- ✓ Ctype
+- ✓ JSON
+- ✓ XML
+- ✓ ZLib
 
 ## Необходимый набор инструментов
 
