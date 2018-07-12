@@ -24,6 +24,11 @@ trait ArticleMutators
         return $this->attributes['teaser'] ?? teaser($this->content, setting('articles.teaser_length', 150));
     }
 
+    public function getViewsAttribute()
+    {
+        return setting('articles.views_used', false) ? $this->attributes['views'] : null;
+    }
+
     /**
      * Get `created` in humans date format.
      * @return mixed

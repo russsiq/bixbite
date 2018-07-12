@@ -114,7 +114,12 @@ class ArticlesController extends SiteController
             return redirect()->to($article->url);
         }
 
-        $article->increment('views');
+        if (setting('articles.views_used', false)) {
+            $article->increment('views');
+        } else {
+            $article->views = null;
+        }
+
         $article->tags = $article->tags_count ? $article->getTags() : [];
         $article->comments = $article->comments_count ? $article->getComments(setting('comments.nested', true)) : [];
 

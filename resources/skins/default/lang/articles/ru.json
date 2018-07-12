@@ -36,6 +36,12 @@
     "meta_keywords#descr": "Здесь можно ввести основные ключевые слова.",
     "meta_title": "Заголовок главной страницы модуля",
     "meta_title#descr": "Нет тайтла — нет поискового трафика.",
+    "msg.category_empty": "Необходимо добавить хотя бы одну категорию.",
+    "msg.destroy": "Запись удалена.",
+    "msg.store": "Запись создана: <a href=\"%s\" class=\"alert-link\">просмотр<\/a>, <a href=\"%s\" class=\"alert-link\">редактирование<\/a>",
+    "msg.update": "Запись обновлена: <a href=\"%s\" class=\"alert-link\">просмотр<\/a>, <a href=\"%s\" class=\"alert-link\">редактирование<\/a>",
+    "msg.validate.articles": "Необходимо выбрать записи.",
+    "msg.validate.mass_action": "Необходимо выбрать действие.",
     "not_updated": "Оригинал",
     "on_mainpage": "Отобразить на главной",
     "options.commenting": "Комментирование",
@@ -66,12 +72,6 @@
     "teaser_length#descr": "Если аннотация не указана, то будет сформирована путем обрезки начальной части текста записи. Маскимальное значение 255.",
     "title": "Заголовок",
     "title#tip": "Заголовок записи",
-
-    "msg.validate.articles": "Необходимо выбрать записи.",
-    "msg.validate.mass_action": "Необходимо выбрать действие.",
-    
-    "msg.category_empty": "Необходимо добавить хотя бы одну категорию.",
-    "msg.store": "Запись создана: <a href=\"%s\" class=\"alert-link\">просмотр</a>, <a href=\"%s\" class=\"alert-link\">редактирование</a>",
-    "msg.update": "Запись обновлена: <a href=\"%s\" class=\"alert-link\">просмотр</a>, <a href=\"%s\" class=\"alert-link\">редактирование</a>",
-    "msg.destroy": "Запись удалена."
+    "views_used": "Вести подсчет просмотров записи",
+    "views_used#descr": "Дополнительный запрос к БД при нахождении на целевой странице записи."
 }

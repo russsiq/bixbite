@@ -53,6 +53,7 @@ class SettingsTableSeeder extends Seeder
             '{"id":"id","title":"title","created_at":"created_at","updated_at":"updated_at","votes":"votes","rating":"rating","views":"views","comments_count":"comments_count"}', ]));
         array_push($out, array_merge($def, ['name' => 'direction', 'value' => 'desc', 'type' => 'select', 'params' => '{"desc":"desc","asc":"asc"}', ]));
         array_push($out, array_merge($def, ['name' => 'teaser_length', 'value' => 150, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'views_used', 'value' => true, 'type' => 'bool', ]));
 
         $def['section'] = 'create';
         $def['fieldset'] = 'general';
