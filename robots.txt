@@ -16,6 +16,8 @@ Disallow: /login$
 Disallow: /register$
 Disallow: /logout$
 Disallow: /password$
+Disallow: /tags$
+Disallow: /tags/*
 
 Disallow: /*download_file*/
 Disallow: /*index/
