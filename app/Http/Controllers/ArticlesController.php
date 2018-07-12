@@ -116,8 +116,6 @@ class ArticlesController extends SiteController
 
         if (setting('articles.views_used', false)) {
             $article->increment('views');
-        } else {
-            $article->views = null;
         }
 
         $article->tags = $article->tags_count ? $article->getTags() : [];

@@ -26,7 +26,7 @@ trait ArticleMutators
 
     public function getViewsAttribute()
     {
-        return setting('articles.views_used', false) ? $this->attributes['views'] : null;
+        return setting('articles.views_used', true) ? $this->attributes['views'] : null;
     }
 
     /**

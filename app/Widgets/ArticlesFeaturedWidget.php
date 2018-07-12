@@ -107,10 +107,8 @@ class ArticlesFeaturedWidget extends WidgetAbstract
                     'articles.id','articles.user_id','articles.image_id',
                     'articles.slug','articles.title','articles.teaser',
                     'articles.created_at','articles.updated_at',
+                    'articles.views',
                 ])
-                ->when(setting('articles.views_used', false), function ($query) {
-                    $query->select('views');
-                })
                 ->withCount(['comments'])
                 ->with([
                     'categories:categories.id,categories.slug,categories.title',

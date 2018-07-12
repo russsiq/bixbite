@@ -64,10 +64,8 @@ class ArticlesRelatedWidget extends WidgetAbstract
                 'articles.id','articles.user_id','articles.image_id',
                 'articles.slug','articles.title','articles.content',
                 'articles.created_at', 'articles.updated_at',
+                'articles.views',
             ])
-            ->when(setting('articles.views_used', false), function ($query) {
-                $query->select('views');
-            })
             ->with([
                 'categories:categories.id,categories.slug',
                 'image'
