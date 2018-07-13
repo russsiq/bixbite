@@ -37,7 +37,7 @@
 				<input type="file" name="file" class="form-control " />
 			@elseif ('image' == $file->type)
 				<a href="{{ $file->url }}" class="lightbox">
-					<img src="{{ $file->getUrlAttribute('thumb') }}" title="{{ $file->title }}" alt="{{ $file->name }}" />
+					<img src="{{ $file->getUrlAttribute('thumb') ?? $file->url }}" title="{{ $file->title }}" alt="{{ $file->name }}" />
 				</a>
 			@else
 				<a href="{{ $file->url }}" target="_blank">{{ $file->url }}</a>

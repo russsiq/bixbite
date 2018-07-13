@@ -53,10 +53,6 @@
                                 @endcan
                             @endif
 
-                            @if ('users' == $module->name or 'articles' == $module->name)
-                                <a href="{{-- route('admin.xfields.module', $module) --}}" title="@lang('xfields')" class="btn"><i class="fa fa-columns"></i></a>
-                            @endif
-
                             {{-- @if ('system' == $module->name)
                                 <a href="{{ route('admin.database.index') }}" title="@lang('database')" class="btn"><i class="fa fa-database"></i></a>
                                 <a href="{{ route('admin.routing.index') }}" title="@lang('routing')" class="btn"><i class="fa fa-map-signs"></i></a>

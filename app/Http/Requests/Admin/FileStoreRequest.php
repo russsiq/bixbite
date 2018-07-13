@@ -108,7 +108,7 @@ class FileStoreRequest extends Request
             'filesize' => ['required','integer'],
             'checksum' => ['required','alpha_num'], // 'unique:files' - below validate
 
-            'title' => ['required','string','max:255','regex:/^[\w\s\,\-\_\?\!\(\)]+$/u'],
+            'title' => ['required','string','max:255','regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u'],
             'description' => ['nullable','string'],
             'properties' =>  ['nullable','array'],
 
