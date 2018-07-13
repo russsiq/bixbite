@@ -26,7 +26,7 @@ class BackupDatabase extends Command
             config('database.connections.mysql.username'),
             config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
-            storage_path('app'.DS.'backup.sql')
+            storage_path('app'.DS.'backups'.DS.'backup.sql')
         ));
     }
 
