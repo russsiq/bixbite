@@ -43,18 +43,6 @@ class File extends BaseModel
     {
         parent::boot();
 
-        // Always delete file from storage
-        static::deleting(function ($file) {
-            $disk = $file->storageDisk($file->disk);
-            $disk->delete($file->path);
-
-            if ('image' == $file->type) {
-                foreach ($file->thumbSizes as $size => $value) {
-                    $disk->delete($file->getPathAttribute($size));
-                }
-            }
-        });
-
         static::updating(function ($file) {
             if ($file->getOriginalPath() != $file->path) {
                 $disk = $file->storageDisk($file->disk);
@@ -68,6 +56,18 @@ class File extends BaseModel
                             );
                         }
                     }
+                }
+            }
+        });
+
+        // Always delete file from storage
+        static::deleting(function ($file) {
+            $disk = $file->storageDisk($file->disk);
+            $disk->delete($file->path);
+
+            if ('image' == $file->type) {
+                foreach ($file->thumbSizes as $size => $value) {
+                    $disk->delete($file->getPathAttribute($size));
                 }
             }
         });
