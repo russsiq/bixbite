@@ -160,7 +160,7 @@ ide-php, language-blade.
 
 Запустить командную строку с правами администратора, выполнить:
 
-```shell
+```console
 cd C:\xampp\htdocs
 composer create-project russsiq/bixbite blog -s dev
 cd blog
@@ -171,7 +171,7 @@ npm install --no-bin-links
 
 При возникновении сложностей на данном этапе, поблагодарить меня за то, что поленился отредактировать файл *webpack.mix.js* или молча выполнить команды: 
 
-```shell
+```console
 npm i -f
 npm i -g cross-env
 npm i -g webpack@latest
