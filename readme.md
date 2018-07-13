@@ -160,7 +160,7 @@ ide-php, language-blade.
 
 Запустить командную строку с правами администратора, выполнить:
 
-```
+```console
 cd C:\xampp\htdocs
 composer create-project russsiq/bixbite blog -s dev
 cd blog
