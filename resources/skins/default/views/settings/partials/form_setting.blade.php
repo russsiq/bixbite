@@ -6,7 +6,7 @@
 			<div class="col-sm-5">
 				<select name="module_name" class="form-control">
 					@foreach($modules as $module)
-					    <option value="{{ $module->name }}" {{ old('module_name', $setting->module_name) == $module->name ? 'selected' : '' }}>@lang($module->name)</option>
+					    <option value="{{ $module->name }}" {{ old('module_name', optional($setting)->module_name) == $module->name ? 'selected' : '' }}>@lang($module->name)</option>
 					@endforeach
 				</select>
 			</div>
@@ -92,9 +92,9 @@
 				<select name="type" class="form-control">
 					@foreach($field_types as $k => $item)
 					    <option value="{{ $item }}"
-					        @isset($setting->id)
-					            @if ($setting->type == $item) selected @endif
-					        @endisset
+							@if ($item == old('type', optional($setting)->type))
+								selected
+							@endif
 					    >{{ $item }}</option>
 					@endforeach
 				</select>
