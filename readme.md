@@ -160,7 +160,7 @@ ide-php, language-blade.
 
 Запустить командную строку с правами администратора, выполнить:
 
-```console
+```shell
 cd C:\xampp\htdocs
 composer create-project russsiq/bixbite blog -s dev
 cd blog
@@ -171,7 +171,7 @@ npm install --no-bin-links
 
 При возникновении сложностей на данном этапе, поблагодарить меня за то, что поленился отредактировать файл *webpack.mix.js* или молча выполнить команды: 
 
-```
+```shell
 npm i -f
 npm i -g cross-env
 npm i -g webpack@latest
@@ -191,7 +191,7 @@ npm audit fix
 
 Если необходимо включить режим разработки и отобразить панель отладки, то в файле *.env* выставляем значения для двух строк:
 
-```
+```shell
 APP_DEBUG=true
 APP_ENV=dev
 ```
