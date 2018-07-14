@@ -22,6 +22,7 @@ class ModulesTableSeeder extends Seeder
             ['name' => 'files', 'title' => 'filemanager', 'icon' => 'fa fa-files-o', 'info' => 'Файловый менеджер', 'on_mainpage' => 1, ],
             ['name' => 'system', 'title' => null, 'icon' => 'fa fa-list-alt', 'info' => 'No description available', 'on_mainpage' => 1, ],
             ['name' => 'themes', 'title' => 'design', 'icon' => 'fa fa-paint-brush', 'info' => 'No description available', 'on_mainpage' => null, ],
+            ['name' => 'x_fields', 'title' => 'x_fields', 'icon' => 'fa fa-columns', 'info' => 'Extra fields', 'on_mainpage' => 1, ],
         ]);
     }
 }

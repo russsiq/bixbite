@@ -40,7 +40,7 @@
             <div class="form-group row{{ $errors->has('info') ? ' has-error' : '' }}">
     			<label for="info" class="col-sm-4 col-form-label">@lang('users.info')</label>
     			<div class="col-sm-6">
-                    <textarea name="info" rows="8" class="form-control{{ $errors->has('info') ? ' is-invalid' : '' }}">{{ old('info', $user->info) }}</textarea>
+                    <textarea name="info" rows="4" class="form-control{{ $errors->has('info') ? ' is-invalid' : '' }}">{{ old('info', $user->info) }}</textarea>
                     @if ($errors->has('info'))
                         <span class="invalid-feedback">{{ $errors->first('info') }}</span>
                     @endif
@@ -50,14 +50,20 @@
     		<div class="form-group row{{ $errors->has('avatar') ? ' has-error' : '' }}">
     			<label for="avatar" class="col-sm-4">@lang('users.avatar')</label>
     			<div class="col-sm-6">
-    				<input type="file" name="avatar" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}" />
     				@if (optional($user)->getOriginal('avatar'))
-    					<br>
-    					<img src="{{ $user->avatar }}" alt="avatar_{{ $user->id }}" />
+    					<br><img src="{{ $user->avatar }}" alt="avatar_{{ $user->id }}" />
     					<label class="form-text text-muted"><input type="checkbox" name="delete_avatar" value="1" /> @lang('users.delete_avatar')</label>
     				@endif
+    				<input type="file" name="avatar" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}" />
     			</div>
     		</div>
+
+            @if ($x_fields)<hr>
+                @foreach ($x_fields as $x_field)
+                    {{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
+                    @include('users.partials.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
+                @endforeach
+            @endif
 
             <hr>
 

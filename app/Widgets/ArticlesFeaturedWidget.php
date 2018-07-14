@@ -103,17 +103,7 @@ class ArticlesFeaturedWidget extends WidgetAbstract
 
         return [
             'title' => $this->params['title'],
-            'items' => Article::select([
-                    'articles.id','articles.user_id','articles.image_id',
-                    'articles.slug','articles.title','articles.teaser',
-                    'articles.created_at','articles.updated_at',
-                    'articles.views',
-                ])
-                ->withCount(['comments'])
-                ->with([
-                    'categories:categories.id,categories.slug,categories.title',
-                    'image'
-                ])
+            'items' => Article::shortArticle()
                 ->when($this->params['categories'], function ($query) {
                     $query->whereHas('categories', function ($query) {
                         $query->whereIn('categories.id', $this->params['categories']);

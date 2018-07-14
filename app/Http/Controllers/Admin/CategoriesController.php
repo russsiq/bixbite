@@ -2,6 +2,7 @@
 
 namespace BBCMS\Http\Controllers\Admin;
 
+use BBCMS\Models\XField;
 use BBCMS\Models\Category;
 use BBCMS\Http\Requests\Admin\CategoryRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
@@ -11,14 +12,16 @@ use Illuminate\Http\Request;
 class CategoriesController extends AdminController
 {
     protected $model;
+    protected $x_fields;
     protected $template = 'categories';
 
-    public function __construct(Category $model)
+    public function __construct(Category $model, XField $x_fields)
     {
         parent::__construct();
         $this->authorizeResource(Category::class);
 
         $this->model = $model;
+        $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
 
         // Always flush cache. Otherwise why go to this section?
         $model->cacheForgetByKeys();
@@ -42,12 +45,19 @@ class CategoriesController extends AdminController
         return $this->renderOutput('create', [
             'template_list' => select_dir('custom_views', true),
             'category' => [],
+            'x_fields' => $this->x_fields,
         ]);
     }
 
     public function store(CategoryRequest $request)
     {
-        $category = $this->model->create($request->all());
+        $category = $this->model->fill($request->all());
+
+        foreach ($this->x_fields->pluck('name') as $x_field) {
+            $category->{$x_field} = $request->{$x_field};
+        }
+
+        $category->save();
 
         // Image.
         if ($request->image_id) {
@@ -74,11 +84,16 @@ class CategoriesController extends AdminController
         return $this->renderOutput('edit', [
             'template_list' => select_dir('custom_views', true),
             'category' => $category,
+            'x_fields' => $this->x_fields,
         ]);
     }
 
     public function update(CategoryRequest $request, Category $category)
     {
+        foreach ($this->x_fields->pluck('name') as $x_field) {
+            $category->{$x_field} = $request->{$x_field};
+        }
+
         $category->update($request->all());
 
         // Image. Only if empty image_id, then keep previos image_id.

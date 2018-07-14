@@ -4,6 +4,7 @@ namespace BBCMS\Http\Controllers\Admin;
 
 use BBCMS\Models\Tag;
 use BBCMS\Models\Article;
+use BBCMS\Models\XField;
 use BBCMS\Models\Category;
 use BBCMS\Http\Requests\Admin\ArticleRequest;
 use BBCMS\Http\Requests\Admin\ArticlesRequest;
@@ -13,16 +14,18 @@ class ArticlesController extends AdminController
 {
     protected $tags;
     protected $model;
+    protected $x_fields;
     protected $categories;
     protected $template = 'articles';
 
-    public function __construct(Article $model, Category $categories, Tag $tags)
+    public function __construct(Article $model, Category $categories, Tag $tags, XField $x_fields)
     {
         parent::__construct();
         $this->authorizeResource(Article::class);
 
         $this->tags = $tags;
         $this->model = $model;
+        $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
         $this->categories = $categories->getCachedCategories()->nested();
     }
 
@@ -65,15 +68,22 @@ class ArticlesController extends AdminController
 
         return $this->renderOutput('create', [
             'article' => [],
+            'delimiter' => '',
             'categories_items' => $this->categories,
             'tags' => '',
-            'delimiter' => '',
+            'x_fields' => $this->x_fields,
         ]);
     }
 
     public function store(ArticleRequest $request)
     {
-        $article = $this->model->create($request->all());
+        $article = $this->model->fill($request->all());
+
+        foreach ($this->x_fields->pluck('name') as $x_field) {
+            $article->{$x_field} = $request->{$x_field};
+        }
+
+        $article->save();
 
         // Image.
         if ($request->image_id) {
@@ -111,14 +121,19 @@ class ArticlesController extends AdminController
 
         return $this->renderOutput('edit', [
             'article' => $article,
+            'delimiter' => '',
             'categories_items' => $this->categories,
             'tags' => $article->tags->pluck('title')->implode(', '),
-            'delimiter' => '',
+            'x_fields' => $this->x_fields,
         ]);
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
+        foreach ($this->x_fields->pluck('name') as $x_field) {
+            $article->{$x_field} = $request->{$x_field};
+        }
+
         $article->update($request->all());
 
         // Image. Only if empty image_id, then keep previos image_id.
@@ -145,7 +160,7 @@ class ArticlesController extends AdminController
         }
 
         // Tags. Always sync !!! Deleted tags with empty relations.
-        $this->tags->synchronise($request->tags, $article);
+        $article->tags()->getModel()->synchronise($request->tags, $article);
 
         return redirect()->route('admin.articles.index')->withStatus(sprintf(
                 __('msg.update'), $article->url, route('admin.articles.edit', $article)

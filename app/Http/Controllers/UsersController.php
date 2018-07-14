@@ -3,6 +3,7 @@
 namespace BBCMS\Http\Controllers;
 
 use BBCMS\Models\User;
+use BBCMS\Models\XField;
 use BBCMS\Http\Requests\Admin\UserRequest;
 
 class UsersController extends SiteController
@@ -68,7 +69,9 @@ class UsersController extends SiteController
 
     public function edit(User $user)
     {
-        return $this->renderOutput('edit', compact('user'));
+        $x_fields = XField::fields()->where('extensible', $user->getTable());
+
+        return $this->renderOutput('edit', compact('user', 'x_fields'));
     }
 
     /**

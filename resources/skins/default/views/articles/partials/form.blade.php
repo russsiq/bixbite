@@ -52,7 +52,7 @@
 				<div class="card-header">
 					<a href="#card_tags" data-toggle="collapse" data-target="#card_tags" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
 				</div>
-				<div id="card_tags" class="collapse" data-parent="#accordion" aria-expanded="false">
+				<div id="card_tags" class="collapse" data-parent="#accordion">
 					<div class="card-body">
 						<div class="form-group {{ $errors->has('tags') ? ' has-error' : '' }}">
 							<input type="file" name="files[]" />
@@ -60,6 +60,22 @@
 					</div>
 				</div>
 			</div> --}}
+
+			@if ($x_fields)
+				<div class="card mb-0">
+					<div class="card-header">
+	                    <a href="#card_x_fields" data-toggle="collapse" data-target="#card_x_fields" class="d-block"><i class="fa fa-table text-muted"></i> @lang('options.x_fields')</a>
+					</div>
+					<div id="card_x_fields" class="collapse" data-parent="#accordion">
+						<div class="card-body">
+							@foreach ($x_fields as $x_field)
+								{{-- DON'T use "@each(...)", because "$loop->..." and "$article->..." does not work --}}
+								@include('articles.partials.x_fields', ['x_field' => $x_field, 'item' => $article])
+							@endforeach
+						</div>
+					</div>
+				</div>
+			@endif
 
 			@if (setting('articles.manual_meta', true))
 				<div class="card mb-0">

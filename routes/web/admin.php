@@ -28,4 +28,5 @@ Route::name('admin.')->group(function () {
     Route::resource('themes/templates', 'TemplatesController')->except(['create', 'show'])->names(['destroy' => 'templates.delete'])->middleware(['can:themes']);
     Route::resource('themes', 'ThemesController')->only(['index'])->middleware(['can:themes']);
     Route::resource('users', 'UsersController')->except(['show'])->names(['destroy' => 'users.delete']);
+    Route::resource('x_fields', 'XFieldsController')->except(['show'])->names(['destroy' => 'x_fields.delete'])->middleware(['can:x_fields']);
 });

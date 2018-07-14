@@ -93,8 +93,6 @@
 <div class="card card-default">
 	<div class="card-header"><i class="fa fa-th-list"></i> @lang('legend.display')</div>
 	<div class="card-body">
-
-
 		<div class="form-group row {{ $errors->has('paginate') ? ' has-error' : '' }}">
 			<label class="col-sm-7 control-label">@lang('paginate')<small class="form-text text-muted">@lang('paginate#descr')</small></label>
 			<div class="col-sm-5">
@@ -151,7 +149,18 @@
 		</div>
 	</div>
 </div>
-{{-- extend --}}
+
+@if ($x_fields)
+<div class="card card-default">
+	<div class="card-header"><i class="fa fa-th-list"></i> @lang('options.x_fields')</div>
+	<div class="card-body">
+	@foreach ($x_fields as $x_field)
+		{{-- DON'T use "@each(...)", because "$loop->..." and "$category->..." does not work --}}
+		@include('categories.partials.x_fields', ['x_field' => $x_field, 'item' => $category])
+	@endforeach
+	</div>
+</div>
+@endif
 
 <!-- SUBMIT Form -->
 <div class="card">

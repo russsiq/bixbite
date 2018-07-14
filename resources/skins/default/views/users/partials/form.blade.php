@@ -36,6 +36,13 @@
 			<div class="col-sm-7"><input type="password" name="password_confirmation" value="" class="form-control" /></div>
 		</div>
 
+		@if ($x_fields)
+			@foreach ($x_fields as $x_field)
+				{{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
+				@include('users.partials.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
+			@endforeach
+		@endif
+
 		<div class="form-group row{{ $errors->has('avatar') ? ' has-error' : '' }}">
 			<label for="avatar" class="col-sm-5">@lang('avatar')</label>
 			<div class="col-sm-7">

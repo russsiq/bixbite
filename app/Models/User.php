@@ -7,6 +7,7 @@ use BBCMS\Models\File;
 use BBCMS\Models\Note;
 use BBCMS\Models\Comment;
 use BBCMS\Models\Privilege;
+use BBCMS\Models\XField;
 use BBCMS\Models\Mutators\UserMutators;
 
 use Illuminate\Notifications\Notifiable;
@@ -21,15 +22,24 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'email', 'avatar', 'password', 'last_ip', 'logined_at',
-        'where_from', 'info',
+        'name',
+        'email',
+        'avatar',
+        'password',
+        'last_ip',
+        'logined_at',
+        'where_from',
+        'info',
         //  'role' - is guarded, but F12 and final. Remember about safety
     ];
     protected $appends = [
         'logined'
     ];
     protected $hidden = [
-        'email', 'password', 'remember_token', 'role',
+        'email',
+        'password',
+        'remember_token',
+        'role',
     ];
 
     protected $isOnlinePrefix = 'users.is-online-';
@@ -132,6 +142,14 @@ class User extends Authenticatable
 
         if (! empty($data['role'])) {
             $this->role = $data['role'];
+        }
+
+        $x_fields = XField::fields()
+            ->where('extensible', $this->getTable())
+            ->pluck('name');
+
+        foreach ($x_fields as $x_field) {
+            $this->{$x_field} = $request->{$x_field};
         }
 
         return $this->fill($data)

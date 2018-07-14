@@ -60,18 +60,7 @@ class ArticlesRelatedWidget extends WidgetAbstract
     {
         $article = pageinfo('article');
 
-        $query = Article::select([
-                'articles.id','articles.user_id','articles.image_id',
-                'articles.slug','articles.title','articles.content',
-                'articles.created_at', 'articles.updated_at',
-                'articles.views',
-            ])
-            ->with([
-                'categories:categories.id,categories.slug',
-                'image'
-            ])
-            ->withCount('comments')
-            ->where('articles.state', 'published')
+        $query = Article::shortArticle()
             ->where('articles.id', '<>', $article->id);
 
         if (empty($article->tags) or 1) {

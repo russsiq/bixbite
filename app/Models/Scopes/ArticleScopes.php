@@ -4,6 +4,8 @@ namespace BBCMS\Models\Scopes;
 
 use Carbon\Carbon;
 
+use BBCMS\Models\XField;
+
 trait ArticleScopes
 {
     // Filter
@@ -49,14 +51,17 @@ trait ArticleScopes
         return $query
             ->select([
                 'articles.id','articles.user_id','articles.image_id',
-                'articles.slug','articles.title','articles.content',
+                'articles.slug','articles.title','articles.teaser',
                 'articles.created_at','articles.updated_at',
                 'articles.views',
             ])
+            ->addSelect(
+                XField::fields()->where('extensible', $this->getTable())->pluck('name')->all()
+            )
             ->with([
-                'image',
                 'categories:categories.id,categories.slug,categories.title',
-                'user:users.id,users.name', // ,users.email,users.avatar
+                'user:users.id,users.name', // users.email,users.avatar',
+                'image',
             ])
             ->withCount(['comments'])
             ->where('articles.state', 'published');

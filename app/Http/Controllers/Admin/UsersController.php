@@ -2,9 +2,8 @@
 
 namespace BBCMS\Http\Controllers\Admin;
 
-use Validator;
-
 use BBCMS\Models\User;
+use BBCMS\Models\XField;
 use BBCMS\Http\Requests\Admin\UserRequest;
 use BBCMS\Http\Requests\Admin\UsersRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
@@ -13,16 +12,17 @@ class UsersController extends AdminController
 {
     protected $model;
     protected $roles;
+    protected $x_fields;
     protected $template = 'users';
 
-    public function __construct(User $model)
+    public function __construct(User $model, XField $x_fields)
     {
         parent::__construct();
-
         $this->authorizeResource(User::class);
 
         $this->model = $model;
         $this->roles = cache('roles');
+        $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
     }
 
     /**
@@ -47,6 +47,7 @@ class UsersController extends AdminController
         return $this->renderOutput('create', [
             'user' => [],
             'roles' => $this->roles,
+            'x_fields' => $this->x_fields,
         ]);
     }
 
@@ -85,6 +86,7 @@ class UsersController extends AdminController
         return $this->renderOutput('edit', [
             'user' => $user,
             'roles' => $this->roles,
+            'x_fields' => $this->x_fields,
         ]);
     }
 
