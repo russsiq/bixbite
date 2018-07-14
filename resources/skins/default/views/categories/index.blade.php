@@ -15,6 +15,9 @@
                 <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> @lang('btn.create')</a>
             @endcan
             <div class="btn-group d-flex ml-auto">
+                @can ('x_fields')
+                    <a href="{{ route('admin.x_fields.index') }}" title="@lang('x_fields')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
+                @endcan
                 @can ('admin.settings.details')
                     <a href="{{ route('admin.settings.module', 'categories') }}" title="@lang('settings')" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></a>
                 @endcan
@@ -24,7 +27,7 @@
                 <button type="button" title="@lang('btn.print')" class="btn btn-outline-dark" onclick="window.print();"><i class="fa fa-print"></i></button>
             </div>
         </div>
-        
+
         @empty ($categories->count())
             <div class="card-body">@lang('common.msg.not_found')</div>
         @else

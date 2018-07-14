@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="theme-card" style="background-image: url({{ $theme->screenshot ?? '//via.placeholder.com/350x250' }})">
                 <div class="color-overlay clearfix">
-                    @can ('admin.themes')
+                    @can ('themes')
                         <div class="icon-block" style="text-shadow: 0 1px 2px #000;">
                             <a class="icon-block__icon" href="{{ route('admin.templates.index') }}"><i class="fa fa-2x fa-paint-brush"></i></a>
         				</div>
@@ -16,7 +16,7 @@
                             <h4 class="theme-info"><a href="{{ $theme->author_url }}" target="_blank">{{ $theme->author }}</a>, v{{ $theme->version }} ({{ $theme->reldate }})</h4>
                         </div>
                         <p class="theme-desc">{{ $theme->title }}. {{ teaser($theme->description, 150) }}</p>
-                        @can ('admin.themes')
+                        @can ('themes')
                             <a href="{{ route('admin.settings.module', ['module'=>'themes']) }}" class="btn btn-outline-primary theme-btn">@lang('btn.customize')</a>
                         @endcan
                     </div>

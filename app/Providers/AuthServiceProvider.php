@@ -48,7 +48,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerAdminSettingsPolicies();
         $this->registerAdminThemesPolicies();
         $this->registerAdminXFieldsPolicies();
-        
+
         $this->registerAdminArticles();
         $this->registerAdminCategories();
         $this->registerAdminComments();
@@ -98,14 +98,14 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerAdminThemesPolicies()
     {
-        Gate::define('admin.themes', function ($user) {
+        Gate::define('themes', function ($user) {
             return 'owner' === $user->role;
         });
     }
 
     public function registerAdminXFieldsPolicies()
     {
-        Gate::define('admin.xfields.modify', function ($user) {
+        Gate::define('x_fields', function ($user) {
             return 'owner' === $user->role;
         });
     }

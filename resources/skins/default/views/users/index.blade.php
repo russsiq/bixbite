@@ -20,8 +20,8 @@
                     @can ('admin.privileges.index')
                         <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn btn-outline-dark"><i class="fa fa-user-secret"></i></a>
                     @endcan
-                    @can ('admin.xfields.modify')
-                        <a href="{{-- route('admin.xfields.module', 'users') --}}" title="@lang('btn.add_xfield')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
+                    @can ('x_fields')
+                        <a href="{{ route('admin.x_fields.index') }}" title="@lang('x_fields')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
                     @endcan
                     @can ('admin.settings.details')
                         <a href="{{ route('admin.settings.module', 'users') }}" title="@lang('settings')" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></a>

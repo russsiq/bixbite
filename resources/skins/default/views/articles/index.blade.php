@@ -77,9 +77,9 @@
                 @can ('admin.categories.index')
                     <a href="{{ route('admin.categories.index') }}" title="@lang('categories')" class="btn btn-outline-dark"><i class="fa fa-folder-open-o"></i></a>
                 @endcan
-                {{-- @can ('admin.xfields.modify')
-                    <a href="route('admin.xfields.module', 'articles')" title="@lang('btn.add_xfield')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
-                @endcan --}}
+                @can ('x_fields')
+                    <a href="{{ route('admin.x_fields.index') }}" title="@lang('x_fields')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
+                @endcan
                 @can ('admin.settings.details')
                     <a href="{{ route('admin.settings.module', 'articles') }}" title="@lang('settings')" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></a>
                 @endcan

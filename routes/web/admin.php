@@ -25,7 +25,7 @@ Route::name('admin.')->group(function () {
     Route::resource('notes', 'NotesController')->names(['destroy' => 'notes.delete']);
     Route::resource('privileges', 'PrivilegesController')->except(['show', 'destroy']);
     Route::resource('settings', 'SettingsController')->except(['show'])->names(['destroy' => 'settings.delete']);
-    Route::resource('themes/templates', 'TemplatesController')->except(['create', 'show'])->names(['destroy' => 'templates.delete'])->middleware(['can:admin.themes']);
-    Route::resource('themes', 'ThemesController')->only(['index'])->middleware(['can:admin.themes']);
+    Route::resource('themes/templates', 'TemplatesController')->except(['create', 'show'])->names(['destroy' => 'templates.delete'])->middleware(['can:themes']);
+    Route::resource('themes', 'ThemesController')->only(['index'])->middleware(['can:themes']);
     Route::resource('users', 'UsersController')->except(['show'])->names(['destroy' => 'users.delete']);
 });
