@@ -26,7 +26,6 @@ class LoginController extends SiteController
      * @var string
      */
     protected $redirectTo = '/';
-    protected $redirectToOwner = '/admin';
 
     protected $template = 'auth';
 
@@ -62,10 +61,6 @@ class LoginController extends SiteController
      */
     public function redirectTo()
     {
-        if ($this->guard()->user()->hasRole('owner')) {
-            return property_exists($this, 'redirectToOwner') ? $this->redirectToOwner : '/admin';
-        }
-
         return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 }
