@@ -12,7 +12,7 @@
                     <i class="fa fa-info"></i>
                 </button>
             @endif
-            @if($item->image)
+            @if($item->image_id)
                 <button type="button" title="" class="btn btn-link text-dark" readonly>
                     <i class="fa fa-file-image-o"></i>
                 </button>
