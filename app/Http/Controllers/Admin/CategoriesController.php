@@ -22,9 +22,6 @@ class CategoriesController extends AdminController
 
         $this->model = $model;
         $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
-
-        // Always flush cache. Otherwise why go to this section?
-        $model->cacheForgetByKeys();
     }
 
     public function index()
@@ -33,7 +30,7 @@ class CategoriesController extends AdminController
 
         $categories = $this->model
             ->orderByRaw('ISNULL(`position`), `position` ASC')
-            ->withCount('articles')
+            ->withCount(['articles'])
             ->get()
             ->nested();
 
