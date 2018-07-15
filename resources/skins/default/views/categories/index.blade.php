@@ -15,6 +15,9 @@
                 <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> @lang('btn.create')</a>
             @endcan
             <div class="btn-group d-flex ml-auto">
+                @role ('owner')
+                    <a href="{{ route('system_care.clearcache', 'categories|navigation_categories|navigation') }}" title="@lang('clear')" class="btn btn-outline-dark"><i class="fa fa-recycle"></i></a>
+                @endrole
                 @can ('x_fields')
                     <a href="{{ route('admin.x_fields.index') }}" title="@lang('x_fields')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
                 @endcan
