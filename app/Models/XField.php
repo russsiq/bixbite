@@ -50,11 +50,15 @@ class XField extends BaseModel
         static::observe(XFieldObserver::class);
     }
 
-    public static function fields()
+    public static function fields($table = null)
     {
-        return cache()->rememberForever('x_fields', function () {
+        $fields = cache()->rememberForever('x_fields', function () {
             return static::query()->get();
         });
+
+        return is_null($table)
+            ? $fields
+            : $fields->where('extensible', $table);
     }
 
     public static function extensibles()

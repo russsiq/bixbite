@@ -8,7 +8,7 @@
 
         <div id="navbar_main" class="collapse navbar-collapse">
             <ul class="navbar-nav d-none d-md-flex">
-                <li class="nav-item d-sm-none d-md-block"><a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa fa-home"></i></a></li>
+                <li class="nav-item d-sm-none d-md-block"><a href="{{ route('dashboard') }}" class="nav-link"><i class="fa fa-home"></i></a></li>
                 <li class="nav-item"><a href="{{ route('admin.articles.index') }}" class="nav-link">@lang('articles')</a></li>
                 <li class="nav-item"><a href="{{ route('admin.categories.index') }}" class="nav-link">@lang('categories')</a></li>
                 <li class="nav-item"><a href="{{ route('admin.comments.index') }}" class="nav-link">@lang('comments')</a></li>
@@ -17,7 +17,7 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item d-sm-block d-md-none"><a href="{{ route('admin.dashboard') }}" class="nav-link"><i class="fa fa-home"></i></a></li>
+                <li class="nav-item d-sm-block d-md-none"><a href="{{ route('dashboard') }}" class="nav-link"><i class="fa fa-home"></i></a></li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" title="@lang('btn.add')" data-toggle="dropdown"><i class="fa fa-plus"></i> </a>
                     <div class="dropdown-menu dropdown-menu-right">

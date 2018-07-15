@@ -150,7 +150,7 @@
 	</div>
 </div>
 
-@if ($x_fields)
+@if (count($x_fields))
 <div class="card card-default">
 	<div class="card-header"><i class="fa fa-th-list"></i> @lang('options.x_fields')</div>
 	<div class="card-body">

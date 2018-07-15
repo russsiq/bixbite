@@ -61,7 +61,7 @@
 				</div>
 			</div> --}}
 
-			@if ($x_fields)
+			@if (count($x_fields))
 				<div class="card mb-0">
 					<div class="card-header">
 	                    <a href="#card_x_fields" data-toggle="collapse" data-target="#card_x_fields" class="d-block"><i class="fa fa-table text-muted"></i> @lang('options.x_fields')</a>

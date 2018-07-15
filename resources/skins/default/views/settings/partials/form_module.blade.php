@@ -60,7 +60,7 @@
     				<span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
     				<span class="d-none d-md-inline">@lang('btn.save')</span>
     			</button>
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
+                <a href="{{ route('dashboard') }}" class="btn btn-outline-dark">
                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                     <span class="d-none d-lg-inline">@lang('btn.cancel')</span>
                 </a>

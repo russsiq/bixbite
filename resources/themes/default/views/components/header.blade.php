@@ -19,7 +19,7 @@
                     <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ user('name') }} </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         @can ('global.admin')
-                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">@lang('auth.dashboard')</a>
+                            <a href="{{ route('dashboard') }}" class="dropdown-item">@lang('auth.dashboard')</a>
                         @endcan
                         @can ('admin.articles.create')
                             <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>

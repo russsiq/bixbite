@@ -3,39 +3,41 @@
 namespace BBCMS\Models;
 
 use Schema;
-
 use BBCMS\Models\BaseModel;
-use BBCMS\Models\Traits\CacheForgetByKeys;
+use BBCMS\Models\Observers\PrivilegeObserver;
 
 class Privilege extends BaseModel
 {
-    use CacheForgetByKeys;
-
-    // Очищаем кеш по этим ключам всегда
-    // при нахождении в разделе привилегий ад.панели
-    protected $keysToForgetCache = [
-        'privileges', 'roles', // 'privileges.' . $role
+    protected $primaryKey = 'id';
+    protected $table = 'privileges';
+    protected $observables = [
+        'tableUpdated'
     ];
 
-    protected $table = 'privileges';
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(PrivilegeObserver::class);
+    }
 
     public function roles()
     {
-        return $this->getCachedRoles();
-    }
-
-    protected function getRoles()
-    {
-        return array_diff(
-            Schema::getColumnListing($this->table),
-            ['id', 'privilege', 'description', 'created_at', 'updated_at', 'deleted_at']
-        );
-    }
-
-    protected function getCachedRoles()
-    {
         return cache()->rememberForever('roles', function () {
-            return $this->getRoles();
+            return array_diff(Schema::getColumnListing($this->table),
+                    ['id', 'privilege', 'description', 'created_at', 'updated_at', 'deleted_at']
+                );
+        });
+    }
+
+    public function privileges()
+    {
+        return cache()->rememberForever('privileges', function () {
+            return $this->select(['privilege'] + $this->roles())->get()
+                ->mapWithKeys(function ($item) {
+                    $out = array_filter($item->toArray());
+                    unset($out['privilege']);
+                    return [$item['privilege'] => $out];
+                })->toArray();
         });
     }
 
@@ -50,10 +52,10 @@ class Privilege extends BaseModel
             } else {
                 $this->whereNotNull($role)->update([$role => null]);
             }
-
-            cache()->forget('privileges.' . $role);
         }
 
         $this->whereNull('owner')->update(['owner' => 1]);
+
+        $this->fireModelEvent('tableUpdated', false);
     }
 }

@@ -90,7 +90,7 @@
 					<span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
 					<span class="d-none d-md-inline">@lang(isset($x_field->id) ? 'btn.save' : 'btn.create')</span>
 				</button>
-				<a href="{{ (! empty($x_field->extensible) and \Route::has($route = 'admin.'.$x_field->extensible.'.index')) ? route($route) : route('admin.dashboard') }}" class="btn btn-outline-dark btn-bg-white">
+				<a href="{{ (! empty($x_field->extensible) and \Route::has($route = 'admin.'.$x_field->extensible.'.index')) ? route($route) : route('dashboard') }}" class="btn btn-outline-dark btn-bg-white">
                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                     <span class="d-none d-lg-inline">@lang('btn.cancel')</span>
                 </a>

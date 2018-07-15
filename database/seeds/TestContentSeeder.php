@@ -25,7 +25,11 @@ class TestContentSeeder extends Seeder
         $comments = [];
 
         // Preparing users
-        $roles = [ 'admin', 'moder', 'user', ];
+        $roles = [
+            'admin',
+            'moder',
+            'user',
+        ];
         for ($i = 0; $i < 10; $i++) {
             $name = $faker->name;
             $users[] = [
@@ -91,7 +95,7 @@ class TestContentSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $comments[] = [
                 'user_id' => mt_rand(1, 9), 'commentable_type' => 'articles', 'commentable_id' => mt_rand(1, 9),
-                'content' => $faker->paragraph(mt_rand(1, 5)), 'created_at' => date('Y-m-d H:i:s'),
+                'content' => $faker->paragraph(mt_rand(1, 5)), 'created_at' => date('Y-m-d H:i:s'), 'is_approved' => mt_rand(0, 1)
             ];
         }
 

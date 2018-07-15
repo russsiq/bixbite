@@ -36,7 +36,7 @@
 			<div class="col-sm-7"><input type="password" name="password_confirmation" value="" class="form-control" /></div>
 		</div>
 
-		@if ($x_fields)
+		@if (count($x_fields))
 			@foreach ($x_fields as $x_field)
 				{{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
 				@include('users.partials.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])

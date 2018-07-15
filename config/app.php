@@ -212,6 +212,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // BBCMS Aliases
+        'CacheFile' => BBCMS\Support\Facades\CacheFile::class,
         'PageInfo' => BBCMS\Support\Facades\PageInfo::class,
         'Widget' => BBCMS\Support\Facades\Widget::class,
 

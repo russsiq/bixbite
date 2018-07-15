@@ -48,7 +48,7 @@
                             <a href="{{ route('admin.settings.module', $module) }}" title="@lang('settings')" class="btn"><i class="fa fa-cogs"></i></a>
 
                             @if ('users' == $module->name)
-                                @can ('admin.privileges.index')
+                                @can ('privileges')
                                     <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn"><i class="fa fa-user-secret"></i></a>
                                 @endcan
                             @endif

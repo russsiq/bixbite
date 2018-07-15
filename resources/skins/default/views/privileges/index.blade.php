@@ -26,7 +26,7 @@
         </div>
 
         <!-- Main content form -->
-        <form id="form_action" name="mass_update" action="{{ route('admin.privileges.mass_update') }}" method="post" accept-charset="UTF-8" onsubmit="return confirm('@lang('msg.sure')');" class="not_form-horizontal">
+        <form id="form_action" name="mass_update" action="{{ route('admin.privileges.update') }}" method="post" accept-charset="UTF-8" onsubmit="return confirm('@lang('msg.sure')');" class="not_form-horizontal">
             @csrf
 
             <!-- List of privileges: BEGIN -->

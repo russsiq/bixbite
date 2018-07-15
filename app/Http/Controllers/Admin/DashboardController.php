@@ -21,7 +21,7 @@ class DashboardController extends AdminController
 
     public function index()
     {
-        if(Gate::denies('admin.dashboard.index')) {
+        if(Gate::denies('dashboard')) {
 			abort(403);
 		}
 

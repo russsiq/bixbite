@@ -78,6 +78,11 @@ class CommentsController extends SiteController
                 'status' => true,
                 'content' => $comment->content,
             ], 200);
+        } else {
+            pageinfo([
+                'title' => __('comments.edit_page'),
+                'robots' => 'none',
+            ]);
         }
 
         return $this->renderOutput('edit', compact('comment'));

@@ -41,7 +41,9 @@ Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
 
 Route::get('users', 'UsersController@index')->name('users.index');
-Route::get('profile/{user}', 'UsersController@show')->name('profile');
+Route::get('follow/{user}', 'UsersController@follow')->name('follow');
+Route::get('unfollow/{user}', 'UsersController@unfollow')->name('unfollow');
+Route::get('profile/{user}', 'UsersController@profile')->name('profile');
 Route::get('profile/{user}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
 Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
 

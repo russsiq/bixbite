@@ -20,7 +20,6 @@ class AuthServiceProvider extends ServiceProvider
         \BBCMS\Models\Comment::class => \BBCMS\Policies\CommentPolicy::class,
         \BBCMS\Models\File::class => \BBCMS\Policies\FilePolicy::class,
         \BBCMS\Models\Note::class => \BBCMS\Policies\NotePolicy::class,
-        \BBCMS\Models\Privilege::class => \BBCMS\Policies\PrivilegePolicy::class,
         \BBCMS\Models\User::class => \BBCMS\Policies\UserPolicy::class,
     ];
 
@@ -38,24 +37,35 @@ class AuthServiceProvider extends ServiceProvider
         }
 
         $this->registerPolicies();
+
+        // Global policies.
         $this->registerGlobalPolicies();
 
         // Front-end policies.
-        $this->registerComments();
+        $this->registerCommentsPolicies();
 
         // Back-end policies.
-        $this->registerAdminDashboardPolicies();
+        $this->registerDashboardPolicies();
+        $this->registerPrivilegesPolicies();
+        $this->registerThemesPolicies();
+        $this->registerXFieldsPolicies();
+
         $this->registerAdminSettingsPolicies();
-        $this->registerAdminThemesPolicies();
-        $this->registerAdminXFieldsPolicies();
 
         $this->registerAdminArticles();
         $this->registerAdminCategories();
         $this->registerAdminComments();
         $this->registerAdminFiles();
         $this->registerAdminNotes();
-        $this->registerAdminPrivileges();
         $this->registerAdminUsers();
+    }
+
+    protected function registerCommentsPolicies()
+    {
+        Gate::resource('comments', \BBCMS\Policies\CommentPolicy::class, [
+            'update' => 'update',
+            'delete' => 'delete',
+        ]);
     }
 
     public function registerGlobalPolicies()
@@ -68,44 +78,43 @@ class AuthServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerComments()
+    public function registerDashboardPolicies()
     {
-        Gate::resource('comments', \BBCMS\Policies\CommentPolicy::class, [
-            'update' => 'update',
-            'delete' => 'delete',
-        ]);
-    }
-
-    public function registerAdminDashboardPolicies()
-    {
-        Gate::define('admin.dashboard.index', function ($user) {
-            return $user->canDo('admin.dashboard.index');
+        Gate::define('dashboard', function ($user) {
+            return $user->canDo('dashboard');
         });
     }
 
-    public function registerAdminSettingsPolicies()
+    protected function registerPrivilegesPolicies()
     {
-        // Создание, редактирование, удаление настроек модулей
-        Gate::define('admin.settings.modify', function ($user) {
-            return 'owner' === $user->role and 'production' != env('APP_ENV');
-        });
-
-        // Просмотр и сохранение настроек модулей
-        Gate::define('admin.settings.details', function ($user) {
+        Gate::define('privileges', function ($user) {
             return 'owner' === $user->role;
         });
     }
 
-    public function registerAdminThemesPolicies()
+    public function registerThemesPolicies()
     {
         Gate::define('themes', function ($user) {
             return 'owner' === $user->role;
         });
     }
 
-    public function registerAdminXFieldsPolicies()
+    public function registerXFieldsPolicies()
     {
         Gate::define('x_fields', function ($user) {
+            return 'owner' === $user->role;
+        });
+    }
+
+    public function registerAdminSettingsPolicies()
+    {
+        // Создание, редактирование, удаление настроек модулей.
+        Gate::define('admin.settings.modify', function ($user) {
+            return 'owner' === $user->role and 'production' != env('APP_ENV');
+        });
+
+        // Просмотр и сохранение настроек модулей.
+        Gate::define('admin.settings.details', function ($user) {
             return 'owner' === $user->role;
         });
     }
@@ -162,18 +171,6 @@ class AuthServiceProvider extends ServiceProvider
             'view' => 'view',
             'create' => 'create',
             'update' => 'update',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminPrivileges()
-    {
-        Gate::resource('admin.privileges', \BBCMS\Policies\PrivilegePolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'other_update' => 'otherUpdate',
             'delete' => 'delete',
         ]);
     }

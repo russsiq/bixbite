@@ -126,6 +126,8 @@ class SystemInstall extends SetupController
 
     protected function finish()
     {
+        cache()->flush();
+        
         return [];
     }
 

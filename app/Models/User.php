@@ -8,7 +8,11 @@ use BBCMS\Models\Note;
 use BBCMS\Models\Comment;
 use BBCMS\Models\Privilege;
 use BBCMS\Models\XField;
+
+use BBCMS\Models\Relations\hasFollows;
+
 use BBCMS\Models\Mutators\UserMutators;
+use BBCMS\Models\Observers\UserObserver;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +20,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+
+    use hasFollows;
     use UserMutators;
     // use Commentable; user not commentable, Profile is commentable !!!
 
@@ -30,7 +36,11 @@ class User extends Authenticatable
         'logined_at',
         'where_from',
         'info',
-        //  'role' - is guarded, but F12 and final. Remember about safety
+    ];
+    protected $guarded = [
+        // Role is guarded, but F12 and final.
+        // Remember about safety.
+        'role',
     ];
     protected $appends = [
         'logined'
@@ -48,27 +58,13 @@ class User extends Authenticatable
     protected static function boot()
     {
         parent::boot();
-
-        static::deleting(function ($user) {
-            // // 1 Roles. Not used in this version App.
-            // $user->roles()->detach();
-
-            // 2 Чтобы вызвать метод `Article::deleting`,
-            //   в котором прописаны дополнительные удаляшки
-            $user->articles()->get(['id'])->each->delete();
-
-            // 3 Обновим комментарии якобы они от незарегистрированного пользователя,
-            //   но только после удаления новостей пользователя,
-            //   т.к. он мог наоставлять комментов к своим записям, а это лишние запросы
-            $user->comments()->update(['user_id' => null, 'name' => $user->name, 'email' => $user->email]);
-
-            // 4 Просто удаляем, т.к. заметки не имеют реляц. связей
-            $user->notes()->delete();
-
-            // 5 Always delete avatar from storage
-            $user->deleteAvatar(true);
-        });
+        static::observe(UserObserver::class);
     }
+
+    // public function profile()
+    // {
+    //    return $this->hasOne(Profile::class);
+    // }
 
     // OneToMany - один пользователь может добавить несколько статей
     public function articles()
@@ -86,16 +82,6 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
-    }
-
-    /**
-     * Get a non-existing attribute $entity->comment_store_action for html-form.
-     *
-     * @return string
-     */
-    public function getCommentStoreActionAttribute()
-    {
-        return route('comments.store', [$this->getMorphClass(), $this->id]);
     }
 
     // OneToMany - один пользователь может добавить несколько заметок
@@ -138,18 +124,14 @@ class User extends Authenticatable
 
     public function manageFromRequest($request)
     {
+        $this->fillable = array_merge($this->fillable,
+            XField::fields($this->table)->pluck('name')->toArray()
+        );
+
         $data = $request->except(['avatar']);
 
-        if (! empty($data['role'])) {
+        if (! empty($data['role']) and 'owner' == user('role')) {
             $this->role = $data['role'];
-        }
-
-        $x_fields = XField::fields()
-            ->where('extensible', $this->getTable())
-            ->pluck('name');
-
-        foreach ($x_fields as $x_field) {
-            $this->{$x_field} = $request->{$x_field};
         }
 
         return $this->fill($data)
@@ -202,61 +184,26 @@ class User extends Authenticatable
         return $this;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Below is a simplified bundle User->Role->Permission.
-    |--------------------------------------------------------------------------
-    |
-    | Made to reduce unnecessary requests into the database.
-    | In fact, we only need to know the user can or not can Do.
-    | In General, it is necessary to cram in a conf. file and not to be steamed.
-    |
-    */
+    /**
+     * Checks if the user belongs to role.
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $role == $this->role;
+    }
 
     /**
      * Checks if User has access to $privilege.
      * @param string $privilege
      * @return bool
      */
-    public function canDo(string $privilege)
+    public function canDo(string $privilege): bool
     {
-        if ($this->hasRole('owner') and 'production' === env('APP_ENV')) {
-            return true;
-        }
+        // $privileges = CacheFile::fromMap('privileges');
+        $privileges = cache('privileges') ?? Privilege::getModel()->privileges();
 
-        return in_array($privilege, $this->getCachedPrivileges());
-    }
-
-    /**
-     * Checks if the user belongs to role.
-     * @param string $role
-     * @return bool
-     */
-    public function hasRole(string $role)
-    {
-        return $role === $this->role;
-    }
-
-    /**
-     * Get all cached privileges belongs to role.
-     * @return array
-     */
-    protected function getCachedPrivileges()
-    {
-        return cache()->rememberForever('privileges.'.$this->role, function () {
-            return $this->getPrivileges();
-        });
-    }
-
-    /**
-     * Get all privileges belongs to role.
-     * @return array
-     */
-    protected function getPrivileges()
-    {
-        return Privilege::select('privilege')
-            ->where('privileges.'.$this->role, 1)
-            ->pluck('privilege')
-            ->toArray();
+        return $privileges[$privilege][$this->role] ?? false;
     }
 }

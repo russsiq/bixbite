@@ -2,11 +2,12 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\BaseModel;
 use BBCMS\Models\Article;
+use BBCMS\Models\BaseModel;
+
 use BBCMS\Models\Mutators\CategoryMutators;
+use BBCMS\Models\Observers\CategoryObserver;
 use BBCMS\Models\Collections\CategoryCollection;
-use BBCMS\Models\Traits\CacheForgetByKeys;
 
 use BBCMS\Models\Relations\Fileable;
 use BBCMS\Models\Relations\Imageable;
@@ -14,7 +15,6 @@ use BBCMS\Models\Relations\Imageable;
 class Category extends BaseModel
 {
     use CategoryMutators;
-    use CacheForgetByKeys;
     use Fileable, Imageable;
 
     protected $primaryKey = 'id';
@@ -34,12 +34,6 @@ class Category extends BaseModel
         'template',
     ];
 
-    // Очищаем кеш по этим ключам всегда
-    // при нахождении в разделе категорий ад.панели
-    protected $keysToForgetCache = [
-        'navigation_categories', 'categories',
-    ];
-
     /**
      * The "booting" method of the model.
      *
@@ -48,11 +42,7 @@ class Category extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
-        static::deleting(function ($category) {
-            $category->articles()->detach();
-            $category->image()->get()->each->delete();
-        });
+        static::observe(CategoryObserver::class);
     }
 
     public function getRouteKeyName()
@@ -74,28 +64,34 @@ class Category extends BaseModel
     public function getCachedCategories()
     {
         return cache()->rememberForever('categories', function () {
-            return $this->select(['categories.id', 'categories.title', 'categories.slug', 'categories.alt_url', 'categories.parent_id'])
-                    ->withCount(['articles'])
-                    ->orderByRaw('ISNULL(`position`), `position` ASC')
-                    ->get();
+            return $this->select([
+                    'categories.id',
+                    'categories.title',
+                    'categories.slug',
+                    'categories.alt_url',
+                    'categories.parent_id',
+                ])
+                ->orderByRaw('ISNULL(`position`), `position` ASC')
+                ->get();
         });
     }
 
     public function getCachedNavigationCategories()
     {
         return cache()->rememberForever('navigation_categories', function () {
-            return $this->select(['categories.id', 'categories.title', 'categories.slug', 'categories.alt_url', 'categories.parent_id'])
-                    ->withCount(['articles'])
-                    ->where('show_in_menu', 1)
-                    ->orderByRaw('ISNULL(`position`), `position` ASC')
-                    ->get()->nested();
+            return $this->getCachedCategories()->nested();
         });
     }
 
     // return count changed categories
     public function positionReset()
     {
-        return $this->where('parent_id', '>', 0)->orWhere('position', '>', 0)->update(['parent_id' => 0, 'position' => null]);
+        return $this->where('parent_id', '>', 0)
+            ->orWhere('position', '>', 0)
+            ->update([
+                'parent_id' => 0,
+                'position' => null,
+            ]);
     }
 
     public function positionUpdate(object $data)
@@ -113,7 +109,11 @@ class Category extends BaseModel
             $m_order++;
             $this->where('id', $item['id'])->update(['parent_id' => $parent_id, 'position' => $m_order]);
             if (array_key_exists('children', $item)) {
-                $this->_saveList($item['children'], $item['id'], $m_order);
+                $this->_saveList(
+                    $item['children'],
+                    $item['id'],
+                    $m_order
+                );
             }
         }
     }

@@ -1,7 +1,7 @@
 <section class="action_page">
     <div class="action_page__inner">
         <header class="action_page__header">
-            <h2 class="action_page__title">@lang('comments.editing')</h2>
+            <h2 class="action_page__title">@lang('comments.edit_page')</h2>
         </header>
 
         <section class="action_page__content">

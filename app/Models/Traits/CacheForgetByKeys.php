@@ -6,7 +6,7 @@ namespace BBCMS\Models\Traits;
  * Applies in index method admin controller.
  * Use in model prop.
  * protected $keysToForgetCache = [];
- * example: Category::cacheForgetByKeys();
+ * example: $this->cacheForgetByKeys();
  */
 trait CacheForgetByKeys
 {

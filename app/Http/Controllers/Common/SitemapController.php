@@ -98,7 +98,7 @@ class SitemapController
             return view($cache_key, static::{$get}())->render();
         }
 
-        if (static::lastmod() > cache_created($cache_key)) {
+        if (static::lastmod() > \CacheFile::created($cache_key)) {
             cache()->forget($cache_key);
         }
 

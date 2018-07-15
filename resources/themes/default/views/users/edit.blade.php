@@ -58,14 +58,15 @@
     			</div>
     		</div>
 
-            @if ($x_fields)<hr>
+            <hr>
+
+            @if (count($x_fields))
                 @foreach ($x_fields as $x_field)
                     {{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
                     @include('users.partials.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
                 @endforeach
+                <hr>
             @endif
-
-            <hr>
 
     		<div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
     			<label for="password" class="col-sm-4 col-form-label">@lang('auth.password')</label>

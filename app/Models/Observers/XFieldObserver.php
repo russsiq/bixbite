@@ -1,34 +1,35 @@
 <?php
 
+// retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
+
 namespace BBCMS\Models\Observers;
 
 use BBCMS\Models\XField;
+use BBCMS\Models\Traits\CacheForgetByKeys;
 
-use Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
 class XFieldObserver
 {
-    protected $cacheKey = 'x_fields';
+    use CacheForgetByKeys;
+
+    protected $keysToForgetCache = [
+        'x_fields',
+    ];
+
+    // Not used.
+    protected $methodsToForgetCache = [
+        'created', 'updated', 'saved', 'restored', 'deleted'
+    ];
 
     public function creating(XField $x_field)
     {
-        if (Schema::hasColumn($x_field->extensible, $x_field->name)) {
-            return false;
+        if ($this->columnExists($x_field->extensible, $x_field->name)) {
+            return $this->fireColumnExists($x_field->extensible, $x_field->name);
         }
 
         Schema::table($x_field->extensible, function (Blueprint $table) use ($x_field) {
-            // switch (variable) {
-            //     case 'value':
-            //         // code...
-            //         break;
-            //
-            //     default:
-            //         // code...
-            //         break;
-            // }
-
             if ('array' == $x_field->type) {
                 $table->text($x_field->name)->after('id')->nullable();
             } else {
@@ -37,40 +38,84 @@ class XFieldObserver
         });
     }
 
-    public function created(XField $x_field)
+    public function updating(XField $x_field)
     {
-        $this->cacheForget();
-    }
-
-    public function saved(XField $x_field)
-    {
-        $this->cacheForget();
-    }
-
-    public function updated(XField $x_field)
-    {
-        $this->cacheForget();
+        if (! $this->columnExists($table = $x_field->extensible, $column = $x_field->name)) {
+            return $this->fireColumnNotExists($table, $column);
+        }
     }
 
     public function deleting(XField $x_field)
     {
-        if (! Schema::hasColumn($x_field->extensible, $x_field->name)) {
-            return false;
+        if (! $this->columnExists($table = $x_field->extensible, $column = $x_field->name)) {
+            return $this->fireColumnNotExists($table, $column);
         }
 
-        Schema::table($x_field->extensible, function (Blueprint $table) use ($x_field) {
-            $table->dropColumn($x_field->name);
+        Schema::table($table, function (Blueprint $table) use ($column) {
+            $table->dropColumn($column);
         });
+    }
+
+    protected function columnExists(string $table, string $column): bool
+    {
+        return Schema::hasColumn($table, $column);
+    }
+
+    protected function fireColumnExists(string $table, string $column): bool
+    {
+        info(sprintf(
+            'Column `%s` in table `%s` already exists.', $table, $column
+        ));
+
+        return false;
+    }
+
+    protected function fireColumnNotExists(string $table, string $column): bool
+    {
+        info(sprintf(
+            'Column `%s` in table `%s` does not exists.', $table, $column
+        ));
+
+        return false;
+    }
+
+    public function created(XField $x_field)
+    {
+        $this->cacheForgetByKeys();
+
+        // Rebuild the cache.
+        $x_field->fields();
+    }
+
+    public function updated(XField $x_field)
+    {
+        $this->cacheForgetByKeys();
+
+        // Rebuild the cache.
+        $x_field->fields();
+    }
+
+    public function saved(XField $x_field)
+    {
+        $this->cacheForgetByKeys();
+
+        // Rebuild the cache.
+        $x_field->fields();
+    }
+
+    public function restored(XField $x_field)
+    {
+        $this->cacheForgetByKeys();
+
+        // Rebuild the cache.
+        $x_field->fields();
     }
 
     public function deleted(XField $x_field)
     {
-        $this->cacheForget();
-    }
+        $this->cacheForgetByKeys();
 
-    protected function cacheForget()
-    {
-        Cache::forget($this->cacheKey);
-        dump('Кэш очищен - updated');
+        // Rebuild the cache.
+        $x_field->fields();
     }
 }

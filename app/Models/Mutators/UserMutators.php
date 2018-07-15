@@ -6,7 +6,7 @@ trait UserMutators
 {
     public function getProfileAttribute()
     {
-        return action('UsersController@show', $this);
+        return action('UsersController@profile', $this);
     }
 
     public function getUrlAttribute()
@@ -29,22 +29,26 @@ trait UserMutators
         return get_avatar($this->email, $this->attributes['avatar']);
     }
 
-    // public function setRoleAttribute($value)
-    // {
-    //     $this->attributes['role'] = $value ?? 'user';
-    // }
-
     public function setPasswordAttribute($value)
     {
-        // If create new user
+        // If create new user.
         if (empty($this->id) and is_null($value)) {
             throw new \InvalidArgumentException(
-                sprintf('Password must not be empty.')
+                'Password must not be empty.'
             );
         }
 
         if (! is_null($value)) {
             $this->attributes['password'] = bcrypt($value);
         }
+    }
+
+    /**
+     * Get a non-existing attribute $entity->comment_store_action for html-form.
+     * @return string
+     */
+    public function getCommentStoreActionAttribute()
+    {
+        return route('comments.store', [$this->getMorphClass(), $this->id]);
     }
 }

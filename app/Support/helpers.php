@@ -790,58 +790,6 @@ if (! function_exists('parse_ini')) {
     }
 }
 
-// @NB:: need to create CacheFile extends Cache ???
-if (! function_exists('cache_created')) {
-    /**
-     * Get datetime of created cache file by key.
-     * @param  string $key
-     * @return \Carbon\Carbon|null
-     */
-    function cache_created(string $key)
-    {
-        $path = cache_file($key);
-
-        return $path
-            ? \Carbon\Carbon::createFromTimestamp(
-                \File::lastModified($path)
-            ) : null;
-    }
-}
-
-if (! function_exists('cache_expired')) {
-    /**
-     * Get the expiration time from cache file by key.
-     * @param  string $key
-     * @return \Carbon\Carbon|null
-     */
-    function cache_expired(string $key)
-    {
-        $path = cache_file($key);
-
-        return $path
-            ? \Carbon\Carbon::createFromTimestamp(
-                substr(\File::get($path), 0, 10)
-            ) : null;
-    }
-}
-
-if (! function_exists('cache_file')) {
-    /**
-     * Get the cache file by key.
-     * `$hash, $parts, $path` from **\Illuminate\Cache\FileStore**->path($key).
-     * @param  string $key
-     * @return string|null
-     */
-    function cache_file(string $key)
-    {
-        $hash = sha1($key);
-        $parts = array_slice(str_split($hash, 2), 0, 2);
-        $path = cache()->store('file')->getDirectory().DS.implode(DS, $parts).DS.$hash;
-
-        return \File::exists($path) ? $path : null;
-    }
-}
-
 // if (! function_exists('msg')) {
 //     /**
 //      * Generate info / error message.

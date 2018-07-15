@@ -56,7 +56,7 @@
                                         @elseif (count($steps) > $curstep)
                                             <button type="submit" class="btn">{{ __('btn.next') }} &raquo;</button>
                                         @elseif (count($steps) == $curstep)
-                                            <a href="{{ route('admin.dashboard') }}" class="btn">{{ __('btn.continue') }} &raquo;</a>
+                                            <a href="{{ route('dashboard') }}" class="btn">{{ __('btn.continue') }} &raquo;</a>
                                         @endif
                                     </div>
                                 @endif

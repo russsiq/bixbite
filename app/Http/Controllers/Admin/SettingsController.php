@@ -152,7 +152,7 @@ class SettingsController extends AdminController
         $this->model::moduleUpdate($module, $request->all());
 
         return redirect()->route(
-            \Route::has('admin.'.$module->name.'.index') ? 'admin.'.$module->name.'.index' : 'admin.dashboard'
+            \Route::has('admin.'.$module->name.'.index') ? 'admin.'.$module->name.'.index' : 'dashboard'
         )->withStatus('update!');
     }
 }

@@ -2,16 +2,13 @@
 
 namespace BBCMS\Providers;
 
-// use Illuminate\Support\Facades\View;
+use Cache;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-// use Illuminate\Support\Facades\Schema;
-// use Illuminate\Support\Facades\Validator;
-
-// use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 use BBCMS\Support\PageInfo;
+use BBCMS\Support\CacheFile;
 use BBCMS\Support\Factories\WidgetFactory;
 
 class BixbiteServiceProvider extends ServiceProvider
@@ -39,9 +36,7 @@ class BixbiteServiceProvider extends ServiceProvider
         });
 
         Blade::if('role', function (string $environment) {
-            return (
-                auth()->check() and auth()->user()->hasRole($environment)
-            ) ? true : false;
+            return $environment == user('role');
         });
 
         Blade::directive('captcha', function ($expression) {
@@ -51,27 +46,6 @@ class BixbiteServiceProvider extends ServiceProvider
         Blade::directive('widget', function ($expression) {
             return "<?php echo app('widget')->make($expression); ?>";
         });
-
-        // Pagination query string append.
-        // NOT Worked, see to $elements in pagination template.
-        // View::composer('components.pagination', function($view) {
-        //     $view->paginator->appends(request()->except(['page']));
-        // });
-
-        // NOT CHECKED, TO DO. Для капчи это не надо.
-        // 2018-06-21 А почему не надо?
-        // Auth не проверяется. А почему не надо?
-        // Validator::extend('captcha', function ($attribute, $value, $parameters, $validator) {
-        //     if (!auth()->check() and setting('system.captcha_used', true)) {
-        //         if (md5($this->captcha) != session('captcha')) {
-        //             $validator->errors()->add('captcha', __('validation.captcha'));
-        //         }
-        //     }
-        //     return $value == 'foo';
-        // });
-
-        // Schema::defaultStringLength(191); //Solved by increasing StringLength
-        // Blade::component('components.alert', 'alert');
     }
 
     /**
@@ -84,6 +58,14 @@ class BixbiteServiceProvider extends ServiceProvider
         // Only singleton. We only need one copy.
         $this->app->singleton('pageinfo', function () {
             return new PageInfo();
+        });
+
+        // Only singleton. We only need one copy.
+        $this->app->singleton('cachefile', function () {
+            return new CacheFile(
+                Cache::store('file')->getFilesystem(),
+                Cache::store('file')->getDirectory()
+            );
         });
 
         $this->app->bind('widget', function ($app) {

@@ -18,19 +18,14 @@ class UsersController extends SiteController
     }
 
     public function index() {
-        $users = $this->model
-            // ->withCount('comments')
-            // ->with([
-            //     'categories:categories.id,categories.title,categories.slug',
-            //     'user:users.id,users.name',
-            // ])
-            ->latest()
+        $users = $this->model->latest()
             ->paginate(setting('users.paginate', 8));
 
         pageinfo([
             'title' => setting('users.meta_title', __('users.title')),
             'description' => setting('users.meta_description', __('users.title')),
             'keywords' => setting('users.meta_keywords', __('users.title')),
+            'robots' => 'none',
             'url' => route('users.index'),
             'is_index' => true,
         ]);
@@ -38,38 +33,14 @@ class UsersController extends SiteController
         return $this->renderOutput('index', compact('users'));
     }
 
-    public function show(int $id)
-    {
-        $user = $this->model
-            ->where('id', (int) $id)
-            ->withCount([
-                'articles', 'comments', 'posts'
-            ])
-            ->firstOrFail();
-
-        $user->posts = $user->posts_count
-            ? $user->posts()->with([
-                'user:users.id,users.name,users.email,users.avatar'
-            ])->latest()->get()->treated(true) : [];
-
-        pageinfo([
-            'title' => $user->name,
-            'description' => $user->info,
-            'robots' => $user->robots ?? 'all',
-            'url' => $user->profile,
-            'section' => [
-                'title' => setting('users.meta_title', __('users.title')),
-            ],
-            'is_profile' => true,
-            'user' => $user,
-        ]);
-
-        return $this->renderOutput('profile', compact('user'));
-    }
-
     public function edit(User $user)
     {
-        $x_fields = XField::fields()->where('extensible', $user->getTable());
+        $x_fields = XField::fields($user->getTable());
+
+        pageinfo([
+            'title' => __('users.edit_page'),
+            'robots' => 'none',
+        ]);
 
         return $this->renderOutput('edit', compact('user', 'x_fields'));
     }
@@ -91,5 +62,54 @@ class UsersController extends SiteController
     public function destroy(User $user)
     {
         //
+    }
+
+    public function profile(int $id)
+    {
+        $user = $this->model
+            ->where('id', (int) $id)
+            ->withCount([
+                'articles', 'comments', 'posts', 'follows'
+            ])
+            ->firstOrFail();
+
+        $user->posts = $user->posts_count
+            ? $user->posts()->with([
+                'user:users.id,users.name,users.email,users.avatar'
+            ])->latest()->get()->treated(true) : [];
+
+        $x_fields = XField::fields($user->getTable());
+
+        pageinfo([
+            'title' => $user->name,
+            'description' => $user->info,
+            'robots' => $user->robots ?? 'all',
+            'url' => $user->profile,
+            'section' => [
+                'title' => setting('users.meta_title', __('users.title')),
+            ],
+            'is_profile' => true,
+            'user' => $user,
+        ]);
+
+        return $this->renderOutput('profile', compact('user', 'x_fields'));
+    }
+
+    public function follow(User $user)
+    {
+        auth()->user()->follow($user);
+
+        return redirect()->back()->withStatus(
+                __('users.msg.followed')
+            );
+    }
+
+    public function unfollow(User $user)
+    {
+        auth()->user()->unfollow($user);
+
+        return redirect()->back()->withStatus(
+                __('users.msg.unfollowed')
+            );
     }
 }

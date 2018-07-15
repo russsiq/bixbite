@@ -16,6 +16,13 @@ class PrivilegesTableSeeder extends Seeder
             ['privilege' => 'global.admin'],
             ['privilege' => 'global.locked'],
 
+            ['privilege' => 'comment.store'],
+            
+            ['privilege' => 'dashboard'],
+            ['privilege' => 'privileges'],
+            ['privilege' => 'themes'],
+            ['privilege' => 'x_fields'],
+
             // ['privilege' => 'register'],
             // ['privilege' => 'login'],
             // ['privilege' => 'logout'],
@@ -23,14 +30,10 @@ class PrivilegesTableSeeder extends Seeder
             // ['privilege' => 'password.request'],
             // ['privilege' => 'password.reset'],
 
-            ['privilege' => 'articles.index'],
-            ['privilege' => 'articles.tag'],
-            ['privilege' => 'articles.category'],
-            ['privilege' => 'articles.article'],
-
-            ['privilege' => 'comment.store'],
-
-            ['privilege' => 'admin.dashboard.index'],
+            // ['privilege' => 'articles.index'],
+            // ['privilege' => 'articles.tag'],
+            // ['privilege' => 'articles.category'],
+            // ['privilege' => 'articles.article'],
 
             ['privilege' => 'admin.articles.index'],
             ['privilege' => 'admin.articles.view'],
@@ -47,6 +50,9 @@ class PrivilegesTableSeeder extends Seeder
             ['privilege' => 'admin.categories.delete'],
 
             ['privilege' => 'admin.comments.other_update'],
+            
+            ['privilege' => 'admin.settings.modify'],
+            ['privilege' => 'admin.settings.details'],
 
             // ['privilege' => 'admin.files.index'],
             // ['privilege' => 'admin.files.view'],
@@ -55,20 +61,6 @@ class PrivilegesTableSeeder extends Seeder
             // ['privilege' => 'admin.files.other_update'],
             // ['privilege' => 'admin.files.delete'],
 
-            ['privilege' => 'admin.privileges.index'],
-            ['privilege' => 'admin.privileges.view'],
-            ['privilege' => 'admin.privileges.create'],
-            ['privilege' => 'admin.privileges.update'],
-            ['privilege' => 'admin.privileges.other_update'],
-            ['privilege' => 'admin.privileges.delete'],
-
-            ['privilege' => 'admin.themes.index'],
-            ['privilege' => 'admin.themes.view'],
-            ['privilege' => 'admin.themes.create'],
-            ['privilege' => 'admin.themes.update'],
-            ['privilege' => 'admin.themes.other_update'],
-            ['privilege' => 'admin.themes.delete'],
-
             ['privilege' => 'admin.users.index'],
             ['privilege' => 'admin.users.view'],
             ['privilege' => 'admin.users.create'],
@@ -76,10 +68,10 @@ class PrivilegesTableSeeder extends Seeder
             ['privilege' => 'admin.users.other_update'],
             // ['privilege' => 'admin.users.delete'], only owner site or profile
 
-            ['privilege' => 'admin.clear.cache'],
-            ['privilege' => 'admin.clear.config'],
-            ['privilege' => 'admin.clear.route'],
-            ['privilege' => 'admin.clear.view'],
+            // ['privilege' => 'admin.clear.cache'],
+            // ['privilege' => 'admin.clear.config'],
+            // ['privilege' => 'admin.clear.route'],
+            // ['privilege' => 'admin.clear.view'],
         ]);
     }
 }

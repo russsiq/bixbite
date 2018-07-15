@@ -17,7 +17,7 @@
                     <a href="{{ route('admin.users.create') }}" class="btn btn-outline-dark"><i class="fa fa-plus"></i>  @lang('btn.add')</a>
                 @endcan
     			<div class="btn-group d-flex ml-auto">
-                    @can ('admin.privileges.index')
+                    @can ('privileges')
                         <a href="{{ route('admin.privileges.index') }}" title="@lang('privileges')" class="btn btn-outline-dark"><i class="fa fa-user-secret"></i></a>
                     @endcan
                     @can ('x_fields')
