@@ -2,14 +2,14 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\BaseModel;
 use BBCMS\Models\User;
+use BBCMS\Models\BaseModel;
+
 use BBCMS\Models\Mutators\ArticleMutators;
 use BBCMS\Models\Scopes\ArticleScopes;
 
 use BBCMS\Models\Relations\Fileable;
 use BBCMS\Models\Relations\Imageable;
-
 use BBCMS\Models\Relations\Taggable;
 use BBCMS\Models\Relations\Commentable;
 use BBCMS\Models\Relations\Categoryable;

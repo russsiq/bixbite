@@ -3,6 +3,7 @@
 namespace BBCMS\Models;
 
 use BBCMS\Models\BaseModel;
+
 use BBCMS\Models\Mutators\XFieldMutators;
 use BBCMS\Models\Observers\XFieldObserver;
 
@@ -46,7 +47,6 @@ class XField extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
         static::observe(XFieldObserver::class);
     }
 

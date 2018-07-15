@@ -19,7 +19,10 @@ class TemplateRequest extends Request
     public function rules()
     {
         return [
-            'template' => ['required', 'string']
+            'template' => [
+                'required',
+                'string',
+            ]
         ];
     }
 

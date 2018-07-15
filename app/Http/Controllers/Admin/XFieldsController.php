@@ -37,7 +37,7 @@ class XFieldsController extends AdminController
     public function store(XFieldRequest $request)
     {
         $x_field = $this->model->create($request->all());
-        
+
         return $x_field->id
             ? redirect()->route('admin.x_fields.index')->withStatus(sprintf(
                 __('msg.store'), $x_field->name, $x_field->extensible
@@ -45,11 +45,6 @@ class XFieldsController extends AdminController
             : redirect()->back()->withInput()->withErrors(sprintf(
                 __('msg.not_creating'), $x_field->name, $x_field->extensible
             ));
-    }
-
-    public function show(XField $x_field)
-    {
-        // Except.
     }
 
     public function edit(XField $x_field)

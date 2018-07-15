@@ -15,9 +15,6 @@ class PrivilegesController extends AdminController
 
     public function __construct(Privilege  $model)
     {
-        // Always flush cache. Otherwise why go to this section?
-        // $model->cacheForgetByKeys();
-        
         parent::__construct();
         $this->authorizeResource(Privilege::class);
 

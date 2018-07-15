@@ -30,14 +30,20 @@
             @can ('admin.categories.update', $item)
                 <a href="{{ route('admin.categories.edit', $item) }}" class="btn btn-link"><i class="fa fa-pencil"></i></a>
             @endcan
-            @can ('admin.categories.delete', $item)
-                <button type="submit" class="btn btn-link"
-                    onclick="return confirm('@lang('msg.sure')');"
-                    formaction="{{ route('admin.categories.delete', $item) }}"
-                    name="_method" value="DELETE">
-                    <i class="fa fa-trash-o text-danger"></i>
-                </button>
-            @endcan
+            @if (! $item->articles_count)
+                @can ('admin.categories.delete', $item)
+                    <button type="submit" class="btn btn-link"
+                        onclick="return confirm('@lang('msg.sure')');"
+                        formaction="{{ route('admin.categories.delete', $item) }}"
+                        name="_method" value="DELETE">
+                        <i class="fa fa-trash-o text-danger"></i>
+                    </button>
+                @endcan
+            @else
+                <button type="button" class="btn btn-link"
+                    disabled>
+                    <i class="fa fa-trash-o text-muted"></i>
+            @endif
         </div>
     </div>
 

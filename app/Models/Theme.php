@@ -2,15 +2,12 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\BaseModel;
-use BBCMS\Models\Setting;
-
-class Theme // extends BaseModel
+class Theme
 {
     /**
      * Creates a tree-structured array of directories and files from a given root folder.
      *
-     * Gleaned from: http://stackoverflow.com/questions/952263/deep-recursive-array-of-directory-structure-in-php
+     * Cleaned from: http://stackoverflow.com/questions/952263/deep-recursive-array-of-directory-structure-in-php
      *
      * @param string $path
      * @param string $regex
@@ -45,38 +42,3 @@ class Theme // extends BaseModel
         return array_merge($dirs, $files);
     }
 }
-
-// $path = theme_path('views');
-// $iterator = new \RecursiveIteratorIterator(
-//     new \RecursiveDirectoryIterator($path,
-//         \RecursiveDirectoryIterator::SKIP_DOTS),
-//     \RecursiveIteratorIterator::SELF_FIRST);
-//
-// // $file_tree = [];
-// // foreach($iterator as $object) {
-// //     if ($object->isDir()) {
-// //         // array_set($file_tree[],
-// //         //     str_replace([$path, DS], ['', '.'], $object->getPathname()),
-// //         //     select_file($object->getPathname(), '*.blade.php')
-// //         // );
-// //         // $file_tree[] = [
-// //         //     str_replace([$path, DS], ['', '.'], $object->getPathname())
-// //         //     =>
-// //         //     select_file($object->getPathname(), '*.blade.php')
-// //         // ];
-// //
-// //         // $files = [];
-// //         // $dir = new \DirectoryIterator($object->getPathname());
-// //         // foreach ($dir as $file) {
-// //         //     if ($file->isFile()) {
-// //         //         $files[$file->getFilename()] = $file->getFilename();
-// //         //     }
-// //         // }
-// //         // $file_tree[] = [$object->getPathname() => $files];
-// //
-// //         $file_tree[] = [$object->getPathname() => \File::allFiles($object->getPathname())];
-// //     }
-// // }
-// // $file_tree[] = [$path => \File::allFiles($path)]; //  select_file($path, '*.blade.php')
-// dd(collect  ($file_tree)->collapse());
-// dd(array_collapse ($file_tree));

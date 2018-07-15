@@ -12,6 +12,9 @@
 	<div class="card card-table">
 		<div class="card-header d-flex d-print-none">
             <a href="{{ route('admin.x_fields.create') }}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> @lang('btn.create')</a>
+            <div class="btn-group ml-auto">
+				<a href="{{ route('system_care.clearcache', 'x_fields') }}" title="@lang('clear')" class="btn btn-outline-dark"><i class="fa fa-recycle"></i></a>
+			</div>
 			<div class="btn-group ml-auto">
 				<button type="button" title="@lang('btn.print')" class="btn btn-outline-dark" onclick="window.print();"><i class="fa fa-print"></i></button>
 			</div>

@@ -9,7 +9,7 @@
     </li>
 @else
     <li class="list-unstyled" itemprop="name">
-        <a href="{{ $item->url }}" class="dropdown-item" itemprop="url">{{ $item->title }} [{{ $item->articles_count }}]</a>
+        <a href="{{ $item->url }}" class="dropdown-item" itemprop="url">{{ $item->title }}</a>
         @isset($item->children)
             <ul style="-webkit-padding-start:10px;">
                 @each('components.partials.categories', $item->children, 'item')
