@@ -4,9 +4,10 @@
 @endphp
 
 {{-- Если у категории есть прикрепленное изображение, либо информация, либо она содержит подкатегории, то отображаем секцию. --}}
-@if ($category->image or $category->info or $sub_categories->count())
+{{-- $category->image - лишний запрос, если $category->image_id == null --}}
+@if (($category->image_id and $category->image) or $category->info or $sub_categories->count())
     <section class="archive_page__second">
-        @if ($category->image)
+        @if ($category->image_id and $category->image)
             <figure class="">
                 <img src="{{ $category->image->url }}" alt="{{ $category->title }}" />
             </figure>
