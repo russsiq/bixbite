@@ -4,9 +4,16 @@ namespace BBCMS\Models\Observers;
 
 use BBCMS\Models\Article;
 use BBCMS\Models\XField;
+use BBCMS\Models\Traits\CacheForgetByKeys;
 
 class ArticleObserver
 {
+    use CacheForgetByKeys;
+
+    protected $keysToForgetCache = [
+        //
+    ];
+
     public function retrieved(Article $article)
     {
         $article->fillable(array_merge(
@@ -27,6 +34,14 @@ class ArticleObserver
             // Attaching.
             $this->attachImage($article);
         }
+
+        // // Clear and rebuild the cache.
+        // $this->addToCacheKeys([
+        //     $article->id.'-tags' => 'tags',
+        //     $article->id.'-categories' => 'categories',
+        // ]);
+        //
+        // $this->cacheForgetByKeys($article);
     }
 
     public function updating(Article $article)
@@ -43,6 +58,14 @@ class ArticleObserver
 
         // Deleting always.
         $this->deleteImage($article);
+
+        // // Clear and rebuild the cache.
+        // $this->addToCacheKeys([
+        //     $article->id.'-tags' => 'tags',
+        //     $article->id.'-categories' => 'categories',
+        // ]);
+        //
+        // $this->cacheForgetByKeys($article);
     }
 
     protected function attachImage(Article $article)

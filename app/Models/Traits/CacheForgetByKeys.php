@@ -17,7 +17,7 @@ trait CacheForgetByKeys
     /**
      * Clearing cache by keys.
      */
-    public function cacheForgetByKeys($entity = null)
+    protected function cacheForgetByKeys($entity = null)
     {
         $keys = $this->keysToForgetCache;
 
@@ -31,5 +31,15 @@ trait CacheForgetByKeys
                 }
             }
         }
+    }
+
+    /**
+     * Adding new keys to forget cache by keys.
+     */
+    protected function addToCacheKeys(array $keys)
+    {
+        $this->keysToForgetCache = array_merge(
+            $this->keysToForgetCache, $keys
+        );
     }
 }

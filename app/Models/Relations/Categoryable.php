@@ -11,6 +11,13 @@ trait Categoryable
         return $this->morphToMany(Category::class, 'categoryable', 'categoryables', 'categoryable_id', 'category_id');
     }
 
+    // public function getCategoriesAttribute()
+    // {
+    //     return cache()->rememberForever($this->id.'-categories', function () {
+    //         return $this->categories()->get();
+    //     });
+    // }
+
     /**
      * Get a attributes to first category
      *
