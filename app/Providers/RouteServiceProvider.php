@@ -24,9 +24,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::pattern('id', '^[0-9]*$');
-        Route::pattern('article', '^[\w-0-9]+$');
-        Route::pattern('tag', '^[\w-0-9\+%\s]+$');
-        Route::pattern('category', '^[\w-0-9\/]+$');
+        Route::pattern('article', '^[\w\-0-9]+$');
+        Route::pattern('tag', '^[\w\-0-9\+\%\s]+$');
+        Route::pattern('category', '^[\w\-0-9\/]+$');
         Route::pattern('commentable_id', '^[0-9]*$');
         Route::pattern('commentable_type', '^[a-zA-Z_]+$');
 

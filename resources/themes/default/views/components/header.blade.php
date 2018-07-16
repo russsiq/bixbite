@@ -4,7 +4,7 @@
 
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-            @each('components.partials.categories', pageinfo('navigation_categories'), 'item')
+            @each('components.partials.navigation', pageinfo('navigation'), 'item')
         </ul>
             <!-- Authentication Links -->
         <ul class="navbar-nav ml-auto">

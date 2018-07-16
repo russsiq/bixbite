@@ -25,7 +25,7 @@ class UsersController extends SiteController
             'title' => setting('users.meta_title', __('users.title')),
             'description' => setting('users.meta_description', __('users.title')),
             'keywords' => setting('users.meta_keywords', __('users.title')),
-            'robots' => 'none',
+            'robots' => 'noindex, follow',
             'url' => route('users.index'),
             'is_index' => true,
         ]);
@@ -39,32 +39,22 @@ class UsersController extends SiteController
 
         pageinfo([
             'title' => __('users.edit_page'),
-            'robots' => 'none',
+            'robots' => 'noindex, follow',
         ]);
 
         return $this->renderOutput('edit', compact('user', 'x_fields'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \BBCMS\Http\Requests\Admin\UserRequest  $request
-     * @param  \BBCMS\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(UserRequest $request, User $user)
     {
-        $user->manageFromRequest($request);
+        $user->fill($request->all())->save();
 
-        return redirect()->route('profile', $user)->withStatus(__('common.msg.complete'));
+        return redirect()->route('profile', $user)->withStatus(
+            __('users.msg.profile_updated')
+        );
     }
 
-    public function destroy(User $user)
-    {
-        //
-    }
-
-    public function profile(int $id)
+    public function profile($id)
     {
         $user = $this->model
             ->where('id', (int) $id)
@@ -89,6 +79,7 @@ class UsersController extends SiteController
                 'title' => setting('users.meta_title', __('users.title')),
             ],
             'is_profile' => true,
+            'is_own_profile' => $user->id === user('id'),
             'user' => $user,
         ]);
 

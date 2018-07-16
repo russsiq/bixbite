@@ -22,7 +22,6 @@ class UserRequest extends Request
             '_token',
             '_method',
             'submit',
-            'updated_at',
         ]);
 
         if (empty($input['password'])) {
@@ -35,6 +34,11 @@ class UserRequest extends Request
 
         if (! empty($input['where_from'])) {
             $input['where_from'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['where_from']);
+        }
+
+        // Always mark as `null` to remove old avatar.
+        if (! empty($input['delete_avatar'])) {
+            $input['avatar'] = null;
         }
 
         // !!! ДОБАВИТЬ ВСЕ ПРОВЕРКИ И САНИТАЦИИ - ЭТО Э ПОЛЬЗОВАТЕЛИ !!!

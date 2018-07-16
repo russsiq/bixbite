@@ -10,15 +10,13 @@ class PrivilegeObserver
     use CacheForgetByKeys;
 
     protected $keysToForgetCache = [
-        'privileges', 'roles',
+        'privileges' => 'privileges',
+        'roles' => 'roles',
     ];
 
     public function tableUpdated(Privilege $privilege)
     {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $privilege->roles();
-        $privilege->privileges();
+        // Clear and rebuild the cache.
+        $this->cacheForgetByKeys($privilege);
     }
 }

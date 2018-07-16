@@ -15,18 +15,9 @@ class CommentsController extends SiteController
     {
         parent::__construct();
         $this->middleware('throttle:5,1')->only('store');
+        $this->authorizeResource(Comment::class);
 
         $this->model = $model;
-    }
-
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(CommentStoreRequest $request)
@@ -36,7 +27,6 @@ class CommentsController extends SiteController
 
         // Not save this data in the database because we already
         // have $user->id. This data is for display only.
-        // And -1 sql query
         if ($user = user()) {
             if ($comment->user_id === $entity->user_id) {
                 $comment->update(['is_approved' => true]);
@@ -58,11 +48,6 @@ class CommentsController extends SiteController
         return redirect()->to(url()->previous().'#comment-'.$comment->id)->with('comment_add_success', __('comments.msg.add_success'));
     }
 
-    public function show(Comment $comment)
-    {
-        // return view($this->template . '.show', compact('comment', 'entity'))->render();
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -71,19 +56,19 @@ class CommentsController extends SiteController
      */
     public function edit(Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         if (request()->ajax()) {
             return response()->json([
                 'status' => true,
                 'content' => $comment->content,
             ], 200);
-        } else {
-            pageinfo([
-                'title' => __('comments.edit_page'),
-                'robots' => 'none',
-            ]);
         }
+
+        pageinfo([
+            'title' => __('comments.edit_page'),
+            'robots' => 'noindex,follow',
+        ]);
 
         return $this->renderOutput('edit', compact('comment'));
     }
@@ -97,7 +82,7 @@ class CommentsController extends SiteController
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         $comment->update($request->only(['content']));
 
@@ -112,7 +97,7 @@ class CommentsController extends SiteController
      */
     public function destroy(Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         $url = $comment->commentable->url;
 

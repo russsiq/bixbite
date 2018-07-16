@@ -20,46 +20,50 @@
 			</div>
 		</div>
 
-        <!-- Main content form -->
-		<form action="" method="post" class="form-horizontal">
-			@csrf
+        @empty ($x_fields->count())
+            @lang('common.msg.not_found')
+        @else
+            <!-- Main content form -->
+    		<form action="" method="post" class="form-horizontal">
+    			@csrf
 
-            <!-- List of x_fields: BEGIN -->
-            <div class="card-body table-responsive">
-				<table class="table table-sm">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>@lang('extensible')</th>
-							<th>@lang('name')</th>
-							<th>@lang('title')</th>
-							<th>@lang('type')</th>
-							<th>@lang('action')</th>
-						</tr>
-					</thead>
-					<tbody>
-					@foreach($x_fields as $k => $x_field)
-						<tr>
-							<td>{{ $x_field->id }}</td>
-							<td>{{ $x_field->extensible }}</td>
-							<td><a href="{{ route('admin.x_fields.edit', $x_field) }}" class="">{{ $x_field->name }}</a></td>
-							<td>{{ $x_field->title }}</td>
-							<td>{{ $x_field->type }}</td>
-							<td class="text-right">
-                                <div class="btn-group">
-                                    <a href="{{ route('admin.x_fields.edit', $x_field) }}" title="@lang('btn.edit')" class="btn btn-link"><i class="fa fa-pencil"></i></a>
-                                    <button type="submit" title="@lang('btn.delete')" class="btn btn-link text-danger"
-                                        onclick="return confirm('@lang('msg.sure')');"
-                                        formaction="{{ route('admin.x_fields.delete', $x_field) }}"
-                                        name="_method" value="DELETE"
-                                        ><i class="fa fa-trash-o"></i></button>
-                                </div>
-                            </td>
-						</tr>
-					@endforeach
-					</tbody>
-				</table>
-			</div>
-		</form>
-	</div>
+                <!-- List of x_fields: BEGIN -->
+                <div class="card-body table-responsive">
+    				<table class="table table-sm">
+    					<thead>
+    						<tr>
+    							<th>#</th>
+    							<th>@lang('extensible')</th>
+    							<th>@lang('name')</th>
+    							<th>@lang('title')</th>
+    							<th>@lang('type')</th>
+    							<th>@lang('action')</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+    					@foreach($x_fields as $k => $x_field)
+    						<tr>
+    							<td>{{ $x_field->id }}</td>
+    							<td>{{ $x_field->extensible }}</td>
+    							<td><a href="{{ route('admin.x_fields.edit', $x_field) }}" class="">{{ $x_field->name }}</a></td>
+    							<td>{{ $x_field->title }}</td>
+    							<td>{{ $x_field->type }}</td>
+    							<td class="text-right">
+                                    <div class="btn-group">
+                                        <a href="{{ route('admin.x_fields.edit', $x_field) }}" title="@lang('btn.edit')" class="btn btn-link"><i class="fa fa-pencil"></i></a>
+                                        <button type="submit" title="@lang('btn.delete')" class="btn btn-link text-danger"
+                                            onclick="return confirm('@lang('msg.sure')');"
+                                            formaction="{{ route('admin.x_fields.delete', $x_field) }}"
+                                            name="_method" value="DELETE"
+                                            ><i class="fa fa-trash-o"></i></button>
+                                    </div>
+                                </td>
+    						</tr>
+    					@endforeach
+    					</tbody>
+    				</table>
+    			</div>
+    		</form>
+        @endif
+    </div>
 @endsection

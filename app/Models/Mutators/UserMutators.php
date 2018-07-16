@@ -6,7 +6,7 @@ trait UserMutators
 {
     public function getProfileAttribute()
     {
-        return action('UsersController@profile', $this);
+        return route('profile', $this);
     }
 
     public function getUrlAttribute()
@@ -29,18 +29,15 @@ trait UserMutators
         return get_avatar($this->email, $this->attributes['avatar']);
     }
 
+    // Role is guarded, but F12 and final. Remember about safety.
+    public function setRoleAttribute($value)
+    {
+        $this->attributes['role'] = ('owner' == user('role')) ? $value : 'user';
+    }
+
     public function setPasswordAttribute($value)
     {
-        // If create new user.
-        if (empty($this->id) and is_null($value)) {
-            throw new \InvalidArgumentException(
-                'Password must not be empty.'
-            );
-        }
-
-        if (! is_null($value)) {
-            $this->attributes['password'] = bcrypt($value);
-        }
+        $this->attributes['password'] = bcrypt($value);
     }
 
     /**

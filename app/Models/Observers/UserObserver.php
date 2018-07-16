@@ -1,21 +1,45 @@
 <?php
 
 // retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
+// $original = $user->getOriginal();
+// $dirty = $user->getDirty();
 
 namespace BBCMS\Models\Observers;
 
 use BBCMS\Models\User;
+use BBCMS\Models\XField;
+use Illuminate\Http\UploadedFile;
 
 class UserObserver
 {
-    public function creating(User $user)
+    public function retrieved(User $user)
     {
+        $user->fillable(array_merge(
+            $user->getFillable(),
+            XField::fields($user->getTable())->pluck('name')->toArray()
+        ));
+    }
 
+    public function saving(User $user)
+    {
+        //  dd($user);
     }
 
     public function updating(User $user)
     {
-        // dd($user);
+        $dirty = $user->getDirty();
+
+        // Set new or delete old user avatar.
+        if (array_key_exists('avatar', $dirty)) {
+            // First, we get avatar.
+            $avatar = $dirty['avatar'] ?? null;
+            // Deleting always.
+            $this->deleteAvatar($user);
+            // Attaching.
+            if ($avatar instanceof UploadedFile and $avatar->isValid()) {
+                $this->attachAvatar($user, $avatar);
+            }
+        }
     }
 
     public function deleting(User $user)
@@ -36,6 +60,41 @@ class UserObserver
         $user->notes()->delete();
 
         // 5 Всегда удаляем аватар пользователя.
-        $user->deleteAvatar(true);
+        $this->deleteAvatar($user);
+    }
+
+    protected function attachAvatar(User $user, UploadedFile $avatar)
+    {
+        // Path to folder avatars for store.
+        $path = setting('users.avatar_path', 'uploads'.DS.'avatars');
+
+        // Formation of avatar file name.
+        [$width, $height] = getimagesize($avatar->getRealPath());
+        $extension = $avatar->getClientOriginalExtension();
+        $filename = $user->id.'_'.$width.'x'.$height.'.'.$extension;
+
+        // Storage file.
+        $avatar->storeAs($path, $filename);
+
+        // Atach to model.
+        $user->avatar = $filename;
+    }
+
+    protected function deleteAvatar(User $user)
+    {
+        // Path to folder avatars for store.
+        $path = app()->basePath(
+            setting('users.avatar_path', 'uploads'.DS.'avatars').DS
+        );
+
+        // Get old user avatar file name.
+        $avatar = $user->getOriginal('avatar') ?? null;
+
+        // Check and delete, if user already has an avatar.
+        if ($avatar and is_file($path.$avatar)) {
+            unlink($path.$avatar);
+        }
+        // ???.
+        $user->avatar = null;
     }
 }

@@ -29,6 +29,7 @@ class TagsController extends SiteController
             'title' => setting('tags.meta_title', 'Tags'),
             'description' => setting('tags.meta_description', 'Tags'),
             'keywords' => setting('tags.meta_keywords', 'tags'),
+            'robots' => 'noindex, follow',
             'url' => route('tags.index'),
             'is_index' => true,
         ]);

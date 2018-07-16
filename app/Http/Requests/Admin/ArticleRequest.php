@@ -19,7 +19,11 @@ class ArticleRequest extends Request
 
     public function sanitize()
     {
-        $input = $this->except(['_token', '_method', 'submit']);
+        $input = $this->except([
+            '_token',
+            '_method',
+            'submit',
+        ]);
 
         $input['user_id'] = $this->article->user_id ?? user('id');
 

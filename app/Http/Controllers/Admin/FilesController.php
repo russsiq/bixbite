@@ -125,7 +125,11 @@ class FilesController extends AdminController
     {
         return $this->renderOutput('edit', [
             'file' => $file,
-            'articles' => Article::where('user_id', user('id'))->latest()->get() ?? [],
+            'articles' => Article::when(
+                'owner' != user('role'), function ($query) {
+                    $query->where('user_id', user('id'));
+                })
+                ->latest()->get() ?? [],
         ]);
     }
 

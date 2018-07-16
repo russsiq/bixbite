@@ -78,7 +78,7 @@ class Category extends BaseModel
 
     public function getCachedNavigationCategories()
     {
-        return cache()->rememberForever('navigation_categories', function () {
+        return cache()->rememberForever('navigation', function () {
             return $this->getCachedCategories()->nested();
         });
     }

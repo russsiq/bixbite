@@ -86,10 +86,9 @@ class RegisterController extends SiteController
             'email' => $data['email'],
             'password' => $data['password'],
             'last_ip' => request()->ip(),
+            // Only 'user'.
+            'role' => 'user',
         ]);
-
-        $user->role = 'user'; // Only 'user'. Remember about safety
-        $user->save();
 
         return $user;
     }

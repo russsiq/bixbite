@@ -42,7 +42,7 @@ class CommentsController extends AdminController
      */
     public function edit(Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         if (request()->ajax()) {
             return response()->json([
@@ -65,7 +65,7 @@ class CommentsController extends AdminController
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         $comment->update($request->only(['content']));
 
@@ -82,7 +82,7 @@ class CommentsController extends AdminController
      */
     public function destroy(Comment $comment)
     {
-        $this->authorize($this->model);
+        $this->authorize($comment);
 
         $comment->delete();
 

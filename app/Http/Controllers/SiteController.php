@@ -28,7 +28,7 @@ class SiteController extends BaseController
     {
         pageinfo([
             'categories' => $this->getCategories(),
-            'navigation_categories' => $this->makeNavigation(),
+            'navigation' => $this->makeNavigation(),
         ]);
 
         if (view()->exists($this->template) and view()->exists($this->template . '.'. $template)) {

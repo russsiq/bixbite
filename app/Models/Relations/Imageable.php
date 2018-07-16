@@ -3,7 +3,6 @@
 namespace BBCMS\Models\Relations;
 
 use BBCMS\Models\File;
-// use BBCMS\Models\Image;
 
 trait Imageable
 {

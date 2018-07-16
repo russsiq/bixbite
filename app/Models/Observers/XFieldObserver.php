@@ -1,6 +1,7 @@
 <?php
 
 // retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
+// Mass assigned not Observed.
 
 namespace BBCMS\Models\Observers;
 
@@ -15,7 +16,7 @@ class XFieldObserver
     use CacheForgetByKeys;
 
     protected $keysToForgetCache = [
-        'x_fields',
+        'x_fields' => 'fields',
     ];
 
     // Not used.
@@ -79,43 +80,15 @@ class XFieldObserver
         return false;
     }
 
-    public function created(XField $x_field)
-    {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $x_field->fields();
-    }
-
-    public function updated(XField $x_field)
-    {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $x_field->fields();
-    }
-
     public function saved(XField $x_field)
     {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $x_field->fields();
-    }
-
-    public function restored(XField $x_field)
-    {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $x_field->fields();
+        // Clear and rebuild the cache.
+        $this->cacheForgetByKeys($x_field);
     }
 
     public function deleted(XField $x_field)
     {
-        $this->cacheForgetByKeys();
-
-        // Rebuild the cache.
-        $x_field->fields();
+        // Clear and rebuild the cache.
+        $this->cacheForgetByKeys($x_field);
     }
 }

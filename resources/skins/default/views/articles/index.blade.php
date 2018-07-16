@@ -9,65 +9,6 @@
 @endsection
 
 @section('mainblock')
-    	{{-- <!-- Filter form: BEGIN -->
-        <form id="articles_filter" name="filters_criteria" action="{{ route('admin.articles.filter') }}" method="post" accept-charset="UTF-8" class="collapse">
-            @csrf
-            <div class="card ">
-                <div class="card-header"><i class="fa fa-filter"></i> Фильтр элементов</div>
-		        <div class="card-body">
-                    <div class="form-group has-float-label">
-                        <div class="input-group">
-                            <label>Заголовок</label>
-                            <input type="text" name="f[title]" value="{{ $f['title'] ?? '' }}" required class="form-control" />
-                            <div class="input-group-append">
-                                <button type="button" onclick="return confirm('shure') ? this.closest('.form-group').remove() : false;" class="btn btn-outline-primary">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group has-float-label">
-                        <div class="input-group">
-                            <label>Добавиь фильтр</label>
-                            <select class="form-control">
-                                @foreach ($filters as $key => $filter)
-                                    <option value="{{ $filter }}">@lang(''.$filter)</option>
-                                @endforeach
-							</select>
-                            <div class="input-group-append">
-                                <button type="button" data-toggle="dropdown" class="btn btn-outline-primary dropdown-toggle">Критерий</button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#contains" class="dropdown-item pt-1 pb-1">Contains</a>
-                                    <a href="#its_equal" class="dropdown-item pt-1 pb-1">It's equal</a>
-                                    <a href="#greather_than" class="dropdown-item pt-1 pb-1">Greather than &gt;</a>
-                                    <a href="#less_than" class="dropdown-item pt-1 pb-1">Less than &lt; </a>
-                                    <div role="separator" class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item pt-1 pb-1">Anything</a>
-                                </div>
-                            </div>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-primary">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group d-flex">
-						<button type="submit" class="mr-auto btn btn-outline-primary">@lang('btn.apply')</button>
-
-                        <button type="button" class="btn btn-outline-secondary" data-content="Используйте опреторы сравнения." onmouseover="$(this).popover();">
-                            <i class="fa fa-question"></i>
-                        </button>
-					</div>
-				</div>
-    		</div>
-        </form>
-    	<!-- Filter form: END --> --}}
-
 	<div class="card card-table">
         <div class="card-header d-flex d-print-none">
             @can ('admin.articles.create')

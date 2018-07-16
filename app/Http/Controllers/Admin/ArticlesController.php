@@ -31,11 +31,10 @@ class ArticlesController extends AdminController
 
     public function index()
     {
-        // Если название метода контроллера совпадает с названием метода политики
         $this->authorize($this->model);
 
         $articles = $this->model
-            ->withCount('comments')
+            ->withCount(['comments'])
             ->with([
                 'categories:categories.id,categories.title,categories.slug',
                 'user:users.id,users.name',
@@ -43,20 +42,7 @@ class ArticlesController extends AdminController
             ->orderBy('id', 'desc')
             ->paginate(setting('articles.paginate', 8));
 
-        $f = $filters = [];
-        // // 1 Get
-        // $f = request()->get('f');
-        // // 2 Available attribute types.
-        // $types = ['integer', 'string', 'boolean', 'date', 'datetime', 'timestamp'];
-        // // 3 Get all attributes from first row in model with $appends attributes.
-        // $attributes = array_keys($this->model->first()->attributesToArray());
-        // // 3 Create available criteria of filters.
-        // $filters = [];
-        // foreach ($attributes as $attribute)
-        //     if ($this->model->hasCast($attribute, $types))
-        //         $filters[] = $attribute;
-
-        return $this->renderOutput('index', compact('articles', 'filters', 'f'));
+        return $this->renderOutput('index', compact('articles'));
     }
 
     public function create()
@@ -77,30 +63,12 @@ class ArticlesController extends AdminController
 
     public function store(ArticleRequest $request)
     {
-        $article = $this->model->fill($request->all());
+        $article = $this->model->create($request->all());
 
-        foreach ($this->x_fields->pluck('name') as $x_field) {
-            $article->{$x_field} = $request->{$x_field};
-        }
-
-        $article->save();
-
-        // Image.
-        if ($request->image_id) {
-            // Get related Model.
-            $image = $article->files()->getRelated();
-            // Create new acosiation. associate($request->image_id)
-            $image->whereId($request->image_id)->update([
-                'attachment_type' => $article->getMorphClass(),
-                'attachment_id' => $article->id
-            ]);
-        }
-
+        // Categories.
         $article->categories()->sync($request->categories);
 
-        // Tags. Always synchronise !!!
-        // Deleted tags with empty relations
-        // Creat new tag, if not exists
+        // Tags. Creat new tag, if not exists.
         $this->tags->synchronise($request->tags, $article);
 
         return redirect()->route('admin.articles.index')->withStatus(sprintf(
@@ -130,36 +98,14 @@ class ArticlesController extends AdminController
 
     public function update(ArticleRequest $request, Article $article)
     {
-        foreach ($this->x_fields->pluck('name') as $x_field) {
-            $article->{$x_field} = $request->{$x_field};
-        }
-
         $article->update($request->all());
-
-        // Image. Only if empty image_id, then keep previos image_id.
-        if ($request->image_id) {
-            // Get related Model.
-            $image = $article->files()->getRelated();
-            // Delete acosiation with old. dissociate($request->image_id)
-            if ($article->image_id) {
-                $image->whereId($article->image_id)->update([
-                    'attachment_type' => null,
-                    'attachment_id' => null
-                ]);
-            }
-            // Create new acosiation. associate($request->image_id)
-            $image->whereId($request->image_id)->update([
-                'attachment_type' => $article->getMorphClass(),
-                'attachment_id' => $article->id
-            ]);
-        }
 
         // Categories. Only if empty category, then keep previos category.
         if ($request->categories) {
             $article->categories()->sync($request->categories);
         }
 
-        // Tags. Always sync !!! Deleted tags with empty relations.
+        // Tags. Deleting tags with empty relations.
         $article->tags()->getModel()->synchronise($request->tags, $article);
 
         return redirect()->route('admin.articles.index')->withStatus(sprintf(

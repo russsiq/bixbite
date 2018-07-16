@@ -15,12 +15,15 @@
                 <a href="{{ route('admin.privileges.create') }}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> @lang('btn.create')</a>
             @endcan
             <div class="btn-group d-flex ml-auto">
-                @can ('admin.xfields.modify')
-                    <a href="{{-- route('admin.xfields.module', 'categories') --}}" title="@lang('btn.add_xfield')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
-                @endcan
-                @can ('admin.settings.details')
-                    <a href="{{ route('admin.settings.module', 'categories') }}" title="@lang('settings')" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></a>
-                @endcan
+                {{-- @can ('admin.xfields.modify')
+                    <a href="{{ route('admin.xfields.module', 'privileges') }}" title="@lang('btn.add_xfield')" class="btn btn-outline-dark"><span class="as-icon">χφ</span></a>
+                @endcan --}}
+                @role ('owner')
+                    <a href="{{ route('system_care.clearcache', 'roles|privileges') }}" title="@lang('clear')" class="btn btn-outline-dark"><i class="fa fa-recycle"></i></a>
+                @endrole
+                {{-- @can ('admin.settings.details')
+                    <a href="{{ route('admin.settings.module', 'privileges') }}" title="@lang('settings')" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></a>
+                @endcan --}}
             </div>
             <div class="btn-group d-flex ml-auto">{{--  --}}</div>
         </div>

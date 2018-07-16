@@ -59,7 +59,7 @@ class UsersController extends AdminController
      */
     public function store(UserRequest $request)
     {
-        $this->model->manageFromRequest($request);
+        $this->model->fill($request->all())->save();
 
         return redirect()->route('admin.users.index')->withStatus('store!');
     }
@@ -99,7 +99,7 @@ class UsersController extends AdminController
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->manageFromRequest($request);
+        $user->fill($request->all())->save();
 
         return redirect()->route('admin.users.index')->withStatus('Update!');
     }

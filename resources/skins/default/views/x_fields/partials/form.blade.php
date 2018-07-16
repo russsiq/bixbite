@@ -1,3 +1,4 @@
+@if (empty($x_field->id))
 <div class="card card-default">
 	<div class="card-header"><i class="fa fa-th-list"></i> @lang('legend.main')</div>
 	<div class="card-body">
@@ -23,7 +24,7 @@
 		</div>
 
 		<div class="form-group row {{ $errors->has('type') ? ' has-error' : '' }}">
-			<label class="col-sm-7 control-label">@lang('type') <small class="form-text text-muted">@lang('type#descr')</small></label>
+			<label class="col-sm-7 control-label">@lang('type')</label>
 			<div class="col-sm-5">
 				<select name="type" class="form-control" required>
 					@foreach($field_types as $k => $item)
@@ -50,6 +51,7 @@
 		</div>
 	</div>
 </div>
+@endif
 
 <div class="card card-default">
 	<div class="card-header"><i class="fa fa-th-list"></i> @lang('legend.display')</div>

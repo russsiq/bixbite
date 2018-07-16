@@ -17,7 +17,7 @@ class CommentPolicy
 
     public function view(User $user, Comment $comment)
     {
-        return 'owner' == $user->role or $user->id === $comment->user_id;
+        return 'owner' == $user->hasRole('role') or $user->id == $comment->user_id;
     }
 
     public function create(User $user)
@@ -27,7 +27,7 @@ class CommentPolicy
 
     public function update(User $user, Comment $comment)
     {
-        return 'owner' == $user->role or $user->id === $comment->user_id;
+        return 'owner' == $user->hasRole('role') or $user->id == $comment->user_id;
     }
 
     public function otherUpdate(User $user)
@@ -37,6 +37,6 @@ class CommentPolicy
 
     public function delete(User $user, Comment $comment)
     {
-        return 'owner' == $user->role or $user->id === $comment->user_id;
+        return ('owner' == $user->hasRole('role')) or $user->id == $comment->user_id;
     }
 }

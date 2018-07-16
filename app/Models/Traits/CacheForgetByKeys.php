@@ -1,19 +1,35 @@
 <?php
 
+// -----------------------------------------------------------------------------
+//  Applies in index method admin controller. Use in Observer Class prop:
+// -----------------------------------------------------------------------------
+// protected $keysToForgetCache = [
+//     'keyOfCache' => 'methodToRebuildCache',
+// ];
+// Run in Class: $this->cacheForgetByKeys($entity);
+
 namespace BBCMS\Models\Traits;
 
-/*
- * Applies in index method admin controller.
- * Use in model prop.
- * protected $keysToForgetCache = [];
- * example: $this->cacheForgetByKeys();
- */
+use Illuminate\Database\Eloquent\Model as ParentModel;
+
 trait CacheForgetByKeys
 {
-    public function cacheForgetByKeys()
+    /**
+     * Clearing cache by keys.
+     */
+    public function cacheForgetByKeys($entity = null)
     {
-        foreach ($this->keysToForgetCache as $key) {
-            cache()->forget($key);
+        $keys = $this->keysToForgetCache;
+
+        if (is_array($keys) and array_diff_key($keys, array_keys(array_keys($keys)))) {
+            foreach ($keys as $key => $method) {
+                cache()->forget($key);
+                if (is_subclass_of($entity, ParentModel::class)) {
+                    if (method_exists($model = $entity->getModel(), $method)) {
+                        $model->$method();
+                    }
+                }
+            }
         }
     }
 }

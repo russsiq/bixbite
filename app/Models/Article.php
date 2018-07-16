@@ -6,6 +6,7 @@ use BBCMS\Models\User;
 use BBCMS\Models\BaseModel;
 
 use BBCMS\Models\Mutators\ArticleMutators;
+use BBCMS\Models\Observers\ArticleObserver;
 use BBCMS\Models\Scopes\ArticleScopes;
 
 use BBCMS\Models\Relations\Fileable;
@@ -76,14 +77,7 @@ class Article extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
-        static::deleting(function ($article) {
-            $article->tags()->detach();
-            $article->categories()->detach();
-            $article->comments()->get(['id'])->each->delete();
-            $article->image()->get()->each->delete();
-            $article->files()->get()->each->delete();
-        });
+        static::observe(ArticleObserver::class);
     }
 
     /**
