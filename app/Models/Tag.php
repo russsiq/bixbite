@@ -10,9 +10,11 @@ class Tag extends BaseModel
     protected $table = 'tags';
     protected $primaryKey = 'id';
     protected $casts = [
-        'title' => 'string'
+        'title' => 'string',
     ];
-    protected $fillable = ['title'];
+    protected $fillable = [
+        'title',
+    ];
 
     public function getRouteKeyName()
     {
@@ -26,38 +28,15 @@ class Tag extends BaseModel
 
     public function getUrlAttribute()
     {
-        return route('tags.tag', ['tag'=> $this]);
-    }
-
-    public function synchronise(array $tags = [], $model)
-    {
-        if (empty($tags)) {
-            $model->tags()->detach();
-        } else {
-            $model->tags()->sync($this->verifyOfExistence($tags));
-        }
-
-        $this->reIndex();
-    }
-
-    public function verifyOfExistence(array $tags)
-    {
-        return array_map(
-            function (string $tag) {
-                return $this->firstOrCreate(['title' => $tag])->id;
-            },
-            $tags
-        );
+        return route('tags.tag', $this);
     }
 
     // Delete unused tags
     public function reIndex()
     {
-        $tags = $this->select(['tags.id', 'taggables.tag_id as `pivot_tag_id`'])
+        $tags = $this->select(['tags.id', 'taggables.tag_id as pivot_tag_id'])
             ->join('taggables', 'tags.id', '=', 'taggables.tag_id')
-            ->get()
-            ->keyBy('id')
-            ->all();
+            ->get()->keyBy('id')->all();
 
         $this->whereNotIn('id', array_keys($tags))->delete();
 

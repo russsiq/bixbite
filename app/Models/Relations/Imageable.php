@@ -8,7 +8,7 @@ trait Imageable
 {
     public function image()
     {
-        return $this->belongsTo(File::class, 'image_id', 'id');
+        return $this->hasOne(File::class, 'id', 'image_id');
     }
 
     public function images()

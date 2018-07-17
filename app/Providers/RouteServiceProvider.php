@@ -44,6 +44,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('model', '^[a-zA-Z_]+$');
         Route::pattern('attribute', '^[a-zA-Z_]+$');
 
+        // $router->bind('articles', function($id) {
+        //     return \BBCMS\Models\Article::active()->findOrFail($id);
+        // });
+
         parent::boot();
     }
 

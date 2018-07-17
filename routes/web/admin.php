@@ -6,6 +6,7 @@
 // });
 
 Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('tags/reindex', 'DashboardController@tagsReindex')->name('admin.tags.reindex');
 
 Route::get('{module}/settings', 'SettingsController@module')->name('admin.settings.module');
 Route::post('{module}/settings', 'SettingsController@moduleUpdate')->name('admin.settings.module_save');

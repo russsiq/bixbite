@@ -45,6 +45,8 @@ class ArticlesController extends SiteController
             ->orderBy($category->order_by ?? setting('articles.order_by', 'id'), $category->direction)
             ->paginate($category->paginate ?? setting('articles.paginate', 8));
 
+        $category->image = $category->image_id ? $category->image()->first() : null;
+
         pageinfo([
             'title' => $category->title,
             'description' => $category->description ?? $category->info,
@@ -108,18 +110,12 @@ class ArticlesController extends SiteController
 
     public function article($category_slug, $article_id, $article_slug = '')
     {
-        $article = $this->model->fullArticle($article_id)->firstOrFail();
+        $article = $this->model->cachedFullArticleWithRelation($article_id);
 
         if (($article_slug !== $article->slug) or ($category_slug !== $article->categories->pluck('slug')->implode('/'))) {
+            cache()->forget('cachedFullArticleWithRelation-'.$article_id);
             return redirect()->to($article->url);
         }
-
-        if (setting('articles.views_used', false)) {
-            $article->increment('views');
-        }
-
-        $article->tags = $article->tags_count ? $article->getTags() : [];
-        $article->comments = $article->comments_count ? $article->getComments(setting('comments.nested', true)) : [];
 
         pageinfo([
             'title' => $article->title,

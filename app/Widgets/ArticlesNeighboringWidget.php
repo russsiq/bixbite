@@ -58,13 +58,13 @@ class ArticlesNeighboringWidget extends WidgetAbstract
         $id = $this->params['current_id'];
 
         $output = Article::select(['articles.id', 'articles.title', 'articles.slug'])
-            ->where('articles.state', 'published')
+            ->published()
             ->where('articles.id', '<', $id)
             ->orderBy('articles.id', 'desc')
             ->limit(1)
             ->unionAll(
                 Article::select(['articles.id', 'articles.title', 'articles.slug'])
-                    ->where('articles.state', 'published')
+                    ->published()
                     ->where('articles.id', '>', $id)
                     ->orderBy('articles.id', 'asc')
                     ->limit(1)

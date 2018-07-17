@@ -60,6 +60,10 @@ class ArticleRequest extends Request
             $input['created_at'] = date('Y-m-d H:i:s');
         }
 
+        if (empty($input['categories'])) {
+            $input['state'] = 'unpublished';
+        }
+
         return $this->replace($input)->all();
     }
 

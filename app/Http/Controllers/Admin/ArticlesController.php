@@ -64,12 +64,12 @@ class ArticlesController extends AdminController
     public function store(ArticleRequest $request)
     {
         $article = $this->model->create($request->all());
-
-        // Categories.
         $article->categories()->sync($request->categories);
-
-        // Tags. Creat new tag, if not exists.
-        $this->tags->synchronise($request->tags, $article);
+        $article->tags()->sync(array_map(
+            function (string $tag) {
+                return $this->tags->firstOrCreate(['title' => $tag])->id;
+            }, $request->tags
+        ));
 
         return redirect()->route('admin.articles.index')->withStatus(sprintf(
                 __('msg.store'), $article->url, route('admin.articles.edit', $article)
@@ -99,14 +99,12 @@ class ArticlesController extends AdminController
     public function update(ArticleRequest $request, Article $article)
     {
         $article->update($request->all());
-
-        // Categories. Only if empty category, then keep previos category.
-        if ($request->categories) {
-            $article->categories()->sync($request->categories);
-        }
-
-        // Tags. Deleting tags with empty relations.
-        $article->tags()->getModel()->synchronise($request->tags, $article);
+        $article->categories()->sync($request->categories);
+        $article->tags()->sync(array_map(
+            function (string $tag) {
+                return $this->tags->firstOrCreate(['title' => $tag])->id;
+            }, $request->tags
+        ));
 
         return redirect()->route('admin.articles.index')->withStatus(sprintf(
                 __('msg.update'), $article->url, route('admin.articles.edit', $article)

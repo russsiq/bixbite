@@ -50,7 +50,7 @@ class ArticlesArchivesWidget extends WidgetAbstract
                     monthname(created_at) month,
                     count(*) as count
                 ')
-                ->where('state', 'published')
+                ->published()
                 ->groupBy('year', 'month')
                 ->orderByRaw('min(created_at) desc')
                 ->limit($this->params['limit'])

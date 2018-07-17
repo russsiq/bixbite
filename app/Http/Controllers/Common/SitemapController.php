@@ -32,7 +32,7 @@ class SitemapController
                     'articles.created_at',
                     'articles.updated_at',
                 ])
-                ->where('articles.state', 'published')
+                ->published()
                 ->orderBy('updated_at', 'desc')
                 ->first(),
 
@@ -66,7 +66,7 @@ class SitemapController
                     'image',
                     'categories:categories.id,categories.slug',
                 ])
-                ->where('articles.state', 'published')
+                ->published()
                 ->orderBy('updated_at', 'desc')
                 ->get(),
         ];

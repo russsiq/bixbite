@@ -4,6 +4,7 @@ namespace BBCMS\Http\Controllers\Admin;
 
 use Gate;
 
+use BBCMS\Models\Tag;
 use BBCMS\Models\Module;
 use BBCMS\Http\Controllers\Admin\AdminController;
 
@@ -15,7 +16,7 @@ class DashboardController extends AdminController
     public function __construct(Module $modules)
     {
         parent::__construct();
-        
+
         $this->modules = $modules;
     }
 
@@ -29,5 +30,12 @@ class DashboardController extends AdminController
             'theme' => theme_version(app_theme()),
             'modules' => $this->modules->where('on_mainpage', 1)->get(),
         ]);
+    }
+
+    public function tagsReindex()
+    {
+        Tag::query()->doesntHave('articles')->get(['id'])->each->delete();
+
+        return redirect()->route('dashboard')->withStatus('tagsReindex!');
     }
 }

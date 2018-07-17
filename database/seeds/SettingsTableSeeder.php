@@ -17,6 +17,7 @@ class SettingsTableSeeder extends Seeder
         $default = [
             'module_name' => null,
             'action' => 'setting',
+            'class' => 'form-control',
             'section' => 'main',
             'fieldset' => 'general',
             'name' => null,
@@ -103,6 +104,7 @@ class SettingsTableSeeder extends Seeder
         $out = [];
         $def['module_name'] = 'tags';
         array_push($out, array_merge($def, ['name' => 'delimiter', 'value' => '-', ]));
+        array_push($out, array_merge($def, ['name' => 'reindex', 'value' => 'reindex', 'type' => 'submit', 'class' => 'btn btn-outline-primary', 'html_flags' => 'formaction="reindex" formmethod="get"', ]));
 
         return $out;
     }

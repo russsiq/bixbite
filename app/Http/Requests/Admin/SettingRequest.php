@@ -59,7 +59,7 @@ class SettingRequest extends Request
             'value' => ['required', 'string', 'max:255'],
             'params' => ['nullable', 'array', 'required_if:type,select'],
             'params.*' => ['required', 'string', 'max:255'],
-            'class' => ['nullable', 'string', 'max:255', 'alpha_dash'],
+            'class' => ['nullable', 'string', 'max:255', 'regex:/[a-z\s-_]/'],
             'html_flags' => ['nullable', 'string', 'max:500'],
 
             'title' => ['required', 'string', 'max:125', 'regex:/[\w\s-_]/'],
