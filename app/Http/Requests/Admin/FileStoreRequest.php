@@ -53,6 +53,13 @@ class FileStoreRequest extends Request
             // Get info from image file.
             [$width, $height] = getimagesize($file->getPathname());
             $properties = compact('width', 'height');
+
+            // imagealphablending or imagesavealpha == 500 error
+            if ($width > 2048 or $height > 2048) {
+                throw new \Exception(sprintf(
+                    trans('validation.dimensions_large'), $width, $height
+                ));
+            }
         }
 
         return $this->replace([

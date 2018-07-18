@@ -230,6 +230,7 @@ class File extends BaseModel
             ];
 
             $path_suffix = DS.$data['name'].'.'.$original['extension'];
+            unset($original);
         }
 
         // Cutting images.
