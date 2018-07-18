@@ -1,5 +1,7 @@
 <?php
 
+// http://designpatternsphp.readthedocs.io/ru/latest/More/EAV/README.html
+
 namespace BBCMS\Models;
 
 use BBCMS\Models\BaseModel;

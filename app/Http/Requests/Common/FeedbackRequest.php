@@ -25,7 +25,7 @@ class FeedbackRequest extends Request
         return [
             'feedback_name' => ['required', 'string', 'max:100'],
             'feedback_email' => ['required', 'string', 'max:255'],
-            'feedback_text' => ['required', 'string', 'max:1000'],
+            'feedback_text' => ['required', 'string', 'max:1000', 'not_regex:/((https?:\/\/)|(www\.))([\d\w\.\-]+)\.([\w\.]+)/'],
         ];
     }
 
@@ -35,6 +35,7 @@ class FeedbackRequest extends Request
             'feedback_name.required' => 'Вам необходимо представиться.',
             'feedback_email.required' => 'Укажите как с вами связаться.',
             'feedback_text.required' => 'Введите текст вашего сообщения, пожалуйста.',
+            'feedback_text.not_regex' => 'Ссылки расцениваются как спам.',
         ];
     }
 
