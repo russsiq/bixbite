@@ -6,11 +6,18 @@ use BBCMS\Models\File;
 
 trait Fileable
 {
-    /**
-     * Get all of the post's comments.
-     */
     public function files()
     {
         return $this->morphMany(File::class, 'attachment', 'attachment_type', 'attachment_id', 'id');
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->images->where('id', $this->image_id)->first();
+    }
+
+    public function getImagesAttribute()
+    {
+        return $this->files->where('type', 'image');
     }
 }

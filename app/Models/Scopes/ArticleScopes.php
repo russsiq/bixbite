@@ -27,6 +27,7 @@ trait ArticleScopes
         return $query->with([
                 'categories:categories.id,categories.title,categories.slug',
                 'user:users.id,users.name,users.email,users.avatar',
+                'files',
             ])
             ->withCount([
                 'comments',
@@ -42,7 +43,6 @@ trait ArticleScopes
         $article = cache()->remember('cachedFullArticleWithRelation-'.$id, setting('articles.cache_used', 1440), function () use ($id) {
             $article = $this->fullArticle($id);
             $article->tags = $article->tags_count ? $article->getTags() : [];
-            $article->image = $article->image_id ? $article->image()->first() : null;
 
             return $article;
         });
@@ -81,7 +81,7 @@ trait ArticleScopes
             ->with([
                 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',
-                'image',
+                'files',
             ])
             ->withCount([
                 'comments',

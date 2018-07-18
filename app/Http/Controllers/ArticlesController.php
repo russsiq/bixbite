@@ -44,15 +44,13 @@ class ArticlesController extends SiteController
             ->orderBy('is_catpinned', 'desc')
             ->orderBy($category->order_by ?? setting('articles.order_by', 'id'), $category->direction)
             ->paginate($category->paginate ?? setting('articles.paginate', 8));
-
-        $category->image = $category->image_id ? $category->image()->first() : null;
-
+            
         pageinfo([
             'title' => $category->title,
             'description' => $category->description ?? $category->info,
             'keywords' => $category->keywords,
             'url' => $category->url,
-            'img' => $category->img,
+            'img' => $category->image,
             'is_category' => true,
             'category' => $category,
         ]);

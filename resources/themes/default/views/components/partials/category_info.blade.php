@@ -4,7 +4,6 @@
 @endphp
 
 {{-- Если у категории есть прикрепленное изображение, либо информация, либо она содержит подкатегории, то отображаем секцию. --}}
-{{-- $category->image - лишний запрос, если $category->image_id == null --}}
 @if ($category->image or $category->info or $sub_categories->count())
     <section class="archive_page__second">
         @if ($category->image)

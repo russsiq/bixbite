@@ -44,7 +44,7 @@
 		</div>
 
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-			<textarea name="content" class="form-control" placeholder="@lang('content') ..." required>{{ old('content', optional($article)->content) }}</textarea>
+			<textarea name="content" class="form-control" placeholder="@lang('content') ..." required>{{ old('content', optional($article)->getOriginal('content')) }}</textarea>
 		</div>
 
 		<div id="accordion">

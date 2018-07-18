@@ -10,7 +10,6 @@ use BBCMS\Models\Observers\ArticleObserver;
 use BBCMS\Models\Scopes\ArticleScopes;
 
 use BBCMS\Models\Relations\Fileable;
-use BBCMS\Models\Relations\Imageable;
 use BBCMS\Models\Relations\Taggable;
 use BBCMS\Models\Relations\Commentable;
 use BBCMS\Models\Relations\Categoryable;
@@ -18,7 +17,7 @@ use BBCMS\Models\Relations\Categoryable;
 class Article extends BaseModel
 {
     use ArticleMutators, ArticleScopes;
-    use Fileable, Imageable, Taggable, Commentable, Categoryable;
+    use Fileable, Taggable, Commentable, Categoryable;
 
     protected $primaryKey = 'id';
     protected $table = 'articles';

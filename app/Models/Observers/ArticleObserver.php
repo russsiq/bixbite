@@ -35,18 +35,12 @@ class ArticleObserver
             $this->attachImage($article);
         }
 
-        // // Clear and rebuild the cache.
-        // $this->addToCacheKeys([
-        //     $article->id.'-tags' => 'tags',
-        //     $article->id.'-categories' => 'categories',
-        // ]);
-        //
-        // $this->cacheForgetByKeys($article);
-    }
+        // Always clear cache.
+        $this->addToCacheKeys([
+            'cachedFullArticleWithRelation-'.$article->id => false,
+        ]);
 
-    public function updating(Article $article)
-    {
-        //
+        $this->cacheForgetByKeys($article);
     }
 
     public function deleting(Article $article)
@@ -59,28 +53,35 @@ class ArticleObserver
         // Deleting always.
         $this->deleteImage($article);
 
-        // // Clear and rebuild the cache.
-        // $this->addToCacheKeys([
-        //     $article->id.'-tags' => 'tags',
-        //     $article->id.'-categories' => 'categories',
-        // ]);
-        //
-        // $this->cacheForgetByKeys($article);
+        // Always clear cache.
+        $this->addToCacheKeys([
+            'cachedFullArticleWithRelation-'.$article->id => false,
+        ]);
+
+        $this->cacheForgetByKeys($article);
     }
 
     protected function attachImage(Article $article)
     {
-        $article->image()->update([
-            'attachment_type' => $article->getMorphClass(),
-            'attachment_id' => $article->id,
-        ]);
+        if (is_int($image_id = $article->image_id)) {
+            $article->files()
+                ->getRelated()
+                ->whereId($image_id)
+                ->update([
+                    'attachment_type' => $article->getMorphClass(),
+                    'attachment_id' => $article->id,
+                ]);
+        }
     }
 
     protected function deleteImage(Article $article)
     {
         if (is_int($image_id = $article->getOriginal('image_id'))) {
-            $article->files()->whereId($article->getOriginal('image_id'))
-                ->get()->each->delete();
+            $article->files()
+                ->whereId($image_id)
+                ->get()
+                ->each
+                ->delete();
         }
     }
 }

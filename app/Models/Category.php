@@ -10,12 +10,11 @@ use BBCMS\Models\Observers\CategoryObserver;
 use BBCMS\Models\Collections\CategoryCollection;
 
 use BBCMS\Models\Relations\Fileable;
-use BBCMS\Models\Relations\Imageable;
 
 class Category extends BaseModel
 {
     use CategoryMutators;
-    use Fileable, Imageable;
+    use Fileable;
 
     protected $primaryKey = 'id';
     protected $table = 'categories';
