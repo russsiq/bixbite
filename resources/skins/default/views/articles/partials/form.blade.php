@@ -181,7 +181,10 @@
 							<tr><td>@lang('author')</td><td><b>{{ $article->user->name }}</b> [{{ $article->user->id }}]</td></tr>
 							<tr><td>@lang('state')</td>
 								<td><b>
-									@if($article->state == 'published') <span class="text-success">@lang('state.published')</span>
+									@if($article->state == 'published')
+										<a href="{{ $article->url }}" target="_blank">
+											<span class="text-success"><i class="fa fa-external-link"></i> @lang('state.published')</span>
+										</a>
 									@elseif($article->state == 'unpublished') <span class="text-warning">@lang('state.unpublished')</span>
 									@else <span class="text-danger">@lang('state.draft')</span>
 	                                @endif
@@ -217,10 +220,10 @@
 					@if(old('is_catpinned', optional($article)->is_catpinned) == 1) checked @endif />&nbsp;@lang('is_catpinned')</label>
 				<label class="control-label"><input type="checkbox" name="is_favorite" value="1"
 					@if(old('is_favorite', optional($article)->is_favorite) == 1) checked @endif />&nbsp;@lang('is_favorite')</label>
-				<label class="control-label"><input type="checkbox" name="flag_html" value="1"
+				{{-- <label class="control-label"><input type="checkbox" name="flag_html" value="1"
 					@if(old('flag_html', optional($article)->flag_html) == 1) checked @endif />&nbsp;@lang('flag_html')</label>
 				<label class="control-label"><input type="checkbox" name="flag_raw" value="1"
-					@if(old('flag_raw', optional($article)->flag_raw) == 1) checked @endif />&nbsp;@lang('flag_raw')</label>
+					@if(old('flag_raw', optional($article)->flag_raw) == 1) checked @endif />&nbsp;@lang('flag_raw')</label> --}}
 				<label class="control-label">
 					<input id="currdate" type="checkbox" name="currdate" value="1" />&nbsp;@lang('currdate')</label>
 			</div>
