@@ -4,7 +4,6 @@ namespace BBCMS\Http\Controllers\Admin;
 
 use BBCMS\Models\Tag;
 use BBCMS\Models\Article;
-use BBCMS\Models\XField;
 use BBCMS\Models\Category;
 use BBCMS\Http\Requests\Admin\ArticleRequest;
 use BBCMS\Http\Requests\Admin\ArticlesRequest;
@@ -18,14 +17,14 @@ class ArticlesController extends AdminController
     protected $categories;
     protected $template = 'articles';
 
-    public function __construct(Article $model, Category $categories, Tag $tags, XField $x_fields)
+    public function __construct(Article $model, Category $categories, Tag $tags)
     {
         parent::__construct();
         $this->authorizeResource(Article::class);
 
         $this->tags = $tags;
         $this->model = $model;
-        $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
+        $this->x_fields = $model->x_fields;
         $this->categories = $categories->getCachedCategories()->nested();
     }
 

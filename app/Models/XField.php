@@ -54,13 +54,14 @@ class XField extends BaseModel
 
     public static function fields($table = null)
     {
-        $fields = cache()->rememberForever('x_fields', function () {
-            return static::query()->get();
-        });
+        $fields = cache()->rememberForever(
+            static::getModel()->getTable(),
+            function () {
+                return static::query()->get();
+            }
+        );
 
-        return is_null($table)
-            ? $fields
-            : $fields->where('extensible', $table);
+        return is_null($table) ? $fields : $fields->where('extensible', $table);
     }
 
     public static function extensibles()

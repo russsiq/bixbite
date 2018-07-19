@@ -2,7 +2,6 @@
 
 namespace BBCMS\Http\Controllers\Admin;
 
-use BBCMS\Models\XField;
 use BBCMS\Models\Category;
 use BBCMS\Http\Requests\Admin\CategoryRequest;
 use BBCMS\Http\Controllers\Admin\AdminController;
@@ -15,13 +14,13 @@ class CategoriesController extends AdminController
     protected $x_fields;
     protected $template = 'categories';
 
-    public function __construct(Category $model, XField $x_fields)
+    public function __construct(Category $model)
     {
         parent::__construct();
         $this->authorizeResource(Category::class);
 
         $this->model = $model;
-        $this->x_fields = $x_fields->fields()->where('extensible', $model->getTable());
+        $this->x_fields = $model->x_fields;
     }
 
     public function index()

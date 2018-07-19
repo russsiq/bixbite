@@ -3,7 +3,6 @@
 namespace BBCMS\Models\Observers;
 
 use BBCMS\Models\Article;
-use BBCMS\Models\XField;
 use BBCMS\Models\Traits\CacheForgetByKeys;
 
 class ArticleObserver
@@ -18,7 +17,7 @@ class ArticleObserver
     {
         $article->fillable(array_merge(
             $article->getFillable(),
-            XField::fields($article->getTable())->pluck('name')->toArray()
+            $article->x_fields->pluck('name')->toArray()
         ));
     }
 

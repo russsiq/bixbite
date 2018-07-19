@@ -4,8 +4,6 @@ namespace BBCMS\Models\Scopes;
 
 use Carbon\Carbon;
 
-use BBCMS\Models\XField;
-
 trait ArticleScopes
 {
     // Filter
@@ -76,7 +74,7 @@ trait ArticleScopes
                 'articles.views',
             ])
             ->addSelect(
-                XField::fields()->where('extensible', $this->getTable())->pluck('name')->all()
+                $this->x_fields->pluck('name')->all()
             )
             ->with([
                 'categories:categories.id,categories.slug,categories.title',

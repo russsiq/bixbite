@@ -7,9 +7,9 @@ use BBCMS\Models\File;
 use BBCMS\Models\Note;
 use BBCMS\Models\Comment;
 use BBCMS\Models\Privilege;
-use BBCMS\Models\XField;
 use BBCMS\Models\Traits\hasOnline;
 
+use BBCMS\Models\Relations\Extensible;
 use BBCMS\Models\Relations\hasFollows;
 
 use BBCMS\Models\Mutators\UserMutators;
@@ -21,7 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-    use hasFollows, hasOnline, UserMutators;
+    use Extensible, hasFollows, hasOnline, UserMutators;
     // use Commentable; user not commentable, Profile is commentable !!!
 
     protected $table = 'users';

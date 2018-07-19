@@ -63,8 +63,17 @@ class SitemapController
                     'articles.updated_at',
                 ])
                 ->with([
-                    'image',
-                    'categories:categories.id,categories.slug',
+                    'files' => function ($query) {
+                        $query->select([
+                            'files.id', 'files.disk', 'files.type',
+                            'files.category', 'files.name', 'files.extension',
+                            'files.attachment_type','files.attachment_id'
+                        ])
+                        ->join('articles', function ($join) {
+                            $join->on('files.id', '=', 'articles.image_id');
+                        })
+                        ->where('type', 'image');
+                    },
                 ])
                 ->published()
                 ->orderBy('updated_at', 'desc')
@@ -83,7 +92,17 @@ class SitemapController
                     'categories.updated_at',
                 ])
                 ->with([
-                    'image',
+                    'files' => function ($query) {
+                        $query->select([
+                            'files.id', 'files.disk', 'files.type',
+                            'files.category', 'files.name', 'files.extension',
+                            'files.attachment_type','files.attachment_id'
+                        ])
+                        ->join('categories', function ($join) {
+                            $join->on('files.id', '=', 'categories.image_id');
+                        })
+                        ->where('type', 'image');
+                    },
                 ])
                 ->get(),
         ];

@@ -9,12 +9,13 @@ use BBCMS\Models\Mutators\CategoryMutators;
 use BBCMS\Models\Observers\CategoryObserver;
 use BBCMS\Models\Collections\CategoryCollection;
 
+use BBCMS\Models\Relations\Extensible;
 use BBCMS\Models\Relations\Fileable;
 
 class Category extends BaseModel
 {
     use CategoryMutators;
-    use Fileable;
+    use Extensible, Fileable;
 
     protected $primaryKey = 'id';
     protected $table = 'categories';

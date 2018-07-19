@@ -7,7 +7,6 @@
 namespace BBCMS\Models\Observers;
 
 use BBCMS\Models\User;
-use BBCMS\Models\XField;
 use Illuminate\Http\UploadedFile;
 
 class UserObserver
@@ -16,7 +15,7 @@ class UserObserver
     {
         $user->fillable(array_merge(
             $user->getFillable(),
-            XField::fields($user->getTable())->pluck('name')->toArray()
+            $user->x_fields->pluck('name')->toArray()
         ));
     }
 

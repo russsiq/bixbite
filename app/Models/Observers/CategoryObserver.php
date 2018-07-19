@@ -14,6 +14,14 @@ class CategoryObserver
         'navigation' => 'getCachedNavigationCategories',
     ];
 
+    public function retrieved(Category $category)
+    {
+        $category->fillable(array_merge(
+            $category->getFillable(),
+            $category->x_fields->pluck('name')->toArray()
+        ));
+    }
+
     public function saved(Category $category)
     {
         $dirty = $category->getDirty();

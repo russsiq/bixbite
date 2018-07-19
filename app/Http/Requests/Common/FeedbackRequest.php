@@ -25,7 +25,7 @@ class FeedbackRequest extends Request
         return [
             'feedback_name' => ['required', 'string', 'max:100'],
             'feedback_email' => ['required', 'string', 'max:255'],
-            'feedback_text' => ['required', 'string', 'max:1000', 'not_regex:/((https?:\/\/)|(www\.))([\d\w\.\-]+)\.([\w\.]+)/'],
+            'feedback_text' => ['required', 'string', 'max:1000', 'not_regex:/((https?:\/\/)|(www\.))([\d\w\.\-]+)\.([\w\.]+)/u'],
         ];
     }
 

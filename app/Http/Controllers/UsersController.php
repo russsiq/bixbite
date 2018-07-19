@@ -35,7 +35,7 @@ class UsersController extends SiteController
 
     public function edit(User $user)
     {
-        $x_fields = XField::fields($user->getTable());
+        $x_fields = $user->x_fields;
 
         pageinfo([
             'title' => __('users.edit_page'),
@@ -68,7 +68,7 @@ class UsersController extends SiteController
                 'user:users.id,users.name,users.email,users.avatar'
             ])->latest()->get()->treated(true) : [];
 
-        $x_fields = XField::fields($user->getTable());
+        $x_fields = $user->x_fields;
 
         pageinfo([
             'title' => $user->name,
