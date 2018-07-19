@@ -95,7 +95,14 @@
                                             <div class="card-icon-top"><i class="fa fa-file"></i></div>
                                         @endif
                                         <div class="card-body">
-                                            <h6 class="card-title">{{--#{{ $file->id }}--}} <a href="{{ route('admin.files.edit', $file) }}" class="">{{ $file->title }}</a> [{{ $file->extension }}]</h6>
+                                            <h6 class="card-title">#{{ $file->id }} <a href="{{ route('admin.files.edit', $file) }}" class="">{{ $file->title }}</a> [{{ $file->extension }}]</h6>
+                                            <p class="card-text"><i class="fa fa-paperclip"></i>
+                                                @if ($file->attachment)
+                                                     <a href="{{ $file->attachment->url }}" target="_blank">{{ $file->attachment->title }}</a>
+                                                @else
+                                                    <code>[empty]</code>
+                                                @endif
+                                            </p>
                                             <p class="card-text">{!! $file->description !!}</p>
                                             <p class="card-text"><small class="text-muted">{{ $file->created_at }}</small></p>
                                         </div>
