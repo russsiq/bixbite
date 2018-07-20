@@ -12,6 +12,7 @@
     "title": "Заголовок",
     "description": "Описание",
     "attaching": "Прикрепление файла",
+    "extension": "Расширение файла",
     
     "msg.already_exists": "Файл уже существует: <a href=%s target=_blank class=alert-link>%s</a>.",
     "msg.uploaded_success": "Файл успешно загружен.",

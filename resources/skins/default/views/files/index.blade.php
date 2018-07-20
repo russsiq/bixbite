@@ -26,7 +26,7 @@
 		</div>
     </div>
 
-    <div class="card card-filemanager">
+    <div class="card card-table">
         <div class="card-header">
             <ul class="nav d-flex" role="tablist">
                 <li class="nav-item mr-auto">
@@ -56,59 +56,79 @@
                 <div id="upload_pane" class="tab-pane fade" role="tabpanel">
                     <div class="card-body">
                         <p class="alert alert-info mb-4">@lang('upload-pane#descr')</p>
-                        <upload-files :post_url="'{{ route('admin.files.upload') }}'" :multiple="true"></upload-files>
+                        <div class="upload-files__outer" style="padding: 0 1.25rem 1.25rem 1.25rem">
+                            <upload-files :post_url="'{{ route('admin.files.upload') }}'" :multiple="true"></upload-files>
+                        </div>
                     </div>
                 </div>
 
                 <div class="tab-pane fade show active">
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         @empty ($files->count())
                             @lang('common.msg.not_found')
                         @else
-                            <div class="card-columns baguetteBox">
-                                @foreach ($files as $key => $file)
-                                    <div class="card card-file">
-
-                                        <button
-                                            type="submit"
-                                            title="@lang('btn.delete')"
-                                            class="btn btn-link text-danger pull-right"
-                                            style="position: absolute; right: 0; opacity: .8; text-shadow: 0 0 2px #000;"
-                                            onclick="return confirm('@lang('msg.sure')');"
-                                            formaction="{{ route('admin.files.delete', $file) }}"
-                                            name="_method" value="DELETE"
-                                            ><i class="fa fa-trash-o"></i></button>
-
-                                        @if ('image' == $file->type)
-                                            <a class="lightbox" href="{{ $file->url }}">
-                                                <img class="card-img-top" src="{{ $file->getUrlAttribute('thumb') ?? $file->url }}" alt="{{ $file->name }}" title="{{ $file->title }}">
-                                            </a>
-                                        @elseif ('audio' == $file->type)
-                                            <div class="card-icon-top"><i class="fa fa-music"></i></div>
-                                            <audio preload="none" controls="controls" style="object-fit: scale-down; width: 100%; margin-bottom: -6px;"><source type="audio/mpeg" src="{{ $file->url }}"/></audio>
-                                        @elseif ('video' == $file->type)
-                                            {{-- <div class="card-icon-top"><i class="fa fa-film"></i></div> --}}
-                                            <video preload="none" controls="controls" style="object-fit: scale-down; width: 100%; margin-bottom: -6px;"><source type="video/mp4" src="{{ $file->url }}"/></video>
-                                        @elseif ('archive' == $file->type)
-                                            <div class="card-icon-top"><i class="fa fa-archive"></i></div>
-                                        @else
-                                            <div class="card-icon-top"><i class="fa fa-file"></i></div>
-                                        @endif
-                                        <div class="card-body">
-                                            <h6 class="card-title">#{{ $file->id }} <a href="{{ route('admin.files.edit', $file) }}" class="">{{ $file->title }}</a> [{{ $file->extension }}]</h6>
-                                            <p class="card-text"><i class="fa fa-paperclip"></i>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th colspan="2">@lang('title')</th>
+                                        <th class="text-right"></th>
+                                        <th>@lang('attaching')</th>
+                                        <th class="text-right d-print-none">@lang('action')</th>
+                                    </tr>
+                                    <tbody>
+                                    @foreach ($files as $key => $file)
+                                        <tr>
+                                            <td>{{ $file->id }}</td>
+                                            <td class="baguetteBox">
+                                                @if ('image' == $file->type)
+                                                <a class="lightbox" href="{{ $file->url }}">
+                                                    <img src="{{ $file->getUrlAttribute('thumb') ?? $file->url }}" alt="{{ $file->title }}" title="{{ $file->title }}" class="card-file-icon" width="42" />
+                                                </a>
+                                                @elseif ('audio' == $file->type)
+                                                <a href="#mediaModal" class="media-link" data-toggle="modal" data-src="{{ $file->url }}" data-title="{{ $file->title }}" data-type="audio"><div class="card-file-icon"><i class="fa fa-music"></i></div></a>
+                                                @elseif ('video' == $file->type)
+                                                <a href="#mediaModal" class="media-link" data-toggle="modal" data-src="{{ $file->url }}" data-title="{{ $file->title }}" data-type="video"><div class="card-file-icon"><i class="fa fa-film"></i></div></a>
+                                                @elseif ('archive' == $file->type)
+                                                <div class="card-file-icon"><i class="fa fa-archive"></i></div>
+                                                @else
+                                                <div class="card-file-icon"><i class="fa fa-file"></i></div>
+                                                @endif
+                                            </td>
+                                            <td>{{ $file->title }}</td>
+                                            <td>{{ $file->extension }}</td>
+                                            <td>
                                                 @if ($file->attachment)
-                                                     <a href="{{ $file->attachment->url }}" target="_blank">{{ $file->attachment->title }}</a>
+                                                    <a href="{{ $file->attachment->url }}" target="_blank">{{ $file->attachment->title }}</a>
                                                 @else
                                                     <code>[empty]</code>
                                                 @endif
-                                            </p>
-                                            <p class="card-text">{!! $file->description !!}</p>
-                                            <p class="card-text"><small class="text-muted">{{ $file->created_at }}</small></p>
-                                        </div>
-                                    </div>
-                                @endforeach
-        	                </div>
+                                            </td>
+                                            <td class="text-right d-print-none">
+                                                <div class="btn-group">
+                                                    <a href="{{ $file->url }}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a>
+
+                                                    @can ('admin.files.update', $file)
+                                                        <a href="{{ route('admin.files.edit', $file) }}" class="btn btn-link"><i class="fa fa-pencil"></i></a>
+                                                    @endcan
+
+                                                    @can ('admin.files.delete', $file)
+                                                        <button type="submit" class="btn btn-link"
+                                                            onclick="return confirm('@lang('msg.sure')');"
+                                                            formaction="{{ route('admin.files.delete', $file) }}"
+                                                            name="_method" value="DELETE">
+                                                            <i class="fa fa-trash-o text-danger"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-link text-muted" disabled><i class="fa fa-trash-o"></i></button>
+                                                    @endcan
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </thead>
+                            </table>
                         @endif
                     </div>
 
@@ -125,45 +145,52 @@
             </div>
         </form>
 	</div>
+
+
+<!-- Modal -->
+<div id="mediaModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Html5 super mega modal player</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <video preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></video>
+                <audio preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></audio>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('btn.close')</button>
+                {{-- <button type="button" class="btn btn-primary">@lang('btn.download')</button> --}}
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
-
-@push('css')
-
-    <style type="text/css">
-        @media (min-width: 576px) {
-            .card-filemanager .card-columns {
-                column-count: 4;
-            }
-        }
-
-        .card-file .card-icon-top {
-            font-size: 70px;
-            line-height: 1;
-            color: #dadada;
-            padding: .75rem 1.25rem;
-            text-align: center;
-        }
-
-        .card-file .card-body {
-            background-color: #f8f8f8;
-            border-top: 1px solid #e7eaec;
-        }
-    </style>
-@endpush
-
 @push('scripts')
-    <!-- List of vendor: BEGIN -->
-    <script src="{{ skin_asset('js/libsuggest.js') }}"></script>
-    <!-- List of vendor: END -->
-
-    <script>
+<script type="text/javascript">
     baguetteBox.run('.baguetteBox', {
         noScrollbars: true,
-        // buttons: false,
         captions: function(element) {
             return element.getElementsByTagName('img')[0].title;
         }
     });
-    </script>
+    $(document).ready(function() {
+        var $mediaSrc, $mediaType, $mediaTitle;
+        $('.media-link').click(function() {
+            $mediaSrc = $(this).data('src');
+            $mediaType = $(this).data('type');
+            $mediaTitle = $(this).data('title');
+        });
+        $('#mediaModal').on('shown.bs.modal', function (e) {
+            $('#mediaModal .modal-title').text($mediaTitle);
+            $('#mediaModal ' + $mediaType).attr('src', $mediaSrc).addClass('d-block').removeClass('d-none');
+        });
+        $('#mediaModal').on('hide.bs.modal', function (e) {
+            $('#mediaModal .modal-title').text('');
+            $('#mediaModal ' + $mediaType).attr('src', '').removeClass('d-block').addClass('d-none');
+        });
+    });
+</script>
 @endpush

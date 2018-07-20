@@ -621,6 +621,20 @@ label.control-label {
     }
 }
 
+/**
+ * FILES action
+ */
+ 
+.card-file-icon {
+    font-size: 32px;
+    line-height: 1;
+    color: #dadada;
+    border: 1px solid #f4f4f4;
+    padding: .25rem;
+    text-align: center;
+    display: inline-block;
+}
+
 /*
  * modal
  */
