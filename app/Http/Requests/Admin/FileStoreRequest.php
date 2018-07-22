@@ -39,27 +39,17 @@ class FileStoreRequest extends Request
         }
 
         // Prepare variables.
-        $extension = $file->guessExtension() ?? $file->getClientOriginalExtension();
         $mime_type = $file->getMimeType();
+        $extension = $file->guessExtension() ?? $file->getClientOriginalExtension();
         $type = self::getFileType($mime_type, $extension);
 
-        $title = $this->input('title', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        if (! request('mass_uploading')) {
-            // NB.: En. and rus. x letter.
-            $title = preg_replace('/[-_хx\d]+$/', '', $title);
-        }
-
+        $title = $this->input('title', null) ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        // NB.: En. and rus. x letter.
+        $title = preg_replace('/[-_хx\d]+$/u', '', $title);
+        $title = preg_replace('/\.tar$/', '', $title);
+        $properties = $this->input('properties', null);
         if ('image' == $type) {
-            // Get info from image file.
-            [$width, $height] = getimagesize($file->getPathname());
-            $properties = compact('width', 'height');
-
-            // imagealphablending or imagesavealpha == 500 error
-            if ($width > 2048 or $height > 2048) {
-                throw new \Exception(sprintf(
-                    trans('validation.dimensions_large'), $width, $height
-                ));
-            }
+            [$properties['width'], $properties['height']] = getimagesize($file->getPathname());
         }
 
         return $this->replace([
@@ -70,18 +60,16 @@ class FileStoreRequest extends Request
             'category' => $this->input('category', 'default'),
 
             // Unstable data.
-            'type' => $this->input('type', $type),
+            'type' => $type,
             'name' => str_slug($title).'_'.time(),
-            'extension' => $extension,
+            'extension' => ('gz' == $extension) ? 'tar.gz' : $extension,
             'mime_type' => $mime_type,
             'filesize' => $file->getClientSize(),
             'checksum' => md5_file($file->getPathname()),
 
-            'title' => str_replace('.', '_', $title),
+            'title' => $title,
             'description' => $this->input('description', null),
-            'properties' => $this->input('properties', $properties ?? null),
-
-            'mass_uploading' => $this->input('mass_uploading', false),
+            'properties' => $properties,
         ])->all();
     }
 
@@ -92,36 +80,86 @@ class FileStoreRequest extends Request
      */
     public function rules()
     {
-        // $files = count($this->input('file'));
-        //
-        // foreach(range(0, $files) as $index) {
-        //     $rules['photos.' . $index] = 'image|mimes:png,jpg,jpeg,gif,bmp|max:800';
-        // }
-
         return [
-            'file' => ['bail','required','file'],
+            'file' => [
+                'bail',
+                'required',
+                'file',
+                // imagealphablending or imagesavealpha == 500 error
+                ('image' == $this->input('type')) ? 'dimensions:max_width=3840,max_height=3840' : '',
+            ],
 
-            'user_id' => ['required','in:'.$this->user()->id],
-            'attachment_id' => ['nullable','integer'],
-            'attachment_type' => ['nullable','alpha_dash'],
-            'disk' => ['required','in:'.implode(',', array_keys(config('filesystems.disks')))],
-            'category' => ['required','string','alpha_dash'],
+            'user_id' => [
+                'required',
+                'integer',
+                'in:'.$this->user()->id,
+            ],
+            'attachment_id' => [
+                'nullable',
+                'integer',
+            ],
+            'attachment_type' => [
+                'nullable',
+                'alpha_dash',
+            ],
+            'disk' => [
+                'required',
+                'in:'.implode(',', array_keys(config('filesystems.disks'))),
+            ],
+            'category' => [
+                'required',
+                'string','alpha_dash',
+            ],
 
             // Unstable data.
-            'type' => ['nullable'],
-            'mime_type' => ['required','string'],
-            'name' => ['required','string','alpha_dash'],
-            'extension' => ['required','string','alpha_dash'],
-            'filesize' => ['required','integer'],
-            'checksum' => ['required','alpha_num'], // 'unique:files' - below validate
+            'type' => [
+                'required',
+            ],
+            'mime_type' => [
+                'required',
+                'string',
+            ],
+            'name' => [
+                'required',
+                'string',
+                'alpha_dash',
+            ],
+            'extension' => [
+                'required',
+                'string',
+            ],
+            'filesize' => [
+                'required',
+                'integer',
+            ],
+            'checksum' => [
+                'required',
+                'alpha_num',
+            ], // 'unique:files' - below validate
 
-            'title' => ['required','string','max:255','regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u'],
-            'description' => ['nullable','string'],
-            'properties' =>  ['nullable','array'],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\w\s\.\,\-\_\?\!]+$/u',
+            ],
+            'description' => [
+                'nullable',
+                'string',
+            ],
+            'properties' =>  [
+                'nullable',
+                'array',
+            ],
+        ];
+    }
 
-            // 'title' => ['sometimes', 'string', 'max:125', 'regex:/^[\pL\s]+$/u', ],
-            // 'descr' => ['nullable', 'string', 'max:500', ],
-            // 'is_completed' => ['sometimes', 'boolean', ],
+    public function messages()
+    {
+        return [
+            'file.dimensions' => sprintf(
+                    trans('validation.dimensions_large'), $this->input('properties')['width'], $this->input('properties')['height']
+                ),
         ];
     }
 
@@ -137,9 +175,7 @@ class FileStoreRequest extends Request
         $validator->after(function ($validator) {
             if ($duplicate = File::whereChecksum($this->input('checksum'))->first()) {
                 $validator->errors()->add('checksum', sprintf(
-                    __('msg.already_exists'),
-                    $duplicate->url,
-                    $duplicate->title
+                    __('msg.already_exists'), $duplicate->url, $duplicate->title
                 ));
             }
         });

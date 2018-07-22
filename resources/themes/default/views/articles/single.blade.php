@@ -1,9 +1,14 @@
 <article id="article-{{ $article->id }}" class="single_article single_article__{{ $article->category->slug }}" itemscope itemtype="http://schema.org/Article">
     <div class="single_article__inner">
         <header class="single_article__header">
-            @can ('admin.articles.update', $article)
-                <a href="{{ route('admin.articles.edit', $article) }}" class="moder_panel"><i class="fa fa-edit"></i></a>
-            @endcan
+            <div class="moder_panel">
+                @can ('admin.articles.update', $article)
+                    <a href="{{ route('admin.articles.edit', $article) }}" class=""><i class="fa fa-edit"></i></a>
+                @endcan
+                @role('owner')
+                    <a href="{{ route('system_care.clearcache', 'articles-single-'.$article->id) }}" class=""><i class="fa fa-recycle"></i></a>
+                @endrole
+            </div>
             <h2 class="single_article__title" itemprop="headline">{{ $article->title }}</h2>
             <p class="single_article__teaser">{{ $article->teaser }}</p>
             @if ($image = $article->image)

@@ -7,6 +7,8 @@ namespace BBCMS\Models;
 use BBCMS\Models\User;
 use BBCMS\Models\BaseModel;
 use BBCMS\Models\Mutators\FileMutators;
+use BBCMS\Models\Observers\FileObserver;
+use BBCMS\Models\Scopes\FileScopes;
 
 use Storage;
 use Illuminate\Http\UploadedFile;
@@ -16,7 +18,7 @@ use \RuntimeException as FileException;
 
 class File extends BaseModel
 {
-    use FileMutators;
+    use FileMutators, FileScopes;
 
     protected $table = 'files';
     protected $primaryKey = 'id';
@@ -42,35 +44,7 @@ class File extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
-        static::updating(function ($file) {
-            if ($file->getOriginalPath() != $file->path) {
-                $disk = $file->storageDisk($file->disk);
-                $disk->rename($file->getOriginalPath(), $file->path);
-
-                if ('image' == $file->type) {
-                    foreach ($file->thumbSizes as $size => $value) {
-                        if ($disk->exists($old_path = $file->getOriginalPath($size))) {
-                            $disk->rename($old_path,
-                                $file->type.DS.$file->category.DS.$size.DS.$file->name.'.'.$file->extension
-                            );
-                        }
-                    }
-                }
-            }
-        });
-
-        // Always delete file from storage
-        static::deleting(function ($file) {
-            $disk = $file->storageDisk($file->disk);
-            $disk->delete($file->path);
-
-            if ('image' == $file->type) {
-                foreach ($file->thumbSizes as $size => $value) {
-                    $disk->delete($file->getPathAttribute($size));
-                }
-            }
-        });
+        static::observe(FileObserver::class);
     }
 
     public function attachment()
@@ -83,12 +57,9 @@ class File extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Filter
-    public function scopeFilter($query, $filters)
+    public function thumbSizes()
     {
-        $query->when($filters['filetype'] ?? false, function($query) use ($filters) {
-            $query->where('type', $filters['filetype']);
-        });
+        return $this->thumbSizes;
     }
 
     public function storageDisk(string $disk = null)
@@ -96,7 +67,14 @@ class File extends BaseModel
         return Storage::disk($disk ?? $this->disk);
     }
 
-    public function getOriginalPath($thumbSize = null)
+    public function path(string $thumbSize = null)
+    {
+        return $this->attributes['type'].DS.$this->attributes['category']
+            .($thumbSize ? DS.$thumbSize : '')
+            .DS.$this->attributes['name'].'.'.$this->attributes['extension'];
+    }
+
+    public function originalPath(string $thumbSize = null)
     {
         return $this->getOriginal('type').DS.$this->getOriginal('category')
             .($thumbSize ? DS.$thumbSize : '')
@@ -105,10 +83,6 @@ class File extends BaseModel
 
     public function manageUpload(UploadedFile $file, array $data)
     {
-        if ('gz' == $data['extension']) {
-            $data['extension'] = 'tar.gz';
-        }
-
         return $this->fill($data)->uploadFile($file)->save() ? $this->toJson() : false;
     }
 
@@ -136,7 +110,7 @@ class File extends BaseModel
         // dump($name[0]);
 
         // Manipulate whith image file. Block mass uploading images.
-        if ($isLocalDisk and 'image' == $data['type'] and ! request('mass_uploading')) {
+        if ($isLocalDisk and 'image' == $data['type'] and ! (bool) request('mass_uploading')) {
             $this->storeAsImage($file, $data);
         }
         // Manipulate whith archive file.
@@ -234,7 +208,7 @@ class File extends BaseModel
         }
 
         // Cutting images.
-        foreach ($this->thumbSizes as $key => $value) {
+        foreach ($this->thumbSizes() as $key => $value) {
             @$disk->makeDirectory($path_prefix.$key);
             $size = $this->imageResave(
                 $this->getAbsolutePathAttribute(),

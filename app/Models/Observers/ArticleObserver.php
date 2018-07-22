@@ -36,7 +36,7 @@ class ArticleObserver
 
         // Always clear cache.
         $this->addToCacheKeys([
-            'cachedFullArticleWithRelation-'.$article->id => false,
+            'articles-single-'.$article->id => false,
         ]);
 
         $this->cacheForgetByKeys($article);
@@ -54,7 +54,7 @@ class ArticleObserver
 
         // Always clear cache.
         $this->addToCacheKeys([
-            'cachedFullArticleWithRelation-'.$article->id => false,
+            'articles-single-'.$article->id => false,
         ]);
 
         $this->cacheForgetByKeys($article);

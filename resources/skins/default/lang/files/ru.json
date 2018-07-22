@@ -14,6 +14,8 @@
     "attaching": "Прикрепление файла",
     "extension": "Расширение файла",
     
+    "not_attached": "<code>[не прикреплено]</code>",
+    
     "msg.already_exists": "Файл уже существует: <a href=%s target=_blank class=alert-link>%s</a>.",
     "msg.uploaded_success": "Файл успешно загружен.",
     "msg.not_found": "Нет загруженных файлов для отображения."

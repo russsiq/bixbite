@@ -101,7 +101,7 @@
                                                 @if ($file->attachment)
                                                     <a href="{{ $file->attachment->url }}" target="_blank">{{ $file->attachment->title }}</a>
                                                 @else
-                                                    <code>[empty]</code>
+                                                    @lang('not_attached')
                                                 @endif
                                             </td>
                                             <td class="text-right d-print-none">

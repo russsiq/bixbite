@@ -20,11 +20,15 @@
 		<div class="form-group row {{ $errors->has('attachment_id') ? ' has-error' : '' }}">
 			<label class="col-sm-7 control-label">@lang('attaching') <sup class="text-danger">*</sup></label>
 			<div class="col-sm-5">
-				<input type="hidden" name="attachment_type" class="form-control" value="articles" />
+				<input type="hidden" name="attachment_type" class="form-control"
+					value="{{ old('attachment_type', optional($file)->attachment_type) ?? 'articles' }}" />
 				<select name="attachment_id" class="form-control">
 					<option value=""></option>
 					@foreach ($articles as $article)
-						<option value="{{ $article->id }}" {{ (isset($file->attachment_id) and $file->attachment_id === $article->id) ? 'selected' : '' }}>{{ $article->title }}</option>
+						<option value="{{ $article->id }}"
+							{{ (isset($file->attachment_id) and $file->attachment_id === $article->id) ? 'selected' : '' }}>
+							{{ user('id') == $article->user_id ? '['.$article->title.']' : $article->title }}
+						</option>
 					@endforeach
 				</select>
 			</div>

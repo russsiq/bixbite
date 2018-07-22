@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Common;
+namespace BBCMS\Http\Controllers\Rss;
 
 use BBCMS\Models\Article;
 use BBCMS\Models\Category;
@@ -81,6 +81,38 @@ class SitemapController
         ];
     }
 
+    protected static function getAmpArticles()
+    {
+        return [
+            'articles' => Article::select([
+                    'articles.id',
+                    'articles.image_id',
+                    'articles.slug',
+                    'articles.created_at',
+                    'articles.updated_at',
+
+                    'articles.title',
+                    'articles.content',
+                ])
+                ->with([
+                    'files' => function ($query) {
+                        $query->select([
+                            'files.id', 'files.disk', 'files.type',
+                            'files.category', 'files.name', 'files.extension',
+                            'files.attachment_type','files.attachment_id'
+                        ])
+                        ->join('articles', function ($join) {
+                            $join->on('files.id', '=', 'articles.image_id');
+                        })
+                        ->where('type', 'image');
+                    },
+                ])
+                ->published()
+                ->orderBy('updated_at', 'desc')
+                ->get(),
+        ];
+    }
+
     protected static function getCategories()
     {
         return [
@@ -110,9 +142,9 @@ class SitemapController
 
     protected static function render(string $get, string $sitemap)
     {
-        $cache_key = 'sitemap.'.$sitemap;
+        $cache_key = 'rss.'.$sitemap;
         $cache_time = static::cacheTime($sitemap);
-
+dump($cache_key);
         if (false === $cache_time) {
             return view($cache_key, static::{$get}())->render();
         }
@@ -168,7 +200,7 @@ class SitemapController
     {
         if (method_exists(static::class, $get = 'get'.ucfirst($method))) {
             return response(
-                    static::render($get, $method),
+                    static::render($get, snake_case($method)),
                     200, ['Content-Type' => 'text/xml']
                 );
         }

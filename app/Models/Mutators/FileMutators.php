@@ -19,30 +19,16 @@ trait FileMutators
      */
     public function getPathAttribute($thumbSize = null) // {{ $file->path }} // $image->getPathAttribute('thumb')
     {
-        if ($thumbSize and 'image' == $this->attributes['type']) {
-            if ($this->storageDisk()->exists(
-                $path = $this->attributes['type'].DS.$this->attributes['category']
-                .DS.$thumbSize
-                .DS.$this->attributes['name'].'.'.$this->attributes['extension']
-            )) {
-                return $path;
-            }
+        $path = $this->path($thumbSize);
 
-            // To $image->picture_box
-            return null;
-        }
-
-        return $this->attributes['type'].DS.$this->attributes['category']
-            .DS.$this->attributes['name'].'.'.$this->attributes['extension'];
+        return $this->storageDisk()->exists($path) ? $path : null;
     }
 
     public function getAbsolutePathAttribute($thumbSize = null) // {{ $file->absolute_path }} // $image->getAbsolutePathAttribute('thumb')
     {
-        if ($path = $this->getPathAttribute($thumbSize)) {
-            return $this->storageDisk()->path($path);
-        }
+        $path = $this->getPathAttribute($thumbSize);
 
-        return null;
+        return $path ? $this->storageDisk()->path($path) : null;
     }
 
     /**

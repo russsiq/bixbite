@@ -53,13 +53,15 @@ class FilesController extends AdminController
     public function index()
     {
         return $this->renderOutput('index', [
-            'filetype' => request('filetype', false),
+            'filetype' => html_secure(request('filetype', null)),
             'files' => $this->model
                 ->with([
                     'attachment'
                 ])
-                // Show files only to current user.
-                ->where('user_id', user('id'))
+                ->when('owner' != user('role'), function ($query) {
+                    // Show files only to current user.
+                    $query->where('user_id', user('id'));
+                })
                 // Show files only to articles.
                 // ->where('attachment_type', (new Article)->getMorphClass())
                 ->filter(request(['filetype', 'user']))
@@ -80,7 +82,11 @@ class FilesController extends AdminController
     {
         return $this->renderOutput('create', [
             'file' => [],
-            'articles' => Article::where('user_id', user('id'))->latest()->get() ?? [],
+            'articles' => Article::when('owner' != user('role'), function ($query) {
+                    $query->where('user_id', user('id'));
+                })
+                ->latest()
+                ->get() ?? [],
         ]);
     }
 
@@ -128,11 +134,11 @@ class FilesController extends AdminController
     {
         return $this->renderOutput('edit', [
             'file' => $file,
-            'articles' => Article::when(
-                'owner' != user('role'), function ($query) {
+            'articles' => Article::when('owner' != user('role'), function ($query) {
                     $query->where('user_id', user('id'));
                 })
-                ->latest()->get() ?? [],
+                ->latest()
+                ->get() ?? [],
         ]);
     }
 
