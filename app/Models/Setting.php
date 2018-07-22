@@ -27,6 +27,10 @@ class Setting extends BaseModel
         'title', 'descr',
     ];
 
+    protected static $_env = [
+        //
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -96,6 +100,15 @@ class Setting extends BaseModel
             config_path('settings').DS.$module->name.'.php',
             '<?php return ' . var_export($attributes, true) . ';'
         );
+
+        // Set to session.
+        if (array_key_exists('app_theme', $attributes)) {
+            app_theme($attributes['app_theme']);
+        }
+
+        if (array_key_exists('app_locale', $attributes)) {
+            app_locale($attributes['app_locale']);
+        }
 
         // 3 Clear and cache config. But we will not see flash message.
         Artisan::call('config:cache');
