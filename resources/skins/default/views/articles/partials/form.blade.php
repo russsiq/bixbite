@@ -20,7 +20,7 @@
 					<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
 						<input type="text" name="title"
 							value="{{ old('title', optional($article)->title) }}"
-							class="form-control border-0"
+							class="form-control"
 							placeholder="@lang('title#tip') ..."
 							autocomplete="off" autofocus required />
 					</div>
@@ -28,14 +28,14 @@
 						<div class="form-group {{ $errors->has('slug') ? ' has-error' : '' }}">
 							<input type="text" name="slug"
 								value="{{ old('slug', optional($article)->slug) }}"
-								class="form-control border-0"
+								class="form-control"
 								placeholder="@lang('slug#tip') ..." autocomplete="off" />
 						</div>
 					@endif
 					<div class="form-group {{ $errors->has('teaser') ? ' has-error' : '' }} mb-0">
 						<textarea name="teaser"
 							rows="4"
-							class="form-control border-0"
+							class="form-control"
 							placeholder="@lang('teaser#tip') ..."
 							>{{ old('teaser', optional($article)->teaser) }}</textarea>
 					</div>
@@ -44,18 +44,21 @@
 		</div>
 
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-			<textarea name="content" class="form-control" placeholder="@lang('content') ..." required>{{ old('content', optional($article)->getOriginal('content')) }}</textarea>
+			<bxb-editor name="content">{!! old('content', optional($article)->getOriginal('content')) !!}</bxb-editor>
 		</div>
 
 		<div id="accordion">
 			{{-- <div class="card mb-0">
 				<div class="card-header">
-					<a href="#card_tags" data-toggle="collapse" data-target="#card_tags" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
+					<a href="#card_files" data-toggle="collapse" data-target="#card_files" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
 				</div>
-				<div id="card_tags" class="collapse" data-parent="#accordion">
+				<div id="card_files" class="collapse" data-parent="#accordion">
 					<div class="card-body">
-						<div class="form-group {{ $errors->has('tags') ? ' has-error' : '' }}">
-							<input type="file" name="files[]" />
+						<div class="form-group row">
+							<files-attaching :attachment_id="'{{ $article->id }}'" :attachment_type="'{{ $article->getMorphClass() }}'" :multiple="true"
+								:upload_url="'{{ route('admin.files.upload') }}'"
+								:update_url="'{{ route('admin.files.upload', ':id') }}'"
+								:delete_url="'{{ route('admin.files.delete', ':id') }}'"></files-attaching>
 						</div>
 					</div>
 				</div>

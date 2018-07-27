@@ -1,7 +1,7 @@
 <template>
     <label class="image-uploader">
         <div v-if="'uploaded' == state" class="image-uploader-success">
-            <img :src="url" :key="logo" alt="input_name" />
+            <img :src="url" alt="image" />
             <input type="hidden" :name="input_name" :value="image_id" v-if="image_id > 0" />
         </div>
         <div v-else class="image-uploader-variant d-flex justify-content-center align-items-center">
@@ -20,13 +20,13 @@
             input_name: String,
             focusable: String,
             post_url: String,
-            url: String,
-            state: String
+            url: {String, required: false},
+            state: {String, required: false}
         },
         data(){
             return {
-                url: '',
-                state: 'inaction',
+                //url: '',
+                //state: null,
                 image_id: 0
             }
         },
@@ -102,9 +102,10 @@
     }
     .image-uploader-success {
         color: #43ac6a;
-        border-radius: 0.25rem;
         overflow: hidden;
-        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.25);
+        box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .25);
+        padding: .25rem;
+        border: 1px solid rgba(0, 0, 0, .125);
     }
     input.image-uploader-file {
         display: none;

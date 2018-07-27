@@ -9,22 +9,11 @@
 </div>
 <form name="DATA_tmp_storage" action="" id="DATA_tmp_storage"><input type="hidden" name="area" value="" /></form>
 
-@push('css')
-	<script>
-		CKEDITOR_BASEPATH = "{{ skin_asset('js/ckeditor').'/' }}";
-	</script>
-@endpush
-
 <script>
 
 	// Global variable: ID of current active input area
 	var currentInputAreaID = 'content';
-	var editor = CKEDITOR.replace(currentInputAreaID);
 	var form = document.getElementById('form_action');
-
-	// var editor = CKEDITOR.replace(currentInputAreaID, {
-	// 	customConfig: ''
-	// });
 
 	function preview()
 	{

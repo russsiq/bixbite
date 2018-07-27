@@ -11,8 +11,9 @@ try {
     window.$ = window.jQuery = require('jquery');
     window.Popper = require('popper.js').default;
     require('bootstrap');
+
     window.baguetteBox = require('baguettebox.js');
-    require('ckeditor');
+
     window.CodeMirror = require('codemirror');
     require('codemirror/mode/htmlmixed/htmlmixed.js');
     require('codemirror/mode/css/css.js');
@@ -23,7 +24,7 @@ try {
     require('codemirror/addon/search/search.js');
     require('codemirror/addon/search/searchcursor.js');
     window.emmetCodeMirror = require('emmet-codemirror');
-    
+
     require('./script.js');
 } catch (e) {}
 

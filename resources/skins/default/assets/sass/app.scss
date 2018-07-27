@@ -21,7 +21,8 @@ $fa-font-path: "./fonts/font-awesome" !default;
 // npm install baguettebox.js
 @import "~baguettebox.js/src/baguetteBox";
 
-@import "~ckeditor/skins/moono-lisa/editor.css";
+// npm i codemirror
+// npm i emmet-codemirror
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/addon/display/fullscreen.css";
 @import "~codemirror/addon/dialog/dialog.css";
@@ -326,6 +327,7 @@ img {
 .form-control {
     font-size: 1rem;
     color: #888;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .form-control:focus {

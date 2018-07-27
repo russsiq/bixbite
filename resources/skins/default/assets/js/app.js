@@ -18,6 +18,10 @@ window.Vue = require('vue');
 Vue.component('upload-files',       require('./components/UploadFiles.vue'));
 Vue.component('image-uploader',     require('./components/ImageUploader.vue'));
 
+// Vue.component('files-attaching',     require('./components/FilesAttaching.vue'));
+
+Vue.component('bxb-editor', require('./components/BxbEditor.vue'));
+
 const app = new Vue({
     el: '#app'
 });

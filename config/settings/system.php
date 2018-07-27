@@ -4,7 +4,7 @@
   'app_locale' => 'ru',
   'app_theme' => 'default',
   'app_skin' => 'default',
-  'meta_title' => 'BixBite - Content Management System',
+  'meta_title' => 'BixBite',
   'meta_title_delimiter' => ' — ',
   'meta_title_reverse' => '0',
   'meta_description' => 'BixBite - Content Management System',

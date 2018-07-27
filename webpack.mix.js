@@ -28,15 +28,6 @@ let mix = require('laravel-mix');
 //
 //     /* copy fonts to font-awesome*/
 //     .copyDirectory('node_modules/font-awesome/fonts', './resources/skins/default/public/css/fonts/font-awesome')
-//
-//     /* copy ckeditor distr files and folders */
-//     .copy('node_modules/ckeditor/config.js', './resources/skins/default/public/js/ckeditor/config.js')
-//     .copy('node_modules/ckeditor/styles.js', './resources/skins/default/public/js/ckeditor/styles.js')
-//     .copy('node_modules/ckeditor/contents.css', './resources/skins/default/public/js/ckeditor/contents.css')
-//     .copyDirectory('node_modules/ckeditor/skins', './resources/skins/default/public/js/ckeditor/skins')
-//     .copyDirectory('node_modules/ckeditor/lang', './resources/skins/default/public/js/ckeditor/lang')
-//     .copyDirectory('node_modules/ckeditor/plugins', './resources/skins/default/public/js/ckeditor/plugins')
-//     .copyDirectory('node_modules/ckeditor/adapters', './resources/skins/default/public/js/ckeditor/adapters')
 //    ;
 
 mix.setPublicPath('./resources/themes/default/')
