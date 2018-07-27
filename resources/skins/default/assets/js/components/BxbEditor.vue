@@ -3,7 +3,7 @@
         <div class="bxb_panel">
             <div class="bxb_panel__inner">
                 <button class="bxb_btn" :title="title(button)" :key="button.cmd"
-                    v-for="(button, key, index) in commandsEnabled"
+                    v-for="(button, key, index) in applicableCommands"
                     @click="doCommand(button, $event)"
                     ><i :class="icon(button)"></i></button>
                 <span class="bxb_vr"></span>
@@ -20,16 +20,28 @@
 
 <script>
 
-import commands from './json/commands.json'
+import availableCommands from './json/available-commands.json'
 
 export default {
-    props: [],
+    props: {
+        lang: {String, default: 'en'}
+    },
     data() {
         return {
             content: null,
-            command: [],
-            commands: commands,
+            
+            // All commands to document.execCommand.
+            availableCommands: availableCommands,
+            
+            // Commands that are supported by the browser.
+            supportedCommands: [],
+            
+            // Commands specified by config.
+            specifiedCommands: ['bold','italic','underline','strikeThrough','subscript'],
+            
+            // Attributes to delete from html content.
             removableAttributes: ['id', 'style', 'class'],
+            
             blocks: [
                 {type: 'paragraph', html: '<p>В любви обычно несчастен (так и хочется сказать - потому что верит в романтику), потому что терпеть постоянно устраиваемые Близнецом феерии идиотического веселья и веселого идиотизма в силах только Овен, а на всех Близнецов ГОвна не хватает.</p>'},
                 {type: '', html: ''},
@@ -37,7 +49,7 @@ export default {
         }
     },
     mounted() {
-        // После обновления DOM-дерева
+        // Executed after the next DOM update cycle.
         this.$nextTick(() => {
             let source = document.getElementById('editor')
             source.innerHTML = source.innerHTML.replace(/\n/g, ' ')
@@ -45,10 +57,12 @@ export default {
         })
     },
     computed: {
-        commandsEnabled: function () {
-            return this.commands.filter((command, i) => {
-                if (this.supported(command)) {
-                    this.command[command.cmd] = command
+        // Get commands to be used in the editor.
+        applicableCommands: function () {
+            return this.availableCommands.filter((command, i) => {
+                if (this.supported(command)) { // && this.specifiedCommands.includes(command.cmd)) {
+                    this.supportedCommands[command.cmd] = command
+                    
                     return command
                 }
             })
@@ -76,11 +90,10 @@ export default {
         doCommand: function (cmd, event) {
             if (event) event.preventDefault()
             
-            let command = this.command[cmd.cmd];
+            let command = this.supportedCommands[cmd.cmd];
             
-            document.execCommand(command.cmd, false, 
-                (typeof command.val !== 'undefined') ? prompt('Value for '+command.cmd+'?', command.val) : ''
-            )
+            let val = (typeof command.val !== "undefined") ? prompt("Value for " + command.cmd + "?", command.val) : ''
+            document.execCommand(command.cmd, false, (val || ''))
             // https://codepen.io/chrisdavidmills/pen/gzYjag
             // https://developer.mozilla.org/en-US/docs/Web/API/document/execCommand
         },
@@ -91,7 +104,7 @@ export default {
             return (typeof command.icon !== 'undefined') ? 'fa fa-' + command.icon : command.cmd;
         },
         title: function (command) {
-            return (typeof command.desc !== 'undefined') ? command.desc : '';
+            return (typeof command.desc[this.lang] !== 'undefined') ? command.desc[this.lang] : command.cmd;
         },
         supported: function (command) {
             return !!document.queryCommandSupported(command.cmd) ? true : false

@@ -44,7 +44,7 @@
 		</div>
 
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-			<bxb-editor name="content">{!! old('content', optional($article)->getOriginal('content')) !!}</bxb-editor>
+			<bxb-editor name="content" lang="{{ app_locale() }}">{!! old('content', optional($article)->getOriginal('content')) !!}</bxb-editor>
 		</div>
 
 		<div id="accordion">

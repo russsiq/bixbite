@@ -1,128 +1,215 @@
 [{
 	"cmd": "undo",
 	"icon": "undo",
-	"desc": "Undoes the last executed command."
+	"desc": {
+        "ru": "Отменить предыдущую команду",
+        "en": "Undoes the last executed command"
+    }
 }, {
 	"cmd": "redo",
 	"icon": "repeat",
-	"desc": "Redoes the previous undo command."
+	"desc": {
+        "ru": "Вернуть предыдущую команду",
+        "en": "Redoes the previous undo command"
+    }
 }, {
 	"cmd": "bold",
 	"icon": "bold",
-	"desc": "Toggles bold on/off for the selection or at the insertion point. (Internet Explorer uses the STRONG tag instead of B.)"
+	"desc": {
+        "ru": "Жирный",
+        "en": "Bold"
+    }
 }, {
 	"cmd": "italic",
 	"icon": "italic",
-	"desc": "Toggles italics on/off for the selection or at the insertion point. (Internet Explorer uses the EM tag instead of I.)"
+	"desc": {
+        "ru": "Курсив",
+        "en": "Italic"
+    }
 }, {
 	"cmd": "underline",
 	"icon": "underline",
-	"desc": "Toggles underline on/off for the selection or at the insertion point."
+	"desc": {
+        "ru": "Подчеркнутый",
+        "en": "Underline"
+    }
 }, {
 	"cmd": "strikeThrough",
 	"icon": "strikethrough",
-	"desc": "Toggles strikethrough on/off for the selection or at the insertion point."
+	"desc": {
+        "ru": "Зачеркнутый",
+        "en": "Strikethrough"
+    }
 }, {
 	"cmd": "subscript",
 	"icon": "subscript",
-	"desc": "Toggles subscript on/off for the selection or at the insertion point."
+	"desc": {
+        "ru": "Подстрочный",
+        "en": "Subscript"
+    }
 }, {
 	"cmd": "superscript",
 	"icon": "superscript",
-	"desc": "Toggles superscript on/off for the selection or at the insertion point."
+	"desc": {
+        "ru": "Надстрочный",
+        "en": "Superscript"
+    }
 }, {
 	"cmd": "createLink",
-	"val": "https://twitter.com/netsi1964",
+	"val": "https://github.com/russsiq/bixbite",
 	"icon": "link",
-	"desc": "Creates an anchor link from the selection, only if there is a selection. This requires the HREF URI string to be passed in as a value argument. The URI must contain at least a single character, which may be a white space. (Internet Explorer will create a link with a null URI value.)"
+	"desc": {
+        "ru": "Вставить гиперссылку",
+        "en": "Create hyperlink"
+    }
 }, {
 	"cmd": "unlink",
 	"icon": "chain-broken",
-	"desc": "Removes the anchor tag from a selected anchor link."
+	"desc": {
+        "ru": "Удалить гиперссылку",
+        "en": "Remove hyperlink"
+    }
 }, {
 	"cmd": "justifyLeft",
 	"icon": "align-left",
-	"desc": "Justifies the selection or insertion point to the left."
+	"desc": {
+        "ru": "Выровнять текст по левому краю",
+        "en": "Justify left"
+    }
 }, {
 	"cmd": "justifyCenter",
 	"icon": "align-center",
-	"desc": "Centers the selection or insertion point."
+	"desc": {
+        "ru": "По центру",
+        "en": "Justify center"
+    }
 }, {
 	"cmd": "justifyRight",
 	"icon": "align-right",
-	"desc": "Right-justifies the selection or the insertion point."
+	"desc": {
+        "ru": "Выровнять текст по правому краю",
+        "en": "Justify right"
+    }
 }, {
 	"cmd": "justifyFull",
 	"icon": "align-justify",
-	"desc": "Justifies the selection or insertion point."
+	"desc": {
+        "ru": "По ширине",
+        "en": "Justify full"
+    }
 }, {
 	"cmd": "fontName",
 	"icon": "font",
 	"val": "'Inconsolata', monospace",
-	"desc": "Changes the font name for the selection or at the insertion point. This requires a font name string (\"Arial\" for example) to be passed in as a value argument."
+	"desc": {
+        "ru": "Семейство шрифтов",
+        "en": "Font name"
+    }
 }, {
 	"cmd": "fontSize",
 	"val": "1-7",
 	"icon": "text-height",
-	"desc": "Changes the font size for the selection or at the insertion point. This requires an HTML font size (1-7) to be passed in as a value argument."
+	"desc": {
+        "ru": "Размер шрифта",
+        "en": "Font size"
+    }
 }, {
 	"cmd": "foreColor",
 	"val": "rgba(0,0,0,.5)",
 	"icon": "tint",
-	"desc": "Changes a font color for the selection or at the insertion point. This requires a color value string to be passed in as a value argument."
+	"desc": {
+        "ru": "Цвет текста",
+        "en": "Forecolor"
+    }
 }, {
 	"cmd": "backColor",
 	"val": "red",
 	"icon": "eyedropper",
-	"desc": "Changes the document background color. In styleWithCss mode, it affects the background color of the containing block instead. This requires a color value string to be passed in as a value argument. (Internet Explorer uses this to set text background color.)"
+	"desc": {
+        "ru": "Цвет фона",
+        "en": "Backcolor"
+    }
 }, {
 	"cmd": "indent",
 	"icon": "indent",
-	"desc": "Indents the line containing the selection or insertion point. In Firefox, if the selection spans multiple lines at different levels of indentation, only the least indented lines in the selection will be indented."
+	"desc": {
+        "ru": "Отступ",
+        "en": "Indent"
+    }
 }, {
 	"cmd": "outdent",
 	"icon": "outdent",
-	"desc": "Outdents the line containing the selection or insertion point."
+	"desc": {
+        "ru": "Выступ",
+        "en": "Outdent"
+    }
 }, {
 	"cmd": "removeFormat",
     "icon": "eraser",
-	"desc": "Removes all formatting from the current selection."
+	"desc": {
+        "ru": "Очистить форматирование с выделенного фрагмента текста",
+        "en": "Removes all formatting from the current selection"
+    }
 }, {
 	"cmd": "insertHorizontalRule",
 	"icon": "minus",
-	"desc": "Inserts a horizontal rule at the insertion point (deletes selection)."
+	"desc": {
+        "ru": "Вставить горизонтальную линию",
+        "en": "Inserts a horizontal rule"
+    }
 }, {
 	"cmd": "insertParagraph",
 	"icon": "paragraph",
-	"desc": "Inserts a paragraph around the selection or the current line. (Internet Explorer inserts a paragraph at the insertion point and deletes the selection.)"
+	"desc": {
+        "ru": "Вставить пустой абзац",
+        "en": "Inserts a paragraph"
+    }
 }, {
 	"cmd": "insertOrderedList",
 	"icon": "list-ol",
-	"desc": "Creates a numbered ordered list for the selection or at the insertion point."
+	"desc": {
+        "ru": "Создать нумированный список",
+        "en": "Creates a numbered ordered list"
+    }
 }, {
 	"cmd": "insertUnorderedList",
 	"icon": "list-ul",
-	"desc": "Creates a bulleted unordered list for the selection or at the insertion point."
+	"desc": {
+        "ru": "Создать маркированный список",
+        "en": "Creates a bulleted unordered list"
+    }
 }, {
 	"cmd": "insertImage",
 	"val": "http://dummyimage.com/160x90",
 	"icon": "picture-o",
-	"desc": "Inserts an image at the insertion point (deletes selection). Requires the image SRC URI string to be passed in as a value argument. The URI must contain at least a single character, which may be a white space. (Internet Explorer will create a link with a null URI value.)"
+	"desc": {
+        "ru": "Вставить изображение по ссылке",
+        "en": "Inserts an image"
+    }
 }, {
 	"cmd": "insertText",
 	"val": "new Date()",
 	"icon": "file-text-o",
-	"desc": "Inserts the given plain text at the insertion point (deletes selection)."
+	"desc": {
+        "ru": "Вставить как обычный текст",
+        "en": "Inserts the given plain text"
+    }
 }, {
 	"cmd": "insertHTML",
 	"val": "&lt;h3&gt;Life is great!&lt;/h3&gt;",
 	"icon": "file-text",
-	"desc": "Inserts an HTML string at the insertion point (deletes selection). Requires a valid HTML string to be passed in as a value argument. (Not supported by Internet Explorer.)"
+	"desc": {
+        "ru": "Вставить как HTML строку",
+        "en": "Inserts an HTML string"
+    }
 }, {
 	"cmd": "formatBlock",
     "icon": "html5",
-    "val": "<blockquote>",
-	"desc": "Adds an HTML block-style tag around the line containing the current selection, replacing the block element containing the line if one exists (in Firefox, BLOCKQUOTE is the exception - it will wrap any containing block element). Requires a tag-name string to be passed in as a value argument. Virtually all block style tags can be used (eg. \"H1\", \"P\", \"DL\", \"BLOCKQUOTE\"). (Internet Explorer supports only heading tags H1 - H6, ADDRESS, and PRE, which must also include the tag delimiters &lt; &gt;, such as \"&lt;H1&gt;\".)"
+    "val": "<h3>",
+	"desc": {
+        "ru": "Изменить формат строки",
+        "en": "Adds an HTML block-style tag around the line containing"
+    }
 },
 
 
