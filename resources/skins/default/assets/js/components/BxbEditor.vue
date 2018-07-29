@@ -1,7 +1,10 @@
 <template lang="html">
     <div class="bxb_editor">
+        
         <div class="bxb_panel">
             <div class="bxb_panel__inner">
+                <button class="bxb_btn" @click="Display.toggle($event)"><i class="fa fa-code"></i></button>
+                <button class="bxb_btn" @click="insertBlock(2, $event)"><i class="fa fa-plus"></i></button>
                 <button class="bxb_btn" :title="title(button)" :key="button.cmd"
                     v-for="(button, key, index) in applicableCommands"
                     @click="doCommand(button, $event)"
@@ -9,18 +12,40 @@
                 <span class="bxb_vr"></span>
             </div>
         </div>
-        <div class="bxb_content">
-            <div id="editor" class="bxb_content__item" contenteditable="true" @input="update">
-                <slot><p></p></slot>
-            </div>
+        <div class="bxb_content" :style="{ display: Display.block }">
+            <div class="bxb_content__item"
+                contenteditable="true"
+                :index="index"
+                :key="index"
+                v-for="(block, index) in blocks"
+                v-html="block.outerHTML"
+                @input="update(index, $event)"
+                @blur="onBlur(index, $event)"
+                @focus="onFocus(index, $event)"
+                @keyup.delete="onTrim(index, $event)"
+                @contextmenu="openMenu"
+                @dblclick="openMenu"
+                ></div>
+            
         </div>
-        <textarea name="content" class="form-control d-none" rows="4">{{ content }}</textarea>
+        
+        <div id="right-click-menu" tabindex="-1" ref="right" v-if="viewMenu" :style="{top:menuTop, left:menuLeft}">
+            <button class="bxb_btn" @click="doCommand({cmd: 'bold'}, $event)"><i class="fa fa-bold"></i></button>
+            <button class="bxb_btn" @click="doCommand({cmd: 'italic'}, $event)"><i class="fa fa-italic"></i></button>
+            <button class="bxb_btn" @click="doCommand({cmd: 'underline'}, $event)"><i class="fa fa-underline"></i></button>
+            <button class="bxb_btn" @click="doCommand({cmd: 'strikeThrough'}, $event)"><i class="fa fa-strikethrough"></i></button>
+        </div>
+        
+        <div id="content" :style="{ display: Display.none }"><slot></slot></div>
     </div>
 </template>
 
 <script>
 
 import availableCommands from './json/available-commands.json'
+import CleanWordHTML from './js/clean-word.js'
+
+// Vue.use(CleanWordHTML)
 
 export default {
     props: {
@@ -28,7 +53,23 @@ export default {
     },
     data() {
         return {
+            Display: {
+                block: 'block',
+                none: 'none',
+                toggle(event) {
+                    if (event) event.preventDefault()
+                    this.block = 'block' == this.block ? 'none' : 'block'
+                    this.none = 'none' == this.block ? 'block' : 'none'
+                }
+            },
             content: null,
+            source: null,
+            blocks: [],
+            
+            // Menu
+            viewMenu: false,
+            menuTop: '0px',
+            menuLeft: '0px',
             
             // All commands to document.execCommand.
             availableCommands: availableCommands,
@@ -37,23 +78,18 @@ export default {
             supportedCommands: [],
             
             // Commands specified by config.
-            specifiedCommands: ['bold','italic','underline','strikeThrough','subscript'],
-            
-            // Attributes to delete from html content.
-            removableAttributes: ['id', 'style', 'class'],
-            
-            blocks: [
-                {type: 'paragraph', html: '<p>В любви обычно несчастен (так и хочется сказать - потому что верит в романтику), потому что терпеть постоянно устраиваемые Близнецом феерии идиотического веселья и веселого идиотизма в силах только Овен, а на всех Близнецов ГОвна не хватает.</p>'},
-                {type: '', html: ''},
-            ]
+            specifiedCommands: ['bold','italic','underline','strikeThrough','subscript']
         }
     },
     mounted() {
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
-            let source = document.getElementById('editor')
-            source.innerHTML = source.innerHTML.replace(/\n/g, ' ')
-            this.update(source)
+            let content = document.getElementById('content') 
+            let source = content.firstChild
+            source.value = this.cleanString(source.value)
+            this.content = source
+            
+            this.parsingBlocks(source.value)
         })
     },
     computed: {
@@ -69,36 +105,71 @@ export default {
         },
     },
     methods: {
-        update: function(event) {
-            //this.$emit('update', event.target.innerText);
+        parsingBlocks: function(html) {
+            for (let node of (this.wrapElements(html)).children) {
+                this.blocks.push(node)
+            }
+        },
+        insertBlock: function(index, event) {
+            if (event) event.preventDefault()
+            this.blocks.splice(index, 0,
+                (this.wrapElements(
+                    '<p></p>'
+                )).firstChild)
+        },
+        replaceBlock: function(index, event) {
+            if (event) event.preventDefault()
+            this.blocks.splice(index, 1,
+                (this.wrapElements(
+                    this.cleanString(event.target.innerHTML)
+                )).firstChild)
+        },
+        deleteBlock: function(index, event) {
+            if (event) event.preventDefault()
+            this.blocks.splice(index, 1)
+        },
+        onBlur: function(index, event) {
+            this.replaceBlock(index, event)
+            this.viewMenu = false
+        },
+        onFocus: function(index, event) {
+            // console.log(event)
+            // this.setMenu(event)
+        },
+        onTrim: function(index, event) {
+            if ('' == event.target.innerHTML) {
+                this.deleteBlock(index, event)
+            }
+        },
+        update: function(index, event) {
+            let html = ''
             
-            let self = this
-            let removable = this.removableAttributes || []
-            let updated = event.innerHTML || event.target.innerHTML
-            let wrapper = document.createElement('div');
+            this.$emit('update', event.target.innerHTML)
             
-            // updated = updated.replace(/<([^ >]+)[^>]*>/ig, '<$1>')
-            // updated = updated.replace(/<[^\/>]+>[ \n\r\t]*<\/[^>]+>/ig, '')
-            
-            wrapper.innerHTML = updated;
-            this.walkByDom(wrapper, (element) => {
-                self.removeAttribute(element, removable)
+            Object.keys(this.blocks).forEach((key) => {
+                if (index == key) {
+                    html += event.target.innerHTML
+                } else {
+                    html += this.blocks[key].outerHTML
+                }
             })
             
-            this.content = wrapper.innerHTML
+            let content = document.getElementById('content') 
+            let source = content.firstChild
+            source.value = this.cleanString(html)
+            this.content = source
         },
-        doCommand: function (cmd, event) {
+        doCommand: function(cmd, event) {
+            // https://codepen.io/chrisdavidmills/pen/gzYjag
+            // https://developer.mozilla.org/en-US/docs/Web/API/document/execCommand
+            
             if (event) event.preventDefault()
             
             let command = this.supportedCommands[cmd.cmd];
-            
             let val = (typeof command.val !== "undefined") ? prompt("Value for " + command.cmd + "?", command.val) : ''
+            
             document.execCommand(command.cmd, false, (val || ''))
-            // https://codepen.io/chrisdavidmills/pen/gzYjag
-            // https://developer.mozilla.org/en-US/docs/Web/API/document/execCommand
-        },
-        walkByDom: function (root, func) {
-            for (let node of root.childNodes) func(node)
+            this.viewMenu = false
         },
         icon: function (command) {
             return (typeof command.icon !== 'undefined') ? 'fa fa-' + command.icon : command.cmd;
@@ -109,14 +180,40 @@ export default {
         supported: function (command) {
             return !!document.queryCommandSupported(command.cmd) ? true : false
         },
-        removeAttribute: function(element, attribute) {
-            if (! Array.isArray(attribute)) attribute = [attribute]
+        cleanString: function(string) {
+            string = string.replace(/\n/g, ' ')
+            string = string.replace(/>\s*</g, '><')
             
-            Object.keys(attribute).forEach((key) => {
-                if (element.removeAttribute) {
-                    element.removeAttribute(attribute[key])
-                }
-            })
+            return (new CleanWordHTML(string)).string
+        },
+        wrapElements: function(html) {
+            return document.createRange().createContextualFragment(html)
+        },
+
+        // Menu
+        setMenu: function(e) {
+            let top = e.y
+            let left = e.x
+            let largestHeight = window.innerHeight - this.$refs.right.offsetHeight - 25;
+            let largestWidth = window.innerWidth - this.$refs.right.offsetWidth - 25;
+
+            if (top > largestHeight) top = largestHeight;
+            if (left > largestWidth) left = largestWidth;
+            
+            this.menuTop = top + 'px';
+            this.menuLeft = left + 'px';
+            this.viewMenu = true
+        },
+        closeMenu: function() {
+            this.viewMenu = false;
+        },
+        openMenu: function(e) {
+            this.viewMenu = true;
+            Vue.nextTick(function() {
+                this.$refs.right.focus();
+                this.setMenu(e)
+            }.bind(this));
+            e.preventDefault();
         }
     }
 }
@@ -174,22 +271,50 @@ export default {
     
     
     /* Content */
-    /*.bxb_content {
+    .bxb_content {
         max-height: 380px;
         overflow-y: scroll;
-    }*/
+        position: relative;
+    }
     .bxb_content__item {
         color: #444;
         background-color: #fff;
-        border: 1px solid transparent;
-        padding: 0.75rem 1.25rem;
-        max-height: 480px;
-        overflow-y: scroll;
+        border: 1px solid #fafafa;
+        padding: .05rem 1.25rem;
+        /*max-height: 480px;
+        overflow-y: scroll;*/
+        position: relative;
     }
     .bxb_content__item:focus {
         color: #222;
         background-color: #fff;
         border-color: #3bceff;
         outline: 0;
+    }
+    
+    #right-click-menu{
+        background: #FAFAFA;
+        border: 1px solid #BDBDBD;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+        display: block;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        z-index: 999999;
+    }
+
+    #right-click-menu li {
+        border-bottom: 1px solid #E0E0E0;
+        margin: 0;
+        padding: 5px 35px;
+    }
+
+    #right-click-menu li:last-child {
+        border-bottom: none;
+    }
+
+    #right-click-menu li:hover {
+        background: #1E88E5;
+        color: #FAFAFA;
     }
 </style>

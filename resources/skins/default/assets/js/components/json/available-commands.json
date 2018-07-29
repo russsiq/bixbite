@@ -1,18 +1,4 @@
 [{
-	"cmd": "undo",
-	"icon": "undo",
-	"desc": {
-        "ru": "Отменить предыдущую команду",
-        "en": "Undoes the last executed command"
-    }
-}, {
-	"cmd": "redo",
-	"icon": "repeat",
-	"desc": {
-        "ru": "Вернуть предыдущую команду",
-        "en": "Redoes the previous undo command"
-    }
-}, {
 	"cmd": "bold",
 	"icon": "bold",
 	"desc": {
@@ -191,7 +177,7 @@
 	"val": "new Date()",
 	"icon": "file-text-o",
 	"desc": {
-        "ru": "Вставить как обычный текст",
+        "ru": "Вставить обычный текст",
         "en": "Inserts the given plain text"
     }
 }, {
@@ -199,13 +185,13 @@
 	"val": "&lt;h3&gt;Life is great!&lt;/h3&gt;",
 	"icon": "file-text",
 	"desc": {
-        "ru": "Вставить как HTML строку",
+        "ru": "Вставить HTML строку",
         "en": "Inserts an HTML string"
     }
 }, {
 	"cmd": "formatBlock",
-    "icon": "html5",
     "val": "<h3>",
+    "icon": "html5",
 	"desc": {
         "ru": "Изменить формат строки",
         "en": "Adds an HTML block-style tag around the line containing"
@@ -214,6 +200,20 @@
 
 
 {
+	"cmd": "undo",
+	"icon": "undo",
+	"desc": {
+        "ru": "Отменить предыдущую команду",
+        "en": "Undoes the last executed command"
+    }
+}, {
+	"cmd": "redo",
+	"icon": "repeat",
+	"desc": {
+        "ru": "Вернуть предыдущую команду",
+        "en": "Redoes the previous undo command"
+    }
+}, {
 	"cmd": "cut",
 	"icon": "scissors",
 	"desc": "Cuts the current selection and copies it to the clipboard. Clipboard capability must be enabled in the user.js preference file. See"
