@@ -3,8 +3,8 @@
         
         <div class="bxb_panel">
             <div class="bxb_panel__inner">
-                <button class="bxb_btn" @click="Display.toggle($event)"><i class="fa fa-code"></i></button>
-                <button class="bxb_btn" @click="insertBlock(2, $event)"><i class="fa fa-plus"></i></button>
+                <button class="bxb_btn" @click="viewSource.toggle($event)"><i class="fa fa-code"></i></button>
+                <button class="bxb_btn" @click="onInsert(2, $event)"><i class="fa fa-plus"></i></button>
                 <button class="bxb_btn" :title="title(button)" :key="button.cmd"
                     v-for="(button, key, index) in applicableCommands"
                     @click="doCommand(button, $event)"
@@ -12,7 +12,7 @@
                 <span class="bxb_vr"></span>
             </div>
         </div>
-        <div class="bxb_content" :style="{ display: Display.block }">
+        <div class="bxb_content" :style="{ display: viewSource.block }">
             <div class="bxb_content__item"
                 contenteditable="true"
                 :index="index"
@@ -21,9 +21,9 @@
                 v-html="block.outerHTML"
                 @input="update(index, $event)"
                 @blur="onBlur(index, $event)"
-                @focus="onFocus(index, $event)"
+                @focus="/*onFocus(index, $event)*/"
                 @keyup.delete="onTrim(index, $event)"
-                @contextmenu="openMenu"
+                @contextmenu="/*openMenu*/"
                 @dblclick="openMenu"
                 ></div>
             
@@ -36,7 +36,7 @@
             <button class="bxb_btn" @click="doCommand({cmd: 'strikeThrough'}, $event)"><i class="fa fa-strikethrough"></i></button>
         </div>
         
-        <div id="content" :style="{ display: Display.none }"><slot></slot></div>
+        <div id="content" :style="{ display: viewSource.none }"><slot></slot></div>
     </div>
 </template>
 
@@ -44,6 +44,7 @@
 
 import availableCommands from './json/available-commands.json'
 import CleanWordHTML from './js/clean-word.js'
+import Display from './js/display.js'
 
 // Vue.use(CleanWordHTML)
 
@@ -53,15 +54,7 @@ export default {
     },
     data() {
         return {
-            Display: {
-                block: 'block',
-                none: 'none',
-                toggle(event) {
-                    if (event) event.preventDefault()
-                    this.block = 'block' == this.block ? 'none' : 'block'
-                    this.none = 'none' == this.block ? 'block' : 'none'
-                }
-            },
+            viewSource: new Display,
             content: null,
             source: null,
             blocks: [],
@@ -111,34 +104,46 @@ export default {
             }
         },
         insertBlock: function(index, event) {
-            if (event) event.preventDefault()
             this.blocks.splice(index, 0,
                 (this.wrapElements(
                     '<p></p>'
                 )).firstChild)
         },
         replaceBlock: function(index, event) {
-            if (event) event.preventDefault()
             this.blocks.splice(index, 1,
                 (this.wrapElements(
                     this.cleanString(event.target.innerHTML)
-                )).firstChild)
+                )).firstChild
+            )
         },
-        deleteBlock: function(index, event) {
-            if (event) event.preventDefault()
+        deleteBlock: function(index) {
             this.blocks.splice(index, 1)
         },
+        onInsert: function(index, event) {
+            if (event) event.preventDefault()
+            
+            this.insertBlock(index, event)
+        },
         onBlur: function(index, event) {
-            this.replaceBlock(index, event)
+            for (let i = 0; i < event.target.children.length; i++) {
+                this.blocks.splice(
+                    index + i,
+                    0 == i ? 1 : 0,
+                    0 == i ? event.target.firstChild : event.target.children[i]
+                )
+            }
             this.viewMenu = false
         },
         onFocus: function(index, event) {
+            console.log(index)
+            if (event) event.preventDefault()
+            
             // console.log(event)
             // this.setMenu(event)
         },
         onTrim: function(index, event) {
             if ('' == event.target.innerHTML) {
-                this.deleteBlock(index, event)
+                this.deleteBlock(index)
             }
         },
         update: function(index, event) {

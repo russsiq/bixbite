@@ -51,7 +51,7 @@ export default class CleanWordHTML {
         str = str.replace( /<\/H\d>/gi, '<br>' ) ; //remove this to take out breaks where Heading tags were */
         str = str.replace( /<(U|I|STRIKE)>&nbsp;<\/\1>/g, '&nbsp;' ) ;
         str = str.replace( /<(B|b)>&nbsp;<\/\b|B>/g, '' ) ;
-        str = str.replace( /size|SIZE = ([\d]{1})/g, '' ) ;
+        // str = str.replace( /size|SIZE = ([\d]{1})/g, '' ) ;
         str = str.replace( /<([^\s>]+)[^>]*>\s*<\/\1>/g, '' ) ;
         str = str.replace( /<([^\s>]+)[^>]*>\s*<\/\1>/g, '' ) ;
         str = str.replace( /<([^\s>]+)[^>]*>\s*<\/\1>/g, '' ) ;
