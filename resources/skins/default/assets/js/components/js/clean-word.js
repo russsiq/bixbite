@@ -18,6 +18,8 @@ export default class CleanWordHTML {
         str = string.replace(/<o:p>\s*<\/o:p>/g, '') ;
         str = str.replace(/<o:p>.*?<\/o:p>/g, "&nbsp;") ;
         str = str.replace( /\s*mso-[^:]+:[^;"]+;?/gi, '') ;
+        str = str.replace( /\s*class=\"MsoNormal\"/gi, '') ;
+        str = str.replace( /\s*class=\"MsoTableGrid\"/gi, ' class=\"table\"') ;
         str = str.replace( /\s*MARGIN: 0cm 0cm 0pt\s*;/gi, '') ;
         str = str.replace( /\s*MARGIN: 0cm 0cm 0pt\s*"/gi, "\"" ) ;
         str = str.replace( /\s*TEXT-INDENT: 0cm\s*;/gi, '') ;
@@ -25,14 +27,15 @@ export default class CleanWordHTML {
         str = str.replace( /\s*TEXT-ALIGN: [^\s;]+;?"/gi, "\"" ) ;
         str = str.replace( /\s*PAGE-BREAK-BEFORE: [^\s;]+;?"/gi, "\"" ) ;
         str = str.replace( /\s*FONT-VARIANT: [^\s;]+;?"/gi, "\"" ) ;
+        str = str.replace( /\s*FONT-SIZE:[^;"]*;?/gi, '') ;
+        str = str.replace( /\s*FONT-FAMILY:[^;"]*;?/gi, '') ;
         str = str.replace( /\s*tab-stops:[^;"]*;?/gi, '') ;
         str = str.replace( /\s*tab-stops:[^"]*/gi, '') ;
         str = str.replace( /\s*face="[^"]*"/gi, '') ;
         str = str.replace( /\s*face=[^ >]*/gi, '') ;
-        str = str.replace( /\s*FONT-FAMILY:[^;"]*;?/gi, '') ;
         // str = str.replace(/<(\w[^>]*) class=([^ |>]*)([^>]*)/gi, "<$1$3") ;
         // str = str.replace( /<(\w[^>]*) style="([^\"]*)"([^>]*)/gi, "<$1$3" ) ;
-        str = str.replace( /\s*style="\s*"/gi, '' ) ;
+        str = str.replace( /\s*style="\s*?"/gi, '' ) ;
         str = str.replace(/<(\w[^>]*) lang=([^ |>]*)([^>]*)/gi, "<$1$3") ;
         str = str.replace( /<P\s*[^>]*>\s*&nbsp;\s*<\/P>/gi, '&nbsp;' ) ;
         str = str.replace( /<SPAN\s*[^>]*>\s*&nbsp;\s*<\/SPAN>/gi, '&nbsp;' ) ;
@@ -61,7 +64,9 @@ export default class CleanWordHTML {
         str = str.replace( re, "<div$2</div>" ) ;
         let re2 = new RegExp("(<font|<FONT)([^*>]*>.*?)(<\/FONT>|<\/font>)","gi") ;
         str = str.replace( re2, "<div$2</div>") ; */
-
+        
+        str = str.trim()
+        
         return str
     }
 }

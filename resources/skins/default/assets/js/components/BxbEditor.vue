@@ -21,7 +21,9 @@
                 v-html="block.outerHTML"
                 @input="update(index, $event)"
                 @blur="onBlur(index, $event)"
-                @focus="/*onFocus(index, $event)*/"
+                @focus="onFocus(index, $event)"
+                @paste="/*onPaste(index, $event)*/"
+                @keydown.enter="onEnter(index, $event)"
                 @keyup.delete="onTrim(index, $event)"
                 @contextmenu="/*openMenu*/"
                 @dblclick="openMenu"
@@ -95,7 +97,7 @@ export default {
                     return command
                 }
             })
-        },
+        }
     },
     methods: {
         parsingBlocks: function(html) {
@@ -103,10 +105,10 @@ export default {
                 this.blocks.push(node)
             }
         },
-        insertBlock: function(index, event) {
+        insertBlock: function(index, event, html = '<p>...</p>') {
             this.blocks.splice(index, 0,
                 (this.wrapElements(
-                    '<p></p>'
+                    html
                 )).firstChild)
         },
         replaceBlock: function(index, event) {
@@ -120,30 +122,46 @@ export default {
             this.blocks.splice(index, 1)
         },
         onInsert: function(index, event) {
-            if (event) event.preventDefault()
-            
             this.insertBlock(index, event)
+            if (event) event.preventDefault()
+        },
+        onPaste: function(index, event) {
+            //
+        },
+        onEnter: function(index, event) {
+            if ('P' === event.target.firstChild.tagName) {
+                this.insertBlock(index + 1, event)
+                document.getElementsByClassName("bxb_content__item")[index + 1].focus()
+                document.execCommand('selectAll', false, null)
+                
+                event.preventDefault()
+            }
         },
         onBlur: function(index, event) {
-            for (let i = 0; i < event.target.children.length; i++) {
+            let children = event.target.children
+            
+            for (let i = 0; i < children.length; i++) {
                 this.blocks.splice(
                     index + i,
                     0 == i ? 1 : 0,
-                    0 == i ? event.target.firstChild : event.target.children[i]
+                    children[i]
                 )
             }
+            
             this.viewMenu = false
+            event.preventDefault()
         },
         onFocus: function(index, event) {
-            console.log(index)
-            if (event) event.preventDefault()
-            
-            // console.log(event)
             // this.setMenu(event)
+            // if (event) event.preventDefault()
         },
         onTrim: function(index, event) {
             if ('' == event.target.innerHTML) {
                 this.deleteBlock(index)
+                
+                index = 0 < index-- ? index : 0
+                document.getElementsByClassName("bxb_content__item")[index].focus()
+                // document.execCommand('selectAll', false, null)
             }
         },
         update: function(index, event) {
@@ -190,6 +208,15 @@ export default {
             string = string.replace(/>\s*</g, '><')
             
             return (new CleanWordHTML(string)).string
+        },
+        stripHtmlToText: function(html) {
+            let tmp = this.wrapElements(html)
+            tmp.innerHTML = html
+            let res = tmp.textContent || tmp.innerText || ''
+            res.replace('\u200B', '') // zero width space
+            res = res.trim()
+            
+            return res
         },
         wrapElements: function(html) {
             return document.createRange().createContextualFragment(html)
