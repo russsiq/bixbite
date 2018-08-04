@@ -1,4 +1,4 @@
-<img src="https://bixbite.site/logo-git-tmp.png">
+<img src="https://bixbite.host/logo-git-tmp.png">
 
 Система рассчитана на оперативное развертывание простейших сайтов на shared хостингах. Расширяема благодаря использованию <a href="https://github.com/laravel/laravel">Laravel</a> в качестве ядра.
 
