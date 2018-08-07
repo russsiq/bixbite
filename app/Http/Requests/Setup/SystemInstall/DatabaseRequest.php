@@ -104,7 +104,7 @@ class DatabaseRequest extends Request
                     $data = $this->validated();
 
                     // Set temporary DB connection
-                    config(['database.connections.install' => [
+                    config(['database.connections.mysql' => [
                         'driver' => 'mysql',
                         'host' =>  $data['DB_HOST'],
                         'database' => $data['DB_DATABASE'],
@@ -118,9 +118,9 @@ class DatabaseRequest extends Request
                     ]]);
 
                     // Check DB connection and exists table
-                    \DB::reconnect('install');
+                    \DB::reconnect('mysql');
                     \DB::setTablePrefix($data['DB_PREFIX']);
-                    if (is_null(\DB::connection('install')->getDatabaseName())) {
+                    if (is_null(\DB::connection('mysql')->getDatabaseName())) {
                         throw new InstallerFailed(__('msg.not_dbconnect'));
                     }
 
