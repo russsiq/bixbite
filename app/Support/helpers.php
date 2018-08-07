@@ -638,7 +638,7 @@ if (! function_exists('teaser')) {
 if (! function_exists('theme_asset')) {
     /**
      * Generate an asset path for current theme of application.
-     * `Ex.: http://site.com/themes/{theme-from-setting}/public/css/style.css`
+     * `Ex.: http://site.com/themes/{theme-from-setting}/public/css/app.css`
      *
      * @param string $path
      * @param bool $secure
