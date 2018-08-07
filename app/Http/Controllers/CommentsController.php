@@ -22,13 +22,13 @@ class CommentsController extends SiteController
 
     public function store(CommentStoreRequest $request)
     {
-        // Temporarily.
-        if ('articles' == $request->commentable_type) {
-            cache()->forget('articles-single-'.$request->commentable_id);
-        }
-
         $comment = $this->model->create($request->all());
         $entity = $comment->commentable;
+        
+        // Temporarily.
+        if ('articles' == $request->commentable_type and 1 === $entity->comments()->count()) {
+            cache()->forget('articles-single-'.$request->commentable_id);
+        }
 
         // Not save this data in the database because we already
         // have $user->id. This data is for display only.
