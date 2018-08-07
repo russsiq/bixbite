@@ -4,7 +4,7 @@
     <li class="nav-item dropdown" itemprop="name">
         <a href="{{ $item->url }}" class="nav-link dropdown-toggle" itemprop="url" data-toggle="dropdown">{{ $item->title }}</a>
         <ul class="dropdown-menu">
-            @each('components.partials.categories', $item->children, 'item')
+            @each('components.partials.navigation', $item->children, 'item')
         </ul>
     </li>
 @else
@@ -12,7 +12,7 @@
         <a href="{{ $item->url }}" class="dropdown-item" itemprop="url">{{ $item->title }}</a>
         @isset($item->children)
             <ul style="-webkit-padding-start:10px;">
-                @each('components.partials.categories', $item->children, 'item')
+                @each('components.partials.navigation', $item->children, 'item')
             </ul>
         @endisset
     </li>
