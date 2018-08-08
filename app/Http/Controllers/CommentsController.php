@@ -15,7 +15,6 @@ class CommentsController extends SiteController
     {
         parent::__construct();
         $this->middleware('throttle:5,1')->only('store');
-        $this->authorizeResource(Comment::class);
 
         $this->model = $model;
     }

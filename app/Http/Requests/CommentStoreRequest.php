@@ -14,11 +14,7 @@ class CommentStoreRequest extends Request
     public function authorize()
     {
         // Check if unregistered user are allowed to commenting.
-        if (setting('comments.regonly') and ! $this->user()) {
-            return false;
-        }
-
-        return true;
+        return $this->user() or false == setting('comments.regonly');
     }
 
     public function sanitize()

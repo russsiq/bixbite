@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         // Check the existence of the cache.
-        if (! cache()->has('roles')) {
+        if (config('app.key') and ! cache()->has('roles')) {
             (new Privilege)->roles();
         }
 

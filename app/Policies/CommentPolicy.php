@@ -22,7 +22,8 @@ class CommentPolicy
 
     public function create(User $user)
     {
-        return true;
+        // Check if unregistered user are allowed to commenting.
+        return $user->id or false == setting('comments.regonly');
     }
 
     public function update(User $user, Comment $comment)
