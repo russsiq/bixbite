@@ -212,6 +212,7 @@
 					{{-- DON'T use "@each(...)", because "$loop->..." does not work --}}
 					@include('articles.partials.categories_items', ['items' => $categories_items])
 				</select>
+				<script>scrollTo(0,0)</script>
 			</div>
 		</div>
 		<div class="card card-default">
