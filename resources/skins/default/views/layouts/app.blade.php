@@ -27,7 +27,6 @@
 
         <!-- Scripts -->
         <script src="{{ skin_asset('js/app.js') }}"></script>
-        <script src="{{ skin_asset('js/notify-3.1.5.js') }}"></script>
         <script src="{{ skin_asset('js/engine.js') }}"></script>
         <script src="{{ skin_asset('js/script.js') }}"></script>
         @stack('scripts')

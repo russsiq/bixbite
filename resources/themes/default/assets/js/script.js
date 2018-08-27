@@ -1,121 +1,167 @@
+/**
+ * Request JSON - new style ajax.
+ */
+$.reqJSON = function(url, params, callback) {
+    var loader = LoadingLayer.show({active: true});
+    
+    $.ajax({
+        url: url,
+        data: params,
+        cache: false,
+        type: 'POST',
+        dataType: 'json',
+        beforeSend: function(jqXHR) {
+            jqXHR.overrideMimeType("application/json; charset=UTF-8");
+            // Repeat send header ajax
+            jqXHR.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        },
+    })
+    .done(function(data, textStatus, jqXHR) {
+        if (typeof(data) == 'object') {
+            if (data.status) {
+                // this schema {"status": true, "message": "...", ...etc}
+                callback.call(null, data);
+            } else {
+                // this schema {"status": false, "message": "...", ...etc}
+                Notification.error({message: data.message});
+            }
+        } else {
+            data = $.parseJSON(data);
+            if (typeof(data) == 'object') {
+                callback.call(null, data);
+            } else {
+                Notification.error({message: '<i><b>Bad reply from server</b></i>'});
+            }
+        }
+    })
+    .always(function(jqXHR, textStatus, errorThrown) {
+        loader.hide();
+    })
+    .catch(function(jqXHR, textStatus, exception) {
+        var msg, msgs;
+        
+        if(jqXHR.status === 0) msg = 'Not connect. Verify Network.';
+        else if(jqXHR.status == 404) msg = 'Requested page not found.';
+        else if(jqXHR.status == 422 && jqXHR.responseJSON.errors) msgs = jqXHR.responseJSON.errors;
+        else if(jqXHR.status == 500) msg = 'Internal Server Error.';
+        else if('timeout' === exception) msg = 'Time out error.';
+        else if('abort' === exception) msg = 'Ajax request aborted.';
+        else if('parsererror' === exception) msg = 'Requested JSON parse failed.';
+        else msg = 'Uncaught Error #'+jqXHR.status+': '+jqXHR.statusText;
+        
+        if (!msgs) {
+            Notification.error({message: msg});
+        } else {
+            $.each(msgs, function(index, error) {
+                Notification.warning({message: error});
+            });
+        }
+    });
+}
+
+
+/**
+ * Comment actions.
+ */
+
+// Reload captcha.
+function reload_captcha() {
+    $('#img_captcha').attr('src', $('#img_captcha').attr('src').replace(/(rand=)[0\.?\d*]+/, '$1' + Math.random()));
+    $("input[name=captcha]").val('');
+}
+
+// Specify a basic functions to execute when the DOM is fully loaded.
 $(function() {
-
-    /** X-CSRF-TOKEN */
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-
-    /** Reload captcha */
     $(document).on('click', '#img_captcha', function() {
-        reloadCaptcha();
+        reload_captcha();
     });
 
     $(document).on('keypress', '#respond__form textarea[name=content]', function (e) {
-        if(e.keyCode == 10 || (e.ctrlKey && e.keyCode == 13)) {
+        if(e.keyCode==10 || (e.ctrlKey && e.keyCode==13)) {
             $('#respond__form').submit();
         }
     });
 
-    $(document).on('click', '.comment__reply, #comment_reply-cancel', function(e) {
+    $(document).on('click', '.comment__reply, #comment__reply-cancel', function(e) {
         e.preventDefault();
-        $('#comment_reply-cancel').hide();
+        $("#comment__reply-cancel").hide();
         var clone = $('#respond').clone(true);
         $('#respond').slideUp('slow', function() {$(this).remove();});
         var mid = $(this).attr('data-respond');
         if (mid > 0) {
-            $(clone).insertAfter('#comment-' + mid).hide().slideDown('slow');
-            $('input[name=parent_id]').val(mid);
-            $('#comment_reply-cancel').show();
-            window.scrollTo(0, $(clone).offset().top - 88)
+            $(clone).insertAfter('#comment-' + mid).hide().slideDown('slow', function () {
+                $("textarea[name=content]").focus();
+            });
+            $("input[name=parent_id]").val(mid);
+            $("#comment__reply-cancel").show();
+            $('html, body').animate({scrollTop: $(clone).offset().top - 87}, 888);
         } else {
             $(clone).insertAfter('.comments__list:last').hide().slideDown('slow');
-            $('input[name=parent_id]').val('');
+            $("input[name=parent_id]").val('');
         }
     });
-    
-    /** Ajax send_comment */
+
+    // Ajax send comment.
     $(document).on('submit', '#respond__form', function(e) {
         e.preventDefault();
-        showLoadingLayer();
-        axios({
-            method: 'post',
-            url: this.action,
-            data: new FormData(this)
-        })
-        .then(function (response) {
-            $.notify({message: response.data.message}, {type: 'success'});
-            $('textarea[name=content]').val('');
-            var comment = $('input[name=parent_id]').val() > ''
-                ? $('<ul class="comments_list__children">' + response.data.comment + '</ul>')
-                : $('<ol class="comments__list">' + response.data.comment + '</ol>');
-            comment.insertBefore($('#respond')).hide().slideDown('slow');
-            window.scrollTo(0, comment.offset().top - 88);
-            if (($('input[name=parent_id]').val() > 0)) $('#comment_reply-cancel').click();
-            reloadCaptcha();
-        })
-        .catch(function (error) {
-            console.log(error);
-            if (error.response.status === 422) {
-                for(var k in error.response.data.errors) {
-                    $.notify({message: error.response.data.errors[k][0]}, {type: 'warning'});
-                }
-            } else {
-                $.notify({message: error.response.data.message}, {type: 'danger'});
+        
+        $.reqJSON(
+            $('#respond__form').attr('action'),
+            $('#respond__form').serializeArray(),
+            function(json) {
+                Notification.success({message: json.message});
+                $("textarea[name=content]").val('');
+                var comment = $("input[name=parent_id]").val() > ''
+                    ? $('<ul class="children">' + json.comment + '</ul>')
+                    : $('<ol class="comments__list">' + json.comment + '</ol>');
+                comment.insertBefore($('#respond')).hide().slideDown('slow');
+                $('html, body').animate({scrollTop: comment.offset().top - 87}, 888);
+                if (($("input[name=captcha]").length > 0)){reload_captcha();}
+                if (($("input[name=parent_id]").val() > '')) $("#comment__reply-cancel").click();
             }
-        });
-        hideLoadingLayer();
+        );
     });
-    
-    /** Ajax send feedback */
+});
+
+/**
+ * Personal theme functions.
+ */
+
+// Specify a basic functions to execute when the DOM is fully loaded.
+$(function() {
+    // Ajax send feedback.
     $(document).on('submit', '#feedback_form', function(e) {
-        showLoadingLayer();
+        e.preventDefault();
+        
+        var loader = LoadingLayer.show({active: true});
+        
         axios({
             method: 'post',
             url: this.action,
             data: new FormData(this)
         })
         .then(function (response) {
+            loader.hide();
+            grecaptcha_reload();
+            
             $.notify({message: response.data.message}, {type: 'success'});
             this.reset();
         })
         .catch(function (error) {
+            loader.hide();
+            grecaptcha_reload();
+            
             console.log(error);
+            
             if (error.response.status === 422) {
                 for(var k in error.response.data.errors) {
-                    $.notify({message: error.response.data.errors[k][0]}, {type: 'warning'});
+                    Notification.warning({message: error.response.data.errors[k][0]});
                 }
             } else {
-                $.notify({message: error.response.data.message}, {type: 'danger'});
+                Notification.error({message: error.response.data.message});
             }
         });
-        hideLoadingLayer();
-        e.preventDefault();
     });
     
+    grecaptcha_reload();
 });
-
-// showLoadingLayer
-window.showLoadingLayer = function () {
-    var setX = ( $(window).width() - $("#loading-layer").width() ) / 2;
-    var setY = ( $(window).height() - $("#loading-layer").height() ) / 2;
-
-    $("#loading-layer").css({
-        left : setX + "px",
-        top : setY + "px",
-        position : 'fixed',
-        zIndex : '99'
-    });
-
-    $("#loading-layer").fadeIn('slow');
-}
-
-// hideLoadingLayer
-window.hideLoadingLayer = function () {
-    $("#loading-layer").fadeOut('slow');
-}
-
-// Reload captcha
-window.reloadCaptcha = function() {
-    if (($("input[name=captcha]").length > 0)){
-        $('#img_captcha').attr('src', $('#img_captcha').attr('src').replace(/(rand=)[0\.?\d*]+/, '$1' + Math.random()));
-        $("input[name=captcha]").val('');
-    }
-}

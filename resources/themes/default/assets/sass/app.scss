@@ -6,11 +6,11 @@
 @import "variables";
 
 // Bootstrap with Bootswatch theme yeti
-// npm install bootswatch
+// npm i bootswatch
 @import "~bootstrap/scss/bootstrap";
 
 // fontawesome
-// npm install font-awesome@4.7.0
+// npm i font-awesome@4.7.0
 $fa-font-path: "./fonts/font-awesome" !default;
 @import "~font-awesome/scss/font-awesome";
 

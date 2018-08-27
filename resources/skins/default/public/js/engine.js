@@ -1,25 +1,9 @@
-// showLoadingLayer
-function showLoadingLayer() {
-    var setX = ( $(window).width() - $("#loading-layer").width() ) / 2;
-    var setY = ( $(window).height() - $("#loading-layer").height() ) / 2;
-
-    $("#loading-layer").css( {
-        left : setX + "px",
-        top : setY + "px",
-        position : 'fixed',
-        zIndex : '99'
-    });
-
-    $("#loading-layer").fadeIn('slow');
-}
-
-// hideLoadingLayer
-function hideLoadingLayer() {
-    $("#loading-layer").fadeOut('slow');
-}
-
-// Request JSON - new style ajax
+/**
+ * Request JSON - new style ajax
+ */
 $.reqJSON = function(url, params, callback) {
+    var loader = LoadingLayer.show({active: true});
+    
     $.ajax({
         url: url,
         data: params,
@@ -27,7 +11,6 @@ $.reqJSON = function(url, params, callback) {
         type: 'POST',
         dataType: 'json',
         beforeSend: function(jqXHR) {
-            showLoadingLayer();
             jqXHR.overrideMimeType("application/json; charset=UTF-8");
             // Repeat send header ajax
             jqXHR.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -40,38 +23,40 @@ $.reqJSON = function(url, params, callback) {
                 callback.call(null, data);
             } else {
                 // this schema {"status": false, "message": "...", ...etc}
-                $.notify({message: data.message},{type: 'danger'});
+                Notification.error({message: data.message});
             }
         } else {
             data = $.parseJSON(data);
             if (typeof(data) == 'object') {
                 callback.call(null, data);
             } else {
-                $.notify({message: '<i><b>Bad reply from server</b></i>'},{type: 'danger'});
+                Notification.error({message: '<i><b>Bad reply from server</b></i>'});
             }
         }
     })
     .always(function(jqXHR, textStatus, errorThrown) {
-        hideLoadingLayer();
+        loader.hide();
     })
     .catch(function(jqXHR, textStatus, exception) {
-        if(jqXHR.status === 0) var msg = 'Not connect. Verify Network.';
-        else if(jqXHR.status == 404) var msg = 'Requested page not found.';
-        else if(jqXHR.status == 500) var msg = 'Internal Server Error.';
-        else if(jqXHR.status == 422 && jqXHR.responseJSON.errors) var msg = jqXHR.responseJSON.errors;
-        else if('timeout' === exception) var msg = 'Time out error.';
-        else if('abort' === exception) var msg = 'Ajax request aborted.';
-        else if('parsererror' === exception) var msg = 'Requested JSON parse failed.';
-        else var msg = 'Uncaught Error #'+jqXHR.status+': '+jqXHR.statusText;
-
-        console.log(msg);
+        var msg, msgs;
+        
+        if(jqXHR.status === 0) msg = 'Not connect. Verify Network.';
+        else if(jqXHR.status == 404) msg = 'Requested page not found.';
+        else if(jqXHR.status == 422 && jqXHR.responseJSON.errors) msgs = jqXHR.responseJSON.errors;
+        else if(jqXHR.status == 500) msg = 'Internal Server Error.';
+        else if('timeout' === exception) msg = 'Time out error.';
+        else if('abort' === exception) msg = 'Ajax request aborted.';
+        else if('parsererror' === exception) msg = 'Requested JSON parse failed.';
+        else msg = 'Uncaught Error #'+jqXHR.status+': '+jqXHR.statusText;
+        
+        if (!msgs) {
+            Notification.error({message: msg});
+        } else {
+            $.each(msgs, function(index, error) {
+                Notification.warning({message: error});
+            });
+        }
     });
-}
-
-// Reload captcha
-function reload_captcha() {
-    $('#img_captcha').attr('src', $('#img_captcha').attr('src').replace(/(rand=)[0\.?\d*]+/, '$1' + Math.random()));
-    $("input[name=captcha]").val('');
 }
 
 $.fn.row = function(i) {
@@ -81,19 +66,8 @@ $.fn.column = function(i) {
     return $('tr td:nth-child('+(i+1)+')', this);
 }
 
-//
-// Basic JS functions for BixBite CMS core
+// Specify a basic functions to execute when the DOM is fully loaded.
 $(function() {
-    /**
-     * X-CSRF-TOKEN
-     *
-     */
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    
-    $(document).on('click', '.scrollTop', function() {
-        return $('html, body').animate({ scrollTop: 0 }, 888);
-    });
-    
     // For checked checkbox in table cell
     $('input[type=checkbox]').each(function() {
         if ( $(this).prop('checked') == true ) {
@@ -125,11 +99,6 @@ $(function() {
             $(this).next('.sp-body').slideDown("fast");
         }
 
-    });
-    
-    // Reload captcha
-    $(document).on('click', '#img_captcha', function() {
-        reload_captcha();
     });
 });
 
@@ -198,6 +167,7 @@ function insertext(open, close, field) {
 function insertimage(open) {
     insertext(open, ' ');
 }
+
 /* Quote user */
 var q_txt = '';
 
@@ -375,50 +345,4 @@ function validateFile(fileInput,multiple,fileMaxSize) {
     }
     
     return true;
-}
-
-
-function attachAddRow(id) {
-    ++attachAbsoluteRowID;
-    var tbl = document.getElementById(id);
-    var lastRow = tbl.rows.length;
-    var row = tbl.insertRow(lastRow - 1);
-
-    // Add cells, Add file input
-    if ( id == 'imageup2' || id == 'fileup2' ) {
-        row.insertCell(0).innerHTML = '<input type="text" name="userurl[' + attachAbsoluteRowID + ']" class="form-control">'
-    } else if ( id == 'imageup' || id == 'fileup' ) {
-        row.insertCell(0).innerHTML = '<div class="btn btn-default btn-fileinput">\
-                            <span><i class="fa fa-plus"></i> Add files ...</span>\
-                            <input type="file" name="userfile[' + attachAbsoluteRowID + ']" onchange="validateFile(this, multiple);" multiple="multiple" / >\
-                        </div>';
-    } else if ( id == 'attachFilelist' ) {
-        row.insertCell(0).innerHTML = '<div class="btn btn-default btn-fileinput">\
-                                <span><i class="fa fa-plus"></i> Add files ...</span>\
-                                <input type="file" name="userfile[]" onchange="validateFile(this, multiple);" multiple="multiple" / >\
-                            </div>';
-    } else if ( id == 'attachFilelist_edit' ) {
-        var xCell = row.insertCell(0);
-        xCell.setAttribute('colspan', '5');
-        xCell.innerHTML = '<div class="btn btn-default btn-fileinput">\
-                            <span><i class="fa fa-plus"></i> Add files ...</span>\
-                            <input type="file" name="userfile[]" onchange="validateFile(this, multiple);" multiple="multiple" />\
-                        </div>';
-    } else {
-        row.insertCell(0).innerHTML = '<div class="btn btn-default btn-fileinput">\
-                            <span><i class="fa fa-plus"></i> Add files ...</span>\
-                            <input type="file" name="userfile[' + attachAbsoluteRowID + ']" onchange="validateFile(this);">\
-                        </div>';
-    }
-
-    var xCell = row.insertCell(1);
-    xCell.setAttribute('class', 'text-center');
-
-    el = document.createElement('button');
-    el.setAttribute('type', 'button');
-    el.setAttribute('onclick', '$(this).closest("tr").remove();');
-    el.setAttribute('class', 'btn btn-danger');
-    el.innerHTML = '<i class="fa fa-trash"></i>';
-    xCell.appendChild(el);
-
 }

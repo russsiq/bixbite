@@ -2,22 +2,22 @@
 	"cmd": "bold",
 	"icon": "bold",
 	"desc": {
-        "ru": "Жирный",
-        "en": "Bold"
+        "ru": "Жирный Ctrl+B",
+        "en": "Bold Ctrl+B"
     }
 }, {
 	"cmd": "italic",
 	"icon": "italic",
 	"desc": {
-        "ru": "Курсив",
-        "en": "Italic"
+        "ru": "Курсив Ctrl+I",
+        "en": "Italic Ctrl+I"
     }
 }, {
 	"cmd": "underline",
 	"icon": "underline",
 	"desc": {
-        "ru": "Подчеркнутый",
-        "en": "Underline"
+        "ru": "Подчеркнутый Ctrl+U",
+        "en": "Underline Ctrl+U"
     }
 }, {
 	"cmd": "strikeThrough",

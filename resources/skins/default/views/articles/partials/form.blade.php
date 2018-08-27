@@ -13,7 +13,7 @@
 				        	:state="'uploaded'"
 				        @endif
 				        :input_name="'image_id'"
-			        	:focusable="'teaser'"
+						:focusable="'teaser'"
 					></image-uploader>
 				</div>
 				<div class="col-sm-12 col-md-7 col-lg-8 mb-2">

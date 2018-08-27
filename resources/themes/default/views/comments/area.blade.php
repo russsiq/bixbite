@@ -57,7 +57,7 @@
                             <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-outline-dark">
                                 @lang('comments.btn.post')
                             </button>
-                            <button id="comment_reply-cancel" type="button" class="btn btn-outline-dark" style="display:none;">
+                            <button id="comment__reply-cancel" type="button" class="btn btn-outline-dark" style="display:none;">
                                 @lang('comments.btn.reply_cancel')
                             </button>
                         </div>

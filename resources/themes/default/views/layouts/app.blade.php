@@ -42,7 +42,6 @@
                 @yield('sidebar_footer')
                 @yield('footer')
             </footer>
-            @include('components.page_appends')
         </div>
 
         <script src="{{ theme_asset('js/app.js') }}"></script>

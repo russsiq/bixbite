@@ -11,7 +11,6 @@ try {
     window.$ = window.jQuery = require('jquery');
     window.Popper = require('popper.js').default;
     require('bootstrap');
-    require('./notify-3.1.5.js');
     
     require('./script.js');
 } catch (e) {}
@@ -36,6 +35,7 @@ let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.$.ajaxSetup({headers: {'X-CSRF-TOKEN': token.content}});
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }

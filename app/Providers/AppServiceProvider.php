@@ -6,5 +6,5 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    // not used
+    // Individually for each project.
 }

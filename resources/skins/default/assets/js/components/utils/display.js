@@ -5,8 +5,8 @@ export default class Display {
     }
     
     toggle(event) {
-        if (event) event.preventDefault()
         this.block = 'block' == this.block ? 'none' : 'block'
         this.none = 'none' == this.block ? 'block' : 'none'
+        event.preventDefault()
     }
 }

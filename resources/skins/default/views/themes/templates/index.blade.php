@@ -74,12 +74,12 @@
 
             $(document).on('click', '[data-path]', function(e) {
                 template = this.getAttribute('data-path');
-                codeEditor_refresh();
                 e.preventDefault();
+                codeEditor_refresh();
             });
 
             codeEditor_refresh = function() {
-                showLoadingLayer();
+                var loader = LoadingLayer.show({active: true});
 
                 axios({
                     method: 'get',
@@ -129,25 +129,26 @@
                         'height': '100%'
                     });
                     emmetCodeMirror(editor);
+                    loader.hide();
                 })
                 .catch(function (error) {
                     console.log(error);
                     if (error.response.status === 422) {
                         for(var k in error.response.data.errors) {
-                            $.notify({message: error.response.data.errors[k][0]}, {type: 'warning'});
+                            Notification.warning({message: error.response.data.errors[k][0]});
                         }
                     } else {
-                        $.notify({message: error.response.data.message}, {type: 'danger'});
+                        Notification.error({message: error.response.data.message});
                     }
+                    loader.hide();
                 });
-                hideLoadingLayer();
             }
 
             $(document).on('click', '#template__save', function(e) {
                 if(template.length > 0) {
                     codeEditor_update();
                 } else {
-                    $.notify({message: '@lang('msg.not_selected')'}, {type: 'warning'});
+                    Notification.warning({message: '@lang('msg.not_selected')'});
                 }
                 e.preventDefault();
             });
@@ -158,14 +159,14 @@
                     if(template.length > 0) {
                         codeEditor_update();
                     } else {
-                        $.notify({message: '@lang('msg.not_selected')'}, {type: 'warning'});
+                        Notification.warning({message: '@lang('msg.not_selected')'});
                     }
                     e.preventDefault();
                 }
             }
 
             codeEditor_update = function() {
-                showLoadingLayer();
+                var loader = LoadingLayer.show();
 
                 axios({
                     method: 'post',
@@ -178,23 +179,24 @@
                 })
                 .then(function (response) {
                     if (response.data.status === false) {
-                        $.notify({message: response.data.message}, {type: 'info'});
+                        Notification.info({message: response.data.message});
                     } else {
                         $('.template__title').html(response.data.file.size+'; '+response.data.file.modified);
-                        $.notify({message: response.data.message}, {type: 'success'});
+                        Notification.success({message: response.data.message});
                     }
+                    loader.hide();
                 })
                 .catch(function (error) {
                     console.log(error);
                     if (error.response.status === 422) {
                         for(var k in error.response.data.errors) {
-                            $.notify({message: error.response.data.errors[k][0]}, {type: 'warning'});
+                            Notification.warning({message: error.response.data.errors[k][0]});
                         }
                     } else {
-                        $.notify({message: error.response.data.message}, {type: 'danger'});
+                        Notification.error({message: error.response.data.message});
                     }
+                    loader.hide();
                 });
-                hideLoadingLayer();
             }
         </script>
     @endpush

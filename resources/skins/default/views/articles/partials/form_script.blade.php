@@ -19,7 +19,7 @@
 	{
 
 		if (form.content.value == '' || form.title.value == '') {
-			$.notify({message: '@lang('articles.msge_preview')'},{type: 'danger'});
+			Notification.error({message: '@lang('articles.msge_preview')'});
 			return false;
 		}
 
@@ -46,14 +46,14 @@
 
 	var searchDouble = function() {
 		if ($.trim($('input[name=title]').val()).length < 4)
-			return $.notify({message: '@lang('articles.msge_title')'},{type: 'danger'});
+			return Notification.error({message: '@lang('articles.msge_title')'});
 		var url = '{{-- admin_url --}}/rpc.php';
 		var method = 'admin.news.double';
 		var params = {'token': '{{-- token --}}','title': $('input[name=title]').val(),'mode': 'add',};
 		$.reqJSON(url, method, params, function(json) {
 			$('#searchDouble').html('');
 			if (json.info) {
-				$.notify({message:json.info},{type: 'info'});
+                Notification.info({message: json.info});
 			} else {
 				var txt = '<ul class="alert alert-info list-unstyled alert-dismissible"><button type="button" class="close" data-dismiss="alert" >&times;</button>';
 				$.each(json.data,function(index, value) {

@@ -76,7 +76,7 @@
             $(document).on('click', '#position_update', function(e) {
                 e.preventDefault();
                 $.reqJSON($(this).closest('form').attr('action'), {list: $('#nestable').nestable('serialize')}, function(json) {
-                    $.notify({message: json.message}, {type: 'success'});
+                    Notification.success({message: json.message});
                 });
             });
         });
