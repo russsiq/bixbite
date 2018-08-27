@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+let mix = require('laravel-mix')
 
 /**
  * Theme.
@@ -12,11 +12,11 @@ mix.options({
 .copyDirectory(
     'node_modules/font-awesome/fonts',
     './resources/themes/default/public/css/fonts/font-awesome'
-);
+)
 
-//  /**
-//   * Skin.
-//   */
+// /**
+//  * Skin.
+//  */
 // mix.options({
 //     processCssUrls: false
 // })
@@ -26,7 +26,7 @@ mix.options({
 // .copyDirectory(
 //     'node_modules/font-awesome/fonts',
 //     './resources/skins/default/public/css/fonts/font-awesome'
-// );
+// )
 
 /**
  * ----------------------------------------------------------------------------

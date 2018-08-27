@@ -2,7 +2,7 @@
  * Request JSON - new style ajax.
  */
 $.reqJSON = function(url, params, callback) {
-    var loader = LoadingLayer.show({active: true});
+    let loader = LoadingLayer.show({active: true});
     
     $.ajax({
         url: url,
@@ -38,7 +38,7 @@ $.reqJSON = function(url, params, callback) {
         loader.hide();
     })
     .catch(function(jqXHR, textStatus, exception) {
-        var msg, msgs;
+        let msg, msgs;
         
         if(jqXHR.status === 0) msg = 'Not connect. Verify Network.';
         else if(jqXHR.status == 404) msg = 'Requested page not found.';
@@ -52,9 +52,9 @@ $.reqJSON = function(url, params, callback) {
         if (!msgs) {
             Notification.error({message: msg});
         } else {
-            $.each(msgs, function(index, error) {
-                Notification.warning({message: error});
-            });
+            for(let k in msgs) {
+                Notification.warning({message: msgs[k][0]});
+            }
         }
     });
 }
@@ -85,9 +85,9 @@ $(function() {
     $(document).on('click', '.comment__reply, #comment__reply-cancel', function(e) {
         e.preventDefault();
         $("#comment__reply-cancel").hide();
-        var clone = $('#respond').clone(true);
+        let clone = $('#respond').clone(true);
         $('#respond').slideUp('slow', function() {$(this).remove();});
-        var mid = $(this).attr('data-respond');
+        let mid = $(this).attr('data-respond');
         if (mid > 0) {
             $(clone).insertAfter('#comment-' + mid).hide().slideDown('slow', function () {
                 $("textarea[name=content]").focus();
@@ -111,7 +111,7 @@ $(function() {
             function(json) {
                 Notification.success({message: json.message});
                 $("textarea[name=content]").val('');
-                var comment = $("input[name=parent_id]").val() > ''
+                let comment = $("input[name=parent_id]").val() > ''
                     ? $('<ul class="children">' + json.comment + '</ul>')
                     : $('<ol class="comments__list">' + json.comment + '</ol>');
                 comment.insertBefore($('#respond')).hide().slideDown('slow');
@@ -133,7 +133,7 @@ $(function() {
     $(document).on('submit', '#feedback_form', function(e) {
         e.preventDefault();
         
-        var loader = LoadingLayer.show({active: true});
+        let loader = LoadingLayer.show({active: true});
         
         axios({
             method: 'post',
@@ -142,19 +142,19 @@ $(function() {
         })
         .then(function (response) {
             loader.hide();
-            grecaptcha_reload();
+            // grecaptcha_reload();
             
-            $.notify({message: response.data.message}, {type: 'success'});
+            Notification.success({message: response.data.message});
             this.reset();
         })
         .catch(function (error) {
             loader.hide();
-            grecaptcha_reload();
+            // grecaptcha_reload();
             
             console.log(error);
             
             if (error.response.status === 422) {
-                for(var k in error.response.data.errors) {
+                for(let k in error.response.data.errors) {
                     Notification.warning({message: error.response.data.errors[k][0]});
                 }
             } else {
@@ -163,5 +163,5 @@ $(function() {
         });
     });
     
-    grecaptcha_reload();
+    // grecaptcha_reload();
 });

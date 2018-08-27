@@ -11,7 +11,7 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Ubuntu:300" !default;
 $fa-font-path: "./fonts/font-awesome" !default;
 @import "~font-awesome/scss/font-awesome";
 
-// Bootstrap with Bootswatch theme yeti
+// Bootstrap framework with Bootswatch theme yeti
 // npm i bootswatch --save-dev
 @import "~bootswatch/dist/yeti/variables";
 @import "~bootstrap/scss/bootstrap";
@@ -714,65 +714,6 @@ label.control-label {
 /**
  * Widgets
  */
-
-/*
- * Добавляем анимацию к notify
- */
-
-.animated {
-    animation-duration: 1s;
-    animation-fill-mode: both
-}
-
-@-webkit-keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translate3d(0, -100%, 0)
-    }
-    100% {
-        opacity: 1;
-        transform: none
-    }
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translate3d(0, -100%, 0)
-    }
-    100% {
-        opacity: 1;
-        transform: none
-    }
-}
-
-.fadeInDown {
-    animation-name: fadeInDown
-}
-
-@-webkit-keyframes fadeOutUp {
-    from {
-        opacity: 1
-    }
-    100% {
-        opacity: 0;
-        transform: translate3d(0, -100%, 0)
-    }
-}
-
-@keyframes fadeOutUp {
-    from {
-        opacity: 1
-    }
-    100% {
-        opacity: 0;
-        transform: translate3d(0, -100%, 0)
-    }
-}
-
-.fadeOutUp {
-    animation-name: fadeOutUp
-}
 
 /* .form-control {
     border: 0;
