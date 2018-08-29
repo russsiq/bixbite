@@ -1,17 +1,15 @@
 'use strict';
 
 /**
- * Load all of this project's JavaScript dependencies which includes
- * Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * Load all of this project's JavaScript dependencies
+ * which includes Vue and other libraries.
  */
 
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-// Configure ajax provider.
-Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
+try {
+    require('./bootstrap');
+} catch (e) {
+    console.log(e)
+}
 
 // Import Vue components as plugins.
 import LoadingLayer from 'bxb-loading-layer';

@@ -1,0 +1,29 @@
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.inner-wrap {
+    margin: 0 auto;
+    max-width: 1140px;
+    display: block;
+    position: relative;
+}
+
+.inner-wrap:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+@media screen and (max-width: 1190px) {
+    .page {
+        width: 97%;
+    }
+    .inner-wrap {
+        width: 94%;
+    }
+}

@@ -1,0 +1,14 @@
+.moder_panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 4px 8px;
+    z-index: 3;
+    background: $white;
+    opacity: .28;
+    transition: $transition-fade;
+}
+.moder_panel:hover {
+    opacity: 1;
+    transition: $transition-fade;
+}

@@ -11,7 +11,7 @@
         Notification.show({
             @isset($title)title: '@lang($title)', @endisset
             message: '@lang($message)',
-            type: '{{ $type or 'danger' }}'
+            type: '{{ $type or 'error' }}'
         });
     </script>
 @endpush

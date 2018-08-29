@@ -1,0 +1,112 @@
+.divider {
+    display: block;
+    width: 6rem;
+    height: 0.3rem;
+    background-color: #dfe1e5;
+    margin: 2rem auto
+}
+
+/**
+ * Captcha styles.
+ */
+.captcha {
+    margin: 0;
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+/**
+ * Checkbox and radio.
+ */
+input[type=radio],
+input[type=checkbox] {
+    font-weight: 700;
+    border: 1px solid #bbb;
+    color: #555;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    height: 15px;
+    width: 15px;
+    margin: 0;
+    outline: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-appearance: none;
+}
+
+input[type=radio] {
+    border-radius: 50%;
+    line-height: 15px;
+}
+
+input[type=radio]:checked:before,
+input[type=checkbox]:checked:before {
+    float: left;
+    display: inline-block;
+    vertical-align: middle;
+    width: 15px;
+    font-size: 15px;
+}
+
+input[type=checkbox]:checked:before {
+    content: '\2714';
+    margin: 6px 0 0 0;
+    color: $primary;
+}
+
+input[type=radio]:checked:before {
+    content: '\2022';
+    text-indent: -9999px;
+    border-radius: 50px;
+    font-size: 22px;
+    width: 7px;
+    height: 7px;
+    margin: 3px;
+    line-height: 15px;
+    background-color: $primary;
+}
+
+.checkbox input[type=checkbox],
+.checkbox-inline input[type=checkbox],
+.radio input[type=radio],
+.radio-inline input[type=radio] {
+    position: relative;
+}
+
+label>input[type=radio],
+label>input[type=checkbox] {
+    margin-right: 8px;
+}
+
+input[type="checkbox"]:disabled,
+input[type="radio"]:disabled {
+    border: 1px dashed #ccc;
+}
+
+input[type="checkbox"]:disabled:before,
+input[type="radio"]:disabled:before {
+    color: #ccc;
+}
+
+/**
+ * Bootstrap override.
+ */
+.form-control {
+    border-radius: 0;
+    border-color: $gray-200;
+}
+.form-control:focus {
+  color: #000;
+}
+.was-validated .form-control:valid,
+.was-validated .header_area__input:valid,
+.was-validated .wall_form__content:valid,
+.form-control.is-valid,
+.is-valid.header_area__input,
+.is-valid.wall_form__content,
+.was-validated .custom-select:valid,
+.custom-select.is-valid {
+    border-color: $gray-200;
+}
