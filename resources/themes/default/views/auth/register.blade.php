@@ -5,7 +5,7 @@
         </header>
 
         <section class="action_page__content">
-            <form action="{{ route('register') }}" method="post">
+            <form id="form_register" name="form_register" action="{{ route('register') }}" method="post">
                 <div class="form-group row">
                     <label for="name" class="col-md-4 col-form-label">@lang('auth.name')</label>
                     <div class="col-md-6">

@@ -1,6 +1,6 @@
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin-bottom: 1.25rem;">
     @role('owner')
-        <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">≡</a>
+        <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">&#9776;</a>
     @endrole
     <div class="carousel-inner">
         @foreach ($widget->items as $key => $item)

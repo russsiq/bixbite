@@ -5,7 +5,7 @@
         </header>
 
         <section class="action_page__content">
-            <form action="{{ route('login') }}" method="post">
+            <form id="form_login" name="form_login" action="{{ route('login') }}" method="post">
                 <div class="form-group row">
                     @if ('name' == setting('users.login_username', 'name'))
                         <label for="name" class="col-md-4 col-form-label">@lang('auth.name')</label>

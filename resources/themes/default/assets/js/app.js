@@ -23,7 +23,11 @@ Vue.use(Notification);
 
 // Create a fresh Vue application instance and attach it to the page.
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    data: {
+        //
+    },
 });
 
 // Make some vue plugins methods to global.
@@ -32,4 +36,6 @@ window.ScrollToTop = app.$scrolling;
 window.Notification = app.$notification;
 
 // If necessary, activate the components immediately.
-window.ScrollToTop.show({active: true});
+window.ScrollToTop.show({
+    active: true
+});

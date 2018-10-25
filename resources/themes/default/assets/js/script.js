@@ -6,8 +6,6 @@
 $(function() {
     // Ajax send feedback.
     $(document).on('submit', '#feedback_form', function(e) {
-        e.preventDefault();
-        
         let loader = LoadingLayer.show({active: true});
         
         axios({
@@ -16,16 +14,10 @@ $(function() {
             data: new FormData(this)
         })
         .then(function (response) {
-            loader.hide();
-            // grecaptcha_reload();
-            
             Notification.success({message: response.data.message});
             this.reset();
         })
         .catch(function (error) {
-            loader.hide();
-            // grecaptcha_reload();
-            
             console.log(error);
             
             if (error.response.status === 422) {
@@ -35,7 +27,13 @@ $(function() {
             } else {
                 Notification.error({message: error.response.data.message});
             }
+        })
+        .finally(function () {
+            loader.hide()
+            // grecaptcha_reload()
         });
+        
+        e.preventDefault();
     });
     
     // grecaptcha_reload();

@@ -12,5 +12,35 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+/* // Add a request interceptor.
+window.axios.interceptors.request.use(
+    function (config) {
+        // Do something before request is sent.
+        axios.$loading = LoadingLayer.show({active: true})
+        
+        return config
+    },
+    function (error) {
+        // Do something with request error.
+        
+        return Promise.reject(error)
+    }
+);
+
+// Add a response interceptor.
+window.axios.interceptors.response.use(
+    function (response) {
+        // Do something with response data.
+        
+        return response
+    },
+    function (error) {
+        // Do something with response error.
+        axios.$loading.hide()
+        
+        return Promise.reject(error)
+    }
+); */
+
 // Configure ajax provider.
-Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
+Vue.prototype.$http = window.axios; // Ex.: this.$http.get(...)  === axios.get(...)

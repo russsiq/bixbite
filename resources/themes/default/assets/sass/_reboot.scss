@@ -2,16 +2,15 @@ html {
     height: 100%;
     width: 100%;
     overflow-y: scroll;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    scroll-behavior:smooth;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
 }
 
 body {
     height: 100%;
     width: 100%;
-    background-color: #eaeaea;
     padding: 10px 0;
+    background-color: #eaeaea;
     background-size: cover;
 }
 
@@ -20,16 +19,16 @@ button,
 input,
 select,
 textarea {
-    font-family: $font-family-sans-serif;
+    font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
-    color: #222;
+    color: $font-color-base;
     word-wrap: break-word;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
     height: 4px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -46,9 +45,10 @@ textarea {
 }
 
 pre::-webkit-scrollbar {
-    width: 2px !important;
     height: 4px !important;
+    width: 2px !important;
 }
+
 pre::-webkit-scrollbar-thumb {
     background: $primary !important;
 }
@@ -65,11 +65,11 @@ a:active {
 }
 
 ol {
-    list-style: decimal
+    list-style: decimal;
 }
 
 img {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
     vertical-align: top;
 }

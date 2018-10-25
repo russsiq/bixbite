@@ -2,7 +2,7 @@
     <div class="widget__inner">
         <div class="widget__body widget_neighboring__body">
             @role('owner')
-                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">≡</a>
+                <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel">&#9776;</a>
             @endrole
             <ul class="widget__list widget_neighboring__list">
                 <li class="widget_neighboring__item">

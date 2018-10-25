@@ -75,8 +75,12 @@
             // To change position category
             $(document).on('click', '#position_update', function(e) {
                 e.preventDefault();
-                $.reqJSON($(this).closest('form').attr('action'), {list: $('#nestable').nestable('serialize')}, function(json) {
-                    Notification.success({message: json.message});
+                $.reqJSON(
+                    $(this).closest('form').attr('action'), {
+                        list: $('#nestable').nestable('serialize')
+                    },
+                    function(json) {
+                        Notification.success({message: json.message});
                 });
             });
         });

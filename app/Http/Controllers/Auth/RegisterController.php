@@ -10,18 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends SiteController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers; // !!!!!!!!!!!!!!!!!!!!!!!!!
+    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -66,10 +55,30 @@ class RegisterController extends SiteController
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name'      => 'required|string|max:255|unique:users',
-            'email'     => 'required|string|max:255|unique:users|email',
-            'password'  => 'required|string|min:6|confirmed',
-            'registration_rules'  => 'required|boolean',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users',
+            ],
+            'email' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users',
+                'email',
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+                'confirmed',
+            ],
+            'registration_rules' => [
+                'required',
+                'boolean',
+                'accepted',
+            ],
         ]);
     }
 
@@ -91,5 +100,32 @@ class RegisterController extends SiteController
         ]);
 
         return $user;
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Register complete!',
+                'redirect' => $this->redirectPath()
+            ], 200);
+        }
+    }
+
+
+    protected function unfitPreviousUrl()
+    {
+        return in_array(url()->previous(), [
+            action('Auth\RegisterController@register'),
+            action('Auth\RegisterController@showRegistrationForm'),
+        ]);
     }
 }

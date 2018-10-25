@@ -1,21 +1,25 @@
-// Body
-$body-bg: #f5f8fa;
+// Body.
+$body-bg: #f8f8f8;
 
-// Typography
-$font-family-sans-serif: "Ubuntu", sans-serif;
+// Typography.
+$font-color-base: #222;
+$font-family-base: "Ubuntu light", "Arial", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+// Other variables.
+$box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1);
+$text-shadow: rgba(0, 0, 0, .2) 1px 1px 2px;
+
+// Icon fonts.
 $fa-font-path: "./fonts/font-awesome" !default;
 
-//
-$box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-$text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 2px;
-
-// Override
+// Override styles to framework: Twitter Bootstrap.
 $border-radius: 0;
 $border-radius-lg: $border-radius;
 $border-radius-sm: $border-radius;
 
 $gray-200: #e9ecef;
+
 $input-border-color:  $gray-200;
-$input-border-color:  rgba(0, 0, 0, 0.05);
+$input-border-color:  rgba(0, 0, 0, .05);
