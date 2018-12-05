@@ -15,7 +15,7 @@
     "cross-env": "^5.2.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2",
-    "laravel-mix": "^2.1.14",
+    "laravel-mix": "^3.0.0",
     "lodash": "^4.17.11",
     "popper.js": "^1.14.4",
     "vue": "^2.5.17"
