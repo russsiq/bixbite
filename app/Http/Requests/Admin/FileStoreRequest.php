@@ -7,6 +7,7 @@ use BBCMS\Http\Requests\Request;
 
 class FileStoreRequest extends Request
 {
+
     // /**
     //  * Transform the error messages into JSON
     //  *
@@ -17,6 +18,29 @@ class FileStoreRequest extends Request
     // {
     //     return response()->json($errors, 422);
     // }
+
+    protected static $allowedFileType = [
+           'archive' => [
+               'ext' => ['7z','cab','rar','zip'],
+               'mime' => ['application/x-gzip'],
+           ],
+           'audio' => [
+               'ext' => ['mpga','mp3','ogg'],
+               'mime' => [],
+           ],
+           'document' => [
+               'ext' => ['doc','docx','ods','odt','pdf','ppt','rtf','xls','xlsx','xml'],
+               'mime' => ['application/pdf'],
+           ],
+           'image' => [
+               'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff'],
+               'mime' => [],
+           ],
+           'video' => [
+               'ext' => ['3gp','avi','f4v','flv','m4a','m4v','mkv','mov','mp4','mpeg','qt','swf','wmv'],
+               'mime' => [],
+           ],
+    ];
 
     /**
      * Determine if the user is authorized to make this request.
@@ -40,7 +64,7 @@ class FileStoreRequest extends Request
 
         // Prepare variables.
         $mime_type = $file->getMimeType();
-        $extension = $file->guessExtension() ?? $file->getClientOriginalExtension();
+        $extension = self::detectExtension($file);
         $type = self::getFileType($mime_type, $extension);
 
         $title = $this->input('title', null) ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -62,7 +86,7 @@ class FileStoreRequest extends Request
             // Unstable data.
             'type' => $type,
             'name' => str_slug($title).'_'.time(),
-            'extension' => ('gz' == $extension) ? 'tar.gz' : $extension,
+            'extension' => $extension,
             'mime_type' => $mime_type,
             'filesize' => $file->getClientSize(),
             'checksum' => md5_file($file->getPathname()),
@@ -141,7 +165,7 @@ class FileStoreRequest extends Request
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\w\s\.\,\-\_\?\!]+$/u',
+                'regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u',
             ],
             'description' => [
                 'nullable',
@@ -183,40 +207,28 @@ class FileStoreRequest extends Request
         return $validator;
     }
 
-    protected static function getFileType(string $mim, string $ext)
+    protected static function detectExtension($file)
     {
-        foreach (self::getAllowedFileType() as $key => $term) {
-            if (in_array($ext, $term['ext']) or in_array($mim, $term['mim'])) {
-                return $key;
+        $original = $file->getClientOriginalExtension();
+        $extension = $file->guessExtension() ?? $original;
+
+        if ('gz' == $extension) {
+            $extension = 'tar.gz';
+        } elseif('mpga' == $extension and 'mp3' == $original) {
+            $extension = 'mp3';
+        }
+
+        return $extension;
+    }
+
+    protected static function getFileType(string $mime, string $ext)
+    {
+        foreach (self::$allowedFileType as $filetype => $term) {
+            if (in_array($ext, $term['ext']) or in_array($mime, $term['mime'])) {
+                return $filetype;
             }
         }
 
         return in_array($ext, ['php','exe']) ? 'forbidden' : 'other';
-    }
-
-    protected static function getAllowedFileType()
-    {
-        return [
-           'archive' => [
-               'mim' => ['application/x-gzip'],
-               'ext' => ['7z','cab','rar','zip'],
-           ],
-           'audio' => [
-               'mim' => [],
-               'ext' => ['mpga','mp3','ogg'],
-           ],
-           'document' => [
-               'mim' => ['application/pdf'],
-               'ext' => ['doc','docx','ods','odt','pdf','ppt','rtf','xls','xlsx','xml'],
-           ],
-           'image' => [
-               'mim' => [],
-               'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff'],
-           ],
-           'video' => [
-               'mim' => [],
-               'ext' => ['3gp','avi','f4v','flv','m4a','m4v','mkv','mov','mp4','mpeg','qt','swf','wmv'],
-           ],
-       ];
     }
 }

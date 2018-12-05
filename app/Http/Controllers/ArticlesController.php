@@ -44,7 +44,7 @@ class ArticlesController extends SiteController
             ->orderBy('is_catpinned', 'desc')
             ->orderBy($category->order_by ?? setting('articles.order_by', 'id'), $category->direction)
             ->paginate($category->paginate ?? setting('articles.paginate', 8));
-            
+        
         pageinfo([
             'title' => $category->title,
             'description' => $category->description ?? $category->info,

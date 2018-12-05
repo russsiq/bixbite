@@ -29,7 +29,8 @@ class FilesController extends AdminController
         try {
             $request = app(FileStoreRequest::class);
             return response()->json([
-                'status' => true, 'message' => __('msg.uploaded_success'),
+                'status' => true,
+                'message' => __('msg.uploaded_success'),
                 'file' => $this->model->manageUpload(
                     $request->file('file'),
                     $request->except('file')
@@ -153,7 +154,7 @@ class FilesController extends AdminController
     {
         $file->update($request->all());
 
-        return redirect()->route('admin.files.index')->withStatus('store!');
+        return redirect()->route('admin.files.index')->withStatus(__('msg.update'));
     }
 
     /**
@@ -166,6 +167,6 @@ class FilesController extends AdminController
     {
         $file->delete();
 
-        return redirect()->back()->withStatus('destroy!');
+        return redirect()->back()->withStatus(__('msg.destroy'));
     }
 }

@@ -12,11 +12,13 @@
     "title": "Заголовок",
     "description": "Описание",
     "attaching": "Прикрепление файла",
-    "extension": "Расширение файла",
+    "extension": "Расширение",
     
     "not_attached": "<code>[не прикреплено]</code>",
     
     "msg.already_exists": "Файл уже существует: <a href=%s target=_blank class=alert-link>%s</a>.",
     "msg.uploaded_success": "Файл успешно загружен.",
+    "msg.update": "Файл обновлен.",
+    "msg.destroy": "Файл удален.",
     "msg.not_found": "Нет загруженных файлов для отображения."
 }

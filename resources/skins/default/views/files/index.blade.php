@@ -72,7 +72,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th colspan="2">@lang('title')</th>
-                                        <th class="text-right"></th>
+                                        <th>@lang('extension')</th>
                                         <th>@lang('attaching')</th>
                                         <th class="text-right d-print-none">@lang('action')</th>
                                     </tr>
