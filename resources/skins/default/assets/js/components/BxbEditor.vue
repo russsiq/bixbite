@@ -1,6 +1,6 @@
-<template lang="html">
+<template>
     <div class="bxb_editor">
-        
+
         <div class="bxb_panel">
             <div class="bxb_panel__inner">
                 <button class="bxb_btn" @click="ViewSource.toggle($event)"><i class="fa fa-code"></i></button>
@@ -28,11 +28,11 @@
                 @contextmenu="openContextMenu(index, $event)"
                 @dblclick="/* * */"
                 ></div>
-            
+
         </div>
         
         <div id="content" :style="{ display: ViewSource.none }"><slot></slot></div>
-        
+
         <div id="right-click-menu" tabindex="-1" ref='right' :style="contextMenuStyles">
             <button class="bxb_btn bxb_btn-context" @click="doCommand({cmd: 'bold'}, $event)"><i class="fa fa-bold"></i></button>
             <button class="bxb_btn bxb_btn-context" @click="doCommand({cmd: 'italic'}, $event)"><i class="fa fa-italic"></i></button>
@@ -61,16 +61,16 @@ export default {
             content: null,
             source: null,
             blocks: [],
-            
+
             // Menu
             ContextMenu: new BxbMenu,
-            
+
             // All commands to document.execCommand.
             availableCommands: availableCommands,
-            
+
             // Commands that are supported by the browser.
             supportedCommands: [],
-            
+
             // Commands specified by config.
             specifiedCommands: ['bold','italic','underline','strikeThrough','subscript']
         }
@@ -78,11 +78,11 @@ export default {
     mounted() {
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
-            let content = document.getElementById('content') 
+            let content = document.getElementById('content')
             let source = content.firstChild
             source.value = this.cleanString(source.value)
             this.content = source
-            
+
             this.parsingBlocks(source.value)
         })
     },
@@ -92,7 +92,7 @@ export default {
             return this.availableCommands.filter((command, i) => {
                 if (this.supported(command)) { // && this.specifiedCommands.includes(command.cmd)) {
                     this.supportedCommands[command.cmd] = command
-                    
+
                     return command
                 }
             })
@@ -139,27 +139,27 @@ export default {
                 this.insertBlock(index + 1, event)
                 document.getElementsByClassName("bxb_content__item")[index + 1].focus()
                 document.execCommand('selectAll', false, null)
-                
+
                 event.preventDefault()
             }
         },
         onBlur(index, event) {
             let children = event.target.children
-            
+
             for (let child of children) {
                 console.log(child)
             }
-            
+
             for (let i = 0; i < children.length; i++) {
                 this.blocks.splice(
                     index + i, 0 == i ? 1 : 0, children[i]
                 )
             }
-            
+
             if (event.relatedTarget !== null && event.relatedTarget.classList.contains('bxb_btn-context')) {
                 event.relatedTarget.click()
             }
-            
+
             // Always hide menu.
             this.ContextMenu.show = 'none'
             event.preventDefault()
@@ -171,7 +171,7 @@ export default {
         onTrim(index, event) {
             if ('' == event.target.innerHTML) {
                 this.deleteBlock(index)
-                
+
                 index = 0 < index-- ? index : 0
                 document.getElementsByClassName("bxb_content__item")[index].focus()
                 document.execCommand('selectAll', false, null)
@@ -183,8 +183,8 @@ export default {
             Object.keys(this.blocks).forEach((key) => {
                 html += index == key ? event.target.innerHTML : this.blocks[key].outerHTML
             })
-            
-            let content = document.getElementById('content') 
+
+            let content = document.getElementById('content')
             let source = content.firstChild
             source.value = this.cleanString(html)
             this.content = source
@@ -192,10 +192,10 @@ export default {
         doCommand(cmd, event) {
             // https://codepen.io/chrisdavidmills/pen/gzYjag
             // https://developer.mozilla.org/en-US/docs/Web/API/document/execCommand
-            
+
             let command = this.supportedCommands[cmd.cmd];
             let val = (typeof command.val !== "undefined") ? prompt("Value for " + command.cmd + "?", command.val) : ''
-            
+
             document.execCommand(command.cmd, false, (val || ''))
             event.preventDefault()
         },
@@ -211,7 +211,7 @@ export default {
         cleanString(string) {
             string = string.replace(/\n/g, ' ')
             string = string.replace(/>\s*</g, '><')
-            
+
             return (new CleanWordHTML(string)).string
         },
         stripHtmlToText(html) {
@@ -220,7 +220,7 @@ export default {
             let res = tmp.textContent || tmp.innerText || ''
             res.replace('\u200B', '') // zero width space
             res = res.trim()
-            
+
             return res
         },
         moveCursorToEnd(element) {
@@ -232,7 +232,7 @@ export default {
         wrapElements(html) {
             return document.createRange().createContextualFragment(html)
         },
-        
+
         // Menu
         openContextMenu(index, event) {
             event.preventDefault()
@@ -256,7 +256,7 @@ export default {
         border: 1px solid rgba(0, 0, 0, 0.125);
         border-radius: 0;
     }
-    
+
     /* Panel */
     .bxb_panel {
         margin-bottom: 0;
@@ -291,8 +291,8 @@ export default {
         opacity: .4;
         padding: 0;
     }
-    
-    
+
+
     /* Content */
     .bxb_content {
         max-height: 380px;
@@ -314,7 +314,7 @@ export default {
         border-color: #3bceff;
         outline: 0;
     }
-    
+
     #right-click-menu{
         background: #fafafa;
         border: 1px solid #bdbdbd;

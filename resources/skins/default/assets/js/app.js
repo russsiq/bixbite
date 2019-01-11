@@ -8,15 +8,19 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
 
 // Configure ajax provider.
 Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
 
 // Adding Vue components to application.
-Vue.component('upload-files', require('./components/UploadFiles.vue'));
-Vue.component('image-uploader', require('./components/ImageUploader.vue'));
-Vue.component('bxb-editor', require('./components/BxbEditor.vue'));
+import UploadFiles from './components/UploadFiles.vue';
+import ImageUploader from './components/ImageUploader.vue';
+import BxbEditor from './components/BxbEditor.vue';
+
+Vue.component('upload-files', UploadFiles);
+Vue.component('image-uploader', ImageUploader);
+Vue.component('bxb-editor', BxbEditor);
 
 // Import Vue components as plugins.
 import LoadingLayer from 'bxb-loading-layer';
