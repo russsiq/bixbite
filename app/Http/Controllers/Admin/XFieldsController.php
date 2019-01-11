@@ -59,22 +59,26 @@ class XFieldsController extends AdminController
     public function update(XFieldRequest $request, XField $x_field)
     {
         return $x_field->update($request->all())
-            ? redirect()->route('admin.x_fields.index')->withStatus(sprintf(
-                __('msg.update'), $x_field->name, $x_field->extensible
-            ))
-            : redirect()->back()->withInput()->withErrors(sprintf(
-                __('msg.not_updating'), $x_field->name, $x_field->extensible
-            ));
+            ? redirect()->route('admin.x_fields.index')
+                ->withStatus(sprintf(
+                    __('msg.update'), $x_field->name, $x_field->extensible
+                ))
+            : redirect()->back()->withInput()
+                ->withErrors(sprintf(
+                    __('msg.not_updating'), $x_field->name, $x_field->extensible
+                ));
     }
 
     public function destroy(XField $x_field)
     {
         return $x_field->delete()
-            ? redirect()->route('admin.x_fields.index')->withStatus(sprintf(
-                __('msg.delete'), $x_field->name, $x_field->extensible
-            ))
-            : redirect()->back()->withErrors(sprintf(
-                __('msg.not_deleting'), $x_field->name, $x_field->extensible
-            ));
+            ? redirect()->route('admin.x_fields.index')
+                ->withStatus(sprintf(
+                    __('msg.delete'), $x_field->name, $x_field->extensible
+                ))
+            : redirect()->back()
+                ->withErrors(sprintf(
+                    __('msg.not_deleting'), $x_field->name, $x_field->extensible
+                ));
     }
 }

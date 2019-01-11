@@ -16,12 +16,13 @@ trait XFieldMutators
 
     public function getParamsAttribute()
     {
+        $params = 'array' == $this->attributes['type'] ? [] : null;
+
         if (is_null($this->attributes['params'])) {
-            return 'array' == $this->attributes['type'] ? [] : null;
+            return $params;
         }
 
         // parse_ini_string ???
-        $params = [];
         foreach (explode(PHP_EOL, $this->attributes['params']) as $param) {
             $param = explode(',', $param);
             $params[trim($param[0])] = trim($param[1] ?? $param[0]);
