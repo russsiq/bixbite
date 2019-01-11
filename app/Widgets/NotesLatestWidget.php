@@ -15,7 +15,7 @@ class NotesLatestWidget extends WidgetAbstract
         return [
             'title' => $this->params['widget_title'] ?? __('notes'),
             'items' => Note::where('user_id', user('id'))
-                ->where('is_completed', null)
+                ->where('is_completed', '!=', 1)
                 ->get(),
         ];
     }
