@@ -32,30 +32,30 @@
 /**
  * Page structure.
  */
-@import "/page/__main";
-@import "/page/header";
-@import "/page/body";
-@import "/page/footer";
+@import "page/__main";
+@import "page/header";
+@import "page/body";
+@import "page/footer";
 
 /**
  * Pages.
  */
-@import "/pages/action";
-@import "/pages/archive";
-@import "/pages/articles";
-@import "/pages/users";
+@import "pages/action";
+@import "pages/archive";
+@import "pages/articles";
+@import "pages/users";
 
 /**
  * Plugins.
  */
-@import "/plugins/comments";
+@import "plugins/comments";
 
 /**
  * Widgets.
  */
-@import "/widgets/__main";
-@import "/widgets/beside-slider";
-@import "/widgets/comments";
-@import "/widgets/related";
-@import "/widgets/featured";
-@import "/widgets/neighboring";
+@import "widgets/__main";
+@import "widgets/beside-slider";
+@import "widgets/comments";
+@import "widgets/related";
+@import "widgets/featured";
+@import "widgets/neighboring";
