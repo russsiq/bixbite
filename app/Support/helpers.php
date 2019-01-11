@@ -7,6 +7,7 @@ define('DS', DIRECTORY_SEPARATOR);
  * app_theme - Get or set current theme name from different sides.
  * cluster - Remove empty array values and joined with delimiter.
  * extract_images - Extract existing images paths array from given html string.
+ * formatBytes - Format bytes to kb, mb, gb, tb.
  * get_captcha - Generate captcha html-block.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
  * get_gravatar - Get Gravatar url for img tag using specified email.
@@ -30,24 +31,6 @@ define('DS', DIRECTORY_SEPARATOR);
 use Illuminate\Support\HtmlString;
 use BBCMS\Exceptions\BadLogic;
 use BBCMS\Exceptions\MethodNotAvailable;
-/**
- * Format bytes to kb, mb, gb, tb
- *
- * @param  integer $size
- * @param  integer $precision
- * @return integer
- */
-function formatBytes(int $size, int $precision = 2)
-{
-    if ($size > 0) {
-        $base = log($size) / log(1024);
-        $suffixes = [__('bytes'), __('KB'), __('MB'), __('GB'), __('TB')];
-
-        return round(pow(1024,$base - floor($base)),$precision).' '.$suffixes[floor($base)];
-    }
-
-    return $size;
-}
 
 if (! function_exists('app_locale')) {
     /**
@@ -65,9 +48,13 @@ if (! function_exists('app_locale')) {
             // При сохранении настроек нужно обновлять `app_locale` и `app_theme`,
             // находящиеся в `session('')`. Нужно переделать в куки
             foreach ([
-                request('app_locale'), $locale, session('app_locale'),
-                setting('system.app_locale'), env('APP_LOCALE'), 'ru',
-                ] as $app_locale) {
+                request('app_locale'),
+                $locale,
+                session('app_locale'),
+                setting('system.app_locale'),
+                app()->getLocale(),
+                'ru',
+            ] as $app_locale) {
                 if ($app_locale and is_dir(app()->resourcePath('lang'.DS.$app_locale))) {
                     session(['app_locale' => $app_locale]);
                     break;
@@ -99,9 +86,13 @@ if (! function_exists('app_theme')) {
             // При сохранении настроек нужно обновлять `lang` и `theme`,
             // находящиеся в `session('')`
             foreach ([
-                request('app_theme'), $theme, session('app_theme'),
-                setting('system.app_theme'), env('APP_THEME'), 'default',
-                ] as $app_theme) {
+                request('app_theme'),
+                $theme,
+                session('app_theme'),
+                setting('system.app_theme'),
+                env('APP_THEME'),
+                'default',
+            ] as $app_theme) {
                 if ($app_theme and is_dir(app()->resourcePath('themes'.DS.$app_theme))) {
                     session(['app_theme' => $app_theme]);
                     break;
@@ -151,6 +142,33 @@ if (! function_exists('extract_images')) {
         }
 
         return $images;
+    }
+}
+
+if (! function_exists('formatBytes')) {
+    /**
+     * Format bytes to kb, mb, gb, tb.
+     *
+     * @param  integer $size
+     * @param  integer $precision
+     * @return integer
+     */
+    function formatBytes(int $size, int $precision = 2)
+    {
+        if ($size > 0) {
+            $base = log($size) / log(1024);
+            $suffixes = [
+                __('bytes'),
+                __('KB'),
+                __('MB'),
+                __('GB'),
+                __('TB'),
+            ];
+
+            return round(pow(1024,$base - floor($base)),$precision).' '.$suffixes[floor($base)];
+        }
+
+        return $size;
     }
 }
 
@@ -767,7 +785,6 @@ if (! function_exists('wrap_attr')) {
         );
     }
 }
-
 
 // $mappedProduce = [];
 //
