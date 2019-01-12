@@ -69,7 +69,7 @@ class XFieldRequest extends Request
             'params' => [
                 'nullable',
                 'string',
-                'required_if:type,select',
+                'required_if:type,array',
             ],
             'title' => [
                 'required',
@@ -101,5 +101,12 @@ class XFieldRequest extends Request
            'descr' => __('descr'),
            'html_flags' => __('html_flags'),
        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'params.required_if' => __('validation.params.required_if'),
+        ];
     }
 }
