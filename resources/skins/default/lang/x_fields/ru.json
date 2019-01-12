@@ -17,7 +17,7 @@
     "type.boolean": "Правда/ложь",
     "type.integer": "Целое число",
     "type.string": "Строка",
-    "type.text": "Текст",
+    "type.text": "Текстовое поле",
     "type.array": "Выбор значений",
     "type.timestamp": "Временная метка",
     
