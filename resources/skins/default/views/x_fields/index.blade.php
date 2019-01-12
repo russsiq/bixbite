@@ -47,7 +47,7 @@
     							<td>{{ $x_field->extensible }}</td>
     							<td><a href="{{ route('admin.x_fields.edit', $x_field) }}" class="">{{ $x_field->name }}</a></td>
     							<td>{{ $x_field->title }}</td>
-    							<td>{{ $x_field->type }}</td>
+    							<td>@lang('type.'.$x_field->type)</td>
     							<td class="text-right">
                                     <div class="btn-group">
                                         <a href="{{ route('admin.x_fields.edit', $x_field) }}" title="@lang('btn.edit')" class="btn btn-link"><i class="fa fa-pencil"></i></a>
