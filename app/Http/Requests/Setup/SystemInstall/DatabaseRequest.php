@@ -118,6 +118,7 @@ class DatabaseRequest extends Request
                     ]]);
 
                     // Check DB connection and exists table
+                    \DB::purge('mysql');
                     \DB::reconnect('mysql');
                     \DB::setTablePrefix($data['DB_PREFIX']);
                     if (is_null(\DB::connection('mysql')->getDatabaseName())) {
