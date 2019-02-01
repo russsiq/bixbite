@@ -13,20 +13,18 @@
                 <td v-html="file.message"></td>
                 <td style="white-space: nowrap;" class="text-right">
                     <div class="btn-group ml-auto">
-                        <span v-if="! (file.id > 0)">
-                            <button type="button" class="btn btn-link text-primary" v-on:click="uploadFile(key)"><i class="fa fa-upload"></i></button>
-                            <button type="button" class="btn btn-link text-warning" v-on:click="removeFile(key)"><i class="fa fa-trash"></i></button>
-                        </span>
                         <span v-if="file.id > 0">
-                            <!--button type="button" class="btn btn-link text-primary" v-on:click="downloadFile(key)"><i class="fa fa-download"></i></button-->
-                            <button type="button" class="btn btn-link text-danger" v-on:click="deleteFile(file.id)"><i class="fa fa-trash"></i></button>
+                            <button type="button" class="btn btn-link text-danger" @click="deleteFile(file.id)"><i class="fa fa-trash"></i></button>
+                        </span>
+                        <span v-else>
+                            <button type="button" class="btn btn-link text-primary" @click="uploadFile(key)"><i class="fa fa-upload"></i></button>
+                            <button type="button" class="btn btn-link text-warning" @click="removeFile(key)"><i class="fa fa-trash"></i></button>
                         </span>
                     </div>
                 </td>
             </tr>
         </table>
-        <input type="file" ref="files" :multiple="multiple" v-on:change="handleFiles();" />
-        <!--button type="button" class="btn btn-outline-primary" v-on:click="submitFiles()"><i class="fa fa-upload"></i></button-->
+        <input type="file" ref="files" :multiple="multiple" @change="handleFiles();" />
     </div>
 </template>
 
@@ -41,12 +39,31 @@
                 files: []
             }
         },
+        watch: {
+            files: {
+                deep: true,
+                handler(val) {
+                    console.log(val)
+                },
+            },
+        },
         methods: {
             handleFiles() {
                 this.files = [];
-                let uploadedFiles = this.$refs.files.files;
-                for(var i = 0; i < uploadedFiles.length; i++)
-                    this.files.push(uploadedFiles[i]);
+                this.files.splice(0)
+                
+                let uploadFiles = this.$refs.files.files;
+                
+                Array.from(uploadFiles).forEach(file => {
+                    Object.assign(file, {
+                        id: 0,
+                        url: null,
+                        message: null,
+                        state: false,
+                    })
+                    this.files.push(file);
+                });
+                
                 this.submitFiles();
             },
             removeFile( key ){
@@ -56,14 +73,14 @@
                 alert('Not released. File id: ' + key);
             },
             reindexFiles() {
-                 // Reindex files array
+                 // Reindex files array.
                 if (this.files.length) {
                     this.files = this.files.filter(function (item) {
                         return ! (item.id > 0);
                     }.bind(this));
                 }
                 
-                // Check how many elements are left
+                // Check how many elements are left.
                 if (! this.files.length) {
                     return confirm('Upload complete. Reload this page?') ? document.location.reload(true) : true ;
                 }
@@ -74,36 +91,43 @@
                 formData.append('file', this.files[i]);
                 formData.append('mass_uploading', true);
                 
-                this.files[i].state = 'uploading';
-                Vue.set(this.files, i, this.files[i]);
+                this.$set(this.files, i, Object.assign(
+                    this.files[i], {
+                        state: 'uploading',
+                    })
+                );
                 
                 try {
                     const response = await axios({
                         method: 'post',
                         url: this.post_url,
                         data: formData,
-                        headers: {'Content-Type': 'multipart/form-data'}
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
                     });
                     
                     if (! response.data.file) {
                         throw new Error(response.data.message);
                     }
                     
-                    var attributes = JSON.parse(response.data.file);
-                    this.files[i].id = attributes.id;
-                    this.files[i].url = attributes.url;
-                    this.files[i].message = response.data.message;
-                    this.files[i].state = 'uploaded';
+                    Object.assign(this.files[i], {
+                        id: response.data.file.id,
+                        url: response.data.file.url,
+                        state: 'uploaded',
+                        message: response.data.message,
+                    })
                 } catch (error) {
-                    console.log(error);
-                    this.files[i].message = error.message
-                    this.files[i].state = 'error';
+                    Object.assign(this.files[i], {
+                        state: 'error',
+                        message: error.message,
+                    })
                 }
                 
-                Vue.set(this.files, i, this.files[i]);
+                this.$set(this.files, i, this.files[i]);
             },
             submitFiles() {
-                // Check how many elements in ref="files"
+                // Check how many elements in ref="files".
                 if (! this.$refs.files.files.length) {
                     return alert('Nothing to upload');
                 }
