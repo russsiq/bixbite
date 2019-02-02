@@ -1,14 +1,11 @@
-
-// Fonts
-$web-font-path: "https://fonts.googleapis.com/css?family=Ubuntu:300" !default;
-@import url($web-font-path);
-
 // Variables
 @import "variables";
 
+// Fonts
+@import url($web-font-path);
+
 // fontawesome
 // npm i font-awesome@4.7.0 --save-dev
-$fa-font-path: "./fonts/font-awesome" !default;
 @import "~font-awesome/scss/font-awesome";
 
 // Bootstrap framework with Bootswatch theme yeti
@@ -26,6 +23,11 @@ $fa-font-path: "./fonts/font-awesome" !default;
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/addon/display/fullscreen.css";
 @import "~codemirror/addon/dialog/dialog.css";
+
+// Styles to quill.js editor.
+// npm i quill --save-dev
+@import "node_modules/quill/dist/quill.bubble";
+@import "node_modules/quill/dist/quill.snow";
 
 .CodeMirror-fullscreen {
     z-index: 1040;

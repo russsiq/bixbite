@@ -44,13 +44,9 @@
 		</div>
 
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-			<bxb-editor lang="{{ app_locale() }}">
-				<textarea name="content"
-                    style="width:100%;"
-                    rows="8"
-                    >{!! old('content', optional($article)->getOriginal('content') ?? '<p>...</p>') !!}
-                </textarea>
-			</bxb-editor>
+			<quill-editor :article-id="article.id" lang="{{ app_locale() }}"></quill-editor>
+			<textarea name="content" style="width:100%;display:none;" rows="8"
+				>{!! old('content', optional($article)->getOriginal('content')) !!}</textarea>
 		</div>
 
 		<div id="accordion">
