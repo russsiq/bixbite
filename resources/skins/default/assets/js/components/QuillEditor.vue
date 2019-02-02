@@ -78,27 +78,26 @@
         font-family: inherit;
     }
     .ql-editor {
-        display: block;
-        width: 100%;
-        padding: 0.375rem 0.5rem;
-        line-height: 1.6;
-        color: #888;
         background-color: #fff;
         background-clip: padding-box;
         border: 1px solid #ccc;
-        border-radius: 0;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-        font-size: 1rem;
         border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0;
+        color: #888;
+        display: block;
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 0.375rem 0.5rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        width: 100%;
     }
 
     .ql-editor:focus {
-        color: #444;
         background-color: #fff;
         border-color: #3bceff;
+        box-shadow: none;
+        color: #000;
         outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(0, 140, 186, 0.25);
     }
     .ql-editor p {
         margin-bottom: 1rem;
