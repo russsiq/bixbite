@@ -7,7 +7,6 @@
   },
   "devDependencies": {
     "axios": "^0.18",
-    "baguettebox.js": "^1.11.0",
     "bootstrap": "^4.2.1",
     "bxb-loading-layer": "^0.1.1",
     "bxb-notification": "^0.1.2",
@@ -15,15 +14,13 @@
     "cross-env": "^5.2.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2",
-    "laravel-mix": "^4.0.12",
+    "laravel-mix": "^4.0.14",
     "lodash": "^4.17.11",
-    "popper.js": "^1.14.4",
-    "sass": "^1.15.3",
+    "popper.js": "^1.14.7",
+    "sass": "^1.16.1",
     "sass-loader": "^7.1.0",
-    "vue": "^2.5.21",
-    "vue-template-compiler": "^2.5.21"
+    "vue": "^2.5.22",
+    "vue-template-compiler": "^2.5.22"
   },
-  "dependencies": {
-    "font-awesome": "^4.7.0"
-  }
+  "dependencies": {}
 }
