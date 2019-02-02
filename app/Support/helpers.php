@@ -14,6 +14,7 @@ define('DS', DIRECTORY_SEPARATOR);
  * html_clean - Remove html tags.
  * html_secure - Advanced htmlspecialchars. HTML & special symbols protection.
  * pageinfo - Working with global information about the page.
+ * reading_time - Calculating of the time for which the text can be read.
  * select_dir (optional: `custom_views`, and folder in app()->resourcePath($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
@@ -112,8 +113,8 @@ if (! function_exists('cluster')) {
     /**
      * Remove empty array values and joined with delimiter.
      *
-     * @param array $array
-     * @param string $delimiter
+     * @param  array $array
+     * @param  string $delimiter
      * @return string
      */
     function cluster(array $array, string $delimiter = ' — '): string
@@ -126,7 +127,7 @@ if (! function_exists('extract_images')) {
     /**
      * Extract images paths array from given html string.
      *
-     * @param string $html
+     * @param  string $html
      * @return array
      */
     function extract_images(string $html): array
@@ -176,7 +177,7 @@ if (! function_exists('get_captcha')) {
     /**
      * Generate captcha html-block.
      *
-     * @param string $view
+     * @param  string $view
      * @return string \Illuminate\Support\HtmlString containing captcha block
      */
     function get_captcha(string $view = 'components.partials.captcha')
@@ -189,8 +190,8 @@ if (! function_exists('get_avatar')) {
     /**
      * Get avatar url for img tag using specified user ID or email.
      *
-     * @param string $email The email address.
-     * @param string $user_avatar If registered user has avatar.
+     * @param  string $email The email address.
+     * @param  string $user_avatar If registered user has avatar.
      * @return mixed containing either just a URL or a complete image tag.
      */
     function get_avatar($email, $user_avatar = null)
@@ -209,9 +210,9 @@ if (! function_exists('get_gravatar')) {
     /**
      * Get Gravatar url for img tag using specified email.
      *
-     * @param string    $email
-     * @param int       $s Size in pixels, defaults to 80px [ 1 - 2048 ]
-     * @param string    $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+     * @param  string    $email
+     * @param  int       $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+     * @param  string    $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
      *
      * @return string   containing either just a URL or a complete image tag
      */
@@ -331,7 +332,7 @@ if (! function_exists('pageinfo')) {
     /**
      * Working with global information about the current frontend page.
      *
-     * @param array|string          $data
+     * @param  array|string          $data
      * @throws MethodNotAvailable   If $data not a string or array.
      * @return BBCMS\Support\PageInfo|BBCMS\Support\Contracts\PageInfoContract
      */
@@ -355,14 +356,30 @@ if (! function_exists('pageinfo')) {
     }
 }
 
+if (! function_exists('reading_time')) {
+    /**
+     * Calculating of the time for which the text can be read.
+     *
+     * @param  string    $text
+     * @return string
+     */
+    function reading_time(string $text)
+    {
+       $word_count = str_word_count(strip_tags($text));
+       $minutes = floor($word_count / 150);
+
+       return $minutes.' minute'.($minutes > 1 ? 's' : '');
+  }
+}
+
 if (! function_exists('select_dir')) {
     /**
      * Get all name of the directories within a given directory.
      *
      * Special $path: `custom_views`, and folder in app()->resourcePath($path).
      *
-     * @param string    $path
-     * @param boolean   $with_default Added [null => 'By default']
+     * @param  string    $path
+     * @param  boolean   $with_default Added [null => 'By default']
      * @return array
      */
     function select_dir(string $path, bool $with_default = false)
@@ -395,8 +412,8 @@ if (! function_exists('select_file')) {
      *
      * Special $path: `fonts`
      *
-     * @param string    $path
-     * @param boolean   $with_default Added [null => 'By default']
+     * @param  string    $path
+     * @param  boolean   $with_default Added [null => 'By default']
      * @return array
      */
     function select_file(string $path, string $pattern = '*.[tT][tT][fF]', bool $with_default = false)
@@ -420,8 +437,8 @@ if (! function_exists('setting')) {
     /**
      * Get a config with user setting.
      *
-     * @param string  $environment The strig of config file settings
-     * @param string  $default
+     * @param  string  $environment The strig of config file settings
+     * @param  string  $default
      *
      * @return Config containing setting
      */
@@ -459,8 +476,8 @@ if (! function_exists('skin_asset')) {
     /**
      * Generate an asset for current skin of application.
      *
-     * @param string  $path
-     * @param bool    $secure
+     * @param  string  $path
+     * @param  bool    $secure
      * @return string
      */
     function skin_asset($path, $secure = null)
@@ -473,7 +490,7 @@ if (! function_exists('skin_path')) {
     /**
      * Get path to `resources/skins/{skin}/{path}` folder.
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
     function skin_path(string $path = null)
@@ -627,9 +644,9 @@ if (! function_exists('teaser')) {
     /**
      * Remove html tags and truncate string at the specified length.
      *
-     * @param string $text
-     * @param int $length
-     * @param string $finisher
+     * @param  string $text
+     * @param  int $length
+     * @param  string $finisher
      * @return string|null \Illuminate\Support\HtmlString
      */
     function teaser($text, int $length = 50, string $finisher = ' ...')
@@ -658,8 +675,8 @@ if (! function_exists('theme_asset')) {
      * Generate an asset path for current theme of application.
      * `Ex.: http://site.com/themes/{theme-from-setting}/public/css/app.css`
      *
-     * @param string $path
-     * @param bool $secure
+     * @param  string $path
+     * @param  bool $secure
      * @return string
      */
     function theme_asset($path, $secure = null)
@@ -672,7 +689,7 @@ if (! function_exists('theme_path')) {
     /**
      * Get path to `resources/themes/{theme}/{path}` $dir.
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
     function theme_path(string $path = null)
@@ -687,7 +704,7 @@ if (! function_exists('theme_version')) {
     /**
      * Obtaining info about theme from `resources/themes/{theme}/version` file.
      *
-     * @param string $theme
+     * @param  string $theme
      * @return object|null
      */
     function theme_version(string $theme)
@@ -720,7 +737,7 @@ if (! function_exists('skin_path')) {
     /**
      * Get path to `resources/skins/{skin}/{path}` folder.
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
     function skin_path(string $path = null)
