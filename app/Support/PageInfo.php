@@ -17,7 +17,7 @@ class PageInfo
 
     public function __construct()
     {
-        $this->set('locale', app_locale());
+        $this->set('locale', str_replace('_', '-', app_locale()));
         $this->set('csrf_token', csrf_token());
         $this->set('page', request('page') ?? null);
         $this->set('app_name', setting('system.app_name', 'BixBite'));
