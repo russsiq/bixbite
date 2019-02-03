@@ -71,6 +71,7 @@ class FileStoreRequest extends Request
         // NB.: En. and rus. x letter.
         $title = preg_replace('/[-_хx\d]+$/u', '', $title);
         $title = preg_replace('/\.tar$/', '', $title);
+        $title = empty($title) ? str_random(8) : $title;
         $properties = $this->input('properties', null);
         if ('image' == $type) {
             [$properties['width'], $properties['height']] = getimagesize($file->getPathname());

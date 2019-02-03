@@ -1,7 +1,7 @@
 <template>
     <label class="image-uploader">
         <div v-if="'uploaded' == state" class="image-uploader-success">
-            <img :src="url" alt="image" />
+            <img :src="src" alt="image" />
             <input type="hidden" :name="input_name" :value="image_id" v-if="image_id > 0" />
         </div>
         <div v-else class="image-uploader-variant d-flex justify-content-center align-items-center">
@@ -18,19 +18,54 @@
     export default {
         props: {
             input_name: String,
-            focusable: String,
-            post_url: String,
+            
             url: {String, required: false},
-            state: {String, required: false}
+            post_url: {String, required: true},
+            fetch_url: {String, required: false},
         },
         data(){
             return {
-                //url: '',
-                //state: null,
+                src: null,
+                state: null,
                 image_id: 0
             }
         },
+
+        mounted() {
+            // Executed after the next DOM update cycle.
+            this.$nextTick(() => {
+                if (this.url && this.url.length > 0) {
+                    this.state = 'uploaded';
+                    this.src = this.url
+                } else if (this.fetch_url && this.fetch_url.length > 0) {
+                    this.fetchImage()
+                }
+            })
+        },
+        
         methods: {
+            async fetchImage() {
+                try {
+                    const response = await axios(this.fetch_url)
+                    
+                    if (! response.data.file) {
+                        throw new SyntaxError(response.data.message);
+                    }
+                    
+                    // WHY not JSON.parse????
+                    let attributes = response.data.file;
+                    
+                    this.image_id = response.data.file.id;
+                    this.src = response.data.file.url;
+                    this.state = 'uploaded';
+                    this.$refs.image.value = '';
+                } catch (error) {
+                    this.image_id = 0;
+                    this.state = 'error';
+                    console.log(error);
+                    Notification.error({message: error.message});
+                }
+            },
             async uploadImage(){
                 try {
                     let files = this.$refs.image.files;
@@ -62,24 +97,17 @@
                         throw new SyntaxError(response.data.message);
                     }
                     
-                    let focusable = document.getElementsByName(this.focusable);
-                    if (focusable.length) {
-                        focusable[0].focus();
-                    }
-                    
                     let attributes = JSON.parse(response.data.file);
+                    
                     this.image_id = attributes.id;
-                    this.url = attributes.url;
+                    this.src = attributes.url;
                     this.state = 'uploaded';
-                    
                     this.$refs.image.value = '';
-                    
-                    console.log('file.id: ' + attributes.id);
                 } catch (error) {
                     this.image_id = 0;
                     this.state = 'error';
                     console.log(error);
-                    alert(error.message);
+                    Notification.error({message: error.message});
                 }
             },
             deleteImage() {

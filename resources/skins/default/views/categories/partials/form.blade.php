@@ -54,14 +54,16 @@
 				<small class="form-text text-muted">@lang('image#descr')</small>
 			</label>
 			<div class="col-sm-5">
-				<image-uploader
-					:post_url="'{{ route('admin.files.upload') }}'"
-					@if (! empty($category->image_id) and optional($category->image)->url)
-						:url="'{{ $category->image->url }}'"
-						:state="'uploaded'"
-					@endif
-					:input_name="'image_id'"
-				></image-uploader>
+                <image-uploader
+                    :input_name="'image_id'"
+                    :post_url="'{{ route('admin.files.upload') }}'"
+                    @if (! empty($category->image_id) and optional($category->image)->url)
+                        :url="'{{ $category->image->getUrlAttribute('thumb') }}'"
+                    @endif
+                    @if (old('image_id'))
+                        :fetch_url="'{{ route('admin.files.show', ['id' => old('image_id')]) }}'"
+                    @endif
+                ></image-uploader>
 			</div>
 		</div>
 

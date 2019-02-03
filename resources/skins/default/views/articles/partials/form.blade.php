@@ -7,15 +7,17 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-5 col-lg-4 mb-2">
 					<image-uploader
+				        :input_name="'image_id'"
 				        :post_url="'{{ route('admin.files.upload') }}'"
 				        @if (! empty($article->image_id) and optional($article->image)->url)
 				        	:url="'{{ $article->image->getUrlAttribute('thumb') }}'"
-				        	:state="'uploaded'"
 				        @endif
-				        :input_name="'image_id'"
-						:focusable="'teaser'"
+				        @if (old('image_id'))
+                            :fetch_url="'{{ route('admin.files.show', ['id' => old('image_id')]) }}'"
+				        @endif
 					></image-uploader>
 				</div>
+                
 				<div class="col-sm-12 col-md-7 col-lg-8 mb-2">
 					<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
 						<input type="text" name="title"

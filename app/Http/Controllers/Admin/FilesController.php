@@ -120,6 +120,13 @@ class FilesController extends AdminController
      */
     public function show(File $file)
     {
+       if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'file' => $file,
+            ], 200);
+       }
+       
         return $this->renderOutput('show', [
             'file' => $file,
         ]);
