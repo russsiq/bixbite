@@ -37,6 +37,7 @@ class ArticleRequest extends Request
             }, $this->input('content')
         );
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
+        $input['content'] = $this->removeEmoji($input['content']);
 
         $input['description'] = teaser($input['description'], 255);
         $input['keywords'] = teaser($input['keywords'], 255);
@@ -61,7 +62,7 @@ class ArticleRequest extends Request
         }
 
         if (empty($input['categories'])) {
-            $input['state'] = 'unpublished';
+            $input['state'] = 'draft';
         }
 
         return $this->replace($input)->all();
@@ -130,5 +131,37 @@ class ArticleRequest extends Request
             'tags' => ['nullable', 'array', ],
             'tags.*' => ['nullable', 'string', 'max:255', 'regex:/^[\w\s-_\.]+$/u', ],
         ];
+    }
+
+    /**
+     * Remove Emoji Characters in PHP by Himphen Hui.
+     * https://medium.com/coding-cheatsheet/remove-emoji-characters-in-php-236034946f51
+     *
+     * @param  string $string
+     * @return string
+     */
+    public function removeEmoji(string $string)
+    {
+        // Match Emoticons.
+        $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';
+        $clear_string = preg_replace($regex_emoticons, '', $string);
+
+        // Match Miscellaneous Symbols and Pictographs.
+        $regex_symbols = '/[\x{1F300}-\x{1F5FF}]/u';
+        $clear_string = preg_replace($regex_symbols, '', $clear_string);
+
+        // Match Transport And Map Symbols.
+        $regex_transport = '/[\x{1F680}-\x{1F6FF}]/u';
+        $clear_string = preg_replace($regex_transport, '', $clear_string);
+
+        // Match Miscellaneous Symbols.
+        $regex_misc = '/[\x{2600}-\x{26FF}]/u';
+        $clear_string = preg_replace($regex_misc, '', $clear_string);
+
+        // Match Dingbats.
+        $regex_dingbats = '/[\x{2700}-\x{27BF}]/u';
+        $clear_string = preg_replace($regex_dingbats, '', $clear_string);
+
+        return $clear_string;
     }
 }
