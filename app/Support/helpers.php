@@ -296,7 +296,7 @@ if (! function_exists('minreq')) {
     {
         switch ($requirement) {
             case 'php':
-                return version_compare(phpversion(), '7.2.0', '>=') ? phpversion() : false; break;
+                return version_compare(phpversion(), '7.1.0', '>=') ? phpversion() : false; break;
             case 'pdo':
                 // return (extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO')) ? \DB::select(\DB::raw("select version()"))[0]->{'version()'} : false; break;
                 return (extension_loaded('PDO') and class_exists('PDO')) ?? false; break;
