@@ -2,7 +2,7 @@
 	<div class="col-sm-12 col-lg-8">
 		<!-- MAIN CONTENT -->
 		{{-- <div class="card-header"><i class="fa fa-th-list text-muted"></i> @lang('options.main_content')</div> --}}
-		<div class="form-group {{ $errors->has('teaser') ? ' has-error' : '' }}">
+		<div class="form-group">
 			{{-- :delete_url="'{{ route('admin.files.delete', $file) }}'"  --}}
 			<div class="row">
 				<div class="col-sm-12 col-md-5 col-lg-4 mb-2">
