@@ -17,7 +17,7 @@
 				        @endif
 					></image-uploader>
 				</div>
-                
+
 				<div class="col-sm-12 col-md-7 col-lg-8 mb-2">
 					<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
 						<input type="text" name="title"
@@ -260,7 +260,3 @@
 		</div>
 	</div>
 </div>
-
-@push('scripts')
-<script>scrollTo(0,0)</script>
-@endpush
