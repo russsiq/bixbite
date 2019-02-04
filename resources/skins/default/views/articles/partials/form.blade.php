@@ -22,6 +22,7 @@
 					<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
 						<input type="text" name="title"
 							value="{{ old('title', optional($article)->title) }}"
+							maxlength="255"
 							class="form-control"
 							placeholder="@lang('title#tip') ..."
 							autocomplete="off" required />
@@ -30,6 +31,7 @@
 						<div class="form-group {{ $errors->has('slug') ? ' has-error' : '' }}">
 							<input type="text" name="slug"
 								value="{{ old('slug', optional($article)->slug) }}"
+								maxlength="255"
 								class="form-control"
 								placeholder="@lang('slug#tip') ..." autocomplete="off" />
 						</div>
@@ -37,6 +39,7 @@
 					<div class="form-group {{ $errors->has('teaser') ? ' has-error' : '' }} mb-0">
 						<textarea name="teaser"
 							rows="4"
+							maxlength="255"
 							class="form-control"
 							placeholder="@lang('teaser#tip') ..."
 							>{{ old('teaser', optional($article)->teaser) }}</textarea>
@@ -93,11 +96,19 @@
 						<div class="card-body">
 							<div class="form-group has-float-label{{ $errors->has('description') ? ' has-error' : '' }}">
 								<label>@lang('description')</label>
-								<textarea name="description" rows="3" class="form-control">{{ old('description', optional($article)->description) }}</textarea>
+								<textarea name="description"
+									rows="3"
+									maxlength="255"
+									class="form-control"
+									>{{ old('description', optional($article)->description) }}</textarea>
 							</div>
 							<div class="form-group has-float-label{{ $errors->has('keywords') ? ' has-error' : '' }}">
 								<label>@lang('keywords')</label>
-								<input type="text" name="keywords" maxlength="255" value="{{ old('keywords', optional($article)->keywords) }}" class="form-control" autocomplete="off" />
+								<input type="text" name="keywords"
+									maxlength="255"
+									value="{{ old('keywords', optional($article)->keywords) }}"
+									class="form-control"
+									autocomplete="off" />
 							</div>
 							<div class="form-group has-float-label{{ $errors->has('robots') ? ' has-error' : '' }}">
 								<label>@lang('robots')</label>
@@ -121,7 +132,11 @@
 					<div class="card-body">
 						<div class="form-group has-float-label{{ $errors->has('tags') ? ' has-error' : '' }}">
 							<label>@lang('tags')</label>
-							<input type="text" name="tags" maxlength="255" value="{{ old('tags', $tags) }}" class="form-control" autocomplete="off" />
+							<input type="text" name="tags"
+								maxlength="255"
+								value="{{ old('tags', $tags) }}"
+								class="form-control"
+								autocomplete="off" />
 						</div>
 					</div>
 				</div>
