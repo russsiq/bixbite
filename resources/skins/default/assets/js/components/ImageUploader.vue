@@ -134,6 +134,7 @@
         box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .25);
         padding: .25rem;
         border: 1px solid rgba(0, 0, 0, .125);
+        display: inline-block;
     }
     input.image-uploader-file {
         display: none;
