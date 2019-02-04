@@ -28,7 +28,23 @@ $(function() {
     $('code').click(function() {
         select(this);
     });
-    
+
+    // Multiple select input without Ctrl Key
+    $('select[multiple] option')
+        .mousedown(function(e) {
+            e.preventDefault();
+            var select = this.closest('select');
+            var scroll = select.scrollTop;
+            e.target.selected = ! e.target.selected;
+            setTimeout(function() {
+                select.scrollTop = scroll;
+            }, 0);
+            select.focus();
+        })
+        .mousemove(function(e) {
+            e.preventDefault()
+        });
+
     // HotKeys to this page
     $(document).on('keydown', function(e) {
         e = e || event;
@@ -38,7 +54,7 @@ $(function() {
             return false;
         }
     });
-    
+
     // Bootstrap tab-pane
     $(document).on('click', ':submit', function() {
         return focus_is_invalid();
@@ -52,7 +68,7 @@ $(function() {
                 return false;
             }
         });
-            
+
         return true;
     }
 

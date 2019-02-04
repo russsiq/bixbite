@@ -24,7 +24,7 @@
 							value="{{ old('title', optional($article)->title) }}"
 							class="form-control"
 							placeholder="@lang('title#tip') ..."
-							autocomplete="off" autofocus required />
+							autocomplete="off" required />
 					</div>
 					@if (setting('articles.manual_slug', false))
 						<div class="form-group {{ $errors->has('slug') ? ' has-error' : '' }}">
