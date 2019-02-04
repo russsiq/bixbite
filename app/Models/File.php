@@ -82,8 +82,8 @@ class File extends BaseModel
     }
 
     public function manageUpload(UploadedFile $file, array $data)
-    {
-        return $this->fill($data)->uploadFile($file)->save() ? $this->toJson() : false;
+    {   
+        return $this->fill($data)->uploadFile($file)->save() ? $this->toArray() : false;
     }
 
     /**

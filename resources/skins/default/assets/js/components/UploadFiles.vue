@@ -43,7 +43,7 @@
             files: {
                 deep: true,
                 handler(val) {
-                    console.log(val)
+                    //console.log(val)
                 },
             },
         },
@@ -54,9 +54,10 @@
                 
                 let uploadFiles = this.$refs.files.files;
                 
-                Array.from(uploadFiles).forEach(file => {
+                Array.from(uploadFiles, (file, index) => {
                     Object.assign(file, {
                         id: 0,
+                        key: index,
                         url: null,
                         message: null,
                         state: false,
@@ -91,11 +92,9 @@
                 formData.append('file', this.files[i]);
                 formData.append('mass_uploading', true);
                 
-                this.$set(this.files, i, Object.assign(
-                    this.files[i], {
-                        state: 'uploading',
-                    })
-                );
+                this.files.splice(i, 1, Object.assign(this.files[i], {
+                    state: 'uploading',
+                }))
                 
                 try {
                     const response = await axios({
@@ -111,20 +110,18 @@
                         throw new Error(response.data.message);
                     }
                     
-                    Object.assign(this.files[i], {
+                    this.files.splice(i, 1, Object.assign(this.files[i], {
                         id: response.data.file.id,
                         url: response.data.file.url,
                         state: 'uploaded',
                         message: response.data.message,
-                    })
+                    }))
                 } catch (error) {
-                    Object.assign(this.files[i], {
+                    this.files.splice(i, 1, Object.assign(this.files[i], {
                         state: 'error',
                         message: error.message,
-                    })
+                    }))
                 }
-                
-                this.$set(this.files, i, this.files[i]);
             },
             submitFiles() {
                 // Check how many elements in ref="files".

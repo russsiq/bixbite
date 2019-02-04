@@ -106,8 +106,14 @@
                                                 <i class="fa fa-home {{ $article->on_mainpage ? 'text-success' : 'text-muted' }}"></i>
                                             </button>
                                         @endcan
-
-                                        <a href="{{ $article->url }}" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a>
+                                        
+                                        @if('published' == $article->state)
+                                            <a href="{{ $article->url }}" target="_blank" class="btn btn-link">
+                                                <i class="fa fa-external-link"></i></a>
+                                        @else
+                                            <button type="button" class="btn btn-link" disabled>
+                                                <i class="fa fa-eye-slash text-muted"></i></button>
+                                        @endif
 
                                         @can ('admin.articles.update', $article)
                                             <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-link"><i class="fa fa-pencil"></i></a>
