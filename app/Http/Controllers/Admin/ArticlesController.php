@@ -70,9 +70,17 @@ class ArticlesController extends AdminController
             }, $request->tags
         ));
 
-        return redirect()->route('admin.articles.index')->withStatus(sprintf(
-                __('msg.store'), $article->url, route('admin.articles.edit', $article)
-            ));
+        if ('published' == $article->state) {
+            $message = sprintf(
+                __('msg.store_published'), $article->url, route('admin.articles.edit', $article)
+            );
+        } else {
+            $message = sprintf(
+                __('msg.store'), route('admin.articles.edit', $article)
+            );
+        }
+
+        return redirect()->route('admin.articles.index')->withStatus($message);
     }
 
     public function edit(Article $article)
@@ -105,9 +113,17 @@ class ArticlesController extends AdminController
             }, $request->tags
         ));
 
-        return redirect()->route('admin.articles.index')->withStatus(sprintf(
-                __('msg.update'), $article->url, route('admin.articles.edit', $article)
-            ));
+        if ('published' == $article->state) {
+            $message = sprintf(
+                __('msg.update_published'), $article->url, route('admin.articles.edit', $article)
+            );
+        } else {
+            $message = sprintf(
+                __('msg.update'), route('admin.articles.edit', $article)
+            );
+        }
+
+        return redirect()->route('admin.articles.index')->withStatus($message);
     }
 
     public function destroy(Article $article)

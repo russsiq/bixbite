@@ -210,7 +210,7 @@
 		<div class="card card-default">
 			<div class="card-header">@lang('category')</div>
 			<div class="card-body{{ $errors->has('categories') ? ' has-error' : '' }}">
-				<select id="catmenu" name="categories[]" class="form-control" multiple required>
+				<select id="catmenu" name="categories[]" class="form-control" multiple>
 					{{-- DON'T use "@each(...)", because "$loop->..." does not work --}}
 					@include('articles.partials.categories_items', ['items' => $categories_items])
 				</select>

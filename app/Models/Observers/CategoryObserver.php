@@ -38,6 +38,8 @@ class CategoryObserver
 
     public function deleting(Category $category)
     {
+        // $category->articles()->get(['id','state'])->each->update(['state' => 'draft']);
+
         $category->articles()->detach();
         $category->files()->get()->each->delete();
     }

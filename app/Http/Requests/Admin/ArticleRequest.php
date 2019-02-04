@@ -85,51 +85,160 @@ class ArticleRequest extends Request
     }
 
     /**
+     * Set custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'title' => __('title#tip'),
+            'teaser' => __('teaser'),
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
+        $except = is_integer($id = optional($this->article)->id)  ? ",$id,id" : '';
+
         return [
             // Main content.
-            'title'             => ['required', 'string', 'max:255', 'unique:articles,title'.
-                                    (isset($this->article->id) ? ','.$this->article->id.',id' : '')],
-            'slug'              => ['required', 'string', 'max:255', 'unique:articles,slug'.
-                                    (isset($this->article->id) ? ','.$this->article->id.',id' : '')],
-            'teaser' => ['nullable', 'string', 'max:255', ],
-            'content' => ['nullable', 'string', ],
-            'description' => ['nullable', 'string', 'max:255', ],
-            'keywords' => ['nullable', 'string', 'max:255', ],
+            'title' => [
+                'bail',
+                'required',
+                'string',
+                'max:255',
+                'unique:articles,title'.$except,
+            ],
+            'slug' => [
+                'bail',
+                'nullable',
+                'string',
+                'max:255',
+                'unique:articles,slug'.$except,
+                'required_with:title',
+            ],
+            'teaser' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'content' => [
+                'nullable',
+                'string',
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'keywords' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
 
             // Flags ?
-            'state' => ['required', 'string', 'in:draft,unpublished,published', ],
-            'on_mainpage' => ['nullable', 'boolean', ],
-            'is_favorite' => ['nullable', 'boolean', ],
-            'is_pinned' => ['nullable', 'boolean', ],
-            'is_catpinned' => ['nullable', 'boolean', ],
-            'currdate' => ['nullable', 'boolean', ],
+            'state' => [
+                'required',
+                'string',
+                'in:draft,unpublished,published',
+            ],
+            'on_mainpage' => [
+                'nullable',
+                'boolean',
+            ],
+            'is_favorite' => [
+                'nullable',
+                'boolean',
+            ],
+            'is_pinned' => [
+                'nullable',
+                'boolean',
+            ],
+            'is_catpinned' => [
+                'nullable',
+                'boolean',
+            ],
 
             // DateTime.
-            'customdate' => ['nullable', 'boolean', ],
-            'created_at' => ['nullable', 'date_format:"Y-m-d H:i:s"', 'required_with:customdate', ],
+            'currdate' => [
+                'nullable',
+                'boolean',
+            ],
+            'customdate' => [
+                'nullable',
+                'boolean',
+            ],
+            'created_at' => [
+                'nullable',
+                'date_format:"Y-m-d H:i:s"',
+                'required_with:customdate',
+            ],
 
             // Extension.
-            'allow_com' => ['required', 'numeric', 'in:0,1,2', ],
-            'views' => ['nullable', 'integer', ],
-            'votes' => ['nullable', 'integer', ],
-            'rating' => ['nullable', 'integer', ],
+            'allow_com' => [
+                'required',
+                'numeric',
+                'in:0,1,2',
+            ],
+            'views' => [
+                'nullable',
+                'integer',
+            ],
+            'votes' => [
+                'nullable',
+                'integer',
+            ],
+            'rating' => [
+                'nullable',
+                'integer',
+            ],
 
             // Relations types.
-            // 'images' => ['nullable', 'string', 'max:255', ],
-            // 'files'          => ['nullable', 'string', 'max:255', ],
-            'image_id' => ['nullable', 'integer', ],
-
-            'categories' => ['required', 'array', ],
-            'categories.*' => ['integer', 'exists:categories,id', ],
-
-            'tags' => ['nullable', 'array', ],
-            'tags.*' => ['nullable', 'string', 'max:255', 'regex:/^[\w\s-_\.]+$/u', ],
+            'image_id' => [
+                'nullable',
+                'integer',
+                'exists:files,id',
+            ],
+            'categories' => [
+                'nullable',
+                'array',
+            ],
+            'categories.*' => [
+                'integer',
+                'exists:categories,id',
+            ],
+            'files' => [
+                'nullable',
+                'array',
+            ],
+            'files.*' => [
+                'integer',
+                'exists:files,id',
+            ],
+            'images' => [
+                'nullable',
+                'array',
+            ],
+            'images.*' => [
+                'integer',
+                'exists:files,id',
+            ],
+            'tags' => [
+                'nullable',
+                'array',
+            ],
+            'tags.*' => [
+                'string',
+                'max:255',
+                'regex:/^[\w-]+$/u',
+            ],
         ];
     }
 
