@@ -10,7 +10,7 @@
 				        :input_name="'image_id'"
 				        :post_url="'{{ route('admin.files.upload') }}'"
 				        @if (! empty($article->image_id) and optional($article->image)->url)
-				        	:url="'{{ $article->image->getUrlAttribute('thumb') }}'"
+				        	:url="'{{ $article->image->url }}'"
 				        @endif
 				        @if (old('image_id'))
                             :fetch_url="'{{ route('admin.files.show', ['id' => old('image_id')]) }}'"
