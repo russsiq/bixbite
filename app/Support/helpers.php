@@ -228,7 +228,7 @@ if (! function_exists('get_gravatar')) {
 
 if (! function_exists('html_clean')) {
     /**
-     * Remove html tags.
+     * Remove html tags and non printable chars.
      *
      * @param  string  $text
      * @return string
@@ -239,12 +239,15 @@ if (! function_exists('html_clean')) {
             return null;
         }
 
+        $old_text = $text;
+
         $text = preg_replace("/\>(\\x20|\t|\r|\n)+\</", '> <', $text);
         $text = strip_tags($text);
         $text = preg_replace('/([^\pL\pN\pP\pS\pZ])|([\xC2\xA0])/u', ' ', $text);
-        $text = str_replace(' ', ' ', $text);
+        $text = str_replace('  ',' ', $text);
+        $text = trim($text);
 
-        return trim($text);
+        return $text === $old_text ? $text : html_clean($text);
     }
 }
 
