@@ -1,6 +1,6 @@
 <template>
 <transition name="modal__fade">
-    <div class="modal__overlay" @click="handleClick()">
+    <div class="modal__overlay" @click="handleClick($event)">
         <div class="modal__dialog">
             <div class="modal__content">
                 <div class="modal__header" v-if="hasHeaderSlot()">
