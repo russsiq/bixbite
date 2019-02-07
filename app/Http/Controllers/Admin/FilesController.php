@@ -126,7 +126,7 @@ class FilesController extends AdminController
                 'file' => $file,
             ], 200);
        }
-       
+
         return $this->renderOutput('show', [
             'file' => $file,
         ]);
@@ -161,6 +161,14 @@ class FilesController extends AdminController
     {
         $file->update($request->all());
 
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => __('msg.update'),
+                'file' => $file,
+            ], 200);
+        }
+
         return redirect()->route('admin.files.index')->withStatus(__('msg.update'));
     }
 
@@ -173,6 +181,13 @@ class FilesController extends AdminController
     public function destroy(File $file)
     {
         $file->delete();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => __('msg.destroy'),
+            ], 200);
+        }
 
         return redirect()->back()->withStatus(__('msg.destroy'));
     }

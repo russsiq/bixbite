@@ -111,7 +111,8 @@ export default {
     padding: 0.375rem 0.5rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     width: 100%;
-    min-height: 288px;
+    min-height: 388px;
+    font-family: "Bookman old style";
 }
 
 .ql-editor:focus {

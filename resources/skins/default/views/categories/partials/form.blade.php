@@ -56,13 +56,9 @@
 			<div class="col-sm-5">
                 <image-uploader
                     :input_name="'image_id'"
-                    :post_url="'{{ route('admin.files.upload') }}'"
-                    @if (! empty($category->image_id) and optional($category->image)->url)
-                        :url="'{{ $category->image->url }}'"
-                    @endif
-                    @if (old('image_id'))
-                        :fetch_url="'{{ route('admin.files.show', ['id' => old('image_id')]) }}'"
-                    @endif
+                    :input_value="{{ old('image_id', 0) }}"
+                    :base_url="'{{ route('admin.files.index') }}'"
+                    :uploaded="{{ ! empty($category->image_id) ? $category->image->toJson() : '{}' }}"
                 ></image-uploader>
 			</div>
 		</div>

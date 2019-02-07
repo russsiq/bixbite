@@ -118,6 +118,10 @@ textarea {
     max-width: 100%
 }
 
+textarea.noresize {
+    resize: none;
+}
+
 select .divider {
     height: 1px;
     margin: 9px 0;

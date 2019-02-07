@@ -8,13 +8,9 @@
 				<div class="col-sm-12 col-md-5 col-lg-4 mb-2">
 					<image-uploader
 				        :input_name="'image_id'"
-				        :post_url="'{{ route('admin.files.upload') }}'"
-				        @if (! empty($article->image_id) and optional($article->image)->url)
-				        	:url="'{{ $article->image->url }}'"
-				        @endif
-				        @if (old('image_id'))
-                            :fetch_url="'{{ route('admin.files.show', ['id' => old('image_id')]) }}'"
-				        @endif
+						:input_value="{{ old('image_id', 0) }}"
+						:base_url="'{{ route('admin.files.index') }}'"
+				        :uploaded="{{ ! empty($article->image_id) ? $article->image->toJson() : '{}' }}"
 					></image-uploader>
 				</div>
 
@@ -40,7 +36,7 @@
 						<textarea name="teaser"
 							rows="4"
 							maxlength="255"
-							class="form-control"
+							class="form-control noresize"
 							placeholder="@lang('teaser#tip') ..."
 							>{{ old('teaser', optional($article)->teaser) }}</textarea>
 					</div>
