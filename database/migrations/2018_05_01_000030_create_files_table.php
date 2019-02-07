@@ -58,8 +58,8 @@ class CreateFilesTable extends Migration
             $table->string('checksum', 32); // md5_file()
 
             $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->text('properties')->nullable(); // json filed type. Dimention, duration, etc.
+            $table->text('description', 1000)->nullable();
+            $table->text('properties')->nullable(); // json field type. Dimention, duration, etc.
             $table->integer('downloads')->unsigned()->default(0); // download counters
 
 
