@@ -17,27 +17,24 @@ class FileRequest extends Request
         return true;
     }
 
-    // public function sanitize()
-    // {
-    //     $input = $this->except(['_token', '_method', 'submit']);
-    //     $input['category'] = 'default';
-    //
-    //     return $this->replace($input)->all();
-    // }
-
     public function sanitize()
     {
-        // Prepare variables.
-        $old_title = $this->route()->parameters['file']->getAttribute('title');
+        return $this->merge([
+                // 1 Do not change the filename. He may become unavailable.
+                // 'name' => str_slug($this->input('title')).'_'.time(),
 
-        if ($old_title == $this->input('title', $old_title)) {
-            return $this->all();
-        }
+                // 2 Do not change the file title. Leave for validation.
+                // 'title' => $this->input('title', null),
 
-        return $this->replace([
-            'name' => str_slug($this->input('title')).'_'.time(),
-            'title' => $this->input('title'), // $name, // NOT CHANGE, skeep to validating.
-        ])->all();
+                // 3 Clean html tags in descroption.
+                'description' => html_clean($this->input('description', null)),
+            ])
+            ->except([
+                'name',
+                '_token',
+                '_method',
+                'submit',
+            ]);
     }
 
     /**
@@ -48,11 +45,25 @@ class FileRequest extends Request
     public function rules()
     {
         return [
-            'attachment_id' => ['nullable','integer'],
-            'attachment_type' => ['nullable','alpha_dash'],
-            'name' => ['sometimes','required','string','alpha_dash'],
-            'title' => ['required','string','max:255','regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u'],
-            'description' => ['nullable','string'],
+            'attachment_id' => [
+                'nullable',
+                'integer',
+            ],
+            'attachment_type' => [
+                'nullable',
+                'alpha_dash',
+            ],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u',
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
         ];
     }
 
