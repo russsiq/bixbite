@@ -93,7 +93,7 @@ class FileStoreRequest extends Request
             'checksum' => md5_file($file->getPathname()),
 
             'title' => $title,
-            'description' => $this->input('description', null),
+            'description' => html_clean($this->input('description', null)),
             'properties' => $properties,
         ])->all();
     }
@@ -171,6 +171,7 @@ class FileStoreRequest extends Request
             'description' => [
                 'nullable',
                 'string',
+                'max:1000',
             ],
             'properties' =>  [
                 'nullable',
