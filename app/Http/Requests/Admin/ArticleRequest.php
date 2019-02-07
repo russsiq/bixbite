@@ -37,6 +37,7 @@ class ArticleRequest extends Request
             }, $this->input('content')
         );
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
+        $input['content'] = str_replace('<p><br></p>', '', $input['content']);
         $input['content'] = $this->removeEmoji($input['content']);
 
         $input['description'] = teaser($input['description'], 255);
