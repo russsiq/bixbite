@@ -27,13 +27,13 @@
         <template slot="modal__header">Edit Image</template>
 
         <template slot="modal__body">
-            <div class="form-group" :class="{ 'has-error': errors.email }">
+            <div class="form-group has-float-label" :class="{ 'has-error': errors.email }">
                 <label class="control-label">Title</label>
-                <input type="text" v-model="image.title" @keydown.13.prevent :class="{ 'is-invalid': errors.title }"
+                <input type="text" v-model="image.title" @keydown.13.prevent="updateImage()" :class="{ 'is-invalid': errors.title }"
                     class="form-control" placeholder="Add caption to the image" autocomplete="off" required />
                 <span v-if="errors.title" class="invalid-feedback">{{ errors.title[0] }}</span>
             </div>
-            <div class="form-group" :class="{ 'has-error': errors.email }">
+            <div class="form-group has-float-label" :class="{ 'has-error': errors.email }">
                 <label class="control-label">Description</label>
                 <textarea v-model="image.description" @keydown.13.prevent :class="{ 'is-invalid': errors.description }"
                     class="form-control noresize" rows="4" placeholder="Add description to the image"></textarea>
@@ -76,6 +76,16 @@ export default {
             Number,
             required: false,
             default: 0
+        },
+        attachment_id: {
+            Number,
+            required: false,
+            default: 0
+        },
+        attachment_type: {
+            String,
+            required: false,
+            default: null
         },
     },
 
@@ -141,6 +151,14 @@ export default {
 
             let formData = new FormData()
             formData.append('file', files[0])
+
+            if (this.$props.attachment_id > 0) {
+                // formData.append('attachment_id', this.$props.attachment_id)
+            }
+
+            if (this.$props.attachment_type.length > 0) {
+                // formData.append('attachment_type', this.$props.attachment_type)
+            }
 
             return formData
         },
@@ -260,14 +278,14 @@ export default {
         },
 
         /**
-         * Reset data by image.
+         * Resets the image data.
          */
         resetData() {
             this.image = this.nullableImage()
         },
 
         /**
-         * Reset data by image and show error message.
+         * Resets the image data and show error message.
          *
          * @param {string} message
          */
@@ -284,7 +302,7 @@ export default {
         /**
          * Default data of image.
          *
-         * @param {object}
+         * @return {object}
          */
         nullableImage() {
             return {
