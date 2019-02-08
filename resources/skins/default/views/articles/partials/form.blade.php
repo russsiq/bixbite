@@ -11,6 +11,8 @@
 						:input_value="{{ old('image_id', 0) }}"
 						:base_url="'{{ route('admin.files.index') }}'"
 				        :uploaded="{{ ! empty($article->image_id) ? $article->image->toJson() : '{}' }}"
+	                	:attachment_id="'{{ $article->id ?? null }}'"
+	                    :attachment_type="'articles'"
 					></image-uploader>
 				</div>
 

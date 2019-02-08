@@ -59,6 +59,8 @@
                     :input_value="{{ old('image_id', 0) }}"
                     :base_url="'{{ route('admin.files.index') }}'"
                     :uploaded="{{ ! empty($category->image_id) ? $category->image->toJson() : '{}' }}"
+                	:attachment_id="'{{ $category->id ?? null }}'"
+                	:attachment_type="'categories'"
                 ></image-uploader>
 			</div>
 		</div>
@@ -67,7 +69,7 @@
 			<label class="col-sm-7 control-label">@lang('info')<small class="form-text text-muted">@lang('info#descr')</small></label>
 			<div class="col-sm-5">
 				<!-- NO WRAP TEXTAREA CONTENT -->
-				<textarea id="info" name="info" rows="4" class="form-control" onkeydown="return !(event.keyCode == 13)">{{ old('info', optional($category)->info) }}</textarea>
+				<textarea id="info" name="info" rows="4" class="form-control" @keydown.13.prevent>{{ old('info', optional($category)->info) }}</textarea>
 			</div>
 		</div>
 

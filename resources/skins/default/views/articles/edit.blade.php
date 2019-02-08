@@ -3,7 +3,13 @@
 @section('breadcrumb')
     @component('components.breadcrumbs')
         @slot('crumbs', [
-            ['action' => 'articles.index', 'title' => 'articles'], ['action' => 'articles.edit', 'title' => $article->title],
+            [
+                'action' => 'articles.index',
+                'title' => 'articles'
+            ], [
+                'action' => 'articles.edit',
+                'title' => '#'.$article->id.' '.$article->title,
+            ],
         ])
     @endcomponent
 @endsection

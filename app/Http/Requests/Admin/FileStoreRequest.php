@@ -5,6 +5,8 @@ namespace BBCMS\Http\Requests\Admin;
 use BBCMS\Models\File;
 use BBCMS\Http\Requests\Request;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+
 class FileStoreRequest extends Request
 {
 
@@ -119,13 +121,19 @@ class FileStoreRequest extends Request
                 'integer',
                 'in:'.$this->user()->id,
             ],
-            'attachment_id' => [
-                'nullable',
-                'integer',
-            ],
+            // Always check the `attachment_type` first.
             'attachment_type' => [
                 'nullable',
                 'alpha_dash',
+                'in:'.self::morphMap(),
+            ],
+            // After that, we check for a record in the database.
+            'attachment_id' => [
+                'bail',
+                'nullable',
+                'integer',
+                'required_with:attachment_type',
+                'exists:'.$this->input('attachment_type').',id',
             ],
             'disk' => [
                 'required',
@@ -160,7 +168,9 @@ class FileStoreRequest extends Request
             'checksum' => [
                 'required',
                 'alpha_num',
-            ], // 'unique:files' - below validate
+                // Check below, we need links to the file.
+                // 'unique:files'
+            ],
 
             'title' => [
                 'required',
@@ -184,8 +194,8 @@ class FileStoreRequest extends Request
     {
         return [
             'file.dimensions' => sprintf(
-                    trans('validation.dimensions_large'), $this->input('properties')['width'], $this->input('properties')['height']
-                ),
+                trans('validation.dimensions_large'), $this->input('properties')['width'], $this->input('properties')['height']
+            ),
         ];
     }
 
@@ -232,5 +242,15 @@ class FileStoreRequest extends Request
         }
 
         return in_array($ext, ['php','exe']) ? 'forbidden' : 'other';
+    }
+
+    /**
+     * Get the morph map for polymorphic relations.
+     *
+     * @return array
+     */
+    protected static function morphMap()
+    {
+        return implode(',', array_keys(Relation::morphMap()));
     }
 }

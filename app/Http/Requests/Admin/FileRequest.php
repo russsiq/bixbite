@@ -5,6 +5,8 @@ namespace BBCMS\Http\Requests\Admin;
 use BBCMS\Models\File;
 use BBCMS\Http\Requests\Request;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+
 class FileRequest extends Request
 {
     /**
@@ -45,13 +47,19 @@ class FileRequest extends Request
     public function rules()
     {
         return [
-            'attachment_id' => [
-                'nullable',
-                'integer',
-            ],
+            // Always check the `attachment_type` first.
             'attachment_type' => [
                 'nullable',
                 'alpha_dash',
+                'in:'.self::morphMap(),
+            ],
+            // After that, we check for a record in the database.
+            'attachment_id' => [
+                'bail',
+                'nullable',
+                'integer',
+                'required_with:attachment_type',
+                'exists:'.$this->input('attachment_type').',id',
             ],
             'title' => [
                 'required',
@@ -81,5 +89,15 @@ class FileRequest extends Request
         });
 
         return $validator;
+    }
+
+    /**
+     * Get the morph map for polymorphic relations.
+     *
+     * @return array
+     */
+    protected static function morphMap()
+    {
+        return implode(',', array_keys(Relation::morphMap()));
     }
 }
