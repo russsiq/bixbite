@@ -16,7 +16,7 @@ trait ArticleMutators
 
     public function getUrlAttribute()
     {
-        return action('ArticlesController@article', [$this->categories->pluck('slug')->implode('/'), $this->id, $this->slug]);
+        return action('ArticlesController@article', [$this->categories->pluck('slug')->implode('_'), $this->id, $this->slug]);
     }
 
     public function getTeaserAttribute()
