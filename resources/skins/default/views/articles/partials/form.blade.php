@@ -1,51 +1,65 @@
 <div class="row">
-	<div class="col-sm-12 col-lg-8">
+	<div class="col-sm-12">
 		<!-- MAIN CONTENT -->
 		{{-- <div class="card-header"><i class="fa fa-th-list text-muted"></i> @lang('options.main_content')</div> --}}
-		<div class="form-group">
-			{{-- :delete_url="'{{ route('admin.files.delete', $file) }}'"  --}}
-			<div class="row">
-				<div class="col-sm-12 col-md-5 col-lg-4 mb-2">
-					<image-uploader
-				        :input_name="'image_id'"
-						:input_value="{{ old('image_id', 0) }}"
-						:base_url="'{{ route('admin.files.index') }}'"
-				        :uploaded="{{ ! empty($article->image_id) ? $article->image->toJson() : '{}' }}"
-	                	:attachment_id="'{{ $article->id ?? null }}'"
-	                    :attachment_type="'articles'"
-					></image-uploader>
-				</div>
+		{{-- :delete_url="'{{ route('admin.files.delete', $file) }}'"  --}}
+		<div class="row">
+			<div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
+				<image-uploader
+			        :input_name="'image_id'"
+					:input_value="{{ old('image_id', 0) }}"
+					:base_url="'{{ route('admin.files.index') }}'"
+			        :uploaded="{{ ! empty($article->image_id) ? $article->image->toJson() : '{}' }}"
+                	:attachment_id="'{{ $article->id ?? null }}'"
+                    :attachment_type="'articles'"
+				></image-uploader>
+			</div>
 
-				<div class="col-sm-12 col-md-7 col-lg-8 mb-2">
-					<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
-						<input type="text" name="title"
-							value="{{ old('title', optional($article)->title) }}"
+			<div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">
+				<div class="form-group has-float-label {{ $errors->has('title') ? ' has-error' : '' }}">
+					<label>@lang('title')</label>
+					<input type="text" name="title"
+						value="{{ old('title', optional($article)->title) }}"
+						maxlength="255"
+						class="form-control"
+						placeholder="@lang('title#tip') ..."
+						autocomplete="off" required />
+				</div>
+				@if (setting('articles.manual_slug', false))
+					<div class="form-group has-float-label {{ $errors->has('slug') ? ' has-error' : '' }}">
+						<label>@lang('slug')</label>
+						<input type="text" name="slug"
+							value="{{ old('slug', optional($article)->slug) }}"
 							maxlength="255"
 							class="form-control"
-							placeholder="@lang('title#tip') ..."
-							autocomplete="off" required />
+							placeholder="@lang('slug#tip') ..." autocomplete="off" />
 					</div>
-					@if (setting('articles.manual_slug', false))
-						<div class="form-group {{ $errors->has('slug') ? ' has-error' : '' }}">
-							<input type="text" name="slug"
-								value="{{ old('slug', optional($article)->slug) }}"
-								maxlength="255"
-								class="form-control"
-								placeholder="@lang('slug#tip') ..." autocomplete="off" />
-						</div>
-					@endif
-					<div class="form-group {{ $errors->has('teaser') ? ' has-error' : '' }} mb-0">
-						<textarea name="teaser"
-							rows="4"
-							maxlength="255"
-							class="form-control noresize"
-							placeholder="@lang('teaser#tip') ..."
-							>{{ old('teaser', optional($article)->teaser) }}</textarea>
-					</div>
+				@endif
+				<div class="form-group has-float-label {{ $errors->has('teaser') ? ' has-error' : '' }}">
+					<label>@lang('teaser')</label>
+					<textarea name="teaser"
+						rows="4"
+						maxlength="255"
+						class="form-control noresize"
+						placeholder="@lang('teaser#tip') ..."
+						@keydown.13.prevent
+						>{{ old('teaser', optional($article)->teaser) }}</textarea>
+				</div>
+			</div>
+
+			<div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
+				<div class="form-group has-float-label">
+					<label for="catmenu" class="input-label">@lang('category')</label>
+					<select id="catmenu" name="categories[]" class="form-control" size="8" style="height: 163px;" multiple>
+						{{-- DON'T use "@each(...)", because "$loop->..." does not work --}}
+						@include('articles.partials.categories_items', ['items' => $categories_items])
+					</select>
 				</div>
 			</div>
 		</div>
+	</div>
 
+	<div class="col-sm-12 col-lg-8">
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
 			<quill-editor :article-id="article.id" lang="{{ app_locale() }}"></quill-editor>
 			<textarea name="content" style="width:100%;display:none;" rows="8"
@@ -220,15 +234,6 @@
 			</div>
 		@endisset
 
-		<div class="card card-default">
-			<div class="card-header">@lang('category')</div>
-			<div class="card-body{{ $errors->has('categories') ? ' has-error' : '' }}">
-				<select id="catmenu" name="categories[]" class="form-control" multiple>
-					{{-- DON'T use "@each(...)", because "$loop->..." does not work --}}
-					@include('articles.partials.categories_items', ['items' => $categories_items])
-				</select>
-			</div>
-		</div>
 		<div class="card card-default">
 			<div class="card-header">@lang('options.publish')</div>
 			<div class="card-body">

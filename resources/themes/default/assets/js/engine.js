@@ -44,6 +44,7 @@ $.reqJSON = function(url, params, callback) {
         
         if(jqXHR.status === 0) msg = 'Not connect. Verify Network.';
         else if(jqXHR.status == 404) msg = 'Requested page not found.';
+        else if(jqXHR.status == 419) msg = 'Authentication timeout. Error validating CSRF token.';
         else if(jqXHR.status == 422 && jqXHR.responseJSON.errors) msgs = jqXHR.responseJSON.errors;
         else if(jqXHR.status == 500) msg = 'Internal Server Error.';
         else if('timeout' === exception) msg = 'Time out error.';

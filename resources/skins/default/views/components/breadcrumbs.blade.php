@@ -2,7 +2,7 @@
 {{-- @lang('Home :page', ['page' => 2]) --}}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('home')</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" title="@lang('home')"><i class="fa fa-home"></i></a></li>
         @foreach (array_filter($crumbs) as $crumb)
             @if ($loop->last)
                 <li class="breadcrumb-item active" aria-current="page">@lang($crumb['title'])</li>

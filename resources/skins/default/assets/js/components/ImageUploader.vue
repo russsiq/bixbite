@@ -320,11 +320,12 @@ export default {
 label.image-uploader {
     cursor: pointer;
     display: block;
+    margin-bottom: 1.25rem;
 }
 
 .image-uploader-variant {
     color: #e1e1e1;
-    min-height: 160px;
+    min-height: 163px;
     display: flex;
     justify-content: center;
     align-items: center;
