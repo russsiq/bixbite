@@ -128,8 +128,10 @@ class ArticlesController extends SiteController
             'article' => $article,
         ]);
 
-        if ($article->category->template and view()->exists('custom_views.'.$article->category->template.'.'.$this->template.'.single')) {
-            $this->template = 'custom_views.'.$article->category->template.'.'.$this->template;
+        if ($article->category->template) {
+            $view = 'custom_views.'.$article->category->template.'.'.$this->template;
+            
+            $this->template = view()->exists($view.'.single') ? $view : $this->template;
         }
 
         return $this->renderOutput('single', compact('article'));
