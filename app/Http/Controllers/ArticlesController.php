@@ -55,8 +55,10 @@ class ArticlesController extends SiteController
             'category' => $category,
         ]);
 
-        if ($category->template and view()->exists('custom_views.'.$category->template.'.'.$this->template.'.index')) {
-            $this->template = 'custom_views.'.$category->template.'.'.$this->template;
+        if ($article->category->template) {
+            $view = 'custom_views.'.$article->category->template.'.'.$this->template;
+            
+            $this->template = view()->exists($view.'.index') ? $view : $this->template;
         }
 
         return $this->renderOutput('index', compact('category', 'articles'));
