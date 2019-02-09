@@ -5,7 +5,7 @@
             <input type="hidden" :name="input_name" :value="image.id" />
             <img :src="image.url" alt="image" />
 
-            <div class="btn-toolbar justify-content-between" style="padding-top: .25rem;">
+            <div class="btn-toolbar">
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary" @click.prevent="editImage()">Edit</button>
                 </div>
@@ -333,12 +333,19 @@ label.image-uploader {
 }
 
 .image-uploader-success {
-    color: #43ac6a;
+    /*color: #43ac6a;
     overflow: hidden;
     box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .25);
     padding: .25rem;
     border: 1px solid rgba(0, 0, 0, .125);
+    display: inline-block;*/
+    color: #43ac6a;
+    overflow: hidden;
+    /* box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .25); */
+    /* padding: .25rem; */
+    /* border: 1px solid rgba(0, 0, 0, .125); */
     display: inline-block;
+    position: relative;
 }
 
 input.image-uploader-file {
@@ -348,5 +355,16 @@ input.image-uploader-file {
     height: 100%;
     left: 0;
     top: 0;
+}
+
+.image-uploader .btn-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between!important;
+    padding-top: 0.25rem;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: .25rem;
 }
 </style>
