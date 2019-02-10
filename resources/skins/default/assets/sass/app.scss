@@ -18,20 +18,10 @@
 // npm i baguettebox.js --save-dev
 @import "~baguettebox.js/src/baguetteBox";
 
-// npm i codemirror --save-dev
-// npm i emmet-codemirror --save-dev
-@import "~codemirror/lib/codemirror.css";
-@import "~codemirror/addon/display/fullscreen.css";
-@import "~codemirror/addon/dialog/dialog.css";
-
 // Styles to quill.js editor.
 // npm i quill --save-dev
 @import "node_modules/quill/dist/quill.bubble";
 @import "node_modules/quill/dist/quill.snow";
-
-.CodeMirror-fullscreen {
-    z-index: 1040;
-}
 
 body {
     font-family: 'Ubuntu', sans-serif;

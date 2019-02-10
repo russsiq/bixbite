@@ -1,6 +1,3 @@
-
-window._ = require('lodash');
-
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -8,23 +5,13 @@ window._ = require('lodash');
  */
 
 try {
+    window._ = require('lodash');
     window.$ = window.jQuery = require('jquery');
     window.Popper = require('popper.js').default;
     require('bootstrap');
 
     window.baguetteBox = require('baguettebox.js');
-
-    window.CodeMirror = require('codemirror');
-    require('codemirror/mode/htmlmixed/htmlmixed.js');
-    require('codemirror/mode/css/css.js');
-    require('codemirror/mode/javascript/javascript.js');
-    require('codemirror/mode/php/php.js');
-    require('codemirror/addon/display/fullscreen.js');
-    require('codemirror/addon/dialog/dialog.js');
-    require('codemirror/addon/search/search.js');
-    require('codemirror/addon/search/searchcursor.js');
-    window.emmetCodeMirror = require('emmet-codemirror');
-
+    
     require('./script.js');
 } catch (e) {}
 

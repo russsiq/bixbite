@@ -22,7 +22,9 @@ mix.options({
 // })
 // .setPublicPath('./resources/skins/default/')
 // .js('resources/skins/default/assets/js/app.js', 'public/js')
+// .js('resources/skins/default/assets/js/code-editor.js', 'public/js')
 // .sass('resources/skins/default/assets/sass/app.scss', 'public/css')
+// .sass('resources/skins/default/assets/sass/code-editor.scss', 'public/css')
 // .copyDirectory(
 //     'node_modules/font-awesome/fonts',
 //     './resources/skins/default/public/css/fonts/font-awesome'
