@@ -10,7 +10,7 @@
 					:input_value="{{ old('image_id', 0) }}"
 					:base_url="'{{ route('admin.files.index') }}'"
 			        :uploaded="{{ ! empty($article->image_id) ? $article->image->toJson() : '{}' }}"
-                	:attachment_id="'{{ $article->id ?? null }}'"
+                	:attachment_id="{{ $article->id ?? 0 }}"
                     :attachment_type="'articles'"
 				></image-uploader>
 			</div>
@@ -61,7 +61,12 @@
 
 	<div class="col-sm-12 col-lg-8">
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-			<quill-editor :article-id="article.id" lang="{{ app_locale() }}"></quill-editor>
+			<quill-editor
+				lang="{{ app_locale() }}"
+				:file_url="'{{ route('admin.files.index') }}'"
+				:attachment_id="{{ $article->id ?? 0 }}"
+				:attachment_type="'articles'"
+				></quill-editor>
 			<textarea name="content" style="width:100%;display:none;" rows="8"
 				>{!! old('content', optional($article)->getOriginal('content')) !!}</textarea>
 		</div>

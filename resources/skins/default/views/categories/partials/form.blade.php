@@ -59,7 +59,7 @@
                     :input_value="{{ old('image_id', 0) }}"
                     :base_url="'{{ route('admin.files.index') }}'"
                     :uploaded="{{ ! empty($category->image_id) ? $category->image->toJson() : '{}' }}"
-                	:attachment_id="'{{ $category->id ?? null }}'"
+                	:attachment_id="'{{ $category->id ?? 0 }}'"
                 	:attachment_type="'categories'"
                 ></image-uploader>
 			</div>
