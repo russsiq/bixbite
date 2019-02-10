@@ -46,5 +46,28 @@
 
         <script src="{{ theme_asset('js/app.js') }}"></script>
         @stack('scripts')
+        
+        <script type="application/ld+json">
+            {
+              "@context": "http://schema.org",
+              "@type": "Organization",
+              "name": "{{ setting('system.organization') }}",
+              "url": "{{ setting('system.app_url') }}",
+              "logo": "{{ theme_asset('favicon.ico') }}",
+              "contactPoint": [{
+                "@type": "ContactPoint",
+                "telephone": "{{ setting('system.contact_telephone') }}",
+                "contactType": "customer service",
+                "email": "{{ setting('system.contact_email') }}",
+                "availableLanguage": "RU",
+                "areaServed" : "RU"
+              }],
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "{{ setting('system.address_locality') }}",
+                "streetAddress": "{{ setting('system.address_street') }}"
+              }
+            }
+        </script>
     </body>
 </html>

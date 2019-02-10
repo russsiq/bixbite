@@ -149,6 +149,13 @@ class SettingsTableSeeder extends Seeder
         array_push($out, array_merge($def, ['name' => 'meta_description', 'value' => 'BixBite - Content Management System', 'type' => 'text-inline', ]));
         array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'BixBite CMS, BBCMS, CMS', 'type' => 'text-inline', ]));
 
+        $def['fieldset'] = 'organization';
+        array_push($out, array_merge($def, ['name' => 'organization', 'value' => '—', 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'contact_telephone', 'value' => '—', 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'contact_email', 'value' => '—', 'type' => 'email', ]));
+        array_push($out, array_merge($def, ['name' => 'address_locality', 'value' => '—', 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'address_street', 'value' => '—', 'type' => 'string', ]));
+
         $def['section'] = 'security';
         $def['fieldset'] = 'locked';
         array_push($out, array_merge($def, ['name' => 'lock', 'value' => true, 'type' => 'bool', ]));
