@@ -30,7 +30,6 @@
     <span class="ql-formats">
         <button class="ql-list" value="ordered"></button>
         <button class="ql-list" value="bullet"></button>
-        <!-- <button class="ql-indent" value="-1"></button><button class="ql-indent" value="+1"></button> -->
     </span>
 
     <span class="ql-formats d-none d-md-inline-block">
@@ -60,7 +59,7 @@
         </span>
 
         <span class="ql-formats">
-            <!-- <button class="ql-image"></button> -->
+            <button class="ql-image"></button>
             <!-- <button class="ql-video"></button> -->
             <!-- <button class="ql-formula"></button> -->
         </span>
@@ -111,8 +110,14 @@ export default {
 .ql-toolbar.ql-snow {
     background-color: #f5f8fa;
     position: sticky;
+    /* top: 54px;
+    z-index: 1020; */
     top: 0;
     z-index: 1050;
+}
+
+.ql-container.ql-snow input.ql-image[type=file] {
+    display: none;
 }
 
 .ql-toolbar.ql-snow .ql-formats {
@@ -125,13 +130,20 @@ export default {
     border-right: none;
 }
 
+.ql-toolbar.ql-snow .ql-picker-label {
+    margin-right: 18px;
+}
+
 .ql-snow .ql-color-picker .ql-picker-label,
 .ql-snow .ql-icon-picker .ql-picker-label {
     padding: 0 4px;
 }
-.ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button {
     width: auto;
 }
+
 #sub-toolbar {
     padding-top: 8px;
     margin-top: 8px;
@@ -149,33 +161,33 @@ export default {
 /**
  * Custom buttons.
  */
-
-.ql-picker.ql-article {
+/*
+.ql-picker.ql-emailVars {
     width: 160px;
-}
+} */
 
-.ql-picker.ql-article .ql-picker-item::before,
-.ql-picker.ql-article .ql-picker-label::before {
+.ql-picker.ql-emailVars .ql-picker-item::before,
+.ql-picker.ql-emailVars .ql-picker-label::before {
     content: 'Article'
 }
 
-.ql-picker.ql-article [data-value="1"]::before {
+.ql-picker.ql-emailVars [data-value="1"]::before {
     content: '{AccountURL}'
 }
 
-.ql-picker.ql-article [data-value="2"]::before {
+.ql-picker.ql-emailVars [data-value="2"]::before {
     content: '{FirstName}'
 }
 
-.ql-picker.ql-article [data-value="3"]::before {
+.ql-picker.ql-emailVars [data-value="3"]::before {
     content: '{Login}'
 }
 
-.ql-picker.ql-article [data-value="4"]::before {
+.ql-picker.ql-emailVars [data-value="4"]::before {
     content: '{OrganizationName}'
 }
 
-.ql-picker.ql-article [data-value="5"]::before {
+.ql-picker.ql-emailVars [data-value="5"]::before {
     content: '{SupportEmail}'
 }
 </style>

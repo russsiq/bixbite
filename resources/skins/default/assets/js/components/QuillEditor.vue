@@ -7,7 +7,10 @@
 
 <script>
 import Quill from 'quill';
+import Parchment from 'parchment';
+
 import Toolbar from './editor/Toolbar';
+import FigureBlot from './editor/FigureBlot.js';
 
 export default {
     components: {
@@ -15,14 +18,24 @@ export default {
     },
 
     props: {
-        articleId: {
-            type: Number,
-            default: 0
-        },
         lang: {
             /*type: Object,
             required: false*/
-        }
+        },
+        file_url: {
+            String,
+            // required: true
+        },
+        attachment_id: {
+            Number,
+            required: false,
+            default: 0
+        },
+        attachment_type: {
+            String,
+            required: false,
+            default: null
+        },
     },
 
     data() {
@@ -46,6 +59,8 @@ export default {
             this.textarea = document.querySelector('[name=content]')
             this.editor = this.createEditor()
             this.handleEditorValue(this.textarea.value.trim())
+
+            this.handleClicksInsideEditor()
         })
     },
 
@@ -54,6 +69,8 @@ export default {
          * Create an instance of the editor.
          */
         createEditor() {
+            Quill.register(FigureBlot, true);
+
             const icons = Quill.import('ui/icons')
             icons.header[3] = require('!html-loader!quill/assets/icons/header-3.svg')
             icons.header[4] = require('!html-loader!quill/assets/icons/header-4.svg')
@@ -66,7 +83,7 @@ export default {
                         container: '#toolbar-container',
                         handlers: {
                             //'bold': customBoldHandler
-                            'link': function(value) {
+                            link(value) {
                                 if (value) {
                                     var href = prompt('Enter the URL');
                                     this.quill.format('link', href);
@@ -74,13 +91,15 @@ export default {
                                     this.quill.format('link', false);
                                 }
                             },
-                            "placeholder": function (value) {
+                            'emailVars': this.emailVars,
+
+                            placeholder(value) {
                                 if (value) {
                                     const cursorPosition = this.quill.getSelection().index;
                                     this.quill.insertText(cursorPosition, value);
                                     this.quill.setSelection(cursorPosition + value.length);
                                 }
-                            }
+                            },
                         }
                     },
                 },
@@ -97,22 +116,84 @@ export default {
             document.querySelector('.ql-custom .ql-picker-label').innerHTML
                 = 'Insert placeholder' + document.querySelector('.ql-custom .ql-picker-label').innerHTML;*/
 
-            var customButton = document.querySelector('#custom-button');
+            /*var customButton = document.querySelector('#custom-button');
             if (customButton) {
                 customButton.addEventListener('click', function() {
                     console.log('Clicked!');
                 });
-            }
+            }*/
 
             // Handlers can also be added post initialization
-            /*var toolbar = quill.getModule('toolbar')
-            toolbar.addHandler('image', this.showImageUI())*/
+            quill.getModule('toolbar').addHandler('image', this.imageHandler)
 
             return quill
         },
 
-        showImageUI() {
-            alert('Hi')
+        imageHandler() {
+            if (!this.attachment_id) {
+                Notification.warning({
+                    message: 'Before you can insert images, you must save the article.'
+                })
+
+                return false;
+            }
+
+            let fileInput = this.editor.container.querySelector('input.ql-image[type=file]');
+
+            if (fileInput == null) {
+                fileInput = document.createElement('input');
+                fileInput.setAttribute('type', 'file');
+                fileInput.setAttribute('accept', 'image/*');
+                fileInput.classList.add('ql-image');
+                fileInput.addEventListener('change', () => {
+                    const files = fileInput.files;
+
+                    if (!files || !files.length) {
+                        Notification.error({
+                            message: 'No files selected'
+                        })
+                        return false;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('file', files[0]);
+
+                    if (this.attachment_id > 0) {
+                        formData.append('attachment_id', this.attachment_id);
+                        formData.append('attachment_type', 'articles');
+                    }
+
+                    this.editor.enable(false);
+
+                    axios
+                        .post(this.$props.file_url + '/upload', formData)
+                        .then(response => {
+                            // Save current cursor state.
+                            let range = this.editor.getSelection(true);
+
+                            this.editor.enable(true)
+                            // this.editor.insertText(range.index, '\n', Quill.sources.USER)
+                            this.editor.insertEmbed(range.index, 'figure-image', {
+                                url: response.data.file.url,
+                                caption: response.data.file.title,
+                            }, Quill.sources.USER)
+                            this.editor.setSelection(range.index + 1, Quill.sources.SILENT)
+
+                            fileInput.value = '';
+                        })
+                        .catch(error => {
+                            Notification.error({
+                                message: 'quill image upload failed'
+                            })
+                            console.log(error);
+                            this.editor.enable(true);
+                        });
+                });
+
+                this.editor.container.appendChild(fileInput);
+            }
+
+            fileInput.click();
         },
 
         /**
@@ -131,6 +212,16 @@ export default {
         updateEditorValue(content) {
             this.$emit('input', content)
             this.textarea.value = content
+        },
+
+        /**
+         * Handle click events inside the editor.
+         */
+        handleClicksInsideEditor() {
+            this.editor.root.addEventListener('click', (ev) => {
+                let blot = Parchment.find(ev.target, true);
+                console.log(blot)
+            });
         },
     }
 }
@@ -207,6 +298,27 @@ export default {
 
 .ql-bubble .ql-tooltip {
     z-index: 1;
+}
+
+.single_article__image {
+    position: relative;
+    cursor:pointer;
+}
+
+.single_article__image:hover:after {
+    box-shadow: inset 0 0 10px 0 #008cba;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.single_article_image__caption {
+    text-align: right;
+    background: #e9ecef;
+    padding: 0.25rem 1rem;
 }
 </style>
 
