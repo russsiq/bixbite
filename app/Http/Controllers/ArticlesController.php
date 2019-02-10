@@ -55,8 +55,8 @@ class ArticlesController extends SiteController
             'category' => $category,
         ]);
 
-        if ($article->category->template) {
-            $view = 'custom_views.'.$article->category->template.'.'.$this->template;
+        if ($category->template) {
+            $view = 'custom_views.'.$category->template.'.'.$this->template;
             
             $this->template = view()->exists($view.'.index') ? $view : $this->template;
         }
