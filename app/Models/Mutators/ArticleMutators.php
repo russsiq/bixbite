@@ -31,7 +31,7 @@ trait ArticleMutators
      */
     public function getContentAttribute()
     {
-        if (empty($this->attributes['content']) or is_null($content = $this->attributes['content'])) {
+        if (empty($content = $this->attributes['content'])) {
             return null;
         }
 
