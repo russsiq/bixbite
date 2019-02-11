@@ -38,7 +38,9 @@ class File extends BaseModel
     ];
     // Размеры изображений по возрастанию.
     protected $thumbSizes = [
-        'thumb' => 240, 'small' => 576, 'medium' => 992
+        'thumb' => 240,
+        'small' => 576,
+        'medium' => 992,
     ];
 
     protected static function boot()
@@ -69,20 +71,22 @@ class File extends BaseModel
 
     public function path(string $thumbSize = null)
     {
-        return $this->attributes['type'].DS.$this->attributes['category']
+        return $this->attributes['type']
+            .DS.$this->attributes['category']
             .($thumbSize ? DS.$thumbSize : '')
             .DS.$this->attributes['name'].'.'.$this->attributes['extension'];
     }
 
     public function originalPath(string $thumbSize = null)
     {
-        return $this->getOriginal('type').DS.$this->getOriginal('category')
+        return $this->getOriginal('type')
+            .DS.$this->getOriginal('category')
             .($thumbSize ? DS.$thumbSize : '')
             .DS.$this->getOriginal('name').'.'.$this->getOriginal('extension');
     }
 
     public function manageUpload(UploadedFile $file, array $data)
-    {   
+    {
         return $this->fill($data)->uploadFile($file)->save() ? $this->toArray() : false;
     }
 
@@ -177,35 +181,34 @@ class File extends BaseModel
         $properties = [];
         $path_prefix = $data['type'].DS.$data['category'].DS;
         $path_suffix = DS.$data['name'].'.'.$data['extension'];
-        $quality = setting('files.images.quality', 100);
-        $is_convert = setting('files.images.is_convert', true);
+        $quality = setting('files.images_quality', 75);
+        $is_convert = setting('files.images_is_convert', true);
 
-        if (100 > $quality or $is_convert) {
-            // Resave original file.
-            $original = $this->imageResave(
-                $this->getAbsolutePathAttribute(),
-                $disk->path($path_prefix.trim($path_suffix, DS)),
-                null, null,
-                $quality, $is_convert
-            );
+        // Resave original file.
+        $original = $this->imageResave(
+            $this->getAbsolutePathAttribute(),
+            $disk->path($path_prefix.trim($path_suffix, DS)),
+            setting('files.images_max_width', 3840),
+            setting('files.images_max_height', 2160),
+            $quality, $is_convert
+        );
 
-            // If extension has changed, then delete original file.
-            if ($data['extension'] != $original['extension']) {
-                $disk->delete($this->path);
-            }
-
-            // Revision attributes.
-            $this->attributes['mime_type'] = $original['mime_type'];
-            $this->attributes['extension'] = $original['extension'];
-            $this->attributes['filesize'] = $original['filesize'];
-            $properties += [
-                'width' => $original['width'],
-                'height' => $original['height'],
-            ];
-
-            $path_suffix = DS.$data['name'].'.'.$original['extension'];
-            unset($original);
+        // If extension has changed, then delete original file.
+        if ($data['extension'] != $original['extension']) {
+            $disk->delete($this->path);
         }
+
+        // Revision attributes.
+        $this->attributes['mime_type'] = $original['mime_type'];
+        $this->attributes['extension'] = $original['extension'];
+        $this->attributes['filesize'] = $original['filesize'];
+        $properties += [
+            'width' => $original['width'],
+            'height' => $original['height'],
+        ];
+
+        $path_suffix = DS.$data['name'].'.'.$original['extension'];
+        unset($original);
 
         // Cutting images.
         foreach ($this->thumbSizes() as $key => $value) {
@@ -213,8 +216,8 @@ class File extends BaseModel
             $size = $this->imageResave(
                 $this->getAbsolutePathAttribute(),
                 $disk->path($path_prefix.$key.$path_suffix),
-                setting("files.images.$key.width", $value),
-                setting("files.images.$key.height", null),
+                setting('files.images_'.$key.'_width', $value),
+                setting('files.images_'.$key.'_height', $value),
                 $quality, $is_convert
             );
 
@@ -241,7 +244,7 @@ class File extends BaseModel
      * @param  integer $quality Quality of created image.
      * @param  boolean $is_convert Convert image to `jpeg`.
      *
-     * @return array|false Sizes of new created image.
+     * @return false/array Sizes of new created image.
      */
     public function imageResave(string $infile, string $outfile, $width = null, $height = null, int $quality = 75, bool $is_convert = true)
     {
@@ -257,8 +260,8 @@ class File extends BaseModel
                 $source = imagecreatefromstring($instring);break;
 		}
 
-        // $width = min(setting('files.images.max_width', 1920), $width);
-        // $height = min(setting('files.images.max_height', 1080), $height);
+        // $width = min(setting('files.images_max_width', 3840), $width);
+        // $height = min(setting('files.images_max_height', 2160), $height);
 
         // Check image size to resize.
         if ($width > $w or $height > $h) {

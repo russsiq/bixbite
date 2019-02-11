@@ -94,7 +94,20 @@ class SettingsTableSeeder extends Seeder
         $def['action'] = 'setting';
         $def['section'] = 'main';
         $def['fieldset'] = 'general';
-        array_push($out, array_merge($def, ['name' => 'nested', 'value' => false, 'type' => 'bool', ]));
+        // array_push($out, array_merge($def, ['name' => 'nested', 'value' => false, 'type' => 'bool', ]));
+        
+        $def['section'] = 'images';
+        $def['fieldset'] = 'uploader';
+        array_push($out, array_merge($def, ['name' => 'images_quality', 'value' => 75, 'type' => 'integer', 'html_flags' => 'min="40" max="100"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_is_convert', 'value' => true, 'type' => 'bool', ]));
+        array_push($out, array_merge($def, ['name' => 'images_thumb_width', 'value' => 240, 'type' => 'integer', 'html_flags' => 'min="20" max="240"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_thumb_height', 'value' => 240, 'type' => 'integer', 'html_flags' => 'min="20" max="240"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_small_width', 'value' => 576, 'type' => 'integer', 'html_flags' => 'min="241" max="576"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_small_height', 'value' => 576, 'type' => 'integer', 'html_flags' => 'min="241" max="576"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_medium_width', 'value' => 992, 'type' => 'integer', 'html_flags' => 'min="577" max="992"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_medium_height', 'value' => 992, 'type' => 'integer', 'html_flags' => 'min="577" max="992"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_max_width', 'value' => 1920, 'type' => 'integer', 'html_flags' => 'min="993" max="3840"', ]));
+        array_push($out, array_merge($def, ['name' => 'images_max_height', 'value' => 1080, 'type' => 'integer', 'html_flags' => 'min="993" max="2160"', ]));
 
         return $out;
     }
@@ -136,6 +149,7 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'system';
+        $def['fieldset'] = 'general';
         array_push($out, array_merge($def, ['name' => 'app_name', 'value' => env('APP_NAME'), ]));
         array_push($out, array_merge($def, ['name' => 'app_url', 'value' => env('APP_URL'), 'type' => 'url', 'html_flags' => 'required readonly', ]));
         array_push($out, array_merge($def, ['name' => 'app_locale', 'value' => app_locale(), ]));

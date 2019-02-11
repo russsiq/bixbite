@@ -113,7 +113,7 @@ class FileStoreRequest extends Request
                 'required',
                 'file',
                 // imagealphablending or imagesavealpha == 500 error
-                ('image' == $this->input('type')) ? 'dimensions:max_width=3840,max_height=3840' : '',
+                ('image' == $this->input('type')) ? 'dimensions:max_width=3840,max_height=2400' : '',
             ],
 
             'user_id' => [
