@@ -53,20 +53,34 @@
     </span>
 
     <div id="sub-toolbar">
+        <!-- <span class="ql-formats">
+            <button class="ql-save" title="Ctrl+S"><i class="fa fa-floppy-o"></i></button>
+        </span> -->
+
         <span class="ql-formats">
             <button class="ql-blockquote"></button>
             <button class="ql-code-block"></button>
         </span>
 
         <span class="ql-formats">
-            <button class="ql-image"></button>
+            <button class="ql-image" :disabled="!$parent.$props.attachment_id"></button>
             <!-- <button class="ql-video"></button> -->
             <!-- <button class="ql-formula"></button> -->
+            <!-- </span>
+
+        <span class="ql-formats"> -->
+            <!-- <button class="ql-table"><i class="fa fa-table"></i></button>
+            <button class="ql-columns"><i class="fa fa-columns"></i></button> -->
         </span>
 
         <span class="ql-formats">
-            <button type="button" id="Shortcode1">Shortcode 1</button>
-            <button type="button" id="Shortcode2">Shortcode 2</button>
+            <select class="ql-shortcodes">
+                <option value="[[app_url]]">Домашняя страница</option>
+                <option value="[[organization]]">Название организации</option>
+                <option value="[[contact_telephone]]">Контактный телефон</option>
+                <option value="[[contact_email]]">Контактный email</option>
+                <option value="[[address]]">Адрес организации</option>
+            </select>
         </span>
     </div>
 </div>
@@ -152,6 +166,8 @@ export default {
 
 #sub-toolbar button {
     width: auto;
+    color: #444;
+    line-height: 1;
 }
 
 #sub-toolbar button:hover {
@@ -161,33 +177,12 @@ export default {
 /**
  * Custom buttons.
  */
-/*
-.ql-picker.ql-emailVars {
-    width: 160px;
-} */
 
-.ql-picker.ql-emailVars .ql-picker-item::before,
-.ql-picker.ql-emailVars .ql-picker-label::before {
-    content: 'Article'
+.ql-picker.ql-shortcodes .ql-picker-item:before {
+    content: attr(data-label);
 }
 
-.ql-picker.ql-emailVars [data-value="1"]::before {
-    content: '{AccountURL}'
-}
-
-.ql-picker.ql-emailVars [data-value="2"]::before {
-    content: '{FirstName}'
-}
-
-.ql-picker.ql-emailVars [data-value="3"]::before {
-    content: '{Login}'
-}
-
-.ql-picker.ql-emailVars [data-value="4"]::before {
-    content: '{OrganizationName}'
-}
-
-.ql-picker.ql-emailVars [data-value="5"]::before {
-    content: '{SupportEmail}'
+.ql-picker.ql-shortcodes .ql-picker-label::before {
+    content: '[[Shortcodes]]'
 }
 </style>

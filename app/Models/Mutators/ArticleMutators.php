@@ -37,8 +37,11 @@ trait ArticleMutators
 
         // Give shortcode from app settings. static::$shortcode ???
         $shortcode = [
-            'phone' => '+7 (888) 888-88-88',
-            'address' => 'г.Негород, ул.Неулица, д.2019',
+            'app_url' => setting('system.app_url'),
+            'organization' => setting('system.organization'),
+            'contact_telephone' => setting('system.contact_telephone'),
+            'contact_email' => setting('system.contact_email'),
+            'address' => setting('system.address_locality').', '.setting('system.address_street'),
         ];
 
         // Give shortcode from extra fields. static::$x_shortcode ???

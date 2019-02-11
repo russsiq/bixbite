@@ -10,7 +10,9 @@ import Quill from 'quill';
 import Parchment from 'parchment';
 
 import Toolbar from './editor/Toolbar';
-import FigureBlot from './editor/FigureBlot.js';
+
+import FigureBlot from './editor/blots/FigureBlot';
+import imageHandler from './editor/handlers/imageHandler';
 
 export default {
     components: {
@@ -69,6 +71,10 @@ export default {
          * Create an instance of the editor.
          */
         createEditor() {
+            /*FigureBlot.remove = function() {
+                alert('Image was removed!')
+            }*/
+
             Quill.register(FigureBlot, true);
 
             const icons = Quill.import('ui/icons')
@@ -91,9 +97,9 @@ export default {
                                     this.quill.format('link', false);
                                 }
                             },
-                            'emailVars': this.emailVars,
+                            'columns': this.columns,
 
-                            placeholder(value) {
+                            shortcodes(value) {
                                 if (value) {
                                     const cursorPosition = this.quill.getSelection().index;
                                     this.quill.insertText(cursorPosition, value);
@@ -107,93 +113,18 @@ export default {
                 placeholder: "Write to the world..."
             })
 
-            /*const placeholderPickerItems = Array.prototype.slice.call(
-                document.querySelectorAll('.ql-custom .ql-picker-item')
-            );
-
-            placeholderPickerItems.forEach(item => item.textContent = item.dataset.value);
-
-            document.querySelector('.ql-custom .ql-picker-label').innerHTML
-                = 'Insert placeholder' + document.querySelector('.ql-custom .ql-picker-label').innerHTML;*/
-
-            /*var customButton = document.querySelector('#custom-button');
-            if (customButton) {
-                customButton.addEventListener('click', function() {
-                    console.log('Clicked!');
-                });
-            }*/
-
-            // Handlers can also be added post initialization
-            quill.getModule('toolbar').addHandler('image', this.imageHandler)
+            // Handlers can also be added post initialization.
+            quill.getModule('toolbar').addHandler('image', () => imageHandler(quill, {
+                upload_url: this.$props.file_url + '/upload',
+                attachment_id: this.attachment_id,
+                attachment_type: 'articles',
+            }))
 
             return quill
         },
 
-        imageHandler() {
-            if (!this.attachment_id) {
-                Notification.warning({
-                    message: 'Before you can insert images, you must save the article.'
-                })
-
-                return false;
-            }
-
-            let fileInput = this.editor.container.querySelector('input.ql-image[type=file]');
-
-            if (fileInput == null) {
-                fileInput = document.createElement('input');
-                fileInput.setAttribute('type', 'file');
-                fileInput.setAttribute('accept', 'image/*');
-                fileInput.classList.add('ql-image');
-                fileInput.addEventListener('change', () => {
-                    const files = fileInput.files;
-
-                    if (!files || !files.length) {
-                        Notification.error({
-                            message: 'No files selected'
-                        })
-                        return false;
-                    }
-
-                    const formData = new FormData();
-                    formData.append('file', files[0]);
-
-                    if (this.attachment_id > 0) {
-                        formData.append('attachment_id', this.attachment_id);
-                        formData.append('attachment_type', 'articles');
-                    }
-
-                    this.editor.enable(false);
-
-                    axios
-                        .post(this.$props.file_url + '/upload', formData)
-                        .then(response => {
-                            // Save current cursor state.
-                            let range = this.editor.getSelection(true);
-
-                            this.editor.enable(true)
-                            // this.editor.insertText(range.index, '\n', Quill.sources.USER)
-                            this.editor.insertEmbed(range.index, 'figure-image', {
-                                url: response.data.file.url,
-                                caption: response.data.file.title,
-                            }, Quill.sources.USER)
-                            this.editor.setSelection(range.index + 1, Quill.sources.SILENT)
-
-                            fileInput.value = '';
-                        })
-                        .catch(error => {
-                            Notification.error({
-                                message: 'quill image upload failed'
-                            })
-                            console.log(error);
-                            this.editor.enable(true);
-                        });
-                });
-
-                this.editor.container.appendChild(fileInput);
-            }
-
-            fileInput.click();
+        columns() {
+            prompt('columns')
         },
 
         /**
@@ -218,8 +149,9 @@ export default {
          * Handle click events inside the editor.
          */
         handleClicksInsideEditor() {
-            this.editor.root.addEventListener('click', (ev) => {
-                let blot = Parchment.find(ev.target, true);
+            this.editor.root.addEventListener('click', (event) => {
+                let blot = Parchment.find(event.target, true);
+
                 console.log(blot)
             });
         },
@@ -302,7 +234,7 @@ export default {
 
 .single_article__image {
     position: relative;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .single_article__image:hover:after {
@@ -333,3 +265,34 @@ body {
     background: none;
 }*/
 </style>
+
+
+<!-- Вариант с декодированием изображения
+
+var img = {
+    'img' : value
+}
+$.ajax({
+        url: "../Writers/writerCertificateupload",
+        data: img,
+        contentType: undefined,
+        type: 'post'
+}).success(function(path){
+    node.setAttribute('src', path);
+})
+
+public function writerCertificateupload()//pending
+{
+    $id = $this->Auth->user('id');
+    $this->autoRender = false;
+    define('UPLOAD_DIR', 'files/post/');
+    $img = $_POST['img'];
+    $img = str_replace('data:image/jpeg;base64,', '', $img);
+    $img = str_replace(' ', '+', $img);
+    $data = base64_decode($img);
+    $file = UPLOAD_DIR . uniqid() . '.jpg';
+    $success = file_put_contents($file, $data);
+
+    $file = "../".$file;
+    print $success ? $file : 'Unable to save the file.';
+} -->
