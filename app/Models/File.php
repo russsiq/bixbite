@@ -178,14 +178,13 @@ class File extends BaseModel
         $disk = $this->storageDisk($data['disk']);
 
         // Prepare local variables.
-        $properties = [];
         $path_prefix = $data['type'].DS.$data['category'].DS;
         $path_suffix = DS.$data['name'].'.'.$data['extension'];
         $quality = setting('files.images_quality', 75);
         $is_convert = setting('files.images_is_convert', true);
 
         // Resave original file.
-        $original = $this->imageResave(
+        $image = $this->imageResave(
             $this->getAbsolutePathAttribute(),
             $disk->path($path_prefix.trim($path_suffix, DS)),
             setting('files.images_max_width', 3840),
@@ -193,27 +192,28 @@ class File extends BaseModel
             $quality, $is_convert
         );
 
-        // If extension has changed, then delete original file.
-        if ($data['extension'] != $original['extension']) {
-            $disk->delete($this->path);
+        if ($image) {
+            // If extension has changed, then delete original file.
+            if ($data['extension'] != $image['extension']) {
+                $disk->delete($this->path);
+            }
+
+            // Revision attributes.
+            $this->attributes['mime_type'] = $image['mime_type'];
+            $this->attributes['extension'] = $image['extension'];
+            $this->attributes['filesize'] = $image['filesize'];
+            $properties = [
+                'width' => $image['width'],
+                'height' => $image['height'],
+            ];
+
+            $path_suffix = DS.$data['name'].'.'.$image['extension'];
         }
-
-        // Revision attributes.
-        $this->attributes['mime_type'] = $original['mime_type'];
-        $this->attributes['extension'] = $original['extension'];
-        $this->attributes['filesize'] = $original['filesize'];
-        $properties += [
-            'width' => $original['width'],
-            'height' => $original['height'],
-        ];
-
-        $path_suffix = DS.$data['name'].'.'.$original['extension'];
-        unset($original);
 
         // Cutting images.
         foreach ($this->thumbSizes() as $key => $value) {
             @$disk->makeDirectory($path_prefix.$key);
-            $size = $this->imageResave(
+            $image = $this->imageResave(
                 $this->getAbsolutePathAttribute(),
                 $disk->path($path_prefix.$key.$path_suffix),
                 setting('files.images_'.$key.'_width', $value),
@@ -221,13 +221,14 @@ class File extends BaseModel
                 $quality, $is_convert
             );
 
-            if (! $size) break;
+            if (! $image) break;
 
             // Add to options.
             $properties += [
                 $key => [
-                    'width' => $size['width'],
-                    'height' => $size['height'],
+                    'width' => $image['width'],
+                    'height' => $image['height'],
+                    'filesize' => $image['filesize'],
                 ]
             ];
         }
@@ -248,7 +249,7 @@ class File extends BaseModel
      */
     public function imageResave(string $infile, string $outfile, $width = null, $height = null, int $quality = 75, bool $is_convert = true)
     {
-        [$w, $h, $imagetype] = getimagesize($infile = $infile ?? $this->getAbsolutePathAttribute());
+        [$w, $h, $imagetype] = getimagesize($infile);
 
 		switch ($imagetype) {
 			case 1: $source = imagecreatefromgif($infile); break;
@@ -265,7 +266,7 @@ class File extends BaseModel
 
         // Check image size to resize.
         if ($width > $w or $height > $h) {
-            return false;
+            $width = $w; $height = $h;
         }
 
         // Prepare width and height to new image.
