@@ -174,10 +174,9 @@ class File extends BaseModel
         // Store uploaded image, to work it.
         $this->storeAsFile($file, $data);
 
-        // Filesystem.
-        $disk = $this->storageDisk($data['disk']);
-
         // Prepare local variables.
+        $properties = [];
+        $disk = $this->storageDisk($data['disk']);
         $path_prefix = $data['type'].DS.$data['category'].DS;
         $path_suffix = DS.$data['name'].'.'.$data['extension'];
         $quality = setting('files.images_quality', 75);
