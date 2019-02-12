@@ -7,10 +7,7 @@
             <h2 class="single_article__title">{{ $article->title }}</h2>
             <p class="single_article__teaser">{{ $article->teaser }}</p>
             @if ($image = $article->image)
-                <figure class="single_article__image">
-                    {{ $image->picture_box }}
-                    <figcaption class="single_article_image__caption">{{ $image->title }}</figcaption>
-                </figure>
+                {{ $image->picture_box }}
             @endif
         </header>
 

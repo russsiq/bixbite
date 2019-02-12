@@ -58,11 +58,7 @@ trait ArticleMutators
             } elseif (starts_with($row, 'picture_box_')) {
                 $id = (int) str_replace('picture_box_', '', $row);
                 if ($image = $this->images->where('id', $id)->first()) {
-                    $image = '<figure class="single_article__image">'
-                                .$image->getPictureBoxAttribute()
-                                .'<figcaption class="single_article_image__caption">'.$image->title.'</figcaption>'
-                            .'</figure>';
-                    $content = str_ireplace("[[picture_box_$id]]", $image, $content);
+                    $content = str_ireplace("[[picture_box_$id]]", $image->picture_box, $content);
                 } else {
                     $content = str_ireplace("[[picture_box_$id]]", '<code>IMG WITH ID #'.(int) $id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
                 }

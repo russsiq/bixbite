@@ -16,10 +16,10 @@
             <turbo:content>
                 <![CDATA[
                     <header>
-                        @if ($article->image)
+                        @if ($image = $article->image)
                         <figure>
-                            <img src="{{ $article->image->url }}" />
-                            <figcaption>{{ $article->image->title }}</figcaption>
+                            <img src="{{ $image->url }}" alt="{{ $image->title }}" />
+                            <figcaption>{{ $image->title }}</figcaption>
                         </figure>
                         @endif
                         <h1>{{ $article->title }}</h1>

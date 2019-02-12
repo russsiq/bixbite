@@ -36,7 +36,11 @@ class File extends BaseModel
     protected $hidden = [
         'checksum',
     ];
-    // Размеры изображений по возрастанию.
+
+    /**
+     * Image thumbnail sizes in ascending order.
+     * @var array
+     */
     protected $thumbSizes = [
         'thumb' => 240,
         'small' => 576,
@@ -69,20 +73,19 @@ class File extends BaseModel
         return Storage::disk($disk ?? $this->disk);
     }
 
+    /**
+     * Get path to file.
+     * Used in `BBCMS\Models\Mutators\FileMutators` and `BBCMS\Models\Observers\FileObserver`.
+     *
+     * @param  string|null $thumbSize Thumbnail size for the image file.
+     * @return string
+     */
     public function path(string $thumbSize = null)
     {
         return $this->attributes['type']
             .DS.$this->attributes['category']
             .($thumbSize ? DS.$thumbSize : '')
             .DS.$this->attributes['name'].'.'.$this->attributes['extension'];
-    }
-
-    public function originalPath(string $thumbSize = null)
-    {
-        return $this->getOriginal('type')
-            .DS.$this->getOriginal('category')
-            .($thumbSize ? DS.$thumbSize : '')
-            .DS.$this->getOriginal('name').'.'.$this->getOriginal('extension');
     }
 
     public function manageUpload(UploadedFile $file, array $data)
@@ -168,7 +171,13 @@ class File extends BaseModel
         $this->attributes['filesize'] = filesize($zipname);
     }
 
-    // Manipulate whith image file.
+    /**
+     * Manipulate whith image file.
+     *
+     * @param  Illuminate\Http\UploadedFile $file
+     * @param  array $data
+     * @return mixed
+     */
     protected function storeAsImage(UploadedFile $file, array $data)
     {
         // Store uploaded image, to work it.
@@ -236,17 +245,16 @@ class File extends BaseModel
     }
 
     /**
-     * Resize, compress and converting image.
-     *
-     * @param  string $outfile
-     * @param  integer|null $width
-     * @param  integer|null $height
-     * @param  integer $quality Quality of created image.
-     * @param  boolean $is_convert Convert image to `jpeg`.
-     *
-     * @return false/array Sizes of new created image.
+     * [imageResave description]
+     * @param  string        $infile
+     * @param  string        $outfile
+     * @param  integer|null  $width
+     * @param  integer|null  $height
+     * @param  integer       $quality       Quality of created image.
+     * @param  boolean       $is_convert    Convert image to `jpeg`.
+     * @return false|array                  Sizes of new created image.
      */
-    public function imageResave(string $infile, string $outfile, $width = null, $height = null, int $quality = 75, bool $is_convert = true)
+    public function imageResave(string $infile, string $outfile, int $width = null, int $height = null, int $quality = 75, bool $is_convert = true)
     {
         [$w, $h, $imagetype] = getimagesize($infile);
 
@@ -265,7 +273,7 @@ class File extends BaseModel
 
         // Check image size to resize.
         if ($width > $w or $height > $h) {
-            $width = $w; $height = $h;
+            return false;
         }
 
         // Prepare width and height to new image.
@@ -290,11 +298,11 @@ class File extends BaseModel
 
         // if save extension.
         if (3 == $imagetype and ! $is_convert) {
-            imagepng($output, $outfile, round(intval($quality) / 100)); $extension = 'png';
+            imagepng($output, $outfile, round($quality / 100)); $extension = 'png';
         } elseif (6 == $imagetype and ! $is_convert) {
-            imagebmp($output, $outfile, (int) round(intval($quality) / 100)); $extension = 'bmp';
+            imagebmp($output, $outfile, (int) round($quality / 100)); $extension = 'bmp';
         } else {
-            imagejpeg($output, $outfile, intval($quality)); $extension = 'jpeg';
+            imagejpeg($output, $outfile, $quality); $extension = 'jpeg';
         }
 
         // Clear images.

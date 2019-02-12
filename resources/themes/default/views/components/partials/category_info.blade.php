@@ -6,10 +6,8 @@
 {{-- Если у категории есть прикрепленное изображение, либо информация, либо она содержит подкатегории, то отображаем секцию. --}}
 @if ($category->image or $category->info or $sub_categories->count())
     <section class="archive_page__second">
-        @if ($category->image)
-            <figure class="">
-                <img src="{{ $category->image->url }}" alt="{{ $category->title }}" />
-            </figure>
+        @if ($image = $category->image)
+            {{ $image->picture_box }}
         @endif
         @if ($category->info)
             <p class="archive_page__teaser">{{ $category->info }}</p>

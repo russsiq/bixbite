@@ -783,6 +783,10 @@ if (! function_exists('wrap_attr')) {
      */
     function wrap_attr($entities, string $template = '<a href="%url">%title</a>', string $separator = ', ', string $wrapper = null)
     {
+        if (is_array($entities)) {
+            $entities = (object) $entities;
+        }
+
         if (! is_object($entities) or empty($entities)) {
             return null;
         }

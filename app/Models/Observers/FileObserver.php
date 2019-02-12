@@ -6,15 +6,29 @@ use BBCMS\Models\File;
 
 class FileObserver
 {
+    /**
+     * Get original path to file.
+     *
+     * @param  string|null $thumbSize
+     * @return string
+     */
+    protected function originalPath(File $file, string $thumbSize = null)
+    {
+        return $file->getOriginal('type')
+            .DS.$file->getOriginal('category')
+            .($thumbSize ? DS.$thumbSize : '')
+            .DS.$file->getOriginal('name').'.'.$file->getOriginal('extension');
+    }
+
     public function updating(File $file)
     {
-        if ($file->originalPath() != $file->path()) {
+        if ($this->originalPath($file) != $file->path()) {
             $disk = $file->storageDisk();
-            $disk->rename($file->originalPath(), $file->path());
+            $disk->rename($this->originalPath($file), $file->path());
 
             if ('image' == $file->type) {
                 foreach ($file->thumbSizes() as $size => $value) {
-                    if ($disk->exists($old_path = $file->originalPath($size))) {
+                    if ($disk->exists($old_path = $this->originalPath($file, $size))) {
                         $disk->rename($old_path, $file->path($size));
                     }
                 }
