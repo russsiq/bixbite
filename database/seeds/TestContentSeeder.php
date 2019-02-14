@@ -50,12 +50,13 @@ class TestContentSeeder extends Seeder
         ];
         for ($i = 0; $i < 10; $i++) {
             $title = $faker->sentence(4);
+            $teaser = $faker->text(mt_rand(120, 255));
             $content = '';
             foreach(range(1, mt_rand(8, 12)) as $j) {
                 $content .= '<p>'.$faker->paragraph.'</p>';
             }
             $articles[] = [
-                'title' => $title, 'slug' => str_slug($title), 'content' => $content, 'user_id' => mt_rand(1, 9),
+                'title' => $title, 'slug' => str_slug($title), 'teaser' => $teaser, 'content' => $content, 'user_id' => mt_rand(1, 9),
                 'img' => $images[array_rand($images, 1)], 'state' => 'published', 'created_at' => date('Y-m-d H:i:s'),
             ];
         }
