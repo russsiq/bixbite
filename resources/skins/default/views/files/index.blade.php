@@ -33,8 +33,12 @@
                     <a href="#upload_pane" class="btn btn-link" data-toggle="tab"><i class="fa fa-upload"></i> @lang('upload-pane')</a>
                 </li>
                 @foreach ([
-                        ['name' => 'image', 'icon' => 'fa-file-image-o'], ['name' => 'audio', 'icon' => 'fa-file-audio-o'], ['name' => 'video', 'icon' => 'fa-file-video-o'],
-                        ['name' => 'document', 'icon' => 'fa-file-text-o'], ['name' => 'archive', 'icon' => 'fa-file-archive-o'], ['name' => 'other', 'icon' => 'fa-files-o'],
+                        ['name' => 'image', 'icon' => 'fa-file-image-o'],
+                        ['name' => 'audio', 'icon' => 'fa-file-audio-o'],
+                        ['name' => 'video', 'icon' => 'fa-file-video-o'],
+                        ['name' => 'document', 'icon' => 'fa-file-text-o'],
+                        ['name' => 'archive', 'icon' => 'fa-file-archive-o'],
+                        ['name' => 'other', 'icon' => 'fa-files-o'],
                     ] as $type)
                     <li class="nav-item">
                         <a href="{{ route('admin.files.index', ['filetype' => $type['name']]) }}" class="btn btn-link">
@@ -146,26 +150,25 @@
         </form>
 	</div>
 
-
-<!-- Modal -->
-<div id="mediaModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Html5 super mega modal player</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <video preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></video>
-                <audio preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></audio>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('btn.close')</button>
-                {{-- <button type="button" class="btn btn-primary">@lang('btn.download')</button> --}}
+    <!-- Modal -->
+    <div id="mediaModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Html5 super mega modal player</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <video preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></video>
+                    <audio preload="none" controls="controls" src="" style="object-fit: scale-down; width: 100%;" class="d-none"></audio>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('btn.close')</button>
+                    {{-- <button type="button" class="btn btn-primary">@lang('btn.download')</button> --}}
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -177,6 +180,14 @@
         }
     });
     $(document).ready(function() {
+
+        $(document).on('dblclick', '[class*=static-]', function (e) {
+            $(this).removeAttr('readonly').removeClass('form-control-plaintext').addClass('form-control')
+            $(this).on('blur', function (e) {
+                $(this).attr('readonly', true).addClass('form-control-plaintext').removeClass('form-control')
+            })
+        })
+
         var $mediaSrc, $mediaType, $mediaTitle;
         $('.media-link').click(function() {
             $mediaSrc = $(this).data('src');
