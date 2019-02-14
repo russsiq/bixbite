@@ -48,7 +48,7 @@ class TestContentSeeder extends Seeder
             '{"min":"model-130x90.jpg","max":"model-390x205.jpg","full":"model-800x445.jpg"}',
             '{"min":"relay-race-130x90.jpg","max":"relay-race-390x205.jpg","full":"relay-race-800x445.jpg"}',
         ];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $title = $faker->sentence(4);
             $teaser = $faker->text(mt_rand(120, 255));
             $content = '';
@@ -63,16 +63,16 @@ class TestContentSeeder extends Seeder
 
         // Preparing categories
         $categories = [
-            ['title' => 'Бизнес', 'slug' => 'business', 'created_at' => date('Y-m-d H:i:s'), ],
-            ['title' => 'Политика', 'slug' => 'politics', 'created_at' => date('Y-m-d H:i:s'), ],
-            ['title' => 'Спорт', 'slug' => 'sports', 'created_at' => date('Y-m-d H:i:s'), ],
-            ['title' => 'Мода', 'slug' => 'fashion', 'created_at' => date('Y-m-d H:i:s'), ],
-            ['title' => 'Развлечения', 'slug' => 'entertainment', 'created_at' => date('Y-m-d H:i:s'), ],
-            ['title' => 'Вне категории', 'slug' => 'other', 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Бизнес', 'slug' => 'business', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Политика', 'slug' => 'politics', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Спорт', 'slug' => 'sports', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Мода', 'slug' => 'fashion', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Развлечения', 'slug' => 'entertainment', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
+            ['title' => 'Вне категории', 'slug' => 'other', 'description' => $faker->text(mt_rand(120, 255)), 'created_at' => date('Y-m-d H:i:s'), ],
         ];
 
         // Preparing atach categories
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $title = $faker->sentence(4);
             $categoryables[] = [
                 'category_id' => mt_rand(1, 6), 'categoryable_type' => 'articles', 'categoryable_id' => $i + 1,

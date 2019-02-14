@@ -61,10 +61,10 @@ class SystemInstall extends SetupController
                 $name = studly_case($this->steps[$this->step - 1] . 'Request');
                 $class = $this->requestNamespace . '\\' . $name;
                 $request = app($class)->all();
-            }
 
-            // Save to `.env` file prev request from form
-            $this->pushToEnvFile(collect($request));
+                // Save to `.env` file prev request from form
+                $this->pushToEnvFile(collect($request));
+            }
 
             // Return form to current step
             return $this->renderOutput($method,

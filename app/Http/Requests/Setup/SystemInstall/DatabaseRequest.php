@@ -121,6 +121,7 @@ class DatabaseRequest extends Request
                     \DB::purge('mysql');
                     \DB::reconnect('mysql');
                     \DB::setTablePrefix($data['DB_PREFIX']);
+                    \DB::connection()->getPdo();
                     if (is_null(\DB::connection('mysql')->getDatabaseName())) {
                         throw new InstallerFailed(__('msg.not_dbconnect'));
                     }
@@ -135,8 +136,11 @@ class DatabaseRequest extends Request
 
                     \DB::commit();
                 } catch (\InstallerFailed $e) {
-                    \DB::rollback();
                     $validator->errors()->add('database', $e->getMessage());
+                } catch (\PDOException $e) {
+                    $validator->errors()->add('database', $e->getMessage());
+                } finally {
+                    \DB::rollback();
                 }
 
             });

@@ -165,10 +165,10 @@ class SettingsTableSeeder extends Seeder
 
         $def['fieldset'] = 'organization';
         array_push($out, array_merge($def, ['name' => 'organization', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'contact_telephone', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'contact_email', 'value' => '—', 'type' => 'email', ]));
         array_push($out, array_merge($def, ['name' => 'address_locality', 'value' => '—', 'type' => 'string', ]));
         array_push($out, array_merge($def, ['name' => 'address_street', 'value' => '—', 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'contact_telephone', 'value' => '—', 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'contact_email', 'value' => '—', 'type' => 'email', ]));
 
         $def['section'] = 'security';
         $def['fieldset'] = 'locked';
