@@ -74,7 +74,7 @@ trait FileMutators
             }
         }
 
-        return html_raw(view('components.partials.picture_box',
+        return html_raw(view('shortcodes.picture_box',
             compact('id', 'url', 'alt', 'title', 'description', 'srcsets')
         ));
     }
