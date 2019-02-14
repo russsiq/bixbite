@@ -79,7 +79,14 @@ trait ArticleScopes
             ->with([
                 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',
-                'files',
+                'files' => function ($query) {
+                    $query->select([
+                        'files.id', 'files.disk', 'files.type',
+                        'files.category', 'files.name', 'files.extension',
+                        'files.title',
+                        'files.attachment_type', 'files.attachment_id'
+                    ]);
+                },
             ])
             ->withCount([
                 'comments',

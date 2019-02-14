@@ -13,8 +13,8 @@
                     <li class="widget_related__item">
                         <a href="{{ $item->url }}" class="widget_related_item__inner" rel="bookmark">
                             <figure class="widget_related_item__image">
-                                @if ($item->image)
-                                    <img src="{{ $item->image->getUrlAttribute('thumb') }}" alt="{{ $item->image->title }}" class="widget_related_item_image__thumbnail" />
+                                @if ($image = $item->image)
+                                    <img src="{{ $image->getUrlAttribute('thumb') }}" alt="{{ $image->title }}" class="widget_related_item_image__thumbnail" />
                                 @endif
                             </figure>
                             <header class="widget_related_item__header">
