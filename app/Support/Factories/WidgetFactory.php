@@ -118,6 +118,10 @@ class WidgetFactory
         return trim(preg_replace('/(\s|\r|\n)+</', '<',
             view($this->widget->template(), compact('widget'))->render()
         ));
+
+        // Debug function if App has error:
+        // `Cannot end a section without first starting one.`
+        return view($this->widget->template(), compact('widget'));
     }
 
     /**
