@@ -775,10 +775,10 @@ if (! function_exists('wrap_attr')) {
     /**
      * Wrapping entity attributes with html-tags by template.
      *
-     * @param  object $entities
-     * @param  string $template
-     * @param  string $separator
-     * @param  string $wrapper
+     * @param  object|array $entities
+     * @param  string       $template
+     * @param  string       $separator
+     * @param  string       $wrapper
      * @return string|null
      */
     function wrap_attr($entities, string $template = '<a href="%url">%title</a>', string $separator = ', ', string $wrapper = null)
