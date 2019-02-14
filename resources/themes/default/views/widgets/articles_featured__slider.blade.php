@@ -9,7 +9,7 @@
                     background-size:cover;
                     background-position: center center;
                     @if ($item->image)
-                        background-image: url({{ $item->image->getUrlAttribute('medium') ?? $item->image->getUrlAttribute('small') }})
+                        background-image: url({{ $item->image->getUrlAttribute('medium') ?? $item->image->getUrlAttribute('small') ?? $item->image->getUrlAttribute('thumb') }})
                     @endif
                 ">
                 {{-- @if ($item->image)
