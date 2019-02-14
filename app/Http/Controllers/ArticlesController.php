@@ -44,7 +44,7 @@ class ArticlesController extends SiteController
             ->orderBy('is_catpinned', 'desc')
             ->orderBy($category->order_by ?? setting('articles.order_by', 'id'), $category->direction)
             ->paginate($category->paginate ?? setting('articles.paginate', 8));
-        
+
         pageinfo([
             'title' => $category->title,
             'description' => $category->description ?? $category->info,
@@ -57,7 +57,7 @@ class ArticlesController extends SiteController
 
         if ($category->template) {
             $view = 'custom_views.'.$category->template.'.'.$this->template;
-            
+
             $this->template = view()->exists($view.'.index') ? $view : $this->template;
         }
 
@@ -90,9 +90,7 @@ class ArticlesController extends SiteController
         $query = html_secure(request('query'));
         $articles = $query
             ? $this->model->shortArticle()
-                ->selectRaw('MATCH (title, content) AGAINST (? IN BOOLEAN MODE) as REL', [$query])
-                ->whereRaw("MATCH (title, content) AGAINST(? IN BOOLEAN MODE)", [$query])
-                ->orderBy('REL', 'desc')
+                ->search($query)
                 ->paginate(setting('articles.paginate', 8))
                 ->appends(['query' => $query])
             : collect([]);
@@ -132,7 +130,7 @@ class ArticlesController extends SiteController
 
         if ($article->category->template) {
             $view = 'custom_views.'.$article->category->template.'.'.$this->template;
-            
+
             $this->template = view()->exists($view.'.single') ? $view : $this->template;
         }
 

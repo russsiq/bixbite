@@ -64,11 +64,7 @@ class ArticlesRelatedWidget extends WidgetAbstract
             ->where('articles.id', '<>', $article->id);
 
         if (empty($article->tags) or 1) {
-            $related_content = $article->title . ' ' . teaser($article->content, 500);
-            $query = $query
-                ->selectRaw('MATCH (title, content) AGAINST (? in boolean mode) as REL', [$related_content])
-                ->whereRaw('MATCH (title, content) AGAINST (? in boolean mode)' , [$related_content])
-                ->orderBy('REL', 'desc');
+            $query = $query->search($article->title . ' ' . teaser($article->content, 500, ''));
         } else {
             $this->tags_id = $article->tags->pluck('id');
             $query = $query

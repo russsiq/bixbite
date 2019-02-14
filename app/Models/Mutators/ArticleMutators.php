@@ -19,11 +19,6 @@ trait ArticleMutators
         return action('ArticlesController@article', [$this->categories->pluck('slug')->implode('_'), $this->id, $this->slug]);
     }
 
-    public function getTeaserAttribute()
-    {
-        return $this->attributes['teaser'] ?? teaser($this->content, setting('articles.teaser_length', 150));
-    }
-
     /**
      * Generate content with `shortcode` and `x_fields`.
      *
@@ -56,24 +51,18 @@ trait ArticleMutators
             } elseif (in_array($row, $x_shortcode)) {
                 $content = str_ireplace('[[' . $row . ']]', $this->{$row}, $content);
             } elseif (starts_with($row, 'picture_box_')) {
-                $id = (int) str_replace('picture_box_', '', $row);
+                $id = (int) str_ireplace('picture_box_', '', $row);
                 if ($image = $this->images->where('id', $id)->first()) {
                     $content = str_ireplace("[[picture_box_$id]]", $image->picture_box, $content);
                 } else {
-                    $content = str_ireplace("[[picture_box_$id]]", '<code>IMG WITH ID #'.(int) $id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
+                    $content = str_ireplace("[[picture_box_$id]]", '<code>IMG WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
                 }
-            } elseif (starts_with($row, 'postfile_') or starts_with($row, 'postimage_')) {
-                $id = (int) str_ireplace(['postfile_', 'postimage_'], '', $row);
+            } elseif (starts_with($row, 'file_')) {
+                $id = (int) str_ireplace('file_', '', $row);
                 if ($file = $this->files->where('id', $id)->first()) {
-                    $content = str_ireplace([
-                            "[[postfile_$id]]",
-                            "[[postimage_$id]]"
-                        ], $file->url, $content);
+                    $content = str_ireplace("[[file_$id]]", $file->url, $content);
                 } else {
-                    $content = str_ireplace([
-                        "[[postfile_$id]]",
-                        "[[postimage_$id]]"
-                    ], '<code>FILE WITH ID #'.(int) $id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
+                    $content = str_ireplace("[[file_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
                 }
             }
         }

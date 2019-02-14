@@ -17,6 +17,7 @@ use BBCMS\Models\Relations\Categoryable;
 
 class Article extends BaseModel
 {
+    use Traits\FullTextSearch;
     use ArticleMutators, ArticleScopes;
     use Extensible, Fileable, Taggable, Commentable, Categoryable;
 
@@ -67,6 +68,14 @@ class Article extends BaseModel
 
     protected $with = [
         'categories:categories.id,categories.slug,categories.title'
+    ];
+
+    /**
+     * The columns of the full text index.
+     */
+    protected $searchable = [
+        'title',
+        'content',
     ];
 
     /**
