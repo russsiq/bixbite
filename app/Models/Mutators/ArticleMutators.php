@@ -30,8 +30,8 @@ trait ArticleMutators
             return null;
         }
 
-        // Give shortcode from app settings. static::$shortcode ???
-        $shortcode = [
+        // Give shortcodes from app settings. static::$shortcodes ???
+        $shortcodes = [
             'app_url' => setting('system.app_url'),
             'organization' => setting('system.organization'),
             'contact_telephone' => setting('system.contact_telephone'),
@@ -46,8 +46,8 @@ trait ArticleMutators
         preg_match_all("/\[\[(.*?)\]\]/u", $content, $matches);
 
         foreach ($matches[1] as $row) {
-            if (array_key_exists($row, $shortcode)) {
-                $content = str_ireplace('[[' . $row . ']]', $shortcode[$row], $content);
+            if (array_key_exists($row, $shortcodes)) {
+                $content = str_ireplace('[[' . $row . ']]', $shortcodes[$row], $content);
             } elseif (in_array($row, $x_shortcode)) {
                 $content = str_ireplace('[[' . $row . ']]', $this->{$row}, $content);
             } elseif (starts_with($row, 'picture_box_')) {
