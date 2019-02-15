@@ -10,10 +10,10 @@
                         <a :href="file.url" class="lightbox" v-if="'image'== file.type" target="_blank">
                             <img :src="file.url" :alt="file.title" :title="file.title" class="card-file-icon" width="42" />
                         </a>
-                        <a href="#mediaModal" class="media-link" data-toggle="modal" :data-src="file.url" :data-title="file.title" data-type="audio" v-else-if="'audio'== file.type">
+                        <a href="#" class="media-link" @click.prevent="mediaModal(file)" v-else-if="'audio'== file.type">
                             <div class="card-file-icon"><i class="fa fa-music"></i></div>
                         </a>
-                        <a href="#mediaModal" class="media-link" data-toggle="modal" :data-src="file.url" :data-title="file.title" data-type="video" v-else-if="'video'== file.type">
+                        <a href="#" class="media-link" @click.prevent="mediaModal(file)" v-else-if="'video'== file.type">
                             <div class="card-file-icon"><i class="fa fa-film"></i></div>
                         </a>
                         <div class="card-file-icon" v-else-if="'archive'== file.type"><i class="fa fa-archive"></i></div>
@@ -21,7 +21,8 @@
                     </div>
                 </td>
                 <td>
-                    {{ file.title }}<!--br>{{ file.url }}-->
+                    {{ file.title }}
+                    <!--br>{{ file.url }}-->
                     <div v-html="file.message" class=""></div>
                 </td>
                 <td style="white-space: nowrap;">
@@ -44,15 +45,26 @@
             </tr>
         </tbody>
     </table>
+
     <hr class="m-0" />
+
     <div class="card-body">
         <input type="file" ref="files" @change="handleFiles()" multiple />
     </div>
+
+    <media-modal v-if="mediaModalShown" :media="media" @close="closeMediaModal()"></media-modal>
 </div>
 </template>
 
 <script>
+import baguetteBox from 'baguettebox.js';
+import MediaModal from './MediaModal';
+
 export default {
+    components: {
+        'media-modal': MediaModal,
+    },
+
     props: {
         lang: {
             /*type: Object,
@@ -74,12 +86,28 @@ export default {
 
     data() {
         return {
-            files: []
+            files: [],
+            media: null,
+            mediaModalShown: false,
         }
     },
 
-    mounted() {
+    created() {
         this.fetchFiles()
+    },
+
+    mounted() {
+        // Executed after the next DOM update cycle.
+        this.$nextTick(() => {
+            setTimeout(() => {
+                baguetteBox.run('.baguetteBox', {
+                    noScrollbars: true,
+                    captions(element) {
+                        return element.getElementsByTagName('img')[0].title;
+                    }
+                })
+            }, 100);
+        });
     },
 
     methods: {
@@ -209,7 +237,7 @@ export default {
         },
 
         deleteFile(key) {
-            if(! confirm('Delete this file from server?')) {
+            if (!confirm('Delete this file from server?')) {
                 return false
             }
 
@@ -232,6 +260,22 @@ export default {
                         message: error.message,
                     }))
                 })
+        },
+
+        /**
+         * Open the media modal to view media content.
+         */
+        mediaModal(file) {
+            this.media = file
+            this.mediaModalShown = true
+        },
+
+        /**
+         * Close the media modal.
+         */
+        closeMediaModal() {
+            this.media = null
+            this.mediaModalShown = false
         },
     }
 }
