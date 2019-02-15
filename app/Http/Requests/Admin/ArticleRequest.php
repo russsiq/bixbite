@@ -78,10 +78,10 @@ class ArticleRequest extends Request
     {
         return $this->merge([
             // default value to the checkbox
-            'on_mainpage' => $this->input('on_mainpage', null),
-            'is_pinned' => $this->input('is_pinned', null),
-            'is_catpinned' => $this->input('is_catpinned', null),
-            'is_favorite' => $this->input('is_favorite', null),
+            'on_mainpage' => $this->input('on_mainpage', 0),
+            'is_pinned' => $this->input('is_pinned', 0),
+            'is_catpinned' => $this->input('is_catpinned', 0),
+            'is_favorite' => $this->input('is_favorite', 0),
         ])->all();
     }
 
