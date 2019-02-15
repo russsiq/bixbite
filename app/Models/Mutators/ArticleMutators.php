@@ -57,6 +57,20 @@ trait ArticleMutators
                 } else {
                     $content = str_ireplace("[[picture_box_$id]]", '<code>IMG WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
                 }
+            } elseif (starts_with($row, 'media_player_')) {
+                $id = (int) str_ireplace('media_player_', '', $row);
+                if ($file = $this->files->where('id', $id)->first()) {
+                    $content = str_ireplace("[[media_player_$id]]", $file->media_player, $content);
+                } else {
+                    $content = str_ireplace("[[media_player_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
+                }
+            } elseif (starts_with($row, 'download_button_')) {
+                $id = (int) str_ireplace('download_button_', '', $row);
+                if ($file = $this->files->where('id', $id)->first()) {
+                    $content = str_ireplace("[[download_button_$id]]", $file->download_button, $content);
+                } else {
+                    $content = str_ireplace("[[download_button_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
+                }
             } elseif (starts_with($row, 'file_')) {
                 $id = (int) str_ireplace('file_', '', $row);
                 if ($file = $this->files->where('id', $id)->first()) {

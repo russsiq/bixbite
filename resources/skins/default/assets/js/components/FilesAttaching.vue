@@ -7,7 +7,7 @@
                     <div class="card-file-icon" v-if="'wait' == file.state"><i class="fa fa-spinner fa-pulse text-primary"></i></div>
                     <div class="card-file-icon" v-else-if="'error' == file.state"><i class="fa fa-ban text-danger"></i></div>
                     <div v-else>
-                        <a :href="file.url" class="lightbox" v-if="'image'== file.type" target="_blank">
+                        <a :href="file.url" target="_blank" v-if="'image'== file.type">
                             <img :src="file.url" :alt="file.title" :title="file.title" class="card-file-icon" width="42" />
                         </a>
                         <a href="#" class="media-link" @click.prevent="mediaModal(file)" v-else-if="'audio'== file.type">
@@ -28,7 +28,10 @@
                 <td style="white-space: nowrap;">
                     <span v-if="file.id > 0">
                         <code>[[file_{{ file.id }}]]</code>
-                        <code v-if="'image'== file.type">[[picture_box_{{ file.id }}]]</code>
+                        <code v-if="isImageFile(file)">[[picture_box_{{ file.id }}]]</code>
+                        <code v-if="isMediaFile(file)">[[media_player_{{ file.id }}]]</code>
+                        <br>
+                        <code v-if="isMediaFile(file)">[[download_button_{{ file.id }}]]</code>
                     </span>
                 </td>
                 <td style="white-space: nowrap;" class="text-right">
@@ -148,20 +151,6 @@ export default {
             this.files.splice(key, 1)
         },
 
-        reindexFiles() {
-            // Reindex files array.
-            if (this.files.length) {
-                this.files = this.files.filter((item) => {
-                    return !(item.id > 0);
-                })
-            }
-
-            // Check how many elements are left.
-            if (!this.files.length) {
-                return confirm('Upload complete. Reload this page?') ? document.location.reload(true) : true
-            }
-        },
-
         /**
          * Fetch files from server by attachment_id and attachment_type.
          *
@@ -260,6 +249,14 @@ export default {
                         message: error.message,
                     }))
                 })
+        },
+
+        isImageFile(file) {
+            return 'image' === file.type
+        },
+
+        isMediaFile(file) {
+            return ['audio', 'video'].indexOf(file.type) != -1
         },
 
         /**

@@ -31,6 +31,7 @@ trait FileMutators
 
         return $path ? $this->storageDisk()->path($path) : null;
     }
+
     /**
      * Url variations.
      * Used as `{{ $file->url }}` or `{{ $image->getUrlAttribute('thumb') }}`.
@@ -43,6 +44,17 @@ trait FileMutators
         $path = $this->getPathAttribute($thumbSize);
 
         return $path ? $this->storageDisk()->url(str_replace('\\', '/', $path)) : null;
+    }
+
+    /**
+     * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
+     * Used as `{{ $file->filesize }}`.
+     *
+     * @return string|null
+     */
+    public function getFilesizeAttribute()
+    {
+        return formatBytes($this->attributes['filesize']);
     }
 
     /**
@@ -77,5 +89,34 @@ trait FileMutators
         return html_raw(view('shortcodes.picture_box',
             compact('id', 'url', 'alt', 'title', 'description', 'srcsets')
         ));
+    }
+
+    /**
+     * Used as `{{ $file->media_player }}`.
+     *
+     * @return null|string
+     */
+    public function getMediaPlayerAttribute()
+    {
+        if (!in_array($this->attributes['type'], ['video', 'audio'])) {
+            return null;
+        }
+
+        return html_raw(view('shortcodes.media_player', [
+            'media' => (object) $this->toArray()
+        ]));
+    }
+
+    /**
+     * Download button to file.
+     * Used as `{{ $file->download_button }}`.
+     *
+     * @return string|null
+     */
+    public function getDownloadButtonAttribute()
+    {
+        return html_raw(view('shortcodes.download_button', [
+            'file' => (object) $this->toArray()
+        ]));
     }
 }

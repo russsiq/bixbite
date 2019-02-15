@@ -7,7 +7,7 @@ define('DS', DIRECTORY_SEPARATOR);
  * app_theme - Get or set current theme name from different sides.
  * cluster - Remove empty array values and joined with delimiter.
  * extract_images - Extract existing images paths array from given html string.
- * formatBytes - Format bytes to kb, mb, gb, tb.
+ * formatBytes - Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
  * get_captcha - Generate captcha html-block.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
  * get_gravatar - Get Gravatar url for img tag using specified email.
@@ -148,7 +148,7 @@ if (! function_exists('extract_images')) {
 
 if (! function_exists('formatBytes')) {
     /**
-     * Format bytes to kb, mb, gb, tb.
+     * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
      *
      * @param  integer $size
      * @param  integer $precision

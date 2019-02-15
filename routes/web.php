@@ -44,6 +44,8 @@ Route::match(['get','post'], 'search', 'ArticlesController@search')->name('artic
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
 
+Route::get('download/{id}', 'DownloadsController@download')->name('file.download');
+
 Route::get('users', 'UsersController@index')->name('users.index');
 Route::get('follow/{user}', 'UsersController@follow')->name('follow');
 Route::get('unfollow/{user}', 'UsersController@unfollow')->name('unfollow');

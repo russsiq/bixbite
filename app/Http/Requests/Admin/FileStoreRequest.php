@@ -176,7 +176,7 @@ class FileStoreRequest extends Request
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u',
+                'regex:/^[\w\s\.\,\-\_\?\!\(\)\[\]]+$/u',
             ],
             'description' => [
                 'nullable',
