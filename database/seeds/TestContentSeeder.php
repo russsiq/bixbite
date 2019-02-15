@@ -38,7 +38,7 @@ class TestContentSeeder extends Seeder
         }
 
         // Preparing articles
-        $images = [
+        /*$images = [
             '{"min":"scarlet-130x90.jpg","max":"scarlet-390x205.jpg","full":"scarlet-800x445.jpg"}',
             '{"min":"lorem11-130x90.jpg","max":"lorem11-390x205.jpg","full":"lorem11-800x445.jpg"}',
             '{"min":"lorem23-130x90.jpg","max":"lorem23-390x205.jpg","full":"lorem23-800x445.jpg"}',
@@ -47,7 +47,7 @@ class TestContentSeeder extends Seeder
             '{"min":"girl-130x90.jpg","max":"girl-390x205.jpg","full":"girl-800x445.jpg"}',
             '{"min":"model-130x90.jpg","max":"model-390x205.jpg","full":"model-800x445.jpg"}',
             '{"min":"relay-race-130x90.jpg","max":"relay-race-390x205.jpg","full":"relay-race-800x445.jpg"}',
-        ];
+        ];*/
         for ($i = 0; $i < 100; $i++) {
             $title = $faker->sentence(4);
             $teaser = $faker->text(mt_rand(120, 255));
@@ -57,7 +57,8 @@ class TestContentSeeder extends Seeder
             }
             $articles[] = [
                 'title' => $title, 'slug' => str_slug($title), 'teaser' => $teaser, 'content' => $content, 'user_id' => mt_rand(1, 9),
-                'img' => $images[array_rand($images, 1)], 'state' => 'published', 'created_at' => date('Y-m-d H:i:s'),
+                // 'img' => $images[array_rand($images, 1)],
+                'state' => 'published', 'created_at' => date('Y-m-d H:i:s'),
             ];
         }
 
@@ -90,16 +91,16 @@ class TestContentSeeder extends Seeder
         ];
 
         // Preparing atach tags
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $taggables[] = [
                 'tag_id' => mt_rand(1, 6), 'taggable_type' => 'articles', 'taggable_id' => $i + 1,
             ];
         }
 
         // Preparing comments
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $comments[] = [
-                'user_id' => mt_rand(1, 9), 'commentable_type' => 'articles', 'commentable_id' => mt_rand(1, 9),
+                'user_id' => mt_rand(1, 9), 'commentable_type' => 'articles', 'commentable_id' => mt_rand(1, 10),
                 'content' => $faker->paragraph(mt_rand(1, 5)), 'created_at' => date('Y-m-d H:i:s'), 'is_approved' => mt_rand(0, 1)
             ];
         }
