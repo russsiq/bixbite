@@ -53,6 +53,22 @@ class FilesController extends AdminController
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'files' => $this->model
+                    ->when('owner' != user('role'), function ($query) {
+                        // Show files only to current user.
+                        $query->where('user_id', user('id'));
+                    })
+                    ->filter(request([
+                        'attachment_id',
+                        'attachment_type',
+                    ]))
+                    ->get(),
+            ], 200);
+        }
+
         return $this->renderOutput('index', [
             'filetype' => html_secure(request('filetype', null)),
             'files' => $this->model
@@ -120,12 +136,12 @@ class FilesController extends AdminController
      */
     public function show(File $file)
     {
-       if (request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json([
                 'status' => true,
                 'file' => $file,
             ], 200);
-       }
+        }
 
         return $this->renderOutput('show', [
             'file' => $file,

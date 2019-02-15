@@ -7,10 +7,10 @@
 
             <div class="btn-toolbar">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" @click.prevent="editImage()">Edit</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" @click.prevent="editImage()"><i class="fa fa-pencil"></i></button>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" @click.prevent="deleteImage()">Delete</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" @click.prevent="deleteImage()"><i class="fa fa-trash"></i></button>
                 </div>
             </div>
         </div>

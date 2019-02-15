@@ -15,11 +15,13 @@ Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
 
 // Adding Vue components to application.
 import UploadFiles from './components/UploadFiles.vue';
+import FilesAttaching from './components/FilesAttaching.vue';
 import ImageUploader from './components/ImageUploader.vue';
 //import BxbEditor from './components/BxbEditor.vue';
 import QuillEditor from './components/QuillEditor.vue';
 
 Vue.component('upload-files', UploadFiles);
+Vue.component('files-attaching', FilesAttaching);
 Vue.component('image-uploader', ImageUploader);
 //Vue.component('bxb-editor', BxbEditor);
 Vue.component('quill-editor', QuillEditor);

@@ -620,13 +620,14 @@ label.control-label {
  */
 
 .card-file-icon {
+    /*border: 1px solid #f4f4f4;
+    padding: .25rem;*/
     font-size: 32px;
     line-height: 1;
     color: #dadada;
-    border: 1px solid #f4f4f4;
-    padding: .25rem;
     text-align: center;
-    display: inline-block;
+    display: block;
+    margin: 0 auto;
 }
 
 /*

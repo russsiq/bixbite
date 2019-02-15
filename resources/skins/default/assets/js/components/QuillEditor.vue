@@ -59,6 +59,7 @@ export default {
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
             this.textarea = document.querySelector('[name=content]')
+            this.textarea.style.display = 'none'
             this.editor = this.createEditor()
             this.handleEditorValue(this.textarea.value.trim())
 

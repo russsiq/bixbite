@@ -61,32 +61,32 @@
 
 	<div class="col-sm-12 col-lg-8">
 		<div class="form-group {{ $errors->has('content') ? ' has-error' : '' }}">
+			<textarea name="content" style="width:100%;" rows="8"
+				>{!! old('content', optional($article)->getOriginal('content')) !!}</textarea>
 			<quill-editor
 				lang="{{ app_locale() }}"
 				:file_url="'{{ route('admin.files.index') }}'"
 				:attachment_id="{{ $article->id ?? 0 }}"
 				:attachment_type="'articles'"
 				></quill-editor>
-			<textarea name="content" style="width:100%;display:none;" rows="8"
-				>{!! old('content', optional($article)->getOriginal('content')) !!}</textarea>
 		</div>
 
 		<div id="accordion">
-			{{-- <div class="card mb-0">
-				<div class="card-header">
-					<a href="#card_files" data-toggle="collapse" data-target="#card_files" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
-				</div>
-				<div id="card_files" class="collapse" data-parent="#accordion">
-					<div class="card-body">
-						<div class="form-group row">
-							<files-attaching :attachment_id="'{{ $article->id }}'" :attachment_type="'{{ $article->getMorphClass() }}'" :multiple="true"
-								:upload_url="'{{ route('admin.files.upload') }}'"
-								:update_url="'{{ route('admin.files.upload', ':id') }}'"
-								:delete_url="'{{ route('admin.files.delete', ':id') }}'"></files-attaching>
-						</div>
+			@if (optional($article)->id)
+				<div class="card mb-0">
+					<div class="card-header">
+						<a href="#card_files" data-toggle="collapse" data-target="#card_files" class="d-block"><i class="fa fa-files-o text-muted"></i> @lang('options.files')</a>
+					</div>
+					<div id="card_files" class="collapse" data-parent="#accordion">
+						<files-attaching
+							lang="{{ app_locale() }}"
+							:file_url="'{{ route('admin.files.index') }}'"
+							:attachment_id="{{ $article->id ?? 0 }}"
+							:attachment_type="'articles'"
+							></files-attaching>
 					</div>
 				</div>
-			</div> --}}
+			@endif
 
 			@if (count($x_fields))
 				<div class="card mb-0">

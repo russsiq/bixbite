@@ -44,6 +44,16 @@ class FigureBlot extends BlockEmbed {
         };
     }
 
+    // remove() {
+    //     alert('Was removed!')
+    // }
+    //
+    // deleteAt(index: number, length: number): void {
+    //     if (!this.domNode.dataset.required) {
+    //         super.deleteAt(index, length)
+    //     }
+    // }
+    // 
     // /**
     //  * We still need to report unregistered embed formats
     //  *
@@ -88,14 +98,3 @@ FigureBlot.tagName = 'figure';
 FigureBlot.className = 'single_article__image';
 
 export default FigureBlot;
-
-
-// <figure class="single_article__image">
-// <picture class="single_article_image__inner">
-// <source media="(max-width: 240px)" srcset="http://localhost/bixbite/uploads/image/default/thumb/tm-c_1549704008.jpeg" type="image/jpeg">
-// <source media="(max-width: 576px)" srcset="http://localhost/bixbite/uploads/image/default/small/tm-c_1549704008.jpeg" type="image/jpeg">
-// <source media="(max-width: 992px)" srcset="http://localhost/bixbite/uploads/image/default/medium/tm-c_1549704008.jpeg" type="image/jpeg">
-// <img src="http://localhost/bixbite/uploads/image/default/tm-c_1549704008.jpeg" alt="Тренированная спортсменка" class="single_article_image__img">
-// </picture>
-// <figcaption class="single_article_image__caption">Тренированная спортсменка</figcaption>
-// </figure>

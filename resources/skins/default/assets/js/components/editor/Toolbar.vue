@@ -62,24 +62,24 @@
             <button class="ql-code-block"></button>
         </span>
 
-        <span class="ql-formats">
+        <!-- <span class="ql-formats">
             <button class="ql-image" :disabled="!$parent.$props.attachment_id"></button>
-            <!-- <button class="ql-video"></button> -->
-            <!-- <button class="ql-formula"></button> -->
-            <!-- </span>
+            <button class="ql-video"></button>
+            <button class="ql-formula"></button>
+            </span>
 
-        <span class="ql-formats"> -->
-            <!-- <button class="ql-table"><i class="fa fa-table"></i></button>
-            <button class="ql-columns"><i class="fa fa-columns"></i></button> -->
-        </span>
+        <span class="ql-formats">
+            <button class="ql-table"><i class="fa fa-table"></i></button>
+            <button class="ql-columns"><i class="fa fa-columns"></i></button>
+        </span> -->
 
         <span class="ql-formats">
             <select class="ql-shortcodes">
                 <option value="[[app_url]]">Домашняя страница</option>
                 <option value="[[organization]]">Название организации</option>
+                <option value="[[address]]">Адрес организации</option>
                 <option value="[[contact_telephone]]">Контактный телефон</option>
                 <option value="[[contact_email]]">Контактный email</option>
-                <option value="[[address]]">Адрес организации</option>
             </select>
         </span>
     </div>

@@ -25,7 +25,7 @@ $(function() {
         return false;
     });
 
-    $('code').click(function() {
+    $(document).on('click', 'code', function(e) {
         select(this);
     });
 

@@ -5,12 +5,12 @@
                 <td width="10" class="text-right">
                     <i class="fa fa-spinner fa-pulse"   v-if="'uploading' == file.state"></i>
                     <i class="fa fa-ban text-danger"    v-else-if="'error' == file.state"></i>
-                    <i class="fa fa-check text-success" v-else>
-                        <input type="hidden" name="atachments[]" :value="file.id" v-if="file.id > 0" />
-                    </i>
+                    <i class="fa fa-check text-success" v-else></i>
                 </td>
-                <td style="white-space: nowrap;">{{ file.name }}<!--br>{{ file.url }}--></td>
-                <td v-html="file.message"></td>
+                <td>
+                    {{ file.name }}<!--br>{{ file.url }}-->
+                    <div v-html="file.message" class=""></div>
+                </td>
                 <td style="white-space: nowrap;" class="text-right">
                     <div class="btn-group ml-auto">
                         <span v-if="file.id > 0">
@@ -49,10 +49,10 @@
         },
         methods: {
             handleFiles() {
-                this.files = [];
+                this.files = []
                 this.files.splice(0)
                 
-                let uploadFiles = this.$refs.files.files;
+                let uploadFiles = this.$refs.files.files
                 
                 Array.from(uploadFiles, (file, index) => {
                     Object.assign(file, {
@@ -62,23 +62,23 @@
                         message: null,
                         state: false,
                     })
-                    this.files.push(file);
-                });
+                    this.files.push(file)
+                })
                 
-                this.submitFiles();
+                this.submitFiles()
             },
-            removeFile( key ){
-                this.files.splice( key, 1 );
+            removeFile( key ) {
+                this.files.splice( key, 1 )
             },
-            deleteFile( key ){
-                alert('Not released. File id: ' + key);
+            deleteFile( key ) {
+                alert('Not released. File id: ' + key)
             },
             reindexFiles() {
                  // Reindex files array.
                 if (this.files.length) {
-                    this.files = this.files.filter(function (item) {
+                    this.files = this.files.filter((item) => {
                         return ! (item.id > 0);
-                    }.bind(this));
+                    })
                 }
                 
                 // Check how many elements are left.
