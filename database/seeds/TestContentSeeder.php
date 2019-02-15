@@ -98,7 +98,7 @@ class TestContentSeeder extends Seeder
         }
 
         // Preparing comments
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 400; $i++) {
             $comments[] = [
                 'user_id' => mt_rand(1, 9), 'commentable_type' => 'articles', 'commentable_id' => mt_rand(1, 10),
                 'content' => $faker->paragraph(mt_rand(1, 5)), 'created_at' => date('Y-m-d H:i:s'), 'is_approved' => mt_rand(0, 1)
