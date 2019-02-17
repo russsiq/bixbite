@@ -5,7 +5,7 @@
 </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import Quill from 'quill';
 import Parchment from 'parchment';
 

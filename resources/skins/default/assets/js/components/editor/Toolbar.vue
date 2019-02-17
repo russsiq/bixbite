@@ -86,7 +86,7 @@
 </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 export default {
     components: {
         //
@@ -116,7 +116,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .ql-custom .ql-picker-item:before {
     content: attr(data-label);
 }
@@ -127,7 +127,7 @@ export default {
     /* top: 54px;
     z-index: 1020; */
     top: 0;
-    z-index: 1050;
+    z-index: 1040;
 }
 
 .ql-container.ql-snow input.ql-image[type=file] {

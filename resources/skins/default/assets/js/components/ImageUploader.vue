@@ -49,8 +49,8 @@
 </div>
 </template>
 
-<script>
-import Modal from './Modal';
+<script type="text/ecmascript-6">
+import Modal from 'bxb-modal'
 
 export default {
     components: {
@@ -316,7 +316,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 label.image-uploader {
     cursor: pointer;
     display: block;

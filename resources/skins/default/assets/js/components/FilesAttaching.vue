@@ -59,7 +59,7 @@
 </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import baguetteBox from 'baguettebox.js';
 import MediaModal from './MediaModal';
 
@@ -277,3 +277,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /**
+     * 
+     */
+</style>

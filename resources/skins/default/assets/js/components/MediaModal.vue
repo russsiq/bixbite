@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Modal from './Modal'
+import Modal from 'bxb-modal'
 
 export default {
     components: {
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 audio,
 video {
     object-fit: scale-down;
