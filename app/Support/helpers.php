@@ -166,7 +166,7 @@ if (! function_exists('formatBytes')) {
                 __('TB'),
             ];
 
-            return round(pow(1024,$base - floor($base)),$precision).' '.$suffixes[floor($base)];
+            return round(pow(1024, $base - floor($base)), $precision).' '.$suffixes[floor($base)];
         }
 
         return $size;
@@ -244,7 +244,7 @@ if (! function_exists('html_clean')) {
         $text = preg_replace("/\>(\\x20|\t|\r|\n)+\</", '> <', $text);
         $text = strip_tags($text);
         $text = preg_replace('/([^\pL\pN\pP\pS\pZ])|([\xC2\xA0])/u', ' ', $text);
-        $text = str_replace('  ',' ', $text);
+        $text = str_replace('  ', ' ', $text);
         $text = trim($text);
 
         return $text === $old_text ? $text : html_clean($text);
@@ -368,11 +368,11 @@ if (! function_exists('reading_time')) {
      */
     function reading_time(string $text)
     {
-       $word_count = str_word_count(strip_tags($text));
-       $minutes = floor($word_count / 150);
+        $word_count = str_word_count(strip_tags($text));
+        $minutes = floor($word_count / 150);
 
-       return $minutes.' minute'.($minutes > 1 ? 's' : '');
-  }
+        return $minutes.' minute'.($minutes > 1 ? 's' : '');
+    }
 }
 
 if (! function_exists('select_dir')) {
