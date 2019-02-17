@@ -9,6 +9,7 @@
     "axios": "^0.18",
     "bootstrap": "^4.2.1",
     "bxb-loading-layer": "^0.1.1",
+    "bxb-modal": "^0.1.0",
     "bxb-notification": "^0.1.2",
     "bxb-scroll-to-top": "^0.1.1",
     "cross-env": "^5.2.0",
