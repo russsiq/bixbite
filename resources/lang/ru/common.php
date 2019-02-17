@@ -7,6 +7,7 @@ return [
     'read_more' => 'Подробнее ...',
     'powered_by' => 'Powered by <a href="https://github.com/russsiq/bixbite" target="_blank" class="page_footer__link">BixBite</a>.',
 
+    'home' => 'Главная страница',
     'search' => 'Поиск по сайту',
     'query' => 'Введите запрос ...',
     'articles' => 'Записи',

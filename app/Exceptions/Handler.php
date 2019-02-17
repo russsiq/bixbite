@@ -2,6 +2,8 @@
 
 namespace BBCMS\Exceptions;
 
+use View;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use \Symfony\Component\HttpKernel\Exception\HttpException as HttpException;
@@ -78,4 +80,16 @@ class Handler extends ExceptionHandler
     //
     //     return parent::renderHttpException($e);
     // }
+
+    /**
+     * Register the error template hint paths.
+     *
+     * @return void
+     */
+    protected function registerErrorViewPaths()
+    {
+        parent::registerErrorViewPaths();
+
+        View::prependNamespace('errors', theme_path('views/errors'));
+    }
 }

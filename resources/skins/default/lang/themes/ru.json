@@ -44,11 +44,22 @@
     "\\components\\partials\\navigation.blade.php": "Навигационная панель",
     "\\components\\partials\\search_form.blade.php": "Форма поиска",
     "\\custom_views": "Индивидуальные шаблоны",
+    "\\errors": "Страницы ошибок",
+    "\\errors\\404.blade.php": "404",
+    "\\errors\\419.blade.php": "419",
+    "\\errors\\429.blade.php": "429",
+    "\\errors\\500.blade.php": "500",
+    "\\errors\\503.blade.php": "503",
+    "\\errors\\layout.blade.php": "Макет Страница ошибок",
     "\\home": "Домашняя страница",
     "\\home.blade.php": "Макет Домашняя страница",
     "\\layouts": "Глобальные макеты",
     "\\layouts\\app.blade.php": "Основной макет сайта",
     "\\rss": "Шаблоны rss-лент",
+    "\\shortcodes": "Шорткоды",
+    "\\shortcodes\\download_button.blade.php": "Кнопка скачать файл",
+    "\\shortcodes\\media_player.blade.php": "Медиа проигрыватль",
+    "\\shortcodes\\picture_box.blade.php": "Графический блок (изображение)",
     "\\tags": "Теги",
     "\\tags.blade.php": "Макет Теги",
     "\\users": "Пользователи",
@@ -64,8 +75,6 @@
     "\\widgets\\articles_related.blade.php": "Похожие записи",
     "\\widgets\\tags_cloud.blade.php": "Облако тегов",
     "\\widgets\\comments_latest.blade.php": "Обсуждения",
-    
-    "\\errors.blade.php": "Страница ошибок",
 
     "msg.example": "Пример сообщения."
 }

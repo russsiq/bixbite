@@ -6,7 +6,6 @@
  */
 
 Auth::routes();
-Route::fallback('NotFoundController');
 Route::get('/', 'HomeController@index')->name('home');
 
 // Rss feds.
