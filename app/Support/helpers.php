@@ -280,7 +280,7 @@ if (! function_exists('html_secure')) {
             $text = str_replace(['{', '<', '>', '"', "'"], ['&#123;', '&lt;', '&gt;', '&#34;', '&#039;'], $text); // '&' => '&amp;'
             $text = trim($text) ?: null;
         } else {
-            return null;
+            $text = null;
         }
 
         return $text;
@@ -524,6 +524,7 @@ if (! function_exists('string_slug')) {
         if (! is_string($str) or empty($str)) {
             return null;
         }
+
         // Make sure string is in UTF-8 and strip invalid UTF-8 characters
         $str = mb_convert_encoding((string) $str, 'UTF-8');
 
@@ -676,7 +677,7 @@ if (! function_exists('teaser')) {
 if (! function_exists('theme_asset')) {
     /**
      * Generate an asset path for current theme of application.
-     * `Ex.: http://site.com/themes/{theme-from-setting}/public/css/app.css`
+     * Ex.: `http://site.com/themes/{theme-from-setting}/public/css/app.css`
      *
      * @param  string $path
      * @param  bool $secure
@@ -723,16 +724,13 @@ if (! function_exists('theme_version')) {
             $screenshot = app('url')->asset("resources/themes/$theme/public/$version[screenshot]");
         }
 
-        return (object) array_merge(
-            $version,
-            [
-                'name' => $theme,
-                'author' => $version['author'] ?? null,
-                'screenshot' => $screenshot ?? null,
-                'title' => $version['title'][$locale] ?? null,
-                'description' => $version['description'][$locale] ?? null,
-            ]
-        );
+        return (object) array_merge($version, [
+            'name' => $theme,
+            'author' => $version['author'] ?? null,
+            'screenshot' => $screenshot ?? null,
+            'title' => $version['title'][$locale] ?? null,
+            'description' => $version['description'][$locale] ?? null,
+        ]);
     }
 }
 
@@ -754,6 +752,7 @@ if (! function_exists('skin_path')) {
 if (! function_exists('user')) {
     /**
      * Return attribute for currently logined user.
+     *
      * @throws BadLogic When requesting hidden attributes.
      * @return string|null
      */
@@ -763,11 +762,11 @@ if (! function_exists('user')) {
             throw new BadLogic();
         }
 
-        if (auth()->check()) {
-            return $attribute ? auth()->user()->getAttribute($attribute) : auth()->user();
+        if (!auth()->check()) {
+            return null;
         }
 
-        return null;
+        return $attribute ? auth()->user()->getAttribute($attribute) : auth()->user();
     }
 }
 
@@ -824,8 +823,9 @@ if (! function_exists('parse_ini')) {
         }
 
         $text = fopen($file_path, 'r');
+
         while ($line = fgets($text)) {
-            list($key, $param) = explode('=', $line);
+            list($key, $param) = explode('=', $line, 2);
             yield $key => $param;
         }
     }
