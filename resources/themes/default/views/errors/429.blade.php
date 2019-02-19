@@ -1,5 +1,5 @@
 @extends('errors::layout')
 
-@section('title', 'Error')
+@section('title', __('common.error.429.title'))
 
-@section('message', 'Too many requests.')
+@section('message', __('common.error.429.message'))

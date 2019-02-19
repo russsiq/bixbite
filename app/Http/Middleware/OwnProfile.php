@@ -22,13 +22,13 @@ class OwnProfile
 
         if ($request->ajax() or $request->wantsJson()) {
             return response(
-                __('common.msg.unauthorized'), 401
+                __('common.error.403.message'), 403
             );
         }
 
-        return redirect()->to('/')->withErrors(
-            __('common.msg.unauthorized')
-        );
+        abort(403, __('common.error.403.message'), [
+            'X-Robots-Tag' => 'noindex, nofollow',
+        ]);
     }
 
 }

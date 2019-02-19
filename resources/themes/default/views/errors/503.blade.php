@@ -1,5 +1,5 @@
 @extends('errors::layout')
 
-@section('title', 'Service Unavailable')
+@section('title', __('common.error.503.title'))
 
-@section('message', 'Be right back.')
+@section('message', __('common.error.503.message'))

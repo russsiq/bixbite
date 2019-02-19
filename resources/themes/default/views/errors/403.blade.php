@@ -1,5 +1,5 @@
 @extends('errors::layout')
 
-@section('title', 'Forbidden')
+@section('title', __('common.error.403.title'))
 
-@section('message', 'This action is unauthorized.')
+@section('message', __('common.error.403.message'))
