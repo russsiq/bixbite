@@ -4,6 +4,8 @@ namespace BBCMS\Http\Controllers\Auth;
 
 use BBCMS\Models\User;
 use BBCMS\Http\Controllers\SiteController;
+
+use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -118,6 +120,8 @@ class RegisterController extends SiteController
                 'redirect' => $this->redirectPath()
             ], 200);
         }
+
+        return null;
     }
 
 
