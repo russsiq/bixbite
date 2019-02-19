@@ -13,15 +13,12 @@ class PrivilegesTableSeeder extends Seeder
     {
         // Insert
         \DB::table('privileges')->insert([
-            ['privilege' => 'global.admin'],
             ['privilege' => 'global.locked'],
+            
+            ['privilege' => 'global.admin'],
+            ['privilege' => 'dashboard'],
 
             ['privilege' => 'comment.store'],
-            
-            ['privilege' => 'dashboard'],
-            ['privilege' => 'privileges'],
-            ['privilege' => 'themes'],
-            ['privilege' => 'x_fields'],
 
             // ['privilege' => 'register'],
             // ['privilege' => 'login'],
@@ -51,8 +48,11 @@ class PrivilegesTableSeeder extends Seeder
 
             ['privilege' => 'admin.comments.other_update'],
             
-            ['privilege' => 'admin.settings.modify'],
-            ['privilege' => 'admin.settings.details'],
+            // ['privilege' => 'privileges'], only owner
+            // ['privilege' => 'admin.settings.modify'], only owner
+            // ['privilege' => 'admin.settings.details'], only owner
+            // ['privilege' => 'themes'], only owner
+            // ['privilege' => 'x_fields'], only owner
 
             // ['privilege' => 'admin.files.index'],
             // ['privilege' => 'admin.files.view'],
