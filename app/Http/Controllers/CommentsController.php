@@ -14,7 +14,7 @@ class CommentsController extends SiteController
     public function __construct(Comment $model)
     {
         parent::__construct();
-        $this->middleware('throttle:5,1')->only('store');
+        $this->middleware('throttle:1,1')->only(['store', 'update', 'delete']);
 
         $this->model = $model;
     }
