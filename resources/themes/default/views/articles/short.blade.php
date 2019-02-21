@@ -4,7 +4,7 @@
             <figure class="short_article__image">
                 <picture class="short_article_image__inner">
                     <img src="{{
-                        $image->getUrlAttribute('small') ?? $image->getUrlAttribute('thumb')
+                        $image->getUrlAttribute('small') ?? $image->getUrlAttribute('thumb') ?? $image->url
                     }}" alt="{{ $image->title }}" class="short_article_image__img" />
                 </picture>
             </figure>
