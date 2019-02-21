@@ -20,8 +20,8 @@ class ArticlesController extends SiteController
     public function index()
     {
         $query = filter_input_array(INPUT_GET, [
-            'month' => FILTER_SANITIZE_STRING,
             'year' => FILTER_SANITIZE_NUMBER_INT,
+            'month' => FILTER_SANITIZE_STRING,
             'user_id' => FILTER_SANITIZE_NUMBER_INT,
         ]);
 
