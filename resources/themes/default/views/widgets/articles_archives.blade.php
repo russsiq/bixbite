@@ -10,7 +10,7 @@
             <ul class="list-unstyled">
                 @forelse($widget->items as $item)
                     <li>
-                        <a href="{{ route('articles.index', ['month' => $item->month, 'year'=> $item->year]) }}">
+                        <a href="{{ route('articles.index', ['year'=> $item->year, 'month' => $item->month]) }}">
                             <span>{{ $item->monthname }} {{ $item->year }}</span>
                             <small class="pull-right">{{ $item->count }} {{ trans_choice('articles.num', $item->count) }}</small>
                         </a>
