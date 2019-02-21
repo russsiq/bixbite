@@ -16,3 +16,5 @@ yarn-error.log
 
 !/vendor/.htaccess
 !/storage/app/uploads/avatars/noavatar.png
+resources/themes/default/public/mix-manifest.json
+resources/skins/default/public/mix-manifest.json
