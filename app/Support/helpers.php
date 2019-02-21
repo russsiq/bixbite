@@ -111,12 +111,12 @@ if (! function_exists('app_theme')) {
 
 if (! function_exists('cluster')) {
     /**
-     * Remove empty array values and joined with delimiter.
-     *
-     * @param  array $array
-     * @param  string $delimiter
-     * @return string
-     */
+     * Remove empty array values and joined with delimiter.
+     *
+     * @param  array  $array
+     * @param  string $delimiter
+     * @return string
+     */
     function cluster(array $array, string $delimiter = ' — '): string
     {
         return join($delimiter, array_values(array_filter($array)));
