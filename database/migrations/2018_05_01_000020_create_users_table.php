@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->text('info')->length(500)->nullable();
             $table->string('where_from')->nullable();
             $table->rememberToken();
+            $table->string('api_token'); // md5(str_random(16));
             $table->ipAddress('last_ip')->nullable();
 
             $table->index('name');
