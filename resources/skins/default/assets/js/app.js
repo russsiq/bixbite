@@ -20,7 +20,7 @@ const translations = {}
 Vue.prototype.$loadLang = async function(module) {
     let fileName = module ? `${module}/ru.json` : `ru.json`
 
-    const response = await axios.get(`../../../resources/skins/default/lang/${fileName}`)
+    const response = await axios.get(`${process.env.MIX_APP_URL}/resources/skins/default/lang/${fileName}`)
 
     Object.assign(translations, response.data)
 }

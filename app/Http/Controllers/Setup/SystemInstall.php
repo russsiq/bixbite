@@ -135,8 +135,7 @@ class SystemInstall extends SetupController
     {
         $key = $key ?? $this->generateRandomKey();
 
-        file_put_contents(
-            app()->basePath('.env'),
+        file_put_contents(app()->basePath('.env'),
             '#APP_ENV=[production,local,dev]' . PHP_EOL .
             'APP_DEBUG=true' . PHP_EOL .
             'APP_ENV=production' . PHP_EOL .
@@ -145,7 +144,8 @@ class SystemInstall extends SetupController
             'APP_NAME=BixBite' . PHP_EOL .
             'APP_THEME=default' . PHP_EOL .
             'APP_URL=' . app('url')->to('/') . PHP_EOL .
-
+            'MIX_APP_URL="${APP_URL}"'. PHP_EOL .
+            
             'BROADCAST_DRIVER=log' . PHP_EOL .
             'CACHE_DRIVER=file' . PHP_EOL .
             'LOG_CHANNEL=stack' . PHP_EOL .
