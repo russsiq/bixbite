@@ -19,12 +19,19 @@ class ArticlesController extends SiteController
 
     public function index()
     {
+        $query = filter_input_array(INPUT_GET, [
+            'month' => FILTER_SANITIZE_STRING,
+            'year' => FILTER_SANITIZE_NUMBER_INT,
+            'user_id' => FILTER_SANITIZE_NUMBER_INT,
+        ]);
+
         $articles = $this->model->shortArticle()
-            ->filter(request(['month', 'year', 'user_id']))
+            ->filter($query)
             ->where('on_mainpage', 1)
             ->orderBy('is_pinned', 'desc')
             ->orderBy(setting('articles.order_by', 'id'), setting('articles.direction', 'desc'))
-            ->paginate(setting('articles.paginate', 8));
+            ->paginate(setting('articles.paginate', 8))
+            ->appends($query);
 
         pageinfo()->unless('onHomePage', [
             'title' => setting('articles.meta_title', 'Articles'),
