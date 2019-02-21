@@ -6,9 +6,9 @@ const mix = require('laravel-mix')
 mix.options({
     processCssUrls: false
 })
-.setPublicPath('./resources/themes/default/')
-.js('resources/themes/default/assets/js/app.js', 'public/js')
-.sass('resources/themes/default/assets/sass/app.scss', 'public/css')
+.setPublicPath('./resources/themes/default/public/')
+.js('resources/themes/default/assets/js/app.js', 'js')
+.sass('resources/themes/default/assets/sass/app.scss', 'css')
 .copyDirectory(
     'node_modules/font-awesome/fonts',
     './resources/themes/default/public/css/fonts/font-awesome'
@@ -20,15 +20,38 @@ mix.options({
 // mix.options({
 //     processCssUrls: false
 // })
-// .setPublicPath('./resources/skins/default/')
-// .js('resources/skins/default/assets/js/app.js', 'public/js')
-// .js('resources/skins/default/assets/js/code-editor.js', 'public/js')
-// .sass('resources/skins/default/assets/sass/app.scss', 'public/css')
-// .sass('resources/skins/default/assets/sass/code-editor.scss', 'public/css')
+// .setPublicPath('./resources/skins/default/public/')
+// .js('resources/skins/default/assets/js/app.js', 'js')
+// .sass('resources/skins/default/assets/sass/app.scss', 'css')
+// .js('resources/skins/default/assets/js/code-editor.js', 'js')
+// .sass('resources/skins/default/assets/sass/code-editor.scss', 'css')
 // .copyDirectory(
 //     'node_modules/font-awesome/fonts',
 //     './resources/skins/default/public/css/fonts/font-awesome'
 // )
+
+/**
+ * This has the benefit of not needing to cache-bust the vendor.js file,
+ * if no changes have been made to the dependencies that have been extracted.
+ */
+.extract([
+    'axios',
+    'baguettebox.js',
+    'bootstrap',
+    'bxb-loading-layer',
+    'bxb-modal',
+    'bxb-notification',
+    'bxb-scroll-to-top',
+    'lodash',
+    'popper.js',
+    'quill',
+    'vue',
+    'jquery',
+])
+
+if (mix.inProduction()) {
+    mix.version();
+}
 
 /**
  * ----------------------------------------------------------------------------
@@ -61,7 +84,7 @@ mix.options({
     .version() // Enable versioning.
     .disableNotifications()
     .setPublicPath('path') // set another path to compiled public files.
-    .setResourceRoot('path') // prefix for resource locators.
+    .setResourceRoot('path') // prefix for resource locators. !!! NOT WORKED.
     .autoload({}) // Will be passed to Webpack's ProvidePlugin.
     .webpackConfig({}) // Override webpack.config.js, without editing the file directly.
     .then(function () {}) // Will be triggered each time Webpack finishes building.

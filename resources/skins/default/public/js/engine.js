@@ -38,10 +38,11 @@ $.reqJSON = function(url, params, callback) {
         loader.hide();
     })
     .catch(function(jqXHR, textStatus, exception) {
-        var msg, msgs;
+        let msg, msgs;
         
         if(jqXHR.status === 0) msg = 'Not connect. Verify Network.';
         else if(jqXHR.status == 404) msg = 'Requested page not found.';
+        else if(jqXHR.status == 419) msg = 'Authentication timeout. Error validating CSRF token.';
         else if(jqXHR.status == 422 && jqXHR.responseJSON.errors) msgs = jqXHR.responseJSON.errors;
         else if(jqXHR.status == 500) msg = 'Internal Server Error.';
         else if('timeout' === exception) msg = 'Time out error.';
@@ -52,9 +53,9 @@ $.reqJSON = function(url, params, callback) {
         if (!msgs) {
             Notification.error({message: msg});
         } else {
-            $.each(msgs, function(index, error) {
-                Notification.warning({message: error});
-            });
+            for(let k in msgs) {
+                Notification.warning({message: msgs[k][0]});
+            }
         }
     });
 }

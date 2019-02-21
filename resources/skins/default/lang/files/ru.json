@@ -27,6 +27,7 @@
     "msg.update": "Файл обновлен.",
     "msg.uploaded_success": "Файл успешно загружен.",
     "not_attached": "<code>[не прикреплено]<\/code>",
+    "msg.sure_del_file": "Удалить файл с сервера?",
     "section.images": "Изображения",
     "section.main": "Основные настройки",
     "title": "Заголовок",

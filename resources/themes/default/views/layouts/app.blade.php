@@ -44,6 +44,8 @@
             </footer>
         </div>
 
+        <script src="{{ theme_asset('js/manifest.js') }}"></script>
+        <script src="{{ theme_asset('js/vendor.js') }}"></script>
         <script src="{{ theme_asset('js/app.js') }}"></script>
         @stack('scripts')
         

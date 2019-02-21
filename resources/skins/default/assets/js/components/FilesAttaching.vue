@@ -10,10 +10,10 @@
                         <a :href="file.url" target="_blank" v-if="'image'== file.type">
                             <img :src="file.url" :alt="file.title" :title="file.title" class="card-file-icon" width="42" />
                         </a>
-                        <a href="#" class="media-link" @click.prevent="mediaModal(file)" v-else-if="'audio'== file.type">
+                        <a href="#" class="media-link" v-else-if="'audio'== file.type" @click.prevent="mediaModal(file)">
                             <div class="card-file-icon"><i class="fa fa-music"></i></div>
                         </a>
-                        <a href="#" class="media-link" @click.prevent="mediaModal(file)" v-else-if="'video'== file.type">
+                        <a href="#" class="media-link" v-else-if="'video'== file.type" @click.prevent="mediaModal(file)">
                             <div class="card-file-icon"><i class="fa fa-film"></i></div>
                         </a>
                         <div class="card-file-icon" v-else-if="'archive'== file.type"><i class="fa fa-archive"></i></div>
@@ -36,13 +36,14 @@
                 </td>
                 <td style="white-space: nowrap;" class="text-right">
                     <div class="btn-group ml-auto">
-                        <span v-if="file.id > 0">
+                        <div v-if="file.id > 0">
+                            <button type="button" class="btn btn-link text-primary" @click="editFileModal(file, key)"><i class="fa fa-pencil"></i></button>
                             <button type="button" class="btn btn-link text-danger" @click="deleteFile(key)"><i class="fa fa-trash"></i></button>
-                        </span>
-                        <span v-else>
+                        </div>
+                        <div v-else>
                             <button type="button" class="btn btn-link text-primary" @click="uploadFile(key)"><i class="fa fa-upload"></i></button>
                             <button type="button" class="btn btn-link text-warning" @click="removeFile(key)"><i class="fa fa-trash"></i></button>
-                        </span>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -56,23 +57,23 @@
     </div>
 
     <media-modal v-if="mediaModalShown" :media="media" @close="closeMediaModal()"></media-modal>
+    <edit-file-modal v-if="editFileModalShown" :file="file" @updated="updateFile" @close="closeEditFileModal()"></edit-file-modal>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
-import baguetteBox from 'baguettebox.js';
-import MediaModal from './MediaModal';
+
+import baguetteBox from 'baguettebox.js'
+import MediaModal from './MediaModal'
+import EditFileModal from './editFileModal'
 
 export default {
     components: {
         'media-modal': MediaModal,
+        'edit-file-modal': EditFileModal,
     },
 
     props: {
-        lang: {
-            /*type: Object,
-            required: false*/
-        },
         file_url: {
             String,
             // required: true
@@ -91,12 +92,21 @@ export default {
         return {
             files: [],
             media: null,
+
+            /**
+             * Current file to edit in modal.
+             * @type {object}
+             */
+            file: null,
+
             mediaModalShown: false,
+            editFileModalShown: false,
         }
     },
 
     created() {
         this.fetchFiles()
+        this.$loadLang('files')
     },
 
     mounted() {
@@ -104,7 +114,8 @@ export default {
         this.$nextTick(() => {
             setTimeout(() => {
                 baguetteBox.run('.baguetteBox', {
-                    noScrollbars: true,
+                    // bug with sticky bar and document.documentElement.style.overflowY = 'auto';
+                    // noScrollbars: true,
                     captions(element) {
                         return element.getElementsByTagName('img')[0].title;
                     }
@@ -137,11 +148,13 @@ export default {
         submitFiles() {
             // Check how many elements in ref="files".
             if (!this.$refs.files.files.length) {
-                return alert('Nothing to upload');
+                return alert('Nothing to upload')
             }
 
             for (let i = 0; i < this.files.length; i++) {
-                if (!this.files[i].id) this.uploadFile(i);
+                if (this.files[i].id == 0) {
+                    this.uploadFile(i)
+                }
             }
 
             this.$refs.files.value = ''
@@ -226,7 +239,7 @@ export default {
         },
 
         deleteFile(key) {
-            if (!confirm('Delete this file from server?')) {
+            if (!confirm(this.lang('msg.sure_del_file'))) {
                 return false
             }
 
@@ -274,12 +287,38 @@ export default {
             this.media = null
             this.mediaModalShown = false
         },
+
+        /**
+         * Open the modal to edit file.
+         */
+        editFileModal(file, key) {
+            this.file = Object.assign(file, {
+                key
+            })
+            this.editFileModalShown = true
+        },
+
+        /**
+         * Close the edit file modal.
+         */
+        closeEditFileModal() {
+            this.file = null
+            this.editFileModalShown = false
+        },
+
+        updateFile(attr) {
+            let key = this.file.key
+            this.files.splice(key, 1, Object.assign(this.files[key], {
+                title: attr.title,
+                description: attr.description,
+            }))
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    /**
-     * 
-     */
+/**
+ *
+ */
 </style>

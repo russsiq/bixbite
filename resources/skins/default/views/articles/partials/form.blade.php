@@ -64,7 +64,6 @@
 			<textarea name="content" style="width:100%;" rows="8"
 				>{!! old('content', optional($article)->getOriginal('content')) !!}</textarea>
 			<quill-editor
-				lang="{{ app_locale() }}"
 				:file_url="'{{ route('admin.files.index') }}'"
 				:attachment_id="{{ $article->id ?? 0 }}"
 				:attachment_type="'articles'"
@@ -79,7 +78,6 @@
 					</div>
 					<div id="card_files" class="collapse" data-parent="#accordion">
 						<files-attaching
-							lang="{{ app_locale() }}"
 							:file_url="'{{ route('admin.files.index') }}'"
 							:attachment_id="{{ $article->id ?? 0 }}"
 							:attachment_type="'articles'"

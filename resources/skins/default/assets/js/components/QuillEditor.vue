@@ -20,10 +20,6 @@ export default {
     },
 
     props: {
-        lang: {
-            /*type: Object,
-            required: false*/
-        },
         file_url: {
             String,
             // required: true
@@ -160,33 +156,52 @@ export default {
 }
 </script>
 
-<style>
+<!-- Not used `scoped` attribute -->
+<style lang="scss">
 .ql-container {
     font-family: inherit;
 }
+.ql-container.ql-snow {
+    border: none;
+    background: #aaa;
+    padding: .8rem 1.4rem;
+}
 
 .ql-snow .ql-editor {
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid transparent;
-    border-radius: 0;
-    color: #888;
+    position: relative;
     display: block;
-    font-size: 16px;
-    line-height: 1.6;
-    padding: 0.375rem 0.5rem;
-    transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+    margin: 0 auto;
+    padding: 1.2rem 1.6rem;
     width: 100%;
-    min-height: 388px;
+    min-height: 688px;
+    max-width: 888px;
+
     font-family: "Bookman old style";
+    font-size: 16px;
+    line-height: 1.4;
+    letter-spacing: -.4px;
+    word-wrap: break-word;
+
+    color: #888;
+    background-color: #fefefe;
+    background-clip: padding-box;
+    box-shadow: 0 0 35px #000;
+    border: 1px solid #888;
+    border-top: 1px solid #dedede;
+    border-radius: 0;
+    transition: color 0.15s ease-in-out,  background-color 0.15s ease-in-out;
 }
 
 .ql-snow .ql-editor:focus {
-    background-color: #fff;
-    border: 1px solid #3bceff;
-    box-shadow: none;
-    color: #000;
     outline: 0;
+    color: #000;
+    background-color: #fff;
+    transition: color 0.15s ease-in-out,  background-color 0.15s ease-in-out;
+}
+
+.ql-snow .ql-editor.ql-blank::before {
+    left: 1.6rem;
+    padding: 0;
 }
 
 .ql-snow .ql-editor p,

@@ -27,13 +27,13 @@
         <template slot="modal__header">Edit Image</template>
 
         <template slot="modal__body">
-            <div class="form-group has-float-label" :class="{ 'has-error': errors.email }">
+            <div class="form-group has-float-label" :class="{ 'has-error': errors.title }">
                 <label class="control-label">Title</label>
                 <input type="text" v-model="image.title" @keydown.13.prevent="updateImage()" :class="{ 'is-invalid': errors.title }"
                     class="form-control" placeholder="Add caption to the image" autocomplete="off" required />
                 <span v-if="errors.title" class="invalid-feedback">{{ errors.title[0] }}</span>
             </div>
-            <div class="form-group has-float-label" :class="{ 'has-error': errors.email }">
+            <div class="form-group has-float-label" :class="{ 'has-error': errors.description }">
                 <label class="control-label">Description</label>
                 <textarea v-model="image.description" @keydown.13.prevent :class="{ 'is-invalid': errors.description }"
                     class="form-control noresize" rows="4" placeholder="Add description to the image"></textarea>
@@ -116,6 +116,7 @@ export default {
                 })
             } else if (id === 0) {
                 this.state = null
+                this.errors = []
             }
         },
     },
@@ -245,8 +246,6 @@ export default {
             } catch (error) {
                 if (error.response && 422 === error.response.status) {
                     this.errors = error.response.data.errors
-                } else {
-                    console.log('Error', error.message)
                 }
             }
 

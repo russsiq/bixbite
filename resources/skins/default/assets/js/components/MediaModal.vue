@@ -13,7 +13,7 @@
 </modal>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import Modal from 'bxb-modal'
 
 export default {

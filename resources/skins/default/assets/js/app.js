@@ -13,6 +13,26 @@ import Vue from 'vue';
 // Configure ajax provider.
 Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
 
+const translations = {}
+// NOT USED because return wrong namespace.
+// let requireLangContext = require.context(/* webpackChunkName: "lang-[request]" */ '../../lang/', true, /ru\.json$/, 'lazy')
+
+Vue.prototype.$loadLang = async function(module) {
+    let fileName = module ? `${module}/ru.json` : `ru.json`
+
+    const response = await axios.get(`../../../resources/skins/default/lang/${fileName}`)
+
+    Object.assign(translations, response.data)
+}
+
+Vue.mixin({
+    methods: {
+        lang(key) {
+            return translations[key] || key
+        }
+    }
+});
+
 // Adding Vue components to application.
 import UploadFiles from './components/UploadFiles.vue';
 import FilesAttaching from './components/FilesAttaching.vue';
@@ -45,6 +65,11 @@ const app = new Vue({
             content: '',
         },
     },
+
+    created() {
+        this.$loadLang()
+    },
+
     methods: {
         updateArticleContent(value) {
             console.log(value)

@@ -26,6 +26,8 @@
         </div>
 
         <!-- Scripts -->
+        <script src="{{ skin_asset('js/manifest.js') }}"></script>
+        <script src="{{ skin_asset('js/vendor.js') }}"></script>
         <script src="{{ skin_asset('js/app.js') }}"></script>
         <script src="{{ skin_asset('js/engine.js') }}"></script>
         <script src="{{ skin_asset('js/script.js') }}"></script>
