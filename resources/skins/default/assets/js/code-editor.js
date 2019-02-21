@@ -112,7 +112,7 @@ function codeEditor_update() {
     });
 }
 
-$(document).on('click', '[data-path]', function(e) {
+$(document).on('click', 'a[data-path]', function(e) {
     template = this.getAttribute('data-path');
     e.preventDefault();
     codeEditor_refresh();
