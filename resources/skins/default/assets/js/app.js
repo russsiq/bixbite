@@ -18,9 +18,13 @@ const translations = {}
 // let requireLangContext = require.context(/* webpackChunkName: "lang-[request]" */ '../../lang/', true, /ru\.json$/, 'lazy')
 
 Vue.prototype.$loadLang = async function(module) {
-    let fileName = module ? `${module}/ru.json` : `ru.json`
+    // If the module name is not passed, we will load the common language.
+    let fileName = module ? `${module}/${Pageinfo.locale}.json` : `${Pageinfo.locale}.json`
 
-    const response = await axios.get(`${process.env.MIX_APP_URL}/resources/skins/default/lang/${fileName}`)
+    // NOT USED because it only works in the development environment.
+    // const response = await axios.get(`${process.env.MIX_APP_URL}/resources/skins/default/lang/${fileName}`)
+
+    const response = await axios.get(`${Pageinfo.app_url}/resources/skins/default/lang/${fileName}`)
 
     Object.assign(translations, response.data)
 }

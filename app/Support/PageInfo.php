@@ -21,6 +21,7 @@ class PageInfo
         $this->set('csrf_token', csrf_token());
         $this->set('page', request('page') ?? null);
         $this->set('app_name', setting('system.app_name', 'BixBite'));
+        $this->set('app_url', setting('system.app_url', url()->to('/')));
     }
 
     public function make(array $data)
@@ -36,16 +37,35 @@ class PageInfo
             return $title;
         }
 
-        // Keys are shown for visual perception.
         $titles = [
             'header' => $this->get('app_name'),
             'section' => $this->get('section')->title ?? null,
             'title' => $this->get('title') ?? null,
         ];
+
         return cluster(
             setting('system.meta_title_reverse', false) ? array_reverse($titles) : $titles,
             setting('system.meta_title_delimiter', ' — ')
         );
+    }
+
+    /**
+     * Get the variables for vue.js or another javascript.
+     *
+     * @return string
+     */
+    public function scriptVariables()
+    {
+        $data = json_encode([
+            'locale' => $this->get('locale'),
+            'app_url' => $this->get('app_url'),
+        ]);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new \RuntimeException(json_last_error_msg());
+        }
+
+        return $data;
     }
 
     protected function set(string $key, $value = null)
