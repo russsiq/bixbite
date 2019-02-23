@@ -72,7 +72,7 @@ function codeEditor_refresh() {
     })
     .catch(function (error) {
         console.log(error);
-        if (error.response.status === 422) {
+        if (error.response.status && error.response.status === 422) {
             for(var k in error.response.data.errors) {
                 Notification.warning({message: error.response.data.errors[k][0]});
             }

@@ -41,10 +41,10 @@
 
     <span class="ql-formats">
         <select class="ql-header">
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-            <option value=""></option>
+            <option selected="selected">Обычный</option>
+            <option value="4">Заголовок 4</option>
+            <option value="3">Заголовок 3</option>
+            <option value="2">Заголовок 2</option>
         </select>
     </span>
 
@@ -74,12 +74,12 @@
         </span> -->
 
         <span class="ql-formats">
-            <select class="ql-shortcodes">
-                <option value="[[app_url]]">Домашняя страница</option>
-                <option value="[[organization]]">Название организации</option>
-                <option value="[[address]]">Адрес организации</option>
-                <option value="[[contact_telephone]]">Контактный телефон</option>
-                <option value="[[contact_email]]">Контактный email</option>
+            <select class="ql-shortcodes" ref="ql-shortcodes">
+                <option value="[[app_url]]">{{ trans('app_url') }}</option>
+                <option value="[[organization]]">{{ trans('organization') }}</option>
+                <option value="[[address]]">{{ trans('address') }}</option>
+                <option value="[[contact_telephone]]">{{ trans('contact_telephone') }}</option>
+                <option value="[[contact_email]]">{{ trans('contact_email') }}</option>
             </select>
         </span>
     </div>
@@ -108,7 +108,14 @@ export default {
     },
 
     mounted() {
-        //
+        this.$nextTick(() => {
+            setTimeout(() => {
+                var items = document.querySelectorAll('.ql-shortcodes .ql-picker-options .ql-picker-item');
+                for (var i = 0; i < items.length; i++) {
+                    items[i].dataset.label = this.$refs['ql-shortcodes'][i].text
+                }
+            }, 100)
+        })
     },
 
     methods: {
@@ -180,15 +187,19 @@ export default {
     color: #06c;
 }
 
+.ql-snow .ql-picker.ql-header {
+    width: auto;
+}
+
 /**
  * Custom buttons.
  */
 
-.ql-picker.ql-shortcodes .ql-picker-item:before {
+.ql-snow .ql-picker.ql-shortcodes .ql-picker-item:before {
     content: attr(data-label);
 }
 
-.ql-picker.ql-shortcodes .ql-picker-label::before {
+.ql-snow .ql-picker.ql-shortcodes .ql-picker-label::before {
     content: '[[Shortcodes]]'
 }
 </style>

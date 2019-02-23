@@ -24,17 +24,17 @@
     </label>
 
     <modal v-if="modalShown" @close="closeModal()">
-        <template slot="modal__header">Edit Image</template>
+        <template slot="modal__header">{{ trans('edit_image') }}</template>
 
         <template slot="modal__body">
             <div class="form-group has-float-label" :class="{ 'has-error': errors.title }">
-                <label class="control-label">Title</label>
+                <label class="control-label">{{ trans('title') }}</label>
                 <input type="text" v-model="image.title" @keydown.13.prevent="updateImage()" :class="{ 'is-invalid': errors.title }"
                     class="form-control" placeholder="Add caption to the image" autocomplete="off" required />
                 <span v-if="errors.title" class="invalid-feedback">{{ errors.title[0] }}</span>
             </div>
             <div class="form-group has-float-label" :class="{ 'has-error': errors.description }">
-                <label class="control-label">Description</label>
+                <label class="control-label">{{ trans('description') }}</label>
                 <textarea v-model="image.description" @keydown.13.prevent :class="{ 'is-invalid': errors.description }"
                     class="form-control noresize" rows="4" placeholder="Add description to the image"></textarea>
                 <span v-if="errors.description" class="invalid-feedback">{{ errors.description[0] }}</span>
@@ -42,8 +42,8 @@
         </template>
 
         <template slot="modal__footer">
-            <button type="button" class="btn btn-outline-secondary mr-2" @click="closeModal()">Cancel</button>
-            <button type="button" class="btn btn-outline-success" @click="updateImage()">Apply</button>
+            <button type="button" class="btn btn-outline-secondary mr-2" @click="closeModal()">{{ trans('btn.cancel') }}</button>
+            <button type="button" class="btn btn-outline-success" @click="updateImage()">{{ trans('btn.save') }}</button>
         </template>
     </modal>
 </div>
@@ -122,6 +122,8 @@ export default {
     },
 
     created() {
+        this.lang.loadFromJsonPath('files')
+
         this.image = this.$props.uploaded
 
         if (this.$props.input_value > 0) {
@@ -253,7 +255,7 @@ export default {
         },
 
         deleteImage() {
-            if(! confirm('Delete this image from server?')) {
+            if (!confirm(this.trans('msg.sure_del_file'))) {
                 return false
             }
 

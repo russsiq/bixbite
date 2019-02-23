@@ -4,7 +4,7 @@
     "app_name#descr": "Например: BixBite.",
     "app_skin": "Шаблон админ. панели",
     "app_theme": "Шаблон сайта",
-    "app_url": "Адрес сайта",
+    "app_url": "Домашняя страница",
     "app_url#descr": "Например: http:\/\/server.com.",
     "articles_changefreq": "Вероятная частота изменения страницы",
     "articles_priority": "Приоритетность относительно других url на сайте",

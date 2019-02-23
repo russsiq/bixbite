@@ -106,7 +106,7 @@ export default {
 
     created() {
         this.fetchFiles()
-        this.$loadLang('files')
+        this.lang.loadFromJsonPath('files')
     },
 
     mounted() {
@@ -239,7 +239,7 @@ export default {
         },
 
         deleteFile(key) {
-            if (!confirm(this.lang('msg.sure_del_file'))) {
+            if (!confirm(this.trans('msg.sure_del_file'))) {
                 return false
             }
 

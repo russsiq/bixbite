@@ -9,30 +9,21 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+import Translator from './helpers/translator';
 
 // Configure ajax provider.
 Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
 
-const translations = {}
-// NOT USED because return wrong namespace.
-// let requireLangContext = require.context(/* webpackChunkName: "lang-[request]" */ '../../lang/', true, /ru\.json$/, 'lazy')
-
-Vue.prototype.$loadLang = async function(module) {
-    // If the module name is not passed, we will load the common language.
-    let fileName = module ? `${module}/${Pageinfo.locale}.json` : `${Pageinfo.locale}.json`
-
-    // NOT USED because it only works in the development environment.
-    // const response = await axios.get(`${process.env.MIX_APP_URL}/resources/skins/default/lang/${fileName}`)
-
-    const response = await axios.get(`${Pageinfo.app_url}/resources/skins/default/lang/${fileName}`)
-
-    Object.assign(translations, response.data)
-}
-
 Vue.mixin({
+    data() {
+        return {
+            lang: new Translator(`${Pageinfo.app_url}/resources/skins/default/lang/`, Pageinfo.locale)
+        }
+    },
+
     methods: {
-        lang(key) {
-            return translations[key] || key
+        trans(key) {
+            return this.lang.trans(key)
         }
     }
 });
@@ -68,10 +59,6 @@ const app = new Vue({
             id: 0,
             content: '',
         },
-    },
-
-    created() {
-        this.$loadLang()
     },
 
     methods: {

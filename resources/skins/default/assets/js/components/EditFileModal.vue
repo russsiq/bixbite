@@ -1,23 +1,23 @@
 <template>
 <modal @close="close()">
-    <template slot="modal__header">{{ $props.file.title || lang('Html5 super mega modal player') }}</template>
+    <template slot="modal__header">{{ $props.file.title || trans('Html5 super mega modal player') }}</template>
 
     <template slot="modal__body">
         <div class="form-group has-float-label" :class="{ 'has-error': errors.title }">
-            <label class="control-label">{{ lang('title') }}</label>
+            <label class="control-label">{{ trans('title') }}</label>
             <input type="text" v-model="title" @keydown.13.prevent="updateFile()" :class="{ 'is-invalid': errors.title }" class="form-control" placeholder="Add caption to the image" autocomplete="off" required />
             <span v-if="errors.title" class="invalid-feedback">{{ errors.title[0] }}</span>
         </div>
         <div class="form-group has-float-label" :class="{ 'has-error': errors.description }">
-            <label class="control-label">{{ lang('description') }}</label>
+            <label class="control-label">{{ trans('description') }}</label>
             <textarea v-model="description" @keydown.13.prevent :class="{ 'is-invalid': errors.description }" class="form-control noresize" rows="4" placeholder="Add description to the image"></textarea>
             <span v-if="errors.description" class="invalid-feedback">{{ errors.description[0] }}</span>
         </div>
     </template>
 
     <template slot="modal__footer">
-        <button type="button" class="btn btn-outline-secondary mr-2" @click="close()">{{ lang('btn.cancel') }}</button>
-        <button type="button" class="btn btn-outline-success" @click="updateFile()">{{ lang('btn.save') }}</button>
+        <button type="button" class="btn btn-outline-secondary mr-2" @click="close()">{{ trans('btn.cancel') }}</button>
+        <button type="button" class="btn btn-outline-success" @click="updateFile()">{{ trans('btn.save') }}</button>
     </template>
 </modal>
 </template>
