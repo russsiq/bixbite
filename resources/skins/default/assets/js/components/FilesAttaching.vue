@@ -106,10 +106,11 @@ export default {
 
     created() {
         this.fetchFiles()
-        this.lang.loadFromJsonPath('files')
     },
 
-    mounted() {
+    async mounted() {
+        await this.loadFromJsonPath('files')
+
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
             setTimeout(() => {
@@ -192,7 +193,7 @@ export default {
         async uploadFile(key) {
             if (!this.$props.attachment_id || !this.$props.attachment_type) {
                 Notification.warning({
-                    message: 'Before you can upload files, you must save the article.'
+                    message: this.lang.trans('Before you can upload files, you must save the article.')
                 })
 
                 return false

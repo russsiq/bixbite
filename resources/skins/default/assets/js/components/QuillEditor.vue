@@ -12,7 +12,7 @@ import Parchment from 'parchment';
 import Toolbar from './editor/Toolbar';
 
 import FigureBlot from './editor/blots/FigureBlot';
-import imageHandler from './editor/handlers/imageHandler';
+import figureHandler from './editor/handlers/figureHandler';
 
 export default {
     components: {
@@ -51,7 +51,10 @@ export default {
         };
     },
 
-    mounted() {
+    async mounted() {
+        await this.loadFromJsonPath('files')
+        await this.loadFromJsonPath('articles')
+
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
             this.textarea = document.querySelector('[name=content]')
@@ -107,11 +110,11 @@ export default {
                     },
                 },
                 theme: 'snow', // bubble or snow
-                placeholder: "Write to the world..."
+                placeholder: this.lang.trans("Write to the world...")
             })
 
             // Handlers can also be added post initialization.
-            quill.getModule('toolbar').addHandler('image', () => imageHandler(quill, {
+            quill.getModule('toolbar').addHandler('image', () => figureHandler(quill, {
                 upload_url: this.$props.file_url + '/upload',
                 attachment_id: this.attachment_id,
                 attachment_type: 'articles',
@@ -158,13 +161,18 @@ export default {
 
 <!-- Not used `scoped` attribute -->
 <style lang="scss">
+.quill-editor {
+    background: #aaa;
+    padding-bottom: .1rem;
+}
 .ql-container {
     font-family: inherit;
 }
 .ql-container.ql-snow {
     border: none;
-    background: #aaa;
-    padding: .8rem 1.4rem;
+    background: #fafafa;
+    padding: 0;
+    margin: 0.8rem 1.4rem;
 }
 
 .ql-snow .ql-editor {
@@ -183,20 +191,17 @@ export default {
     word-wrap: break-word;
 
     color: #888;
-    background-color: #fefefe;
-    background-clip: padding-box;
     box-shadow: 0 0 35px #000;
     border: 1px solid #888;
     border-top: 1px solid #dedede;
     border-radius: 0;
-    transition: color 0.15s ease-in-out,  background-color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
 }
 
 .ql-snow .ql-editor:focus {
     outline: 0;
-    color: #000;
-    background-color: #fff;
-    transition: color 0.15s ease-in-out,  background-color 0.15s ease-in-out;
+    color: inherit;
+    transition: color 0.15s ease-in-out;
 }
 
 .ql-snow .ql-editor.ql-blank::before {

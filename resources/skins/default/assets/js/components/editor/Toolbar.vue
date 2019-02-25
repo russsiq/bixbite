@@ -1,16 +1,15 @@
 <template>
 <div id="toolbar-container">
-
-    <!-- <span class="ql-formats">
+    <span class="ql-formats">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Save</button>
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">{{ 'btn.save' | trans({name : 'Вася', year: 220}) }}</button>
             <div class="dropdown-menu">
-                <button type="submit" name="state" value="published" class="dropdown-item">Published</button>
-                <button type="submit" name="state" value="unpublished" class="dropdown-item">Unpublished</button>
-                <button type="submit" name="state" value="draft" class="dropdown-item">Draft</button>
+                <button type="submit" name="state" value="published" class="dropdown-item">{{ 'action.published' | trans }}</button>
+                <button type="submit" name="state" value="unpublished" class="dropdown-item">{{ 'action.unpublished' | trans }}</button>
+                <button type="submit" name="state" value="draft" class="dropdown-item">{{ 'action.draft' | trans }}</button>
             </div>
         </div>
-    </span> -->
+    </span>
 
     <span class="ql-formats">
         <button class="ql-bold"></button>
@@ -41,10 +40,10 @@
 
     <span class="ql-formats">
         <select class="ql-header">
-            <option selected="selected">Обычный</option>
-            <option value="4">Заголовок 4</option>
-            <option value="3">Заголовок 3</option>
-            <option value="2">Заголовок 2</option>
+            <option selected="selected">{{ 'Normal' | trans }}</option>
+            <option value="4">{{ 'Heading 4' | trans }}</option>
+            <option value="3">{{ 'Heading 3' | trans }}</option>
+            <option value="2">{{ 'Heading 2' | trans }}</option>
         </select>
     </span>
 
@@ -62,24 +61,25 @@
             <button class="ql-code-block"></button>
         </span>
 
-        <!-- <span class="ql-formats">
-            <button class="ql-image" :disabled="!$parent.$props.attachment_id"></button>
-            <button class="ql-video"></button>
-            <button class="ql-formula"></button>
-            </span>
-
         <span class="ql-formats">
+            <button class="ql-image"></button>
+            <!-- <button class="ql-image" :disabled="!$parent.$props.attachment_id"></button>
+            <button class="ql-video"></button>
+            <button class="ql-formula"></button> -->
+        </span>
+
+        <!-- <span class="ql-formats">
             <button class="ql-table"><i class="fa fa-table"></i></button>
             <button class="ql-columns"><i class="fa fa-columns"></i></button>
         </span> -->
 
         <span class="ql-formats">
             <select class="ql-shortcodes" ref="ql-shortcodes">
-                <option value="[[app_url]]">{{ trans('app_url') }}</option>
-                <option value="[[organization]]">{{ trans('organization') }}</option>
-                <option value="[[address]]">{{ trans('address') }}</option>
-                <option value="[[contact_telephone]]">{{ trans('contact_telephone') }}</option>
-                <option value="[[contact_email]]">{{ trans('contact_email') }}</option>
+                <option value="[[app_url]]">{{ 'app_url' | trans }}</option>
+                <option value="[[organization]]">{{ 'organization' | trans }}</option>
+                <option value="[[address]]">{{ 'address' | trans }}</option>
+                <option value="[[contact_telephone]]">{{ 'contact_telephone' | trans }}</option>
+                <option value="[[contact_email]]">{{ 'contact_email' | trans }}</option>
             </select>
         </span>
     </div>
@@ -87,7 +87,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
 export default {
     components: {
         //
@@ -135,6 +134,7 @@ export default {
     position: sticky;
     top: 0;
     z-index: 1040;
+    border-top: 1px solid #008cba;
 }
 
 @media (min-width: 768px) {
@@ -166,11 +166,21 @@ export default {
     padding: 0 4px;
 }
 
-.ql-snow.ql-toolbar button,
-.ql-snow .ql-toolbar button {
+.ql-snow .ql-toolbar button,
+.ql-snow.ql-toolbar button {
     width: auto;
 }
 
+.ql-snow.ql-toolbar button.dropdown-item {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+.ql-snow.ql-toolbar .dropdown-menu.show {
+    border: 1px solid #ccc;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
+    padding: 4px 8px;
+}
 #sub-toolbar {
     padding-top: 8px;
     margin-top: 8px;
@@ -200,6 +210,6 @@ export default {
 }
 
 .ql-snow .ql-picker.ql-shortcodes .ql-picker-label::before {
-    content: '[[Shortcodes]]'
+    content: '[[...]]';
 }
 </style>
