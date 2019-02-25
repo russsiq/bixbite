@@ -1,8 +1,11 @@
 {
+    "Edit the image": "Редактирование изображения",
+    "Edit the file": "Редактирование файла",
+    "No files selected.": "Файлы не выбраны.",
+    
     "attaching": "Прикрепление файла",
     "description": "Описание",
     "extension": "Расширение",
-    "edit_image": "Редактирование изображения",
     "filetype-archive": "Архивы",
     "filetype-audio": "Аудио",
     "filetype-document": "Документы",

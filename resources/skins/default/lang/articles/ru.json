@@ -1,4 +1,6 @@
 {
+    "Write to the world...": "Начните печатать ...",
+    "Before you can upload files, you must save the article.": "Перед загрузкой файлов необходимо сохранить запись.",
     "action.allow_com": "Разрешить комментирование",
     "action.currdate": "Установить текущую дату",
     "action.delete": "Удалить отмеченные",
