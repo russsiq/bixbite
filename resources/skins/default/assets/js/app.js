@@ -11,20 +11,41 @@ require('./bootstrap');
 import Vue from 'vue';
 import Translator from './helpers/translator';
 
+window.langProvider = new Translator(`${Pageinfo.app_url}/resources/skins/default/lang/`, Pageinfo.locale)
+
 // Configure ajax provider.
 Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
+
 
 Vue.mixin({
     data() {
         return {
-            lang: new Translator(`${Pageinfo.app_url}/resources/skins/default/lang/`, Pageinfo.locale)
+            lang: langProvider
         }
     },
 
+    filters: {
+        trans: function(key, replace) {
+            return langProvider.trans(key, replace)
+        },
+
+        // choice: function(key, number, replace) {
+        //     return langProvider.choice(key, number, replace)
+        // },
+    },
+
     methods: {
-        trans(key) {
-            return this.lang.trans(key)
-        }
+        trans: function(key, replace) {
+            return this.lang.trans(key, replace)
+        },
+
+        // choice: function(key, number, replace) {
+        //     return this.lang.choice(key, number, replace)
+        // },
+
+        async loadFromJsonPath(module) {
+            await this.lang.loadFromJsonPath(module)
+        },
     }
 });
 
