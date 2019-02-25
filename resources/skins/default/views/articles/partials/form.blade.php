@@ -184,27 +184,6 @@
 				</div>
 			</div> --}}
 		</div>
-
-		<!-- SUBMIT Form -->
-		<div class="card">
-		    <div class="card-footer">
-        		<div class="row">
-					<div class="col col-xs-6{{ $errors->has('state') ? ' has-error' : '' }}">
-						<select name="state" class="form-control">
-							<option value="published" @if(isset($article->state) and $article->state == 'published') selected @endif>@lang('action.published')</option>
-							<option value="unpublished" @if(isset($article->state) and $article->state == 'unpublished') selected @endif>@lang('action.unpublished')</option>
-							<option value="draft" @if(isset($article->state) and $article->state == 'draft') selected @endif>@lang('action.draft')</option>
-						</select>
-					</div>
-		    		<div class="col col-xs-6 text-right">
-		    			<button type="submit" title="Ctrl+S" class="btn btn-outline-success btn-bg-white">
-		    				<span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
-		    				<span class="d-none d-md-inline">@lang(isset($article->id) ? 'btn.save' : 'btn.create')</span>
-		    			</button>
-		    		</div>
-				</div>
-			</div>
-		</div>
 	</div>
 
 	<!-- Right edit column -->
