@@ -3,15 +3,15 @@ import Quill from 'quill';
 /**
  * Image upload handler.
  */
-const imageHandler = async function(quill, {
+const figureHandler = async function(quill, {
     upload_url,
     attachment_id,
     attachment_type
 }) {
 
-    if (!attachment_id) {
+    if (!attachment_id || !attachment_type) {
         Notification.warning({
-            message: 'Before you can insert images, you must save the article.'
+            message: langProvider.trans('Before you can upload files, you must save the article.')
         })
 
         return false
@@ -30,7 +30,7 @@ const imageHandler = async function(quill, {
 
         try {
             if (!input.files || !input.files.length) {
-                throw new Error('No files selected')
+                throw new Error(langProvider.trans('No files selected.'))
             }
 
             const formData = new FormData()
@@ -51,7 +51,7 @@ const imageHandler = async function(quill, {
             }, Quill.sources.USER)
 
             // Move the cursor below the image.
-            quill.setSelection(range.index + 1)
+            quill.setSelection(range.index + 1, Quill.sources.SILENT)
 
             input.value = '';
         } catch (error) {
@@ -65,4 +65,4 @@ const imageHandler = async function(quill, {
     })
 }
 
-export default imageHandler
+export default figureHandler
