@@ -184,6 +184,23 @@
 				</div>
 			</div> --}}
 		</div>
+
+		<!-- SUBMIT Form -->
+		<div class="card">
+		    <div class="card-footer">
+        		<div class="row">
+					<div class="col col-xs-6">
+						{{--  --}}
+					</div>
+		    		<div class="col col-xs-6 text-right">
+		    			<button type="submit" title="Ctrl+S" class="btn btn-outline-success btn-bg-white">
+		    				<span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
+		    				<span class="d-none d-md-inline">@lang(isset($article->id) ? 'btn.save' : 'btn.create')</span>
+		    			</button>
+		    		</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<!-- Right edit column -->
