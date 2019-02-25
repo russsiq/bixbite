@@ -16,7 +16,6 @@ window.langProvider = new Translator(`${Pageinfo.app_url}/resources/skins/defaul
 // Configure ajax provider.
 Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
 
-
 Vue.mixin({
     data() {
         return {
