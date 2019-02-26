@@ -17,11 +17,15 @@ class PageInfo
 
     public function __construct()
     {
-        $this->set('locale', str_replace('_', '-', app_locale()));
-        $this->set('csrf_token', csrf_token());
-        $this->set('page', request('page') ?? null);
-        $this->set('app_name', setting('system.app_name', 'BixBite'));
-        $this->set('app_url', setting('system.app_url', url()->to('/')));
+        $this->make([
+            'locale' => str_replace('_', '-', app_locale()),
+            'csrf_token' => csrf_token(),
+            'page' => request('page') ?? null,
+            'app_name' => setting('system.app_name', 'BixBite'),
+            'app_skin' => setting('system.app_skin', 'default'),
+            'app_theme' => setting('system.app_theme', 'default'),
+            'app_url' => setting('system.app_url', url()->to('/')),
+        ]);
     }
 
     public function make(array $data)
@@ -58,6 +62,8 @@ class PageInfo
     {
         $data = json_encode([
             'locale' => $this->get('locale'),
+            'app_skin' => $this->get('app_skin'),
+            'app_theme' => $this->get('app_theme'),
             'app_url' => $this->get('app_url'),
         ]);
 
