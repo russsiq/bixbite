@@ -41,6 +41,3 @@ window.axios.interceptors.response.use(
         return Promise.reject(error)
     }
 ); */
-
-// Configure ajax provider.
-Vue.prototype.$http = window.axios; // Ex.: this.$http.get(...)  === axios.get(...)
