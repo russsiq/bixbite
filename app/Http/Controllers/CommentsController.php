@@ -23,7 +23,7 @@ class CommentsController extends SiteController
     {
         $comment = $this->model->create($request->all());
         $entity = $comment->commentable;
-        
+
         // Temporarily.
         if ('articles' == $request->commentable_type and 1 === $entity->comments()->count()) {
             cache()->forget('articles-single-'.$request->commentable_id);
@@ -40,6 +40,7 @@ class CommentsController extends SiteController
             $comment->email = $user->email;
         }
 
+        // Temporarily.
         if ($request->ajax()) {
             $comment->children = [];
             return response()->json([
@@ -49,7 +50,7 @@ class CommentsController extends SiteController
             ], 200);
         }
 
-        return redirect()->to(url()->previous().'#comment-'.$comment->id)->with('comment_add_success', __('comments.msg.add_success'));
+        return $this->makeRedirect(true, url()->previous().'#comment-'.$comment->id, __('comments.msg.add_success'));
     }
 
     /**
@@ -62,19 +63,12 @@ class CommentsController extends SiteController
     {
         $this->authorize($comment);
 
-        if (request()->ajax()) {
-            return response()->json([
-                'status' => true,
-                'content' => $comment->content,
-            ], 200);
-        }
-
         pageinfo([
             'title' => __('comments.edit_page'),
             'robots' => 'noindex,follow',
         ]);
 
-        return $this->renderOutput('edit', compact('comment'));
+        return $this->makeResponse('edit', compact('comment'));
     }
 
     /**
@@ -90,7 +84,7 @@ class CommentsController extends SiteController
 
         $comment->update($request->only(['content']));
 
-        return redirect()->to($comment->url)->withStatus(__('comments.msg.update'));
+        return $this->makeRedirect(true, $comment->url, __('comments.msg.update'));
     }
 
     /**
@@ -107,6 +101,6 @@ class CommentsController extends SiteController
 
         $comment->delete();
 
-        return redirect()->to($url)->withStatus(__('comments.msg.destroy'));
+        return $this->makeRedirect(true, $url, __('comments.msg.destroy'));
     }
 }

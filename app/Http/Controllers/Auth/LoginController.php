@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Login Controller
+|--------------------------------------------------------------------------
+|
+| This controller handles authenticating users for the application and
+| redirecting them to your home screen. The controller uses a trait
+| to conveniently provide its functionality to your applications.
+|
+*/
+
 namespace BBCMS\Http\Controllers\Auth;
 
 use BBCMS\Http\Controllers\SiteController;
@@ -7,17 +18,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends SiteController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
@@ -51,7 +51,7 @@ class LoginController extends SiteController
             'robots' => 'noindex, follow',
         ]);
 
-        return $this->renderOutput('login');
+        return $this->makeResponse('login');
     }
 
     /**

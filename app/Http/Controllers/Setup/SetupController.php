@@ -10,15 +10,6 @@ class SetupController extends BaseController
 
     public function __construct()
     {
-
-    }
-
-    protected function renderOutput(string $template, array $vars = [])
-    {
-        if (view()->exists($this->template . '.'. $template)) {
-            return view($this->template . '.'. $template, $vars)->render();
-        }
-
-        abort(404);
+        // 
     }
 }

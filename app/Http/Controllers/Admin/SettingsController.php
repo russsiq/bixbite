@@ -36,9 +36,11 @@ class SettingsController extends AdminController
      */
     public function index()
     {
-        return $this->renderOutput('index', [
-            'settings' => $this->model->with(['module'])->get(),
-        ]);
+        $settings = $this->model
+            ->with(['module'])
+            ->get();
+        
+        return $this->makeResponse('index', compact('settings'));
     }
 
     /**
@@ -52,7 +54,7 @@ class SettingsController extends AdminController
             \Lang::addJsonPath(skin_path('lang' . DS . $this->module_name));
         }
 
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'setting' => (object) [ // collect
                 'module_name' => $this->module_name ?? null,
             ],
@@ -76,8 +78,8 @@ class SettingsController extends AdminController
     public function store(SettingRequest $request)
     {
         $setting = $this->model->create($request->all());
-
-        return redirect()->route('admin.settings.module', $setting->module)->withStatus('Store!');
+        
+        return $this->makeRedirect(true, ['admin.settings.module', $setting->module], __('msg_store'));
     }
 
     /**
@@ -91,7 +93,7 @@ class SettingsController extends AdminController
         $this->module_name = (string) $setting->module_name;
         \Lang::addJsonPath(skin_path('lang' . DS . $this->module_name));
 
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'setting' => $setting,
             'modules' => $this->modules->all(),
             'field_types' => $this->field_types,
@@ -112,8 +114,8 @@ class SettingsController extends AdminController
     public function update(SettingRequest $request, Setting $setting)
     {
         $setting->update($request->all());
-
-        return redirect()->route('admin.settings.module', $setting->module)->withStatus('Update!');
+        
+        return $this->makeRedirect(true, ['admin.settings.module', $setting->module], __('msg_update'));
     }
 
     /**
@@ -135,9 +137,9 @@ class SettingsController extends AdminController
      */
     public function module(Module $module)
     {
-        return $this->renderOutput('module',
-            $this->model::generate_page($module, 'setting')
-        );
+        $vars = $this->model::generate_page($module, 'setting');
+        
+        return $this->makeResponse('module', $vars);
     }
 
     /**
@@ -150,9 +152,9 @@ class SettingsController extends AdminController
     public function moduleUpdate(SettingModuleRequest $request, Module $module)
     {
         $this->model::moduleUpdate($module, $request->all());
-
-        return redirect()->route(
-            \Route::has('admin.'.$module->name.'.index') ? 'admin.'.$module->name.'.index' : 'dashboard'
-        )->withStatus('update!');
+        
+        $route = \Route::has('admin.'.$module->name.'.index') ? 'admin.'.$module->name.'.index' : 'dashboard';
+        
+        return $this->makeRedirect(true, $route, __('msg_update'));
     }
 }

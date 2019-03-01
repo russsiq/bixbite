@@ -22,7 +22,7 @@ class PrivilegesController extends AdminController
 
     public function index()
     {
-        return $this->renderOutput('index', [
+        return $this->makeResponse('index', [
             'roles' => $this->roles,
             'privileges' => $this->privileges
         ]);
@@ -37,7 +37,7 @@ class PrivilegesController extends AdminController
                 'submit',
             ])
         );
-
-        return redirect()->route('admin.privileges.index')->withStatus('msg.update');
+        
+        return $this->makeRedirect(true, 'admin.privileges.index', __('msg.update'));
     }
 }

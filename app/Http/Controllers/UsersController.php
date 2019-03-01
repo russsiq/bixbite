@@ -30,7 +30,7 @@ class UsersController extends SiteController
             'is_index' => true,
         ]);
 
-        return $this->renderOutput('index', compact('users'));
+        return $this->makeResponse('index', compact('users'));
     }
 
     public function edit(User $user)
@@ -42,7 +42,7 @@ class UsersController extends SiteController
             'robots' => 'noindex, follow',
         ]);
 
-        return $this->renderOutput('edit', compact('user', 'x_fields'));
+        return $this->makeResponse('edit', compact('user', 'x_fields'));
     }
 
     public function update(UserRequest $request, User $user)
@@ -83,7 +83,7 @@ class UsersController extends SiteController
             'user' => $user,
         ]);
 
-        return $this->renderOutput('profile', compact('user', 'x_fields'));
+        return $this->makeResponse('profile', compact('user', 'x_fields'));
     }
 
     public function follow(User $user)

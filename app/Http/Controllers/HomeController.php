@@ -28,9 +28,9 @@ class HomeController extends SiteController
         ]);
 
         if (! setting('themes.home_page_personalized', false)) {
-            return (new ArticlesController(new Article))->index();
+            return app('\BBCMS\Http\Controllers\ArticlesController')->index();
         }
 
-        return $this->renderOutput('index', []);
+        return $this->makeResponse('index');
     }
 }

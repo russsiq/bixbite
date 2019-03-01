@@ -45,13 +45,13 @@ class RegisterController extends SiteController
             'robots' => 'noindex, follow',
         ]);
 
-        return $this->renderOutput('register');
+        return $this->makeResponse('register');
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array  $data Request data.
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -113,15 +113,7 @@ class RegisterController extends SiteController
      */
     protected function registered(Request $request, $user)
     {
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Register complete!',
-                'redirect' => $this->redirectPath()
-            ], 200);
-        }
-
-        return null;
+        return $this->makeRedirect(true, $this->redirectPath(), __('Register complete!'));
     }
 
 

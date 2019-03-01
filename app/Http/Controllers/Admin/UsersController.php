@@ -31,9 +31,11 @@ class UsersController extends AdminController
      */
     public function index()
     {
-        return $this->renderOutput('index', [
-            'users' => $this->model->withCount('articles', 'comments')->paginate(10),
-        ]);
+        $users = $this->model
+            ->withCount('articles', 'comments')
+            ->paginate();
+
+        return $this->makeResponse('index', compact('users'));
     }
 
     /**
@@ -43,7 +45,7 @@ class UsersController extends AdminController
      */
     public function create()
     {
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'user' => [],
             'roles' => $this->roles,
             'x_fields' => $this->x_fields,
@@ -60,7 +62,7 @@ class UsersController extends AdminController
     {
         $this->model->fill($request->all())->save();
 
-        return redirect()->route('admin.users.index')->withStatus('store!');
+        return $this->makeRedirect(true, 'admin.users.index', __('store'));
     }
 
     /**
@@ -82,7 +84,7 @@ class UsersController extends AdminController
      */
     public function edit(User $user)
     {
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'user' => $user,
             'roles' => $this->roles,
             'x_fields' => $this->x_fields,
@@ -98,9 +100,9 @@ class UsersController extends AdminController
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->fill($request->all())->save();
+        $user->update($request->all());
 
-        return redirect()->route('admin.users.index')->withStatus('Update!');
+        return $this->makeRedirect(true, 'admin.users.index', __('update'));
     }
 
     /**
@@ -116,12 +118,12 @@ class UsersController extends AdminController
             $user->delete();
             \DB::commit();
 
-            return redirect()->route('admin.users.index')->withStatus('no destroy!');
+            return $this->makeRedirect(true, 'admin.users.index', __('destroy'));
         }
         catch (\Exception $e) {
             \DB::rollback();
 
-            return redirect()->back()->withErrors([$e->getMessage()]);
+            return $this->makeRedirect(false, 'admin.users.index', $e->getMessage());
         }
     }
 
@@ -142,37 +144,32 @@ class UsersController extends AdminController
 
         switch ($data['mass_action']) {
             case 'mass_activate':
-                if (! $users->update(['approve' => 1])) {
-                    $messages[] = '!mass_activate';
-                }
+                // if (! $users->update(['approve' => 1])) {
+                //     $messages[] = '!mass_activate';
+                // }
                 break;
             case 'mass_lock':
-                if (! $users->update(['approve' => 0])) {
-                    $messages[] = '!mass_lock';
-                }
-                break;
-            case 'mass_delete_inactive':
-                if (! $users->update(['on_mainpage' => 1])) {
-                    $messages[] = '!mass_delete_inactive';
-                }
+                // if (! $users->update(['approve' => 0])) {
+                //     $messages[] = '!mass_lock';
+                // }
                 break;
             case 'mass_delete':
                 $usersTemp = $users->get();
                 foreach ($usersTemp as $user) {
-                    /*// Check if user has his own photo or avatar
-                    if ( (trim($urow['avatar'])) and (file_exists($config['avatars_dir'].$urow['photo'])) )
-                        @unlink($config['avatars_dir'].$urow['avatar']);*/
                     if (! $user->delete()) {
                         $messages[] = '!mass_delete';
                     }
                 }
                 break;
+            case 'mass_delete_inactive':
+                // if (! $users->update(['on_mainpage' => 1])) {
+                //     $messages[] = '!mass_delete_inactive';
+                // }
+                break;
         }
 
-        if (count($messages)) {
-            return redirect()->back()->withErrors($messages)->withInput();
-        } else {
-            return redirect()->route('admin.users.index')->withStatus($data['mass_action']);
-        }
+        $message = empty($messages) ? 'msg.complete' : 'msg.complete_but_null';
+
+        return $this->makeRedirect(true, 'admin.users.index', $message);
     }
 }

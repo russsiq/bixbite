@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Password Reset Controller
+|--------------------------------------------------------------------------
+|
+| This controller is responsible for handling password reset requests
+| and uses a simple trait to include this behavior. You're free to
+| explore this trait and override any methods you wish to tweak.
+|
+*/
+
 namespace BBCMS\Http\Controllers\Auth;
 
 use BBCMS\Http\Controllers\SiteController;
@@ -7,17 +18,6 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends SiteController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset requests
-    | and uses a simple trait to include this behavior. You're free to
-    | explore this trait and override any methods you wish to tweak.
-    |
-    */
-
     use ResetsPasswords;
 
     /**
@@ -55,6 +55,6 @@ class ResetPasswordController extends SiteController
             'robots' => 'noindex, follow',
         ]);
 
-        return $this->renderOutput('passwords.reset', ['token' => $token, 'email' => $request->email]);
+        return $this->makeResponse('passwords.reset', ['token' => $token, 'email' => $request->email]);
     }
 }

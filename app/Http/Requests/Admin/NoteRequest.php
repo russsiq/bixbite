@@ -29,8 +29,8 @@ class NoteRequest extends Request
             'title' => [
                 'sometimes',
                 'string',
-                'max:125',
-                'regex:/^[\pL\s\d]+$/u',
+                'max:225',
+                'regex:/^[\w\s\.\,\-\_\?\!\(\)\[\]]+$/u',
                 'unique:notes',
             ],
             'descr' => [

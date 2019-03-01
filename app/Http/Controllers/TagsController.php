@@ -34,6 +34,6 @@ class TagsController extends SiteController
             'is_index' => true,
         ]);
 
-        return $this->renderOutput('index', compact('tags'));
+        return $this->makeResponse('index', compact('tags'));
     }
 }

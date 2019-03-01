@@ -42,7 +42,7 @@ class ArticlesController extends SiteController
             'is_index' => true,
         ]);
 
-        return $this->renderOutput('index', compact('articles'));
+        return $this->makeResponse('index', compact('articles'));
     }
 
     public function category(Category $category)
@@ -68,7 +68,7 @@ class ArticlesController extends SiteController
             $this->template = view()->exists($view.'.index') ? $view : $this->template;
         }
 
-        return $this->renderOutput('index', compact('category', 'articles'));
+        return $this->makeResponse('index', compact('category', 'articles'));
     }
 
     public function tag(Tag $tag)
@@ -89,7 +89,7 @@ class ArticlesController extends SiteController
             'tag' => $tag,
         ]);
 
-        return $this->renderOutput('index', compact('articles'));
+        return $this->makeResponse('index', compact('articles'));
     }
 
     public function search()
@@ -110,7 +110,7 @@ class ArticlesController extends SiteController
             'query' => $query,
         ]);
 
-        return $this->renderOutput('index', compact('articles', 'query'));
+        return $this->makeResponse('index', compact('articles', 'query'));
     }
 
     public function article($category_slug, $article_id, $article_slug = '')
@@ -141,6 +141,6 @@ class ArticlesController extends SiteController
             $this->template = view()->exists($view.'.single') ? $view : $this->template;
         }
 
-        return $this->renderOutput('single', compact('article'));
+        return $this->makeResponse('single', compact('article'));
     }
 }

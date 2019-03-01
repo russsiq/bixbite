@@ -27,7 +27,7 @@ class ThemesController extends AdminController
 
     public function index()
     {
-        return $this->renderOutput('index', [
+        return $this->makeResponse('index', [
             'app_theme' => $this->app_theme,
             'theme' => $this->theme,
             'themes' => $this->themes,

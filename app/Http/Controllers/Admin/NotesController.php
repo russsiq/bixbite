@@ -15,7 +15,7 @@ class NotesController extends AdminController
     {
         parent::__construct();
         $this->authorizeResource(Note::class);
-        
+
         $this->model = $model;
     }
 
@@ -26,9 +26,11 @@ class NotesController extends AdminController
      */
     public function index()
     {
-        return $this->renderOutput('index', [
-            'notes' => $this->model->where('user_id', user('id'))->paginate(10),
-        ]);
+        $notes = $this->model
+            ->where('user_id', user('id'))
+            ->paginate(10);
+
+        return $this->makeResponse('index', compact('notes'));
     }
 
     /**
@@ -38,7 +40,7 @@ class NotesController extends AdminController
      */
     public function create()
     {
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'note' => [],
         ]);
     }
@@ -53,7 +55,7 @@ class NotesController extends AdminController
     {
         $note = auth()->user()->notes()->create($request->all());
 
-        return redirect()->route('admin.notes.index')->withStatus('store!');
+        return $this->makeRedirect(true, 'admin.notes.index', __('msg.store'));
     }
 
     /**
@@ -64,9 +66,7 @@ class NotesController extends AdminController
      */
     public function show(Note $note)
     {
-        return $this->renderOutput('show', [
-            'note' => $note,
-        ]);
+        return $this->makeResponse('show', compact('note'));
     }
 
     /**
@@ -77,9 +77,7 @@ class NotesController extends AdminController
      */
     public function edit(Note $note)
     {
-        return $this->renderOutput('edit', [
-            'note' => $note,
-        ]);
+        return $this->makeResponse('edit', compact('note'));
     }
 
     /**
@@ -91,9 +89,9 @@ class NotesController extends AdminController
      */
     public function update(NoteRequest $request, Note $note)
     {
-        $note->update($data = $request->all());
+        $note->update($request->all());
 
-        return redirect()->route('admin.notes.index')->withStatus('store!');
+        return $this->makeRedirect(true, 'admin.notes.index', __('msg.update'));
     }
 
     /**
@@ -105,11 +103,11 @@ class NotesController extends AdminController
     public function destroy(Note $note)
     {
         if (! $note->is_completed) {
-            return redirect()->back()->withErrors(['error message']);
+            return $this->makeRedirect(false, 'admin.notes.index', __('msg.error'));
         }
 
         $note->delete();
 
-        return redirect()->route('admin.notes.index')->withStatus('destroy!');
+        return $this->makeRedirect(true, 'admin.notes.index', __('msg.destroy'));
     }
 }

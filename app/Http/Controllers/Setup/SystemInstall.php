@@ -67,12 +67,12 @@ class SystemInstall extends SetupController
             }
 
             // Return form to current step
-            return $this->renderOutput($method,
+            return $this->makeResponse($method,
                 array_merge($this->vars, $this->{$method}())
             );
         }
 
-        return $this->renderOutput('welcome', $this->vars);
+        return $this->makeResponse('welcome', $this->vars);
     }
 
     protected function permission()

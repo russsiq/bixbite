@@ -20,14 +20,14 @@ class XFieldsController extends AdminController
 
     public function index()
     {
-        return $this->renderOutput('index', [
-            'x_fields' => $this->model->get(),
-        ]);
+        $x_fields = $this->model->get();
+        
+        return $this->makeResponse('index', compact('x_fields'));
     }
 
     public function create()
     {
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'x_field' => [],
             'extensibles' => $this->model::extensibles(),
             'field_types' => $this->model::fieldTypes(),
@@ -38,18 +38,14 @@ class XFieldsController extends AdminController
     {
         $x_field = $this->model->create($request->all());
 
-        return $x_field->id
-            ? redirect()->route('admin.x_fields.index')->withStatus(sprintf(
-                __('msg.store'), $x_field->name, $x_field->extensible
-            ))
-            : redirect()->back()->withInput()->withErrors(sprintf(
-                __('msg.not_creating'), $x_field->name, $x_field->extensible
-            ));
+        return $this->makeRedirect(true, 'admin.x_fields.index', sprintf(
+            __('msg.store'), $x_field->name, $x_field->extensible
+        ));
     }
 
     public function edit(XField $x_field)
     {
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'x_field' => $x_field,
             'extensibles' => $this->model::extensibles(),
             'field_types' => $this->model::fieldTypes(),
@@ -58,27 +54,17 @@ class XFieldsController extends AdminController
 
     public function update(XFieldRequest $request, XField $x_field)
     {
-        return $x_field->update($request->all())
-            ? redirect()->route('admin.x_fields.index')
-                ->withStatus(sprintf(
-                    __('msg.update'), $x_field->name, $x_field->extensible
-                ))
-            : redirect()->back()->withInput()
-                ->withErrors(sprintf(
-                    __('msg.not_updating'), $x_field->name, $x_field->extensible
-                ));
+        $x_field->update($request->all());
+
+        return $this->makeRedirect(true, 'admin.x_fields.index', sprintf(
+            __('msg.update'), $x_field->name, $x_field->extensible
+        ));
     }
 
     public function destroy(XField $x_field)
     {
-        return $x_field->delete()
-            ? redirect()->route('admin.x_fields.index')
-                ->withStatus(sprintf(
-                    __('msg.delete'), $x_field->name, $x_field->extensible
-                ))
-            : redirect()->back()
-                ->withErrors(sprintf(
-                    __('msg.not_deleting'), $x_field->name, $x_field->extensible
-                ));
+        $x_field->delete();
+
+        return $this->makeRedirect(true, 'admin.x_fields.index',  __('msg.destroy'));
     }
 }

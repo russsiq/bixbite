@@ -33,12 +33,12 @@ class CategoriesController extends AdminController
             ->get()
             ->nested();
 
-        return $this->renderOutput('index', compact('categories'));
+        return $this->makeResponse('index', compact('categories'));
     }
 
     public function create()
     {
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'template_list' => select_dir('custom_views', true),
             'category' => [],
             'x_fields' => $this->x_fields,
@@ -65,10 +65,10 @@ class CategoriesController extends AdminController
                 'attachment_id' => $category->id
             ]);
         }
-
-        return redirect()->route('admin.categories.index')->withStatus(sprintf(
-                __('msg.store'), $category->url, route('admin.categories.edit', $category)
-            ));
+        
+        return $this->makeRedirect(true, 'admin.categories.index', sprintf(
+            __('msg.store'), $category->url, route('admin.categories.edit', $category)
+        ));
     }
 
     public function edit(Category $category)
@@ -77,7 +77,7 @@ class CategoriesController extends AdminController
             $query->with(['image']);
         });
 
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'template_list' => select_dir('custom_views', true),
             'category' => $category,
             'x_fields' => $this->x_fields,
@@ -110,28 +110,28 @@ class CategoriesController extends AdminController
             ]);
         }
 
-        return redirect()->route('admin.categories.index')->withStatus(sprintf(
-                __('msg.update'), $category->url, route('admin.categories.edit', $category)
-            ));
+        return $this->makeRedirect(true, 'admin.categories.index', sprintf(
+            __('msg.update'), $category->url, route('admin.categories.edit', $category)
+        ));
     }
 
     public function destroy(Category $category)
     {
         if ($this->model->where('parent_id', $category->id)->count() or $category->articles->count()) {
-            return redirect()->back()->withErrors(['msg.not_empty']);
+            return $this->makeRedirect(false, 'admin.categories.index', __('msg.not_empty'));
         }
 
         $category->delete();
-
-        return redirect()->route('admin.categories.index')->withStatus(__('msg.destroy'));
+        
+        return $this->makeRedirect(true, 'admin.categories.index', __('msg.destroy'));
     }
 
     public function positionReset(Request $request)
     {
         $this->authorize('otherUpdate', Category::class);
         $this->model->positionReset();
-
-        return redirect()->route('admin.categories.index')->withStatus('msg.position_reset');
+        
+        return $this->makeRedirect(true, 'admin.categories.index', __('msg.position_reset'));
     }
 
     public function positionUpdate(Request $request)

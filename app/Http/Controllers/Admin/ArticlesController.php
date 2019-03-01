@@ -41,17 +41,16 @@ class ArticlesController extends AdminController
             ->orderBy('id', 'desc')
             ->paginate(setting('articles.paginate', 8));
 
-        return $this->renderOutput('index', compact('articles'));
+        return $this->makeResponse('index', compact('articles'));
     }
 
     public function create()
     {
         if (! $this->categories->count()) {
-            return redirect()->route('admin.categories.index')
-                ->withErrors([__('msg.category_empty')]);
+            return $this->makeRedirect(false, 'admin.categories.index', __('msg.category_empty'));
         }
 
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'article' => [],
             'delimiter' => '',
             'categories_items' => $this->categories,
@@ -80,21 +79,20 @@ class ArticlesController extends AdminController
             );
         }
 
-        return redirect()->route('admin.articles.index')->withStatus($message);
+        return $this->makeRedirect(true, 'admin.articles.index', $message);
     }
 
     public function edit(Article $article)
     {
         if (! $this->categories->count()) {
-            return redirect()->route('admin.categories.index')
-                ->withErrors([__('msg.category_empty')]);
+            return $this->makeRedirect(false, 'admin.categories.index', __('msg.category_empty'));
         }
 
         $article->when($article->image_id, function ($query) {
             $query->with(['image']);
         });
 
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'article' => $article,
             'delimiter' => '',
             'categories_items' => $this->categories,
@@ -123,14 +121,14 @@ class ArticlesController extends AdminController
             );
         }
 
-        return redirect()->route('admin.articles.index')->withStatus($message);
+        return $this->makeRedirect(true, 'admin.articles.index', $message);
     }
 
     public function destroy(Article $article)
     {
         $article->delete();
 
-        return redirect()->route('admin.articles.index')->withStatus(__('msg.destroy'));
+        return $this->makeRedirect(true, 'admin.articles.index', __('msg.destroy'));
     }
 
     /**
@@ -202,11 +200,8 @@ class ArticlesController extends AdminController
                 break;
         }
 
-        if (! empty($messages)) {
-            // return redirect()->back()->withErrors($messages);
-            return redirect()->route('admin.articles.index')->withStatus('msg.complete_but_null');
-        } else {
-            return redirect()->route('admin.articles.index')->withStatus('msg.complete');
-        }
+        $message = empty($messages) ? 'msg.complete' : 'msg.complete_but_null';
+
+        return $this->makeRedirect(true, 'admin.articles.index', $message);
     }
 }

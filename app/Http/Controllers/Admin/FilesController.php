@@ -69,7 +69,7 @@ class FilesController extends AdminController
             ], 200);
         }
 
-        return $this->renderOutput('index', [
+        return $this->makeResponse('index', [
             'filetype' => html_secure(request('filetype', null)),
             'files' => $this->model
                 ->with([
@@ -97,7 +97,7 @@ class FilesController extends AdminController
      */
     public function create()
     {
-        return $this->renderOutput('create', [
+        return $this->makeResponse('create', [
             'file' => [],
             'articles' => Article::when('owner' != user('role'), function ($query) {
                     $query->where('user_id', user('id'));
@@ -136,16 +136,7 @@ class FilesController extends AdminController
      */
     public function show(File $file)
     {
-        if (request()->ajax()) {
-            return response()->json([
-                'status' => true,
-                'file' => $file,
-            ], 200);
-        }
-
-        return $this->renderOutput('show', [
-            'file' => $file,
-        ]);
+        return $this->makeResponse('show', compact('file'));
     }
 
     /**
@@ -156,7 +147,7 @@ class FilesController extends AdminController
      */
     public function edit(File $file)
     {
-        return $this->renderOutput('edit', [
+        return $this->makeResponse('edit', [
             'file' => $file,
             'articles' => Article::when('owner' != user('role'), function ($query) {
                     $query->where('user_id', user('id'));
@@ -176,16 +167,8 @@ class FilesController extends AdminController
     public function update(FileRequest $request, File $file)
     {
         $file->update($request->all());
-
-        if (request()->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => __('msg.update'),
-                'file' => $file,
-            ], 200);
-        }
-
-        return redirect()->route('admin.files.index')->withStatus(__('msg.update'));
+        
+        return $this->makeRedirect(true, 'admin.files.index', __('msg.update'));
     }
 
     /**
@@ -197,14 +180,7 @@ class FilesController extends AdminController
     public function destroy(File $file)
     {
         $file->delete();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => __('msg.destroy'),
-            ], 200);
-        }
-
-        return redirect()->back()->withStatus(__('msg.destroy'));
+        
+        return $this->makeRedirect(true, 'admin.files.index', __('msg.destroy'));
     }
 }

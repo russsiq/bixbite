@@ -24,19 +24,30 @@ class SiteController extends BaseController
         return app(Category::class)->getCachedCategories();
     }
 
-    protected function renderOutput(string $template, array $entities = [])
+    /**
+     * Render output to html string.
+     *
+     * @param  string $template
+     * @param  array  $vars
+     * @return mixed
+     * @NB Overwriting the parent method.
+     */
+    protected function renderOutput(string $template, array $vars = [])
     {
         pageinfo([
             'categories' => $this->getCategories(),
             'navigation' => $this->makeNavigation(),
         ]);
 
-        if (view()->exists($this->template) and view()->exists($this->template . '.'. $template)) {
-            $mainblock = html_raw(view($this->template . '.'. $template, $entities)->render());
+        $tpl = $this->template.'.'.$template;
+
+        if (view()->exists($this->template) and view()->exists($tpl)) {
+
+            $mainblock = html_raw(view($tpl, $vars)->render());
 
             return view($this->template, compact('mainblock'))->render();
         }
 
-        abort(404, 'View not exists.');
+        abort(404, "View named $tpl not exists.");
     }
 }

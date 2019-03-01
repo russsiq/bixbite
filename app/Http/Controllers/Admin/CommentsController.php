@@ -28,10 +28,13 @@ class CommentsController extends AdminController
     public function index()
     {
         $this->authorize($this->model);
+        
+        $comments = $this->model
+            ->with(['commentable', 'user'])
+            ->orderBy('id', 'desc')
+            ->paginate(25);
 
-        return $this->renderOutput('index', [
-            'comments' => $this->model->with(['commentable', 'user'])->orderBy('id', 'desc')->paginate(25),
-        ]);
+        return $this->makeResponse('index', compact('comments'));
     }
 
     /**
@@ -43,17 +46,8 @@ class CommentsController extends AdminController
     public function edit(Comment $comment)
     {
         $this->authorize($comment);
-
-        if (request()->ajax()) {
-            return response()->json([
-                'status' => true,
-                'content' => $comment->content,
-            ], 200);
-        }
-
-        return $this->renderOutput('edit', [
-            'comment' => $comment,
-        ]);
+        
+        return $this->makeResponse('edit', compact('comment'));
     }
 
     /**
@@ -66,12 +60,12 @@ class CommentsController extends AdminController
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
         $this->authorize($comment);
-
+        
         $comment->update($request->only(['content']));
-
-        return redirect()->route('admin.comments.index')->withStatus(sprintf(
-                __('msg.update'), $comment->url, route('admin.comments.edit', $comment)
-            ));
+        
+        return $this->makeRedirect(true, 'admin.comments.index', sprintf(
+            __('msg.update'), $comment->url, route('admin.comments.edit', $comment)
+        ));
     }
 
     /**
@@ -85,8 +79,8 @@ class CommentsController extends AdminController
         $this->authorize($comment);
 
         $comment->delete();
-
-        return redirect()->route('admin.comments.index')->withStatus(__('msg.destroy'));
+        
+        return $this->makeRedirect(true, 'admin.comments.index', __('msg.destroy'));
     }
 
     /**
@@ -121,11 +115,8 @@ class CommentsController extends AdminController
                 break;
         }
 
-        if (! empty($messages)) {
-            // return redirect()->back()->withErrors($messages);
-            return redirect()->route('admin.comments.index')->withStatus('msg.complete_but_null');
-        } else {
-            return redirect()->route('admin.comments.index')->withStatus('msg.complete');
-        }
+        $message = empty($messages) ? 'msg.complete' : 'msg.complete_but_null';
+
+        return $this->makeRedirect(true, 'admin.comments.index', $message);
     }
 }

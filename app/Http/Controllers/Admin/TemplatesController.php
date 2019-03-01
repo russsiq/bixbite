@@ -26,7 +26,7 @@ class TemplatesController extends AdminController
      */
     public function index()
     {
-        return $this->renderOutput('index', [
+        return $this->makeResponse('index', [
             'theme' => app_theme(),
             'templates' => $this->model::getTemplates(),
         ]);
@@ -39,16 +39,16 @@ class TemplatesController extends AdminController
 
         // Block and notify if file is already exists.
         if (\File::exists($path)) {
-            return redirect()->back()->withErrors(sprintf(
-                    __('msg.already_exists'), $template
-                ));
+            return $this->makeRedirect(false, 'admin.templates.index', sprintf(
+                __('msg.already_exists'), $template
+            ));
         }
 
         \File::put($path, '', true);
-
-        return redirect()->route('admin.templates.index')->withStatus(sprintf(
-                __('msg.created'), $template
-            ));
+        
+        return $this->makeRedirect(true, 'admin.templates.index', sprintf(
+            __('msg.created'), $template
+        ));
     }
 
 
@@ -125,22 +125,22 @@ class TemplatesController extends AdminController
         $template = $request->template;
         $path = theme_path('views').$template;
 
-        // Block and notify if file is already exists.
+        // Block and notify if file does not exist.
         if (! \File::exists($path)) {
-            return redirect()->back()->withErrors(sprintf(
-                    __('msg.not_exists'), $template
-                ));
+            return $this->makeRedirect(false, 'admin.templates.index', sprintf(
+                __('msg.not_exists'), $template
+            ));
         }
 
         // Block if file not delete.
         if (! \File::delete($path)) {
-            return redirect()->back()->withErrors(sprintf(
-                    __('msg.not_deleted'), $template
-                ));
-        }
-
-        return redirect()->route('admin.templates.index')->withStatus(sprintf(
-                __('msg.deleted'), $template
+            return $this->makeRedirect(false, 'admin.templates.index', sprintf(
+                __('msg.not_deleted'), $template
             ));
+        }
+        
+        return $this->makeRedirect(true, 'admin.templates.index', sprintf(
+            __('msg.deleted'), $template
+        ));
     }
 }

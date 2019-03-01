@@ -25,8 +25,8 @@ class DashboardController extends AdminController
         if(Gate::denies('dashboard')) {
 			abort(403);
 		}
-
-        return $this->renderOutput('index', [
+        
+        return $this->makeResponse('index', [
             'theme' => theme_version(app_theme()),
             'modules' => $this->modules->where('on_mainpage', 1)->get(),
         ]);
@@ -35,7 +35,7 @@ class DashboardController extends AdminController
     public function tagsReindex()
     {
         Tag::query()->doesntHave('articles')->get(['id'])->each->delete();
-
-        return redirect()->route('dashboard')->withStatus('tagsReindex!');
+        
+        return $this->makeRedirect(true, 'dashboard', __('tagsReindex!'));
     }
 }
