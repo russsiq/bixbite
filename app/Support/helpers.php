@@ -276,7 +276,7 @@ if (! function_exists('html_secure')) {
         if (is_array($text)) {
             $text = array_map('html_secure', $text);
         } elseif (is_string($text)) {
-            $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+            $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8', false);
             $text = str_replace(['{', '<', '>', '"', "'"], ['&#123;', '&lt;', '&gt;', '&#34;', '&#039;'], $text); // '&' => '&amp;'
             $text = trim($text) ?: null;
         } else {
