@@ -27,7 +27,10 @@ class AdminController extends BaseController
     {
         $vars = array_merge($vars, [
             'unpublished' => Article::select(['id', 'user_id', 'state'])
-            ->where('user_id', user('id'))
+            ->when('owner' != user('role'), function ($query) {
+                // Show unpublished articles only to current user.
+                $query->where('user_id', user('id'));
+            })
             ->where('state', '<>', 'published')
             ->get(),
         ]);
