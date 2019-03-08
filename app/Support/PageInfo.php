@@ -62,6 +62,7 @@ class PageInfo
     {
         $data = json_encode([
             'locale' => $this->get('locale'),
+            'app_name' => $this->get('app_name'),
             'app_skin' => $this->get('app_skin'),
             'app_theme' => $this->get('app_theme'),
             'app_url' => $this->get('app_url'),
