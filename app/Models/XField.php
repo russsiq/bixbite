@@ -11,16 +11,17 @@ use BBCMS\Models\Observers\XFieldObserver;
 
 class XField extends BaseModel
 {
+    use Traits\Dataviewer;
     use XFieldMutators;
 
     protected $primaryKey = 'id';
+
     protected $table = 'x_fields';
+
     protected $casts = [
-        //
+        'params' => 'array',
     ];
-    protected $appends = [
-        //
-    ];
+
     protected $fillable = [
         'extensible',
         'name',
@@ -31,19 +32,40 @@ class XField extends BaseModel
         'html_flags',
     ];
 
-    protected static $x_prefix = 'x_';
+    protected static $xPrefix = 'x_';
+
+    /**
+     * Разрешенные имена таблиц в БД,
+     * для которых доступно создание новых полей.
+     * @var array
+     */
     protected static $extensibles = [
         'articles',
         'categories',
         'users',
     ];
-    protected static $field_types = [
-        'boolean',
-        'integer',
+
+    /**
+     * Типы дополнительных полей для таблиц в БД.
+     * @var array
+     */
+    protected static $fieldTypes = [
         'string',
+        'integer',
+        'boolean',
+        'array',
         'text',
         'timestamp',
-        'array',
+    ];
+    
+    protected $allowedFilters = [
+        //
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'title',
+        'created_at',
     ];
 
     protected static function boot()
@@ -54,12 +76,10 @@ class XField extends BaseModel
 
     public static function fields($table = null)
     {
-        $fields = cache()->rememberForever(
-            static::getModel()->getTable(),
-            function () {
+        $fields = cache()
+            ->rememberForever(static::getModel()->getTable(), function () {
                 return static::query()->get();
-            }
-        );
+            });
 
         return is_null($table) ? $fields : $fields->where('extensible', $table);
     }
@@ -71,11 +91,11 @@ class XField extends BaseModel
 
     public static function fieldTypes()
     {
-        return static::$field_types;
+        return static::$fieldTypes;
     }
 
     public function xPrefix()
     {
-        return static::$x_prefix;
+        return static::$xPrefix;
     }
 }

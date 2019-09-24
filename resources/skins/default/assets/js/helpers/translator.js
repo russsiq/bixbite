@@ -1,23 +1,40 @@
+import axios from 'axios'
 import getPluralIndex from 'zend-get-plural-index.js'
 
 export default class Translator {
-    constructor(url, locale) {
+    /**
+     * Create a new Translator instance.
+     *
+     * @param  {string}  url
+     * @param  {string}  locale
+     * @return {void}
+     */
+    constructor({url, locale}) {
         const instance = this.constructor.instance
 
         if (instance) {
             return instance
         }
 
+        // Prepare.
         this._url = url
-        this._locale = locale || 'en'
         this._queueCount = 0
-        this._translations = {}
-        this._loaded = {
-            files: []
-        }
+        this._loadedFiles = []
+        this._translations = []
 
-        // Load the common language file.
-        this.loadFromJsonPath()
+        // In the beginning, we determine the reserve locale.
+        this._setFallback('en')
+
+        // Set current locale.
+        this.setLocale(locale)
+
+        this.addLocale(locale)
+
+        // If the current locale is not English,
+        // then load the common language file.
+        if (this.locale() != this._getFallback()) {
+            this.loadFromJsonPath()
+        }
 
         this.constructor.instance = this
     }
@@ -25,82 +42,224 @@ export default class Translator {
     /**
      * Get the translation for the given key.
      *
-     * @param  args
+     * @param  {string}  key
+     * @param  {object}  replace
+     * @param  {string}  locale
      * @return {mixed}
      */
     get(key, replace, locale) {
-        replace = replace || []
-        locale = locale || this._locale
+        // Temporarily, until there is a substring replacement handler.
+        if (this._getFallback() == locale) {
+            return key
+        }
 
         if (this._queueCount > 0) {
             setTimeout(() => {
                 return this.get(key, replace, locale)
-            }, 2000);
+            }, 1000);
         }
 
-        return this._translations[key] || key
+        replace = replace || []
+        locale = this.checkLocale(locale)
+
+        return this._translations[locale][key] || key
     }
 
     /**
      * Determine if a translation exists.
      *
-     * @param  {String}  key
-     * @param  {String}  locale
+     * @param  {string}  key
+     * @param  {string}  locale
      * @return {boolean}
      */
     has(key, locale) {
-        locale = locale || this._locale
-
-        if ('en' === locale || 'en_GB' === locale) {
+        if (['en', 'en_GB'].indexOf(locale) > -1) {
             return true
         }
 
-        return this.get(key) != key
+        return key != this.get(key, locale)
     }
 
     /**
      * Get the translation for a given key.
      *
-     * @param  {String}  key
-     * @param  {Array}   replace
-     * @param  {String}  locale
-     * @return void
+     * @param  {string}  key
+     * @param  {array}   replace
+     * @param  {string}  locale
+     * @return {string}
      */
     trans(key, replace, locale) {
         return this.get(key, replace, locale)
     }
 
     /**
-     * Load the specified language group.
+     * Get a translation according to an integer value.
      *
-     * @param  {String}  module
-     * @return void
+     * @param  {string}  key
+     * @param  {number}  number
+     * @param  {array}   replace
+     * @param  {string}  locale
+     * @return {string}
      */
-    async loadFromJsonPath(module) {
-        let fileName = module ? `${module}/${this._locale}.json` : `${this._locale}.json`
-
-        if (!this._loaded.files.includes(fileName)) {
-
-            this._queueCount++
-            this._loaded.files.push(fileName)
-
-            await axios
-                .get(this._url + fileName)
-                .then((response) => Object.assign(this._translations, response.data))
-                .catch((error) => console.log(error))
-                .then(() => this._queueCount--)
-        }
+    choice(key, number, replace, locale) {
+        // Return choice logic.
     }
 
     /**
      * Get the index to use for pluralization.
-     * The plural rules are derived from code of the Zend Framework.
      *
-     * @param  {String}  locale
-     * @param  {Number}  number
-     * @return {Number}
+     * @param  {string}  locale
+     * @param  {number}  number
+     * @return {number}
      */
     getPluralIndex(locale, number) {
         return getPluralIndex(locale, number)
+    }
+
+    /**
+     * Get the default locale being used.
+     *
+     * @return {string}
+     */
+    locale() {
+        return this.getLocale()
+    }
+
+    /**
+     * Get the default locale being used.
+     *
+     * @return {string}
+     */
+    getLocale() {
+        return this._locale
+    }
+
+    /**
+     * Set the default locale.
+     *
+     * @param  {string}  locale
+     * @return {void}
+     */
+    setLocale(locale) {
+        if ('string' != typeof locale) {
+            locale = this._getFallback()
+            console.error('Could not set a locale to Translator.')
+        }
+
+        this._locale = locale
+    }
+
+    /**
+     * Add locale if non exists.
+     *
+     * @param  {string}  locale
+     * @return {void}
+     */
+    addLocale(locale) {
+        if ('string' != typeof locale) {
+            console.error('Could not add a locale to Translator.')
+        } else if (!this._translations.includes(locale)) {
+            this._translations.push(locale)
+            this._translations[locale] = {}
+        }
+
+        // this._translations.forEach(function(locale, index, array) {
+        //     console.log(locale, index);
+        // });
+    }
+
+    /**
+     * Check a given locale and return actual locale.
+     *
+     * @param  {string}  locale
+     * @return {string}
+     */
+    checkLocale(locale) {
+        if ('string' != typeof locale) {
+            locale = this.locale() || this._getFallback()
+        }
+
+        return locale
+    }
+
+    /**
+     * Load the specified language group.
+     *
+     * @param  {string}  module
+     * @param  {string}  locale
+     * @return {void}
+     */
+    async loadFromJsonPath(module, locale) {
+        locale = this.checkLocale(locale)
+        let fileName = this._fileName(module, locale)
+
+        try {
+            if (this._isLoaded(fileName)) {
+                if ('production' == process.env.NODE_ENV) {
+                    return 1;
+                } else {
+                    throw new Error(`File ${fileName} is already loaded.`)
+                }
+            }
+
+            // Add locale if non exists.
+            this.addLocale(locale)
+
+            this._queueCount++
+            this._loadedFiles.push(fileName)
+
+            await axios.get(fileName)
+                .then((response) => {
+                    Object.assign(this._translations[locale], response.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .then(() => {
+                    this._queueCount--
+                })
+        } catch (error) {
+            console.log(`${error.name}: ${error.message}`)
+        }
+    }
+
+    /**
+     * Get a file name.
+     *
+     * @param  {string}  module
+     * @param  {string}  locale
+     * @return {string}
+     */
+    _fileName(module, locale) {
+        return this._url + (module ? `${module}/${locale}.json` : `${locale}.json`)
+    }
+
+    /**
+     * Determine if the given file has been loaded.
+     *
+     * @param  {string}  file
+     * @return {bool}
+     */
+    _isLoaded(fileName) {
+        return this._loadedFiles.includes(fileName)
+    }
+
+    /**
+     * Get the fallback locale being used.
+     *
+     * @return {string}
+     */
+    _getFallback() {
+        return this._fallback
+    }
+
+    /**
+     * Set the fallback locale being used.
+     *
+     * @param  {string}  fallback
+     * @return {void}
+     */
+    _setFallback(fallback) {
+        this._fallback = fallback
     }
 }

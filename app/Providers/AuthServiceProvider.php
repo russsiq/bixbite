@@ -2,8 +2,6 @@
 
 namespace BBCMS\Providers;
 
-use BBCMS\Models\Privilege;
-
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -20,7 +18,11 @@ class AuthServiceProvider extends ServiceProvider
         \BBCMS\Models\Comment::class => \BBCMS\Policies\CommentPolicy::class,
         \BBCMS\Models\File::class => \BBCMS\Policies\FilePolicy::class,
         \BBCMS\Models\Note::class => \BBCMS\Policies\NotePolicy::class,
+        \BBCMS\Models\Privilege::class => \BBCMS\Policies\PrivilegePolicy::class,
+        \BBCMS\Models\Setting::class => \BBCMS\Policies\SettingPolicy::class,
+        \BBCMS\Models\Template::class => \BBCMS\Policies\TemplatePolicy::class,
         \BBCMS\Models\User::class => \BBCMS\Policies\UserPolicy::class,
+        \BBCMS\Models\XField::class => \BBCMS\Policies\XFieldPolicy::class,
     ];
 
     /**
@@ -31,41 +33,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Check the existence of the cache.
-        if (config('app.key') and ! cache()->has('roles') and env('DB_DATABASE')) {
-            (new Privilege)->roles();
-        }
-
         $this->registerPolicies();
-
-        // Global policies.
         $this->registerGlobalPolicies();
-
-        // Front-end policies.
-        $this->registerCommentsPolicies();
-
-        // Back-end policies.
         $this->registerDashboardPolicies();
-        $this->registerPrivilegesPolicies();
-        $this->registerThemesPolicies();
-        $this->registerXFieldsPolicies();
-
-        $this->registerAdminSettingsPolicies();
-
-        $this->registerAdminArticles();
-        $this->registerAdminCategories();
-        $this->registerAdminComments();
-        $this->registerAdminFiles();
-        $this->registerAdminNotes();
-        $this->registerAdminUsers();
-    }
-
-    protected function registerCommentsPolicies()
-    {
-        Gate::resource('comments', \BBCMS\Policies\CommentPolicy::class, [
-            'update' => 'update',
-            'delete' => 'delete',
-        ]);
     }
 
     public function registerGlobalPolicies()
@@ -73,8 +43,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('global.locked', function ($user) {
             return $user->canDo('global.locked');
         });
-        Gate::define('global.admin', function ($user) {
-            return $user->canDo('global.admin');
+
+        Gate::define('global.panel', function ($user) {
+            return $user->canDo('global.panel');
         });
     }
 
@@ -85,105 +56,20 @@ class AuthServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerPrivilegesPolicies()
-    {
-        Gate::define('privileges', function ($user) {
-            return 'owner' === $user->role;
-        });
-    }
-
-    public function registerThemesPolicies()
-    {
-        Gate::define('themes', function ($user) {
-            return 'owner' === $user->role;
-        });
-    }
-
-    public function registerXFieldsPolicies()
-    {
-        Gate::define('x_fields', function ($user) {
-            return 'owner' === $user->role;
-        });
-    }
-
-    public function registerAdminSettingsPolicies()
-    {
-        // Создание, редактирование, удаление настроек модулей.
-        Gate::define('admin.settings.modify', function ($user) {
-            return 'owner' === $user->role and 'production' != env('APP_ENV');
-        });
-
-        // Просмотр и сохранение настроек модулей.
-        Gate::define('admin.settings.details', function ($user) {
-            return 'owner' === $user->role;
-        });
-    }
-
-    protected function registerAdminArticles()
-    {
-        Gate::resource('admin.articles', \BBCMS\Policies\ArticlePolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'other_update' => 'otherUpdate',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminCategories()
-    {
-        Gate::resource('admin.categories', \BBCMS\Policies\CategoryPolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'other_update' => 'otherUpdate',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminComments()
-    {
-        Gate::resource('admin.comments', \BBCMS\Policies\CommentPolicy::class, [
-            'index' => 'index',
-            'update' => 'update',
-            'other_update' => 'otherUpdate',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminFiles()
-    {
-        Gate::resource('admin.files', \BBCMS\Policies\FilePolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminNotes()
-    {
-        Gate::resource('admin.notes', \BBCMS\Policies\NotePolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'delete' => 'delete',
-        ]);
-    }
-
-    protected function registerAdminUsers()
-    {
-        Gate::resource('admin.users', \BBCMS\Policies\UserPolicy::class, [
-            'index' => 'index',
-            'view' => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'other_update' => 'otherUpdate',
-            'delete' => 'delete',
-        ]);
-    }
+    // Gate::define('notes.form', function ($user) {
+    //     return $user->canDo('notes.form');
+    // });
+    //
+    // Gate::resource('notes', NotePolicy::class, [
+    //     'index' => 'index',
+    //     'form' => 'form',
+    //     'create' => 'store',
+    //     'view' => 'show',
+    //     'update' => 'update',
+    //     'destroy' => 'destroy',
+    // ]);
+    //
+    // Gate::define('notes.form', 'BBCMS\Policies\NotePolicy@form');
+    //
+    // dd(auth('api')->user()->can('create', Note::class));
 }

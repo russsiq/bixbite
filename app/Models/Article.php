@@ -17,13 +17,17 @@ use BBCMS\Models\Relations\Categoryable;
 
 class Article extends BaseModel
 {
+    use Traits\Dataviewer;
     use Traits\FullTextSearch;
     use ArticleMutators, ArticleScopes;
     use Extensible, Fileable, Taggable, Commentable, Categoryable;
 
     protected $primaryKey = 'id';
+
     protected $table = 'articles';
+
     public $timestamps = false;
+
     protected $casts = [
         'title' => 'string',
         'img' => 'array',
@@ -35,11 +39,14 @@ class Article extends BaseModel
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
     protected $appends = [
         'url',
         'created',
         'updated',
+        // 'image',
     ];
+
     protected $fillable = [
         'user_id',
         'image_id',
@@ -66,8 +73,31 @@ class Article extends BaseModel
         'updated_at',
     ];
 
-    protected $with = [
-        'categories:categories.id,categories.slug,categories.title'
+    protected $allowedFilters = [
+        'id',
+        'title',
+        'content',
+        'state',
+        'views',
+        'created_at',
+        // 'votes',
+        // 'rating',
+
+        // Nested filters.
+        'comments.content',
+        'comments.is_approved',
+        'comments.count',
+        'comments.created_at',
+        'files.count',
+        'categories.id',
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'title',
+        'views',
+        'state',
+        'created_at',
     ];
 
     /**
@@ -79,6 +109,15 @@ class Article extends BaseModel
     ];
 
     /**
+     * The relations to eager load on every query.
+     * При выводе списка комментариев нужно получить ссылку на комментарий,
+     * а ссылка на комментарий к записи формируется с использованием категорий.
+     */
+    protected $with = [
+        'categories:categories.id,categories.title,categories.slug',
+    ];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -87,16 +126,6 @@ class Article extends BaseModel
     {
         parent::boot();
         static::observe(ArticleObserver::class);
-    }
-
-    /**
-    * Get the route key for the model.
-    *
-    * @return string
-    */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
     public function user()

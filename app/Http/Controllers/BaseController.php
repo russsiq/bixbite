@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    
+
     /**
      * Make response description.
      *
@@ -20,7 +20,7 @@ class BaseController extends Controller
      */
     protected function makeResponse(string $template, array $vars = [])
     {
-        if (request()->ajax()) {
+        if (request()->expectsJson()) {
             return $this->jsonOutput($vars);
         }
 
@@ -37,7 +37,7 @@ class BaseController extends Controller
      */
     protected function makeRedirect(bool $status, $route, string $message)
     {
-        if (request()->ajax()) {
+        if (request()->expectsJson()) {
             return $this->jsonOutput(compact('status', 'route', 'message'));
         }
 
@@ -47,7 +47,7 @@ class BaseController extends Controller
             if (\Route::has($route)) {
                 $url = route($route);
             } else {
-                abort(404, "Route named $route does not exist");
+                abort(404, "Route named $route does not exist.");
             }
         }
 
@@ -80,6 +80,6 @@ class BaseController extends Controller
             return view($tpl, $vars)->render();
         }
 
-        abort(404, "View named $tpl not exists.");
+        abort(404, "View named [$tpl] not exists.");
     }
 }

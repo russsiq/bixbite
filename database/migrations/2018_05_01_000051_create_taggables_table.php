@@ -23,8 +23,6 @@ class CreateTaggablesTable extends Migration
             $table->index('taggable_id');
             $table->index('taggable_type');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 
@@ -41,6 +39,7 @@ class CreateTaggablesTable extends Migration
             // $table->dropIndex(['taggable_id']);
             // $table->dropIndex(['taggable_type']);
         });
+
         Schema::dropIfExists('taggables');
     }
 }

@@ -1,18 +1,41 @@
 <?php
 
-// use Illuminate\Http\Request;
-//
-// /*
-// |--------------------------------------------------------------------------
-// | API Routes
-// |--------------------------------------------------------------------------
-// |
-// | Here is where you can register API routes for your application. These
-// | routes are loaded by the RouteServiceProvider within a group which
-// | is assigned the "api" middleware group. Enjoy building your API!
-// |
-// */
-//
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+/**
+ * Данная группа маршрутов имеет общие:
+ *      - префикс: `api`;
+ *      - посредники: `web`.
+ */
+
+Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
+
+Route::group([
+        'prefix' => 'v1',
+        'namespace' => 'V1',
+        'middleware' => 'auth:api',
+        'as' => 'api.'
+    ], function () {
+        Route::post('auth/logout', 'AuthController@logout')->name('auth.logout');
+        Route::get('notes/form', 'NotesController@form')->name('notes.form');
+        Route::get('settings/{module}', 'SettingsController@getModule')->name('settings.getModule');
+        Route::put('settings/{module}', 'SettingsController@updateModule')->name('settings.updateModule');
+
+        Route::apiResources([
+            'articles' => 'ArticlesController',
+            'categories' => 'CategoriesController',
+            'comments' => 'CommentsController',
+            'files' => 'FilesController',
+            'notes' => 'NotesController',
+            'privileges' => 'PrivilegesController',
+            'settings' => 'SettingsController',
+            // 'tags' => 'TagsController',
+            'templates' => 'TemplatesController',
+            'users' => 'UsersController',
+            'x_fields' => 'XFieldsController',
+        ]);
+        // Route::resource('articles', 'ArticlesController')->except(['show'])->names(['destroy' => 'articles.delete']);
+
+        Route::put('articles', 'ArticlesController@massUpdate')->name('articles.massUpdate');
+        Route::put('comments', 'CommentsController@massUpdate')->name('comments.massUpdate');
+    });
+
+// dd(route('api'));

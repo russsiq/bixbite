@@ -4,13 +4,15 @@ namespace BBCMS\Http\Middleware;
 
 use Closure;
 
+/**
+ * Запись в кэш информации о том, что пользователь находится онлайн.
+ */
 class LastUserActivity
 {
     /**
-     * Handle an incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

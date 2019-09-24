@@ -2,15 +2,21 @@
     <div class="single_article__inner">
         <header class="single_article__header">
             <div class="moder_panel">
-                @can ('admin.articles.update', $article)
-                    <a href="{{ route('admin.articles.edit', $article) }}" class=""><i class="fa fa-edit"></i></a>
-                @endcan
                 @role('owner')
                     <a href="{{ route('system_care.clearcache', 'articles-single-'.$article->id) }}" class=""><i class="fa fa-recycle"></i></a>
                 @endrole
             </div>
-            <h2 class="single_article__title" itemprop="headline">{{ $article->title }}</h2>
+
+            <h2 class="single_article__title" itemprop="headline">
+                {{ $article->title }}
+
+                @can ('update', $article)
+                    <sup><a href="{{ $article->editPage }}"><i class="fa fa-edit"></i></a></sup>
+                @endcan
+            </h2>
+
             <p class="single_article__teaser">{{ $article->teaser }}</p>
+
             @if ($image = $article->image)
                 {{ $image->picture_box }}
             @endif
@@ -28,7 +34,8 @@
                 @endif
             </div>
 
-            <div class="single_article__body" itemprop="articleBody">{!! $article->content !!}</div>
+            {{--  v-pre https://vuejs.org/v2/api/#v-pre --}}
+            <div class="single_article__body" itemprop="articleBody" v-pre>{!! $article->content !!}</div>
 
             <div class="single_article__info">
                 <span class="single_article__meta"><i class="fa fa-folder-open-o"></i>

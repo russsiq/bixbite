@@ -4,12 +4,9 @@ namespace BBCMS\Policies;
 
 use BBCMS\Models\User;
 use BBCMS\Models\File;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class FilePolicy
+class FilePolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     public function index(User $user)
     {
         return true;
@@ -17,7 +14,7 @@ class FilePolicy
 
     public function view(User $user, File $file)
     {
-        return $user->id === $file->user_id;
+        return true;
     }
 
     public function create(User $user)
@@ -27,11 +24,11 @@ class FilePolicy
 
     public function update(User $user, File $file)
     {
-        return $user->id === $file->user_id;
+        return $user->hasRole('owner') or $user->id === $file->user_id;
     }
 
     public function delete(User $user, File $file)
     {
-        return $user->id === $file->user_id;
+        return $user->hasRole('owner') or $user->id === $file->user_id;
     }
 }

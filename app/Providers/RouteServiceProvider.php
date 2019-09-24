@@ -2,9 +2,15 @@
 
 namespace BBCMS\Providers;
 
+use BBCMS\Models\Article;
+use BBCMS\Models\Category;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
+/**
+ * Полнейший бардак с регулярными выражениями, т.е. в секции `boot`.
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -16,6 +22,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'BBCMS\Http\Controllers';
 
+    protected $routePatterns = [
+        'any' => '(.*)',
+        'id' => '^[0-9]*$',
+    ];
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -23,32 +34,53 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::pattern('id', '^[0-9]*$');
-        Route::pattern('article', '^[\w\-0-9]+$');
-        Route::pattern('tag', '^[\w\-0-9\+\%\s]+$');
-        Route::pattern('category', '^[\w\-0-9\/]+$');
-        Route::pattern('commentable_id', '^[0-9]*$');
+
+        Route::pattern('any', $this->routePattern('any'));
+        Route::pattern('id', $this->routePattern('id'));
+
+        // // Route::pattern('article', '^[a-z_]+$');
+        Route::pattern('article_id', $this->routePattern('id'));
+        // Route::pattern('article_slug', '^[\w\-0-9]+$');
+        //
+        // Route::pattern('category', '^[\w\-0-9\/]+$');
+        // Route::pattern('category_slug', '^[\w\-0-9\/]+$');
+
+        Route::pattern('commentable_id', $this->routePattern('id'));
         Route::pattern('commentable_type', '^[a-zA-Z_]+$');
 
-        /*Для новостей , статей не надо этого. Для пользователей не знаю
-        Route::model('article', \BBCMS\Models\Article::class);
-        Route::model('category', \BBCMS\Models\Category::class);
-        Route::model('users', BBCMS\Models\User::class);*/
+        Route::pattern('tag', '^[\w\-0-9\+\%\s]+$');
 
         // Backend
         Route::pattern('module', '^[a-z_]+$');
-        Route::pattern('module_id', '^[0-9]*$');
-        Route::pattern('setting_id', '^[0-9]*$');
+        Route::pattern('module_id', $this->routePattern('id'));
+        Route::pattern('setting_id', $this->routePattern('id'));
 
         // Common
         Route::pattern('model', '^[a-zA-Z_]+$');
         Route::pattern('attribute', '^[a-zA-Z_]+$');
 
-        // $router->bind('articles', function($id) {
-        //     return \BBCMS\Models\Article::active()->findOrFail($id);
-        // });
+        Route::bind('category', function($value) {
+            $attribute = intval($value) ? 'id' : 'slug';
+
+            return Category::where($attribute, $value)->first();
+        });
+
+        // Для новостей , статей не надо этого. Для пользователей не знаю
+        // Route::model('article', \BBCMS\Models\Article::class);
+        // Route::model('category', \BBCMS\Models\Category::class);
+        // Route::model('users', BBCMS\Models\User::class);
 
         parent::boot();
+    }
+
+    public function routePatterns(): array
+    {
+        return $this->routePatterns;
+    }
+
+    public function routePattern(string $type): string
+    {
+        return $this->routePatterns[$type];
     }
 
     /**
@@ -58,55 +90,65 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapRssRoutes();
         $this->mapApiRoutes();
-        $this->mapAdminRoutes();  //for the admin web routes
-        $this->mapSetupRoutes();  //for the Installer web routes
+        $this->mapCommonRoutes();
+        $this->mapSetupRoutes();
+        $this->mapAdminRoutes();
         $this->mapWebRoutes();
     }
 
     /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
+     * Попробуем отключить посредников для rss лент.
+     * Оставим только указатель до шаблонов сайта.
      */
+    protected function mapRssRoutes()
+    {
+        Route::middleware([
+                // 'web',
+                \BBCMS\Http\Middleware\ThemeSwitcher::class,
+            ])
+            ->namespace($this->namespace.'\Rss')
+            ->group(app()->basePath('routes/web/rss.php'));
+    }
+
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-            ->middleware(['api'])
-            ->namespace($this->namespace)
+            ->middleware([
+                'api',
+            ])
+            ->namespace($this->namespace.'\Api')
             ->group(app()->basePath('routes/api.php'));
     }
 
-    /**
-     * Define the admin specific "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapAdminRoutes()
+    protected function mapCommonRoutes()
     {
-        Route::prefix('admin')
-            ->middleware(['web', 'auth', 'can:global.admin'])
-            ->namespace($this->namespace . '\Admin')
-            ->group(app()->basePath('routes/web/admin.php'));
+        Route::prefix('app_common')
+            ->middleware([
+                'web',
+            ])
+            ->namespace($this->namespace.'\Common')
+            ->group(app()->basePath('routes/web/common.php'));
     }
 
-    /**
-     * Define the admin specific "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
     protected function mapSetupRoutes()
     {
         Route::prefix('installer')
-            ->middleware(['web'])
-            ->namespace($this->namespace . '\Setup')
+            ->middleware([
+                'web',
+            ])
+            ->namespace($this->namespace.'\Setup')
             ->group(app()->basePath('routes/web/setup.php'));
+    }
+
+    protected function mapAdminRoutes()
+    {
+        Route::middleware([
+                'web',
+            ])
+            ->namespace($this->namespace.'\Admin')
+            ->group(app()->basePath('routes/web/admin.php'));
     }
 
     /**
@@ -118,7 +160,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web'])
+        Route::middleware([
+                'web',
+            ])
             ->namespace($this->namespace)
             ->group(app()->basePath('routes/web.php'));
     }

@@ -18,11 +18,11 @@ define('DS', DIRECTORY_SEPARATOR);
  * select_dir (optional: `custom_views`, and folder in app()->resourcePath($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
- * skin_asset - Generate an asset for current skin of application.
+ * skin - Generate a path to public folder for current skin of application.
  * skin_path - Get path to `resources/skins/{skin}/{path}` folder.
  * string_slug - Create a web friendly URL slug from a string.
  * teaser - Remove html tags and truncate string at the specified length.
- * theme_asset - Generate an asset path for current theme of application.
+ * theme - Generate an asset path for current theme of application.
  * theme_path - Get path to `resources\themes\\{theme-from-setting}\\{path}` resources $directory.
  * theme_version - Obtaining info about theme from version file.
  * user - Return curent logined user $attribute. Used only in admin panel.
@@ -31,7 +31,6 @@ define('DS', DIRECTORY_SEPARATOR);
 
 use Illuminate\Support\HtmlString;
 use BBCMS\Exceptions\BadLogic;
-use BBCMS\Exceptions\MethodNotAvailable;
 
 if (! function_exists('app_locale')) {
     /**
@@ -74,6 +73,7 @@ if (! function_exists('app_locale')) {
 if (! function_exists('app_theme')) {
     /**
      * Get or set current theme name from different sides.
+     * @NB: НЕОБХОДИМО разобраться с сессиями. Сейчас полный бардак.
      *
      * @param  string $locale
      * @throws \LogicException if dir theme not exists.
@@ -84,18 +84,18 @@ if (! function_exists('app_theme')) {
         static $app_theme = null;
 
         if (is_null($app_theme)) {
-            // При сохранении настроек нужно обновлять `lang` и `theme`,
-            // находящиеся в `session('')`
+            // При сохранении настроек нужно обновлять `lang` и `theme`, находящиеся в `session('')`.
             foreach ([
-                request('app_theme'),
                 $theme,
-                session('app_theme'),
+                request('app_theme'),
                 setting('system.app_theme'),
                 env('APP_THEME'),
                 'default',
+                session('app_theme'),
             ] as $app_theme) {
                 if ($app_theme and is_dir(app()->resourcePath('themes'.DS.$app_theme))) {
                     session(['app_theme' => $app_theme]);
+
                     break;
                 }
             }
@@ -152,18 +152,19 @@ if (! function_exists('formatBytes')) {
      *
      * @param  integer $size
      * @param  integer $precision
-     * @return integer
+     * @return string
      */
-    function formatBytes(int $size, int $precision = 2)
+    function formatBytes(int $size, int $precision = 2): string
     {
         if ($size > 0) {
             $base = log($size) / log(1024);
+
             $suffixes = [
-                __('bytes'),
-                __('KB'),
-                __('MB'),
-                __('GB'),
-                __('TB'),
+                __('common.bytes'),
+                __('common.KB'),
+                __('common.MB'),
+                __('common.GB'),
+                __('common.TB'),
             ];
 
             return round(pow(1024, $base - floor($base)), $precision).' '.$suffixes[floor($base)];
@@ -182,6 +183,7 @@ if (! function_exists('get_captcha')) {
      */
     function get_captcha(string $view = 'components.partials.captcha')
     {
+        // time()
         return html_raw(view($view)->with('captcha_rand', mt_rand() / mt_getrandmax())->render());
     }
 }
@@ -277,7 +279,7 @@ if (! function_exists('html_secure')) {
             $text = array_map('html_secure', $text);
         } elseif (is_string($text)) {
             $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8', false);
-            $text = str_replace(['{', '<', '>', '"', "'"], ['&#123;', '&lt;', '&gt;', '&#34;', '&#039;'], $text); // '&' => '&amp;'
+            $text = str_replace(['{', '}', '<', '>', '"', "'"], ['&#123;', '&#125;', '&lt;', '&gt;', '&#34;', '&#039;'], $text); // '&' => '&amp;'
             $text = trim($text) ?: null;
         } else {
             $text = null;
@@ -335,8 +337,8 @@ if (! function_exists('pageinfo')) {
     /**
      * Working with global information about the current frontend page.
      *
-     * @param  array|string          $data
-     * @throws MethodNotAvailable   If $data not a string or array.
+     * @param  array|string  $data
+     * @throws \BadMethodCallException  If $data not a string or array.
      * @return BBCMS\Support\PageInfo|BBCMS\Support\Contracts\PageInfoContract
      */
     function pageinfo($data = null)
@@ -355,7 +357,7 @@ if (! function_exists('pageinfo')) {
             return $factory->make($data);
         }
 
-        throw new MethodNotAvailable();
+        throw new \BadMethodCallException;
     }
 }
 
@@ -451,39 +453,15 @@ if (! function_exists('setting')) {
     }
 }
 
-// if (! function_exists('setting')) {
-//
-//     /**
-//      * [setting description]
-//      * @param  [type] $key     [description]
-//      * @param  [type] $default [description]
-//      * @return [type]          [description]
-//      */
-//     function setting($key, string $default = null)
-//     {
-//         if (is_null($key)) {
-//             return new \BBCMS\Models\Setting();
-//         }
-//
-//         if (is_array($key)) {
-//             return \BBCMS\Models\Setting::set($key[0], $key[1]);
-//         }
-//
-//         $value = \BBCMS\Models\Setting::get($key);
-//
-//         return is_null($value) ? value($default) : $value;
-//     }
-// }
-
-if (! function_exists('skin_asset')) {
+if (! function_exists('skin')) {
     /**
-     * Generate an asset for current skin of application.
+     * Generate a path to public folder for current skin of application.
      *
      * @param  string  $path
      * @param  bool    $secure
      * @return string
      */
-    function skin_asset($path, $secure = null)
+    function skin($path, $secure = null)
     {
         return app('url')->asset('resources/skins/' . setting('system.app_skin', 'default') . '/public/' . $path, $secure);
     }
@@ -674,7 +652,7 @@ if (! function_exists('teaser')) {
     }
 }
 
-if (! function_exists('theme_asset')) {
+if (! function_exists('theme')) {
     /**
      * Generate an asset path for current theme of application.
      * Ex.: `http://site.com/themes/{theme-from-setting}/public/css/app.css`
@@ -683,7 +661,7 @@ if (! function_exists('theme_asset')) {
      * @param  bool $secure
      * @return string
      */
-    function theme_asset($path, $secure = null)
+    function theme($path, $secure = null)
     {
         return app('url')->asset('resources/themes/' . app_theme() . '/public/' . $path, $secure);
     }
@@ -691,16 +669,16 @@ if (! function_exists('theme_asset')) {
 
 if (! function_exists('theme_path')) {
     /**
-     * Get path to `resources/themes/{theme}/{path}` $dir.
+     * Get path to `resources/themes/{theme}/{path}` directory.
      *
      * @param  string $path
      * @return string
      */
     function theme_path(string $path = null)
     {
-        return is_dir(
-            $dir = app()->resourcePath('themes' . DS . app_theme()) . ($path ? DS . $path : $path) . DS
-        ) ? $dir : null;
+        $dir = app()->resourcePath('themes' . DS . app_theme()) . ($path ? DS . $path : $path) . DS;
+
+        return is_dir($dir) ? $dir : null;
     }
 }
 
@@ -720,6 +698,7 @@ if (! function_exists('theme_version')) {
         if (! file_exists($file) or ! $version = parse_ini_file($file, true, INI_SCANNER_RAW)) {
             return null;
         }
+
         if (! empty($version['screenshot']) and file_exists($path.'public'.DS.$version['screenshot'])) {
             $screenshot = app('url')->asset("resources/themes/$theme/public/$version[screenshot]");
         }
@@ -753,20 +732,26 @@ if (! function_exists('user')) {
     /**
      * Return attribute for currently logined user.
      *
+     * @param  string $attribute
+     * @param  string $guard
      * @throws BadLogic When requesting hidden attributes.
-     * @return string|null
+     * @return null|string|BBCMS\Models\User
      */
-    function user(string $attribute = null)
+    function user(string $attribute = null, string $guard = null)
     {
-        if (in_array($attribute, ['password', 'remember_token'])) {
-            throw new BadLogic();
-        }
-
-        if (!auth()->check()) {
+        if (auth('api')->check()) {
+            $guard = 'api';
+        } elseif (! auth($guard)->check()) {
             return null;
         }
 
-        return $attribute ? auth()->user()->getAttribute($attribute) : auth()->user();
+        $user = auth($guard)->user();
+
+        if (in_array($attribute, $user->getHidden())) {
+            throw new BadLogic;
+        }
+
+        return $attribute ? $user->getAttribute($attribute) : $user;
     }
 }
 
@@ -830,73 +815,3 @@ if (! function_exists('parse_ini')) {
         }
     }
 }
-
-// if (! function_exists('msg')) {
-//     /**
-//      * Generate info / error message.
-//      * @param  array  $params [description]
-//      * @param  integer $mode   Working mode.
-//      *      0 - use SITE theme
-//      *      1 - use ADMIN PANEL skin
-//      * @param  integer $disp   Flag [display mode].
-//      *     -1 - automatic mode
-//      *      0 - add into mainblock
-//      *      1 - print
-//      *      2 - return as result
-//      *      3 - redirect
-//      * @return mixed
-//      */
-//     function msg(array $params, $mode = 0, $disp = -1)
-//     {
-//         global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
-//
-//         // Set AUTO mode if $disp == -1
-//         if ($disp == -1)
-//             $mode = defined('ADMIN') ? 1 : 0;
-//
-//         // Choose working mode
-//         $type = isset($params['type']) ? $params['type'] : 'success';
-//         $title = isset($params['title']) ? $params['title'] : __($type);
-//         $message = isset($params['message']) ? $params['message'] : '';
-//         $referer = isset($params['referer']) ? $params['referer'] : null;
-//
-//         if (3 == $disp) {
-//             $tVars = array(
-//                 'title' => $title,
-//                 'type' => $type,
-//                 'message' => trim(db_squote($message), "'"),
-//                 'linktext' => home_title,
-//                 'link' => ! empty($referer) ? trim(db_squote($referer), "'") : home,
-//             );
-//             $SUPRESS_TEMPLATE_SHOW = 1;
-//             $template['vars']['mainblock'] = $twig->render('redirect.tpl', $tVars);
-//             return 1;
-//         } else {
-//             $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
-//                 'id' => rand(8, 888),
-//                 'type' => $type,
-//                 'title' => trim(db_squote($title), "'"),
-//                 'message' => trim(db_squote($message), "'"),
-//                 ));
-//         }
-//
-//         switch($disp) {
-//             case 0:
-//                 $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-//                 break;
-//             case 1:
-//                 print $msg;
-//                 break;
-//             case 2:
-//                 return $msg;
-//                 break;
-//             default:
-//                 if ($mode) {
-//                     print $msg;
-//                 } else {
-//                     $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
-//                 }
-//                 break;
-//         }
-//     }
-// }

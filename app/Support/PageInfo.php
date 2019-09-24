@@ -2,8 +2,8 @@
 
 namespace BBCMS\Support;
 
-use BBCMS\Exceptions\MethodNotExist;
-use BBCMS\Exceptions\MethodNotAvailable;
+use RuntimeException;
+use BadMethodCallException;
 
 /**
 * pageinfo([...])
@@ -25,6 +25,8 @@ class PageInfo
             'app_skin' => setting('system.app_skin', 'default'),
             'app_theme' => setting('system.app_theme', 'default'),
             'app_url' => setting('system.app_url', url()->to('/')),
+            'api_url' => url()->to('/api/v1'),
+            'panel' => route('panel'),
         ]);
     }
 
@@ -62,14 +64,17 @@ class PageInfo
     {
         $data = json_encode([
             'locale' => $this->get('locale'),
+            'csrf_token' => $this->get('csrf_token'),
             'app_name' => $this->get('app_name'),
             'app_skin' => $this->get('app_skin'),
             'app_theme' => $this->get('app_theme'),
             'app_url' => $this->get('app_url'),
+            'api_url' => $this->get('api_url'),
+            'panel' => $this->get('panel'),
         ]);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException(json_last_error_msg());
+            throw new RuntimeException(json_last_error_msg());
         }
 
         return $data;
@@ -102,7 +107,7 @@ class PageInfo
             return $this->get($key)[$subKey[0]];
         }
 
-        throw new MethodNotExist(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Call to undefined method %s::%s!', static::class, $method
         ));
     }
@@ -153,7 +158,7 @@ class PageInfo
 
     public function __set($key, $value)
     {
-        throw new MethodNotAvailable(sprintf(
+        throw new BadMethodCallException(sprintf(
             '%s::%s not available!', static::class, '__set'
         ));
     }
@@ -164,7 +169,7 @@ class PageInfo
             return $this->getSubAttribute($method, $arguments);
         }
 
-        throw new MethodNotExist(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Call to undefined method %s::%s!', static::class, $method
         ));
     }

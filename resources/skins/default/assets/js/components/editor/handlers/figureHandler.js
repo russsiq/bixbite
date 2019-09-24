@@ -1,68 +1,62 @@
 import Quill from 'quill';
 
+import File from '@/store/models/file';
+
 /**
  * Image upload handler.
  */
-const figureHandler = async function(quill, {
-    upload_url,
-    attachment_id,
-    attachment_type
-}) {
+const figureHandler = async function(quill, attachment) {
 
-    if (!attachment_id || !attachment_type) {
+    if (!attachment.id || !attachment.type) {
         Notification.warning({
-            message: langProvider.trans('Before you can upload files, you must save the article.')
-        })
+            message: __('Before you can upload files, you must save the article.')
+        });
 
-        return false
+        return false;
     }
 
-    const input = document.createElement('input')
+    const input = document.createElement('input');
 
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.classList.add('ql-image')
-    input.click()
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.classList.add('ql-image');
+    input.click();
 
     input.addEventListener('change', async () => {
-        // Save current cursor position.
-        let range = quill.getSelection(true)
-
         try {
+            // Save current cursor position.
+            const range = quill.getSelection(true);
+
             if (!input.files || !input.files.length) {
-                throw new Error(langProvider.trans('No files selected.'))
+                throw new Error(__('No files selected.'));
             }
 
-            const formData = new FormData()
-            formData.append('file', input.files[0])
-            formData.append('attachment_id', attachment_id)
-            formData.append('attachment_type', attachment_type)
-            
-            const response = await axios.post(upload_url, formData);
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            formData.append('attachment_id', attachment.id);
+            formData.append('attachment_type', attachment.type);
 
-            if (!response.data.file) {
-                throw new Error(response.data.message);
-            }
+            const image = await File.$create({
+                data: formData
+            });
 
-            // Insert uploaded image.
+            // Вставляем загруженное изображение.
             quill.insertEmbed(range.index, 'figure-image', {
-                url: response.data.file.url,
-                caption: response.data.file.title,
-            }, Quill.sources.USER)
+                id: image.id,
+                url: image.url,
+                caption: image.title,
+            }, Quill.sources.USER);
 
-            // Move the cursor below the image.
-            quill.setSelection(range.index + 1, Quill.sources.SILENT)
+            // Перемещаем курсор ниже изображения.
+            // Еще бы обавить крутилку экрана до курсора.
+            quill.setSelection(range.index + 1);
 
             input.value = '';
+            input.remove && input.remove();
         } catch (error) {
-
-            console.log(error)
-
-            Notification.error({
-                message: error.message
-            })
+            !error.response && console.log(error);
         }
-    })
-}
+    });
+};
 
-export default figureHandler
+export default figureHandler;

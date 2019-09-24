@@ -14,7 +14,12 @@ class CommentsController extends SiteController
     public function __construct(Comment $model)
     {
         parent::__construct();
-        $this->middleware('throttle:1,1')->only(['store', 'update', 'delete']);
+
+        $this->middleware('throttle:5,1')->only([
+            'store',
+            'update',
+            'delete',
+        ]);
 
         $this->model = $model;
     }
@@ -33,7 +38,9 @@ class CommentsController extends SiteController
         // have $user->id. This data is for display only.
         if ($user = user()) {
             if ($comment->user_id === $entity->user_id) {
-                $comment->update(['is_approved' => true]);
+                $comment->update([
+                    'is_approved' => true,
+                ]);
             }
             $comment->user = $user;
             $comment->name = $user->name;
@@ -41,12 +48,13 @@ class CommentsController extends SiteController
         }
 
         // Temporarily.
-        if ($request->ajax()) {
+        if ($request->expectsJson()) {
             $comment->children = [];
+            $comment->html = view($this->template . '.show', compact('comment', 'entity'))->render();
+
             return response()->json([
-                'status' => true,
                 'message' => __('comments.msg.add_success'),
-                'comment' => view($this->template . '.show', compact('comment', 'entity'))->render()
+                'comment' => $comment
             ], 200);
         }
 
@@ -100,6 +108,10 @@ class CommentsController extends SiteController
         $url = $comment->commentable->url;
 
         $comment->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(null, 204);
+        }
 
         return $this->makeRedirect(true, $url, __('comments.msg.destroy'));
     }

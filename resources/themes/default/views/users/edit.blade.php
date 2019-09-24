@@ -71,7 +71,7 @@
     		<div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
     			<label for="password" class="col-sm-4 col-form-label">@lang('auth.password')</label>
     			<div class="col-sm-6">
-                    <input type="password" name="password" value="" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" />
+                    <input type="password" name="password" value="" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" autocomplete="new-password" />
                     @if ($errors->has('password'))
                         <span class="invalid-feedback">{{ $errors->first('password') }}</span>
                     @endif
@@ -80,7 +80,7 @@
     		<div class="form-group row{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
     			<label for="password_confirmation" class="col-sm-4 col-form-label">@lang('auth.password_confirmation')</label>
     			<div class="col-sm-6">
-                    <input type="password" name="password_confirmation" value="" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" />
+                    <input type="password" name="password_confirmation" value="" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" autocomplete="off" />
                     @if ($errors->has('password_confirmation'))
                         <span class="invalid-feedback">{{ $errors->first('password_confirmation') }}</span>
                     @endif

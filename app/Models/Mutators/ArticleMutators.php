@@ -16,12 +16,21 @@ trait ArticleMutators
 
     public function getUrlAttribute()
     {
-        return action('ArticlesController@article', [$this->categories->pluck('slug')->implode('_'), $this->id, $this->slug]);
+        return ($this->id and $this->categories->count() > 0  and 'published' === $this->state)
+            ? action('ArticlesController@article', [
+                $this->categories->pluck('slug')->implode('_'),
+                $this->id,
+                $this->slug
+            ]) : null;
+    }
+
+    public function getEditPageAttribute()
+    {
+        return $this->id ? route('panel')."/$this->table/$this->id/edit" : null;
     }
 
     /**
      * Generate content with `shortcode` and `x_fields`.
-     *
      * @return string
      */
     public function getContentAttribute()
@@ -118,9 +127,10 @@ trait ArticleMutators
 
     /**
      * Get `date_published` in ISO 8601 date format.
+     * @todo: create column published_at
      * @return mixed
      */
-    public function getDatePublishedAttribute() // ToDo: create column published_at.
+    public function getDatePublishedAttribute()
     {
         return empty($this->attributes['created_at']) ? null : $this->created_at->toIso8601String();
     }

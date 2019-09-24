@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-        <link href="{{ skin_asset('css/app.css') }}" rel="stylesheet" />
-        <link href="{{ skin_asset('css/install.css') }}" rel="stylesheet" />
-        <link href="{{ skin_asset('favicon.ico') }}" rel="icon" type="image/x-icon">
+        <link href="{{ skin('css/app.css') }}" rel="stylesheet" />
+        <link href="{{ skin('css/install.css') }}" rel="stylesheet" />
+        <link href="{{ skin('favicon.ico') }}" rel="icon" type="image/x-icon">
     </head>
     <body>
         <div id="app">
@@ -49,15 +49,15 @@
                                             <a href="{{ route('system.install.step_choice', ['app_locale'=>'ru']) }}" class="btn">Русский</a>
                                             {{-- <a href="{{ route('system.install.step_choice', ['app_locale'=>'en']) }}" class="btn">English</a> --}}
                                         </div>
-                                        <button type="submit" class="btn ml-auto">{{ __('btn.continue') }} &raquo;</button>
+                                        <button type="submit" class="btn ml-auto">@lang('common.btn.continue')</button>
                                     @else
                                         <div class="btn- group ml-auto">
                                             @if ((count($steps) - 1) == $curstep)
-                                                <button type="submit" class="btn">{{ __('btn.finish') }} &raquo;</button>
+                                                <button type="submit" class="btn">@lang('common.btn.finish')</button>
                                             @elseif (count($steps) > $curstep)
-                                                <button type="submit" class="btn">{{ __('btn.next') }} &raquo;</button>
+                                                <button type="submit" class="btn">@lang('common.btn.next')</button>
                                             @elseif (count($steps) == $curstep)
-                                                <a href="{{ route('dashboard') }}" class="btn">{{ __('btn.continue') }} &raquo;</a>
+                                                <a href="{{ route('panel') }}" class="btn">@lang('common.btn.continue')</a>
                                             @endif
                                         </div>
                                     @endif
@@ -69,6 +69,6 @@
             </main>
         </div>
         <!-- Scripts -->
-        <script src="{{ skin_asset('js/app.js') }}" type="text/javascript"></script>
+        {{-- <script src="{{ skin('js/app.js') }}" type="text/javascript"></script> --}}
     </body>
 </html>

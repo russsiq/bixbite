@@ -59,7 +59,8 @@ class TagsCloudWidget extends WidgetAbstract
         return [
             'title' => $this->params['title'],
             'items' => Tag::select([
-                    'tags.id','tags.title','tags.created_at','tags.updated_at',
+                    'tags.id',
+                    'tags.title',
                 ])
                 ->withCount($this->params['relation'])
                 ->whereHas($this->params['relation'])

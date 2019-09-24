@@ -19,11 +19,17 @@ trait Commentable
      */
     public function getComments(bool $nested = false)
     {
-        $comments = $this->comments()->get();
-        
+        $comments = $this->comments()
+            ->when(setting('comments.moderate'), function($query) {
+                $query->where('is_approved', true);
+            })
+            ->get();
+
         // If at least one comment is left by a registered user
-        if ($comments->firstWhere('user_id', '>', 'null')) {
-            $comments->load(['user:users.id,users.name,users.email,users.avatar']);
+        if ($comments->firstWhere('user_id', '<>', null)) {
+            $comments->load([
+                'user:users.id,users.name,users.email,users.avatar',
+            ]);
         }
 
         return $comments->treated($nested, $this->getAttributes());

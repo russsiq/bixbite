@@ -3,7 +3,7 @@
     <url>
         <loc>{{ url('/') }}</loc>
         <lastmod>{{ $lastmod->tz('UTC')->toAtomString() }}</lastmod>
-        <changefreq>{{ setting('sitemap.home_changefreq', 'daily') }}</changefreq>
-        <priority>{{ setting('sitemap.home_priority', '0.9') }}</priority>
+        <changefreq>{{ setting('system.home_changefreq', 'daily') }}</changefreq>
+        <priority>{{ setting('system.home_priority', '0.9') }}</priority>
     </url>
 </urlset>

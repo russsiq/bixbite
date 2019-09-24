@@ -59,3 +59,17 @@
 @import "widgets/related";
 @import "widgets/featured";
 @import "widgets/neighboring";
+
+.ql-syntax {
+    background-color: #23241f;
+    border-radius: 3px;
+    color: #f8f8f2;
+    display: block;
+    font-size: 87.5%;
+    line-height: 1.4em;
+    margin-bottom: 1rem;
+    margin-top: 5px;
+    overflow: visible;
+    padding: 5px 10px;
+    white-space: pre-wrap;
+}

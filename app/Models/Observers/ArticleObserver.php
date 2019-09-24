@@ -23,9 +23,28 @@ class ArticleObserver
 
     public function saved(Article $article)
     {
+        $article->categories()->sync(request()->categories);
+
+        if (!$article->categories->count()) {
+            $article->state = 'unpublished';
+        }
+
+        $article->tags()->sync(array_map(
+            function (string $tag) use ($article) {
+                return $article->tags()
+                    ->getModel()
+                    ->firstOrCreate([
+                        'title' => $tag,
+                    ])
+                    ->id;
+            },
+            request()->tags ?? []
+        ));
+
         $dirty = $article->getDirty();
 
         // Set new or delete old article image.
+        // By default if image set, then input with name `image_id` not visible.
         if (array_key_exists('image_id', $dirty)) {
             // Deleting always.
             $this->deleteImage($article);

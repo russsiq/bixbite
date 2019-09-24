@@ -7,7 +7,12 @@ use BBCMS\Support\WidgetAbstract;
 
 class ArticlesArchivesWidget extends WidgetAbstract
 {
-    protected $cacheTime = 30*24*60;
+    /**
+     * Время кэширования виджета. Раз в 30 дней.
+     * @var integer
+     */
+    protected $cacheTime = 30 * 24 * 60;
+
     protected $casts = [
         'active' => 'boolean',
         'template' => 'string',
@@ -45,7 +50,8 @@ class ArticlesArchivesWidget extends WidgetAbstract
     {
         return [
             'title' => $this->params['title'],
-            'items' => Article::selectRaw('
+            'items' => Article::without('categories')
+                ->selectRaw('
                     year(created_at) year,
                     monthname(created_at) month,
                     count(*) as count
@@ -57,6 +63,7 @@ class ArticlesArchivesWidget extends WidgetAbstract
                 ->get()
                 ->transform(function ($item, $key) {
                     $item->monthname = __('common.'.$item->month);
+
                     return $item;
                 }),
         ];

@@ -44,40 +44,42 @@ class CreateFilesTable extends Migration
 
 
             $table->increments('id');
-            $table->boolean('is_shared')->nullable()->default(0);
-            $table->integer('user_id')->unsigned()->nullable();
+
+            // Relation and other indexed keys.
+            $table->unsignedInteger('user_id')->nullable();
             $table->nullableMorphs('attachment');
 
+            // Main content.
+            $table->string('title')->nullable();
+            $table->text('description', 3000)->nullable();
             $table->string('disk')->default('public');
             $table->string('category'); // folder
+
+            // Aditional.
+            $table->boolean('is_shared')->nullable();
+
+            // Counters.
+            $table->unsignedInteger('downloads')->default(0); // download counters
+
+            // Appending when download.
             $table->string('type'); // ['archive', 'audio', 'doc', 'image', 'video', 'other']
             $table->string('name');
             $table->string('extension', 10);
             $table->string('mime_type');
             $table->integer('filesize'); // filesize();
             $table->string('checksum', 32); // md5_file()
-
-            $table->string('title')->nullable();
-            $table->text('description', 1000)->nullable();
             $table->text('properties')->nullable(); // json field type. Dimention, duration, etc.
-            $table->integer('downloads')->unsigned()->default(0); // download counters
 
+            // Timestamps.
+            $table->timestamps();
 
-
-
-            // $table->unique(['type', 'name', 'extension']);
-            $table->unique(['checksum']);
-
-
-
-
+            // Make indexes.
+            $table->unique(['checksum']); // $table->unique(['type', 'name', 'extension']);
             $table->index('user_id');
             $table->index('attachment_id');
             $table->index('attachment_type');
             $table->foreign('user_id')->references('id')->on('users')
                   ->onDelete('set null');
-
-            $table->timestamps();
         });
     }
 

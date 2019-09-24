@@ -1,98 +1,90 @@
 'use strict';
 
 /**
- * Load all of this project's JavaScript dependencies which includes
- * Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * Define language provider.
  */
+import Translator from './helpers/translator';
 
+window.langProvider = new Translator({
+    locale: Pageinfo.locale,
+    url: `${Pageinfo.app_url}/resources/skins/${Pageinfo.app_skin}/lang/`,
+});
+
+window.__ = function(key, replace) {
+    return langProvider.trans(key, replace);
+}
+
+/**
+ * Load all of this project's JavaScript dependencies.
+ */
 require('./bootstrap');
 
 import Vue from 'vue';
-import Translator from './helpers/translator';
 
-window.langProvider = new Translator(`${Pageinfo.app_url}/resources/skins/default/lang/`, Pageinfo.locale)
+// Disable the tip in the browser console in production mode.
+Vue.config.productionTip = false;
 
-// Configure ajax provider.
-Vue.prototype.$http = axios; // Ex.: this.$http.get(...)  === axios.get(...)
+// Adding Vue mixins to application.
+import VueLangMixin from '@/mixins/vue-lang-mixin';
+import VueBaseMixin from '@/mixins/vue-base-mixin';
 
-Vue.mixin({
-    data() {
-        return {
-            lang: langProvider
-        }
-    },
+// Install mixins to Vue application.
+Vue.mixin(VueLangMixin);
+// !!! Not global installed. ???
+Vue.mixin(VueBaseMixin);
 
-    filters: {
-        trans: function(key, replace) {
-            return langProvider.trans(key, replace)
-        },
-
-        // choice: function(key, number, replace) {
-        //     return langProvider.choice(key, number, replace)
-        // },
-    },
-
-    methods: {
-        trans: function(key, replace) {
-            return this.lang.trans(key, replace)
-        },
-
-        // choice: function(key, number, replace) {
-        //     return this.lang.choice(key, number, replace)
-        // },
-
-        async loadFromJsonPath(module) {
-            await this.lang.loadFromJsonPath(module)
-        },
-    }
-});
-
-// Adding Vue components to application.
-import UploadFiles from './components/UploadFiles.vue';
-import FilesAttaching from './components/FilesAttaching.vue';
-import ImageUploader from './components/ImageUploader.vue';
-//import BxbEditor from './components/BxbEditor.vue';
-import QuillEditor from './components/QuillEditor.vue';
-
-Vue.component('upload-files', UploadFiles);
-Vue.component('files-attaching', FilesAttaching);
-Vue.component('image-uploader', ImageUploader);
-//Vue.component('bxb-editor', BxbEditor);
-Vue.component('quill-editor', QuillEditor);
+// Adding Vue plugin to application.
+import store from '@/store';
+import router from '@/router';
 
 // Import Vue components as plugins.
-import LoadingLayer from 'bxb-loading-layer';
 import ScrollToTop from 'bxb-scroll-to-top';
 import Notification from 'bxb-notification';
 
 // Install plugins to Vue application.
-Vue.use(LoadingLayer);
 Vue.use(ScrollToTop);
 Vue.use(Notification);
+
+import App from '@/views/layouts/app.vue';
 
 // Create a fresh Vue application instance and attach it to the page.
 const app = new Vue({
     el: '#app',
-    data: {
-        article: {
-            id: 0,
-            content: '',
-        },
+
+    components: {
+        'app': App
     },
 
-    methods: {
-        updateArticleContent(value) {
-            console.log(value)
-            this.article.content = value
-        }
-    }
+    // Register the Vue router.
+    router,
+
+    // Register the Vuex store.
+    store,
+
+    template: '<app></app>',
 });
 
 // Make some vue plugins methods to global.
-window.LoadingLayer = app.$loading;
-window.ScrollToTop = app.$scrolling;
 window.Notification = app.$notification;
 
-// If necessary, activate the components immediately.
-window.ScrollToTop.show({active: true});
+// /**
+//  * Adding Vue components to application.
+//  */
+// import upperFirst from 'lodash/upperFirst'
+// import camelCase from 'lodash/camelCase'
+//
+// const requireComponent = require.context('./components', false, /\w+\.(vue)$/);
+//
+// requireComponent.keys()
+//     .forEach(fileName => {
+//         // Получение конфигурации компонента
+//         const componentConfig = requireComponent(fileName)
+//
+//         // Получение имени компонента в PascalCase
+//         const componentName = upperFirst(camelCase(
+//             fileName.replace(/^\.\/(.*)\.\w+$/, '$1');
+//         ));
+//
+//         // Глобальная регистрация компонента
+//         Vue.component(componentName, componentConfig.default || componentConfig);
+//     });

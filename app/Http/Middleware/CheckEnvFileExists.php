@@ -1,85 +1,170 @@
 <?php
 
-// @@@@@@@@@@@@@NEED REoRGANIZE, but captcha not work
-
 namespace BBCMS\Http\Middleware;
 
 use Closure;
+use LogicException;
+use RuntimeException;
+
+use BBCMS\Models\Privilege;
+
 use Illuminate\Encryption\Encrypter;
 
+/**
+ * Проверка на то, что система является установленной.
+ * В этой проверке также интересует физическое присутствие файла окружения.
+ *
+ * Нельзя использовать кэшированные `config('app.key')`,
+ * т.к. неопределенное время назад была отмечена
+ * какая-то несовместимость `\Dotenv` и `ajax` запросов.
+ * В данный момент ничего об этом не известно.
+ */
 class CheckEnvFileExists
 {
+    protected $location;
+    protected $envFilePath;
+
     /**
-     * Handle an incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        // NOT use config('app.key') from cache. But \Dotenv and ajax :(
+        $args = func_get_args();
+        $this->location = $request->segment(1);
+        $this->envFilePath = app()->environmentFilePath();
 
-        // \Debugbar::disable();
-        // \Debugbar::enable();
+        return $this->envFileExists() ?
+            $this->handleWithEnvFile(...$args) :
+            $this->handleWithoutEnvFile(...$args);
+    }
 
-        // 1 Determine physical location of file.
-        $env_path = app()->basePath('.env');
+    /**
+     * Обработка входящего запроса, если файл окружения существует.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Closure  $next
+     * @return mixed
+     */
+    public function handleWithEnvFile($request, Closure $next)
+    {
+        $env = $this->envFileContent();
 
-        // 2 Determine `installer` route.
-        $segment = $request->segment(1);
-
-        // 3 Go to installer, if not exists file.
-        if (! file_exists($env_path)) {
-            // Allways generate new $key.
-            $key = request('APP_KEY', $this->generateRandomKey());
-
-            // This need to run Application with minimum parameters.
-            config(['app.key' => $key]);
-
-            // Redirect to installer, for initial file creation and cleared cache.
-            if (! request('APP_KEY') or 'installer' != $segment) {
-                return redirect()->route('system.install.step_choice', ['APP_KEY' => $key]);
-            }
-
-            // Or create file from installer
-            return $next($request);
-        }
-
-        // 4 Ok, file exists. Check its contents.
-        if (! $env = @parse_ini_file($env_path, false, INI_SCANNER_RAW)) {
-            // Something clearly went wrong. File might be damaged.
-            throw new \LogicException('Unable to read the environment file.');
-        }
-
-        // 5 Determine Application key.
+        // Ключ приложения.
         $app_key = $env['APP_KEY'];
 
-        // 6 Determine the installed application.
+        // Маркер, что приложение считается установленным.
         $app_set = ! empty($env['APP_SET']);
 
-        // 7 Well, something went wrong again. The user is lost.
-        if ($app_key and $app_set and 'installer' == $segment) {
-            throw new \LogicException('File `.env` already exists! Delete it and continue.');
+        // Если ключ приложения уже был создан и
+        // приложение считается установленным,
+        // но был запрошен маршрут установщика.
+        if ($app_key and $app_set and $this->isLocation('installer')) {
+            throw new LogicException('File `.env` already exists! Delete it and continue.');
         }
 
-        // 8 Application is not installed. Install it.
-        if (! $app_set and 'installer' != $segment) {
-            return redirect()->route('system.install.step_choice');
+        // Если приложение не установлено и
+        // текущий маршрут - не маршрут установщика,
+        // то перенаправляем на установку.
+        if (! $app_set and ! $this->isLocation('installer')) {
+            return redirect()
+                ->route('system.install.step_choice');
+        }
+
+        // Check the existence of the cache.
+        if (! cache()->has('roles') and $app_key and ! empty($env['DB_DATABASE'])) {
+            Privilege::getModel()->roles();
         }
 
         return $next($request);
     }
 
     /**
-     * Generate a random key for the application.
-     *
+     * Обработка входящего запроса, если файл окружения не существует.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Closure  $next
+     * @return mixed
+     */
+    public function handleWithoutEnvFile($request, Closure $next)
+    {
+        // Предварительно генерируем ключ приложения.
+        $key = $this->generateRandomKey();
+
+        // Для запуска приложения необходимо задать минимальные параметры.
+        config([
+            'app.key' => $request->APP_KEY ?? $key,
+        ]);
+
+        // Если в запросе не был передан ключ приложения или
+        // текущий маршрут - не маршрут установщика,
+        // то редирект на страницу установки с передачей ключа в запросе.
+        if (! $request->APP_KEY or ! $this->isLocation('installer')) {
+            return redirect()
+                ->route('system.install.step_choice', [
+                    'APP_KEY' => $key,
+                ]);
+        }
+
+        return $next($request);
+    }
+
+    /**
+     * Получить текущий раздел маршрута.
+     * @return string|null
+     */
+    protected function location()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Проверить, что текущий раздел маршрута совпадает с переданным.
+     * @param  string  $path
+     * @return bool
+     */
+    protected function isLocation(string $path): bool
+    {
+        return $path === $this->location();
+    }
+
+    /**
+     * Получить полный путь до файла окружения.
      * @return string
      */
-    protected function generateRandomKey()
+    protected function envFilePath()
     {
-        return 'base64:'.base64_encode(
-            Encrypter::generateKey(config('app.cipher'))
-        );
+        return $this->envFilePath;
+    }
+
+    /**
+     * Проверить физическое существование файла окружения.
+     * @return bool
+     */
+    protected function envFileExists(): bool
+    {
+        return file_exists($this->envFilePath());
+    }
+
+    /**
+     * Получить содержимое файла окружения.
+     * @return array
+     */
+    protected function envFileContent(): array
+    {
+        return parse_ini_file($this->envFilePath(), false, INI_SCANNER_RAW);
+
+        // Необходимо проверить какие типы ошибок бывают при парсинге файла.
+        // throw new RuntimeException('Unable to read the environment file.');
+    }
+
+    /**
+     * Сгенерировать случайный ключ для приложения.
+     * По мотивам: `Illuminate\Foundation\Console\KeyGenerateCommand`.
+     * @return string
+     */
+    protected function generateRandomKey(): string
+    {
+        return 'base64:'.base64_encode(Encrypter::generateKey('AES-256-CBC'));
     }
 }

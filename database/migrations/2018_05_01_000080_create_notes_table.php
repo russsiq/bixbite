@@ -16,13 +16,15 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('image_id')->nullable();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->string('description')->nullable();
-            $table->boolean('is_completed')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_completed')->default(false);
 
             $table->index('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('image_id')->references('id')->on('files')->onDelete('set null');
 
             $table->timestamps();
         });

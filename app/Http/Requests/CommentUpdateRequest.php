@@ -16,22 +16,31 @@ class CommentUpdateRequest extends Request
         return true;
     }
 
-    public function sanitize()
+    /**
+     * Get data to be validated from the request.
+     *
+     * @return array
+     */
+    protected function validationData()
     {
-        $input = $this->only(['content']);
+        $input = $this->only([
+            'content',
+        ]);
 
         $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
             function ($match) {
-                return '<pre>' . html_secure($match[1]) . '</pre>';
+                return '<pre>'.html_secure($match[1]).'</pre>';
             }, $this->input('content')
         );
+
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
 
         if (! setting('comments.use_html', false)) {
             $input['content'] = html_clean($input['content']);
         }
 
-        return $this->replace($input)->all();
+        return $this->replace($input)
+            ->all();
     }
 
     public function rules()

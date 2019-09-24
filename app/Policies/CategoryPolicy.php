@@ -4,41 +4,28 @@ namespace BBCMS\Policies;
 
 use BBCMS\Models\User;
 use BBCMS\Models\Category;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CategoryPolicy
+class CategoryPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
-    // view, create, update, and delete
-
-    public function index(User $user)
+    /**
+     * Просмотр списка категорий.
+     * Разрешено всем пользователям.
+     * @param  User $user
+     * @return bool
+     */
+    public function index(User $user): bool
     {
-        return $user->canDo('admin.categories.index');
+        return true;
     }
 
-    public function view(User $user, Category $category)
+    public function massUpdate(User $user): bool
     {
-        return $user->canDo('admin.categories.view');
+        return $this->update($user);
+
+        return $user->canDo('categories.massUpdate');
     }
 
-    public function create(User $user)
-    {
-        return $user->canDo('admin.categories.create');
-    }
-
-    public function update(User $user, Category $category)
-    {
-        return $user->canDo('admin.categories.update');
-    }
-
-    public function otherUpdate(User $user)
-    {
-        return $user->canDo('admin.categories.other_update');
-    }
-
-    public function delete(User $user, Category $category)
-    {
-        return $user->canDo('admin.categories.delete');
-    }
+    // public function delete(User $user, Category $category) {
+    //     return $user->canDo('categories.delete');
+    // }
 }

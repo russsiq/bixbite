@@ -4,14 +4,16 @@ namespace BBCMS\Http\Middleware;
 
 use Closure;
 
+/**
+ * Проверка на то, что пользователь пытается получить доступ к своему профилю.
+ * Главным образом используется в маршрутах с префиксом `profile`.
+ */
 class OwnProfile
 {
     /**
-     * Handle the incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,7 +22,7 @@ class OwnProfile
             return $next($request);
         }
 
-        if ($request->ajax() or $request->wantsJson()) {
+        if ($request->expectsJson()) {
             return response(
                 __('common.error.403.message'), 403
             );
@@ -30,5 +32,4 @@ class OwnProfile
             'X-Robots-Tag' => 'noindex, nofollow',
         ]);
     }
-
 }

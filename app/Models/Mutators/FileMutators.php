@@ -64,6 +64,9 @@ trait FileMutators
      */
     public function getPictureBoxAttribute()
     {
+        // Load theme view.
+        \View::addLocation(theme_path('views'));
+        
         if ('image' != $this->attributes['type']) {
             return null;
         }
@@ -98,6 +101,9 @@ trait FileMutators
      */
     public function getMediaPlayerAttribute()
     {
+        // Load theme view.
+        \View::addLocation(theme_path('views'));
+        
         if (!in_array($this->attributes['type'], ['video', 'audio'])) {
             return null;
         }
@@ -115,6 +121,9 @@ trait FileMutators
      */
     public function getDownloadButtonAttribute()
     {
+        // Load theme view.
+        \View::addLocation(theme_path('views'));
+        
         return html_raw(view('shortcodes.download_button', [
             'file' => (object) $this->toArray()
         ]));

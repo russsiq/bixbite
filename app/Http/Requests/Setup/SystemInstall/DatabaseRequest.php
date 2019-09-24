@@ -16,16 +16,7 @@ class DatabaseRequest extends Request
     {
         return true;
     }
-
-    public function sanitize()
-    {
-        $input = $this->except(['_token', '_method', /*'created_at', 'updated_at', 'deleted_at',*/ 'submit']);
-
-        // $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
-
-        return $this->replace($input)->all();
-    }
-
+    
     /**
      * Get data to be validated from the request.
      *
@@ -33,11 +24,24 @@ class DatabaseRequest extends Request
      */
     protected function validationData()
     {
-        return $this->merge([
-            'DB_CONNECTION' => 'mysql',
-            'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
-            'DB_PORT' => $this->input('DB_PORT', '3306'),
-        ])->all();
+        $input = $this->except([
+            '_token',
+            '_method',
+            //'created_at',
+            //'updated_at',
+            //'deleted_at',
+            'submit',
+        ]);
+
+        // $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+        
+        return $this->replace($input)
+            ->merge([
+                'DB_CONNECTION' => 'mysql',
+                'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
+                'DB_PORT' => $this->input('DB_PORT', '3306'),
+            ])
+            ->all();
     }
 
     /**

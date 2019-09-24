@@ -1,36 +1,20 @@
 <?php
 
 /**
- * @see also BBCMS\Http\Kernel - middleware.
- * @see also BBCMS\Providers\RouteServiceProvider.
+ * Данная группа маршрутов не имеет общий префикс:
+ * Данная группа маршрутов имеет общие:
+ *      - посредники: `web`.
+ * Дополнительная информация:
+ *      - BBCMS\Http\Kernel - middleware.
+ *      - BBCMS\Providers\RouteServiceProvider
  */
 
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
-// Rss feds.
-Route::group(['namespace' => 'Rss'], function () {
-    // Sitemap. https://www.sitemaps.org/protocol.html.
-    Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.xml');
-    Route::get('sitemap/home.xml', 'SitemapController@home')->name('sitemap.home.xml');
-    Route::get('sitemap/articles.xml', 'SitemapController@articles')->name('sitemap.articles.xml');
-    Route::get('sitemap/categories.xml', 'SitemapController@categories')->name('sitemap.categories.xml');
-
-    // Turbo pages. https://yandex.ru/support/webmaster/turbo/feed.html.
-    Route::get('amp/articles.xml', 'SitemapController@ampArticles')->name('amp.articles.xml');
-});
-
-// First always.
-Route::group(['prefix' => 'app_common', 'namespace' => 'Common'], function () {
-    Route::get('captcha', 'CaptchaController@make')->name('captcha.url');
-    Route::post('feedback', 'FeedbackController@send')->name('feedback.send')->middleware(['throttle:5,1']);
-    Route::put('toggle/{model}/{id}/{attribute}', 'ToggleController@attribute')->name('toggle.attribute')->middleware(['auth', 'can:global.admin']);
-
-    // System care. Only user with role owner.
-    Route::get('clearcache/{key?}', 'SystemCareController@clearCache')->name('system_care.clearcache')->middleware(['role:owner']);
-    Route::get('clearviews', 'SystemCareController@clearViews')->name('system_care.clearviews')->middleware(['role:owner']);
-    Route::get('optimize', 'SystemCareController@complexOptimize')->name('system_care.optimize')->middleware(['role:owner']);
-});
+// Вначале располагаем группу маршрутов, где не нужны регулярные выражения.
+Route::get('feedback', 'Front\FeedbackController@create')->name('feedback.create');
+Route::post('feedback', 'Front\FeedbackController@send')->name('feedback.send')->middleware(['throttle:5,1']);
 
 // Route::get('{commentable_type}/{commentable_id}/comments/{comment}', function ($postId, $commentId) {});
 Route::post(
@@ -43,6 +27,8 @@ Route::match(['get','post'], 'search', 'ArticlesController@search')->name('artic
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
 
+Route::get('widget/{widget}', 'Front\WidgetController@provide')->where('widget', '^[a-z\.]+$');
+
 Route::get('download/{id}', 'DownloadsController@download')->name('file.download');
 
 Route::get('users', 'UsersController@index')->name('users.index');
@@ -52,10 +38,9 @@ Route::get('@{user}', 'UsersController@profile')->name('profile');
 Route::get('profile/{user}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
 Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
 
-// Last always.
+// Данные маршруты всегда должны распологаться последними.
 Route::get('{category}', 'ArticlesController@category')->name('articles.category');
-Route::get('{category}/{id}-{article}.html', 'ArticlesController@article')->name('articles.article');
-
+Route::get('{category_slug}/{article_id}-{article_slug}.html', 'ArticlesController@article')->name('articles.article');
 
 // // Authentication Routes...
 // Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -71,3 +56,9 @@ Route::get('{category}/{id}-{article}.html', 'ArticlesController@article')->name
 // Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 // Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 // Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+// Route::get('route-list', function () {
+//    $exitCode = Artisan::call('route:list');
+//
+//    dd(Artisan::output());
+// });

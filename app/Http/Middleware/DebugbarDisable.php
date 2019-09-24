@@ -4,13 +4,18 @@ namespace BBCMS\Http\Middleware;
 
 use Closure;
 
+/**
+ * Отключение панели отладки для некоторых маршрутов.
+ *
+ * Также можно сделать на включение???
+ * Только передавать булевого значение.
+ */
 class DebugbarDisable
 {
     /**
-     * Handle an incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

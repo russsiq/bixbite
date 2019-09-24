@@ -14,9 +14,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        // Always check to install system.
         \BBCMS\Http\Middleware\CheckEnvFileExists::class,
-
+        // \BBCMS\Http\Middleware\AccessToLockedSite::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \BBCMS\Http\Middleware\TrimStrings::class,
@@ -58,8 +57,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        // 'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth' => \BBCMS\Http\Middleware\Authenticate::class,
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

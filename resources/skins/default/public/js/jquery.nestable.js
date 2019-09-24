@@ -497,6 +497,7 @@ $(function() {
             if (!plugin) {
                 $(this).data("nestable", new Plugin(this, params));
                 $(this).data("nestable-id", new Date().getTime());
+                    console.log($(this).data("nestable"))
             } else {
                 if (typeof params === 'string' && typeof plugin[params] === 'function') {
                     retval = plugin[params]();

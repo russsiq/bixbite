@@ -1,3 +1,7 @@
+textarea {
+    max-width: 100%;
+}
+
 .divider {
     display: block;
     width: 6rem;
@@ -93,6 +97,9 @@ input[type="radio"]:disabled:before {
 /**
  * Bootstrap override.
  */
+.form-group {
+   position: relative;
+}
 .form-control {
     border-radius: 0;
     border-color: $gray-200;
@@ -100,6 +107,7 @@ input[type="radio"]:disabled:before {
 .form-control:focus {
   color: #000;
 }
+/*
 .was-validated .form-control:valid,
 .was-validated .header_area__input:valid,
 .was-validated .wall_form__content:valid,
@@ -109,4 +117,18 @@ input[type="radio"]:disabled:before {
 .was-validated .custom-select:valid,
 .custom-select.is-valid {
     border-color: $gray-200;
+}
+*/
+
+.form-control-feedback {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    z-index: 2;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.6;
+    text-align: center;
+    pointer-events: none;
+    color: $gray-600;
 }

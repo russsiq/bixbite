@@ -6,7 +6,6 @@
 
         <section class="action_page__content">
             <form action="{{ route('comments.update', $comment) }}" method="post">
-                <input type="hidden" name="_method" value="PUT" />
                 <div class="form-group row has-error">
                     <label for="password" class="col-md-3 col-form-label">@lang('comments.content')</label>
                     <div class="col-md-9">
@@ -23,7 +22,9 @@
 
                 <div class="form-group row">
                     <div class="col-md-9 offset-md-3">
+                        <input type="hidden" name="_method" value="PUT" />
                         <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('common.btn.save')</button>
+                        <a href="{{ $comment->url }}" class="btn btn-dark">@lang('common.btn.cancel')</a>
                     </div>
                 </div>
             </form>

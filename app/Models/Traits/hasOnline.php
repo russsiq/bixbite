@@ -1,7 +1,7 @@
 <?php
 
 // -----------------------------------------------------------------------------
-//  The tagging to activity of the user. Use in Middleware:
+//  Для обновления значений в кэше используется Посредник (middleware):
 // -----------------------------------------------------------------------------
 // if ($user = $request->user()) {
 //     cache()->put($user->isOnlineKey(), now(),
@@ -13,11 +13,31 @@ namespace BBCMS\Models\Traits;
 
 trait hasOnline
 {
-    protected $isOnlinePrefix = 'users.is-online-';
+    /**
+     * Время, в течении которого считается,
+     * что пользователь находится онлайн.
+     * @var int
+     */
     protected $isOnlineMinutes = 15;
 
     /**
-     * Check if user is online.
+     * Префикс для ключа в кэше.
+     * @var string
+     */
+    protected $isOnlinePrefix = 'users.is-online-';
+
+    /**
+     * Формирование динамического атрибута,
+     * возвращающего индикацию, что пользователь онлайн.
+     * @return bool
+     */
+    public function getIsOnlineAttribute(): bool
+    {
+        return $this->isOnline();
+    }
+
+    /**
+     * Проверить, находится ли пользователь онлайн.
      * @return bool
      */
     public function isOnline(): bool
@@ -26,7 +46,8 @@ trait hasOnline
     }
 
     /**
-     * Get key to check if user is online.
+     * Получить ключ, по которому
+     * выполняется проверка пользователя на онлайн.
      * @return string
      */
     public function isOnlineKey(): string
@@ -35,7 +56,8 @@ trait hasOnline
     }
 
     /**
-     * Time in minutes when user can be considered online.
+     * Получить время, в течении которого считается,
+     * что пользователь находится онлайн.
      * @return int
      */
     public function isOnlineMinutes(): int
@@ -44,7 +66,8 @@ trait hasOnline
     }
 
     /**
-     * Last time when user was active.
+     * Получить время, когда пользователь
+     * последний раз проявлял активность.
      * @return string|null
      */
     public function lastActive()

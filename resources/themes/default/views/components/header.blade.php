@@ -18,11 +18,8 @@
                 @else
                     <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ user('name') }} </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        @can ('global.admin')
-                            <a href="{{ route('dashboard') }}" class="dropdown-item">@lang('auth.dashboard')</a>
-                        @endcan
-                        @can ('admin.articles.create')
-                            <a href="{{ route('admin.articles.create') }}" class="dropdown-item">@lang('articles.create')</a>
+                        @can ('global.panel')
+                            <a href="{{ route('panel') }}" class="dropdown-item">@lang('auth.dashboard')</a>
                         @endcan
                         <a href="{{ user('profile') }}" class="dropdown-item">@lang('auth.profile')</a>
                         <div class="dropdown-divider"></div>

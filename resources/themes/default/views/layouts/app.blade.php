@@ -11,16 +11,13 @@
         @if(pageinfo('robots'))<meta name="robots" content="{{ pageinfo('robots') }}" /> @endif
         @if(pageinfo('url'))<link href="{{ pageinfo('url') }}" rel="canonical" /> @endif
 
-        <link href="{{ theme_asset('css/app.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ theme_asset('favicon.ico') }}" rel="icon" />
+        <link href="{{ theme('css/app.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ theme('favicon.ico') }}" rel="icon" />
+        {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
         @stack('styles')
     </head>
     <body>
         <div id="app" class="page" itemscope itemtype="http://schema.org/WebPage">
-            @each('components.alert', $errors->all(), 'message')
-            @if ($message = session('status') ?? session('message'))
-                @include('components.alert', ['type' => 'success', 'message' => trim($message)])
-            @endif
             <header class="page_header" itemscope itemtype="http://schema.org/WPHeader">
                 @yield('sidebar_header')
                 @yield('header')
@@ -31,6 +28,15 @@
                     <div class="page_body__wrap @yield('page-layout')">
                         @yield('sidebar_left')
                         <main class="mainblock">
+                            @each('components.alert', $errors->all(), 'message')
+
+                            @if ($message = session('status') ?? session('message'))
+                                @include('components.alert', [
+                                    'type' => 'success',
+                                    'message' => trim($message),
+                                ])
+                            @endif
+
                             @yield('mainblock')
                         </main>
                         @yield('sidebar_right')
@@ -42,24 +48,33 @@
                 @yield('sidebar_footer')
                 @yield('footer')
             </footer>
+
+            <template>
+                {{-- Прелоадер для AJAX провайдера. --}}
+                <loading-layer></loading-layer>
+            </template>
         </div>
 
-        <!-- Scripts -->
+        {{-- Список всех скриптов шаблона. --}}
         <script>
-            window.Pageinfo = {!! pageinfo()->scriptVariables() !!}
+            window.Pageinfo = {!! pageinfo()->scriptVariables() !!};
         </script>
-        <script src="{{ theme_asset('js/manifest.js') }}"></script>
-        <script src="{{ theme_asset('js/vendor.js') }}"></script>
-        <script src="{{ theme_asset('js/app.js') }}"></script>
+        <script src="{{ theme('js/manifest.js') }}" charset="utf-8"></script>
+        <script src="{{ theme('js/vendor.js') }}" charset="utf-8"></script>
+        <script src="{{ theme('js/app.js') }}" charset="utf-8"></script>
+        <script src="{{ theme('js/script.js') }}" charset="utf-8"></script>
+
+        {{-- Скрипты, которые могут быть состыкованы из дочерних шаблонов. --}}
         @stack('scripts')
-        
+
+        {{-- Разметка schema.org сайта компании. --}}
         <script type="application/ld+json">
             {
               "@context": "http://schema.org",
               "@type": "Organization",
               "name": "{{ setting('system.organization') }}",
               "url": "{{ setting('system.app_url') }}",
-              "logo": "{{ theme_asset('favicon.ico') }}",
+              "logo": "{{ theme('favicon.ico') }}",
               "contactPoint": [{
                 "@type": "ContactPoint",
                 "telephone": "{{ setting('system.contact_telephone') }}",

@@ -2,6 +2,7 @@
 
 namespace BBCMS\Support;
 
+use Carbon\Carbon;
 use Illuminate\Cache\FileStore;
 
 class CacheFile extends FileStore
@@ -23,14 +24,14 @@ class CacheFile extends FileStore
     /**
      * Get datetime of created cache file by key.
      * @param  string $key
-     * @return \Carbon\Carbon|null
+     * @return Carbon|null
      */
     public function created(string $key)
     {
         $path = $this->path($key);
 
         return $this->files->exists($path)
-            ? \Carbon\Carbon::createFromTimestamp(
+            ? Carbon::createFromTimestamp(
                 $this->files->lastModified($path)
             ) : null;
     }
@@ -38,14 +39,14 @@ class CacheFile extends FileStore
     /**
      * Get the expiration time from cache file by key.
      * @param  string $key
-     * @return \Carbon\Carbon|null
+     * @return Carbon|null
      */
     public function expired(string $key)
     {
         $path = $this->path($key);
 
         return $this->files->exists($path)
-            ? \Carbon\Carbon::createFromTimestamp(
+            ? Carbon::createFromTimestamp(
                 substr($this->files->get($path), 0, 10)
             ) : null;
     }

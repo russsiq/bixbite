@@ -240,7 +240,7 @@ export default {
         },
 
         deleteFile(key) {
-            if (!confirm(this.trans('msg.sure_del_file'))) {
+            if (!confirm(__('msg.sure_del_file'))) {
                 return false
             }
 

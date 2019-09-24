@@ -2,16 +2,24 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\{BaseModel, Article, User};
+
+use BBCMS\Models\Article;
+use BBCMS\Models\User;
+use BBCMS\Models\BaseModel;
+
 use BBCMS\Models\Mutators\CommentMutators;
+use BBCMS\Models\Observers\CommentObserver;
 use BBCMS\Models\Collections\CommentCollection;
 
 class Comment extends BaseModel
 {
+    use Traits\Dataviewer;
     use CommentMutators;
 
     protected $primaryKey = 'id';
+
     protected $table = 'comments';
+
     protected $casts = [
         'is_approved' => 'boolean',
         'user_id' => 'integer',
@@ -28,13 +36,15 @@ class Comment extends BaseModel
         'by_user' => 'string',
         'by_author' => 'string',
     ];
+
     protected $appends = [
         'url',
         'created',
-        'updated',
+        // 'updated',
         'by_user',
-        'by_author',
+        // 'by_author',
     ];
+
     protected $fillable = [
         'is_approved',
         'parent_id',
@@ -45,6 +55,21 @@ class Comment extends BaseModel
         'email',
         'user_ip',
         'content',
+    ];
+
+    protected $allowedFilters = [
+        'id',
+        'user_id',
+        'content',
+        'commentable_type',
+        'commentable_id',
+        'is_approved',
+        'created_at',
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'created_at',
     ];
 
     // Not used.
@@ -60,10 +85,7 @@ class Comment extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
-        static::deleting(function ($comment) {
-            $comment->where('parent_id', $comment->id)->get(['id'])->each->delete();
-        });
+        static::observe(CommentObserver::class);
     }
 
     /**

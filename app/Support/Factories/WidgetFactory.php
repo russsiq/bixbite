@@ -2,7 +2,13 @@
 
 namespace BBCMS\Support\Factories;
 
+use Throwable;
+use Exception;
+use InvalidArgumentExceptions;
+
 use BBCMS\Support\WidgetAbstract;
+
+use Illuminate\Validation\ValidationException;
 
 class WidgetFactory
 {
@@ -48,27 +54,50 @@ class WidgetFactory
      *
      * @return mixed
      */
-    public function make()
+    public function make(string $name, array $params = [])
     {
         try {
-            $args = func_get_args();
-            $active = $args[1]['active'] ?? true;
+            $this->widgetName = trim($name);
+            $this->widgetParams = array_merge($params, [
+                'expects_json' => request()->expectsJson(),
+            ]);
 
             // If widget has non active status.
-            if (! $active) {
-                return false;
+            if ($this->widgetParams['active'] ?? true) {
+                $this->widget = $this->getWidget();
+
+                return $this->getContentFromCache();
             }
 
-            $this->widgetName = trim((string) array_shift($args));
-            $this->widgetParams = (array) array_shift($args);
-            $this->widget = $this->getWidget();
-
-            return $this->getContentFromCache();
-        } catch (\Exception $e) {
-            return sprintf(
-                trans('common.msg.error'), $e->getMessage()
-            );
+            return false;
+        } catch (Exception $e) {
+            return $this->widgetParams['expects_json']
+                ? $this->invalidJson($e)
+                : $this->invalid($e);
         }
+    }
+
+    protected function invalid(Exception $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            $error = $exception->validator->errors()->first();
+            $message = sprintf('%s: %s', $this->widgetName, $error);
+        } else {
+            $message = $exception->getMessage();
+        }
+
+        return sprintf(trans('common.msg.error'), $message);
+    }
+
+    protected function invalidJson(Exception $exception)
+    {
+        $response['message'] = $exception->getMessage();
+
+        if ($exception instanceof ValidationException) {
+            $response['errors'] = $exception->errors();
+        }
+
+        return response()->json($response, $exception->status ?? 500);
     }
 
     /**
@@ -86,7 +115,7 @@ class WidgetFactory
     /**
      * Get full path with name to widget class location.
      *
-     * @throws \Exception
+     * @throws Exception
      * @return string
      */
     protected function getWidgetPath()
@@ -96,13 +125,14 @@ class WidgetFactory
         $name = str_replace(' ', '', ucwords($name));
         $name = $this->namespace . '\\' . $name . 'Widget';
 
-        if (! is_subclass_of($name, WidgetAbstract::class)) {
-            throw new \Exception(sprintf(
-                'Widget class `%s` not available!', $name
-            ));
+        if (is_subclass_of($name, WidgetAbstract::class)) {
+            return $name;
         }
 
-        return $name;
+        throw new Exception(sprintf(
+            'Widget class [%s] not available!',
+            $name
+        ));
     }
 
     /**
@@ -115,13 +145,19 @@ class WidgetFactory
         $widget = (object) $this->widget->execute();
         $widget->cache_key = $this->widget->cacheKeys();
 
-        return trim(preg_replace('/(\s|\r|\n)+</', '<',
-            view($this->widget->template(), compact('widget'))->render()
-        ));
+        if ($this->widgetParams['expects_json']) {
+            return response()->json($widget, 200);
+        }
+
+        $view = view($this->widget->template(), compact('widget'));
 
         // Debug function if App has error:
         // `Cannot end a section without first starting one.`
-        return view($this->widget->template(), compact('widget'));
+        if (config('app.debug')) {
+            return $view;
+        }
+
+        return trim(preg_replace('/(\s|\r|\n|\t)+</', '<', $view->render()));
     }
 
     /**
@@ -151,11 +187,7 @@ class WidgetFactory
     {
         $validator = $this->widget->validator();
 
-        if ($validator->fails()) {
-            throw new \Exception(sprintf(
-                '%s: %s', $this->widgetName, $validator->errors()->first()
-            ));
-        }
+        return $validator->validate();
     }
 
     protected function checkWidgetTemplate()
@@ -163,8 +195,10 @@ class WidgetFactory
         $template = $this->widget->template();
 
         if (! view()->exists($template)) {
-            throw new \Exception(sprintf(
-                'Template `%s` of widget `%s` does not exist!', $template, $this->widgetName
+            throw new Exception(sprintf(
+                'Template [%s] of widget [%s] does not exist!',
+                $template,
+                $this->widgetName
             ));
         }
     }

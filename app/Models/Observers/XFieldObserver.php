@@ -32,7 +32,7 @@ class XFieldObserver
 
         Schema::table($x_field->extensible, function (Blueprint $table) use ($x_field) {
             if ('array' == $x_field->type) {
-                $table->text($x_field->name)->after('id')->nullable();
+                $table->string($x_field->name)->after('id')->nullable();
             } else {
                 $table->{$x_field->type}($x_field->name)->after('id')->nullable();
             }

@@ -5,13 +5,17 @@ namespace BBCMS\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Перенаправление на главную страницу сайта со страницы,
+ * которая доступна только гостям сайта,
+ * т.е. неаутентифицированным пользователям.
+ */
 class RedirectIfAuthenticated
 {
     /**
-     * Handle an incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @param  string|null  $guard
      * @return mixed
      */

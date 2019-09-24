@@ -1,30 +1,39 @@
 import Quill from 'quill';
-let BlockEmbed = Quill.import('blots/block/embed');
 
+const BlockEmbed = Quill.import('blots/block/embed');
+
+/**
+ * [FigureBlot description]
+ * @SEE parchment\src\blot\abstract\blot.ts Для возможностей наследований.
+ * @extends BlockEmbed
+ */
 class FigureBlot extends BlockEmbed {
     static create(value) {
-        let node = super.create();
+        const node = super.create();
 
         node.setAttribute('contenteditable', false);
+        node.dataset.id = value.id;
         // node.dataset.layout = value.layout;
 
-        let img = document.createElement('img');
+        const img = document.createElement('img');
         img.classList.add('single_article_image__img');
         img.setAttribute('alt', value.caption);
         img.setAttribute('src', value.url);
 
-        let picture = document.createElement('picture');
+        const picture = document.createElement('picture');
         picture.classList.add('single_article_image__inner');
 
         picture.appendChild(img);
         node.appendChild(picture);
 
         if (value.caption) {
-            let caption = document.createElement('figcaption');
+            const caption = document.createElement('figcaption');
             caption.classList.add('single_article_image__caption');
-            caption.innerHTML = value.caption;
+            caption.textContent = value.caption;
             node.appendChild(caption);
         }
+
+        img.scrollIntoView();
 
         return node;
     }
@@ -35,25 +44,28 @@ class FigureBlot extends BlockEmbed {
      * @return {Object}      [description]
      */
     static value(node) {
-        let img = node.querySelector('img');
+        const img = node.querySelector('img');
+        const figcaption = node.querySelector('figcaption');
 
         return {
-            // layout: node.dataset.layout,
-            caption: img.getAttribute('alt'),
-            url: img.getAttribute('src')
+            id: node.dataset.id,
+            url: img && img.getAttribute('src'),
+            caption: figcaption && figcaption.textContent,
         };
     }
 
-    // remove() {
-    //     alert('Was removed!')
-    // }
-    //
+    remove() {
+        super.remove();
+
+        console.log('Удалено изображение из текста с id, равным ' + this.domNode.dataset.id);
+    }
+
     // deleteAt(index: number, length: number): void {
     //     if (!this.domNode.dataset.required) {
     //         super.deleteAt(index, length)
     //     }
     // }
-    // 
+
     // /**
     //  * We still need to report unregistered embed formats
     //  *

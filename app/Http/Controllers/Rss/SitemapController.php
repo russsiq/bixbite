@@ -61,6 +61,7 @@ class SitemapController
                     'articles.slug',
                     'articles.created_at',
                     'articles.updated_at',
+                    'articles.state',
                 ])
                 ->with([
                     'files' => function ($query) {
@@ -93,6 +94,7 @@ class SitemapController
 
                     'articles.title',
                     'articles.content',
+                    'articles.state',
                 ])
                 ->with([
                     'files' => function ($query) {

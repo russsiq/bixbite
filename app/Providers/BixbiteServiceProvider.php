@@ -2,14 +2,14 @@
 
 namespace BBCMS\Providers;
 
-use Cache;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-
 use BBCMS\Support\PageInfo;
 use BBCMS\Support\CacheFile;
 use BBCMS\Support\Factories\WidgetFactory;
+
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class BixbiteServiceProvider extends ServiceProvider
             'categories' => \BBCMS\Models\Category::class,
             'comments' => \BBCMS\Models\Comment::class,
             'files' => \BBCMS\Models\File::class,
-            'images' => \BBCMS\Models\Image::class,
+            // 'images' => \BBCMS\Models\Image::class,
             'notes' => \BBCMS\Models\Note::class,
             'tags' => \BBCMS\Models\Tag::class,
             'users' => \BBCMS\Models\User::class,
@@ -36,7 +36,7 @@ class BixbiteServiceProvider extends ServiceProvider
         });
 
         Blade::if('role', function (string $environment) {
-            return $environment == user('role');
+            return $environment === user('role');
         });
 
         Blade::directive('captcha', function ($expression) {

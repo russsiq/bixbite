@@ -1,5 +1,7 @@
 <?php
 
+use BBCMS\Models\User;
+
 return [
 
     /*
@@ -44,6 +46,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
+            'hash' => true,
         ],
     ],
 
@@ -67,7 +70,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => BBCMS\Models\User::class,
+            'model' => User::class,
         ],
 
         // 'users' => [

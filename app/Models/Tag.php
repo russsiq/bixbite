@@ -9,6 +9,7 @@ class Tag extends BaseModel
 {
     protected $table = 'tags';
     protected $primaryKey = 'id';
+    public $timestamps = false;
     protected $casts = [
         'title' => 'string',
     ];

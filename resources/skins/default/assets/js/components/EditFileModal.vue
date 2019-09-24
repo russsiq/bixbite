@@ -77,7 +77,7 @@ export default {
                         description: this.description,
                     });
 
-                if (!response.data.file) {
+                if (!response.data.status) {
                     throw new Error(response.data.message);
                 }
 
@@ -86,8 +86,8 @@ export default {
                 })
 
                 this.$emit('updated', {
-                    title: response.data.file.title,
-                    description: response.data.file.description
+                    title: this.title,
+                    description: this.description
                 })
                 this.close()
             } catch (error) {

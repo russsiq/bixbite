@@ -48,6 +48,6 @@ class SiteController extends BaseController
             return view($this->template, compact('mainblock'))->render();
         }
 
-        abort(404, "View named $tpl not exists.");
+        abort(404, "View named [$tpl] not exists.");
     }
 }

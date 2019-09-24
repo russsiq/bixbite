@@ -112,6 +112,7 @@ class CommonRequest extends Request
                         'role' => 'owner',
                         'last_ip' => request()->ip(),
                         'created_at' => date('Y-m-d H:i:s'),
+                        'email_verified_at' => date('Y-m-d H:i:s'),
                     ]);
 
                     // 3.3 Seed test content DB

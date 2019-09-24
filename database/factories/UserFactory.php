@@ -1,23 +1,25 @@
 <?php
 
+use BBCMS\Models\User;
 use Faker\Generator as Faker;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+/**
+ * Define the factory to generate new User model instances
+ * for testing/seeding your application's database.
+ */
+$factory->define(User::class, function (Faker $faker) {
+    $name = $faker->name;
 
-$factory->define(BBCMS\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'remember_token' => str_random(10),
+        'role' => $faker->randomElement([
+            'admin',
+            'moder',
+            'user',
+        ]),
+        'password' => $name.$name,
+        'api_token' => null,
+        'remember_token' => null,
     ];
 });

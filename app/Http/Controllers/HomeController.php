@@ -14,9 +14,7 @@ class HomeController extends SiteController
     }
 
     /**
-     * Show the application home page.
-     *
-     * @return \Illuminate\Http\Response
+     * Отобразить домашнюю страницу сайта.
      */
     public function index()
     {
@@ -27,10 +25,10 @@ class HomeController extends SiteController
             'onHomePage' => true,
         ]);
 
-        if (! setting('themes.home_page_personalized', false)) {
-            return app('\BBCMS\Http\Controllers\ArticlesController')->index();
+        if (setting('system.homepage_personalized', false)) {
+            return $this->makeResponse('index');
         }
 
-        return $this->makeResponse('index');
+        return app(ArticlesController::class)->index();
     }
 }

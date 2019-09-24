@@ -16,16 +16,9 @@ class SettingsTableSeeder extends Seeder
     {
         $default = [
             'module_name' => null,
-            'action' => 'setting',
-            'class' => 'form-control',
-            'section' => 'main',
-            'fieldset' => 'general',
             'name' => null,
             'type' => 'string',
             'value' => null,
-            // '{"id":"id"}'
-            'params' => null,
-            'html_flags' => 'required',
         ];
 
         \DB::table('settings')->insert($this->getArticles($default));
@@ -33,7 +26,6 @@ class SettingsTableSeeder extends Seeder
         \DB::table('settings')->insert($this->getFiles($default));
         \DB::table('settings')->insert($this->getSystem($default));
         \DB::table('settings')->insert($this->getTags($default));
-        \DB::table('settings')->insert($this->getThemes($default));
         \DB::table('settings')->insert($this->getUsers($default));
     }
 
@@ -41,25 +33,25 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'articles';
-        $def['action'] = 'setting';
-        $def['section'] = 'main';
-        $def['fieldset'] = 'meta';
-        array_push($out, array_merge($def, ['name' => 'meta_title', 'value' => __('common.articles'), ]));
-        array_push($out, array_merge($def, ['name' => 'meta_description', 'value' => 'Articles - content management system.', 'type' => 'text-inline', ]));
-        array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'articles, BixBite, CMS', 'type' => 'text-inline', ]));
 
-        $def['fieldset'] = 'display';
+        // general
+        array_push($out, array_merge($def, ['name' => 'views_used', 'value' => true, 'type' => 'boolean', ]));
+
+        // meta
+        array_push($out, array_merge($def, ['name' => 'meta_title', 'value' => trans('common.articles'), ]));
+        array_push($out, array_merge($def, ['name' => 'meta_description', 'value' => 'Articles - content management system.', ]));
+        array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'articles, BixBite, CMS', ]));
+
+        // display
         array_push($out, array_merge($def, ['name' => 'paginate', 'value' => 8, 'type' => 'integer', ]));
-        array_push($out, array_merge($def, ['name' => 'order_by', 'value' => 'id', 'type' => 'select', 'params' =>
-            '{"id":"id","title":"title","created_at":"created_at","updated_at":"updated_at","votes":"votes","rating":"rating","views":"views","comments_count":"comments_count"}', ]));
-        array_push($out, array_merge($def, ['name' => 'direction', 'value' => 'desc', 'type' => 'select', 'params' => '{"desc":"desc","asc":"asc"}', ]));
+        array_push($out, array_merge($def, ['name' => 'order_by', 'value' => 'id', 'type' => 'select', ]));
+        array_push($out, array_merge($def, ['name' => 'direction', 'value' => 'desc', 'type' => 'select', ]));
         array_push($out, array_merge($def, ['name' => 'teaser_length', 'value' => 150, 'type' => 'integer', ]));
-        array_push($out, array_merge($def, ['name' => 'views_used', 'value' => true, 'type' => 'bool', ]));
 
-        $def['section'] = 'create';
-        $def['fieldset'] = 'general';
-        array_push($out, array_merge($def, ['name' => 'manual_slug', 'value' => false, 'type' => 'bool', ]));
-        array_push($out, array_merge($def, ['name' => 'manual_meta', 'value' => true, 'type' => 'bool', ]));
+        // create
+        array_push($out, array_merge($def, ['name' => 'manual_slug', 'value' => false, 'type' => 'boolean', ]));
+        array_push($out, array_merge($def, ['name' => 'manual_meta', 'value' => true, 'type' => 'boolean', ]));
+        array_push($out, array_merge($def, ['name' => 'save_interval', 'value' => 120, 'type' => 'integer', ]));
 
         return $out;
     }
@@ -68,18 +60,16 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'comments';
-        $def['action'] = 'setting';
-        $def['section'] = 'main';
-        $def['fieldset'] = 'general';
-        array_push($out, array_merge($def, ['name' => 'regonly', 'value' => false, 'type' => 'bool', ]));
-        array_push($out, array_merge($def, ['name' => 'moderate', 'value' => false, 'type' => 'bool', ]));
 
-        $def['fieldset'] = 'display';
-        array_push($out, array_merge($def, ['name' => 'nested', 'value' => true, 'type' => 'bool', ]));
+        // general
+        array_push($out, array_merge($def, ['name' => 'regonly', 'value' => false, 'type' => 'boolean', ]));
+        array_push($out, array_merge($def, ['name' => 'moderate', 'value' => false, 'type' => 'boolean', ]));
 
-        $def['section'] = 'widget';
-        $def['fieldset'] = 'general';
-        array_push($out, array_merge($def, ['name' => 'widget_used', 'value' => 8, 'type' => 'bool', ]));
+        // display
+        array_push($out, array_merge($def, ['name' => 'nested', 'value' => true, 'type' => 'boolean', ]));
+
+        // widget
+        array_push($out, array_merge($def, ['name' => 'widget_used', 'value' => true, 'type' => 'boolean', ]));
         array_push($out, array_merge($def, ['name' => 'widget_title', 'value' => trans('comments.widget_title'), ]));
         array_push($out, array_merge($def, ['name' => 'widget_count', 'value' => 8, 'type' => 'integer', ]));
         array_push($out, array_merge($def, ['name' => 'widget_content_length', 'value' => 150, 'type' => 'integer', ]));
@@ -91,23 +81,20 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'files';
-        $def['action'] = 'setting';
-        $def['section'] = 'main';
-        $def['fieldset'] = 'general';
-        // array_push($out, array_merge($def, ['name' => 'nested', 'value' => false, 'type' => 'bool', ]));
-        
-        $def['section'] = 'images';
-        $def['fieldset'] = 'uploader';
-        array_push($out, array_merge($def, ['name' => 'images_quality', 'value' => 75, 'type' => 'integer', 'html_flags' => 'min="40" max="100"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_is_convert', 'value' => true, 'type' => 'bool', ]));
-        array_push($out, array_merge($def, ['name' => 'images_thumb_width', 'value' => 240, 'type' => 'integer', 'html_flags' => 'min="20" max="240"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_thumb_height', 'value' => 240, 'type' => 'integer', 'html_flags' => 'min="20" max="240"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_small_width', 'value' => 576, 'type' => 'integer', 'html_flags' => 'min="241" max="576"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_small_height', 'value' => 576, 'type' => 'integer', 'html_flags' => 'min="241" max="576"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_medium_width', 'value' => 992, 'type' => 'integer', 'html_flags' => 'min="577" max="992"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_medium_height', 'value' => 992, 'type' => 'integer', 'html_flags' => 'min="577" max="992"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_max_width', 'value' => 1920, 'type' => 'integer', 'html_flags' => 'min="993" max="3840"', ]));
-        array_push($out, array_merge($def, ['name' => 'images_max_height', 'value' => 1080, 'type' => 'integer', 'html_flags' => 'min="993" max="2160"', ]));
+
+        // general
+
+        // image uploader
+        array_push($out, array_merge($def, ['name' => 'images_quality', 'value' => 75, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_is_convert', 'value' => true, 'type' => 'boolean', ]));
+        array_push($out, array_merge($def, ['name' => 'images_thumb_width', 'value' => 240, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_thumb_height', 'value' => 240, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_small_width', 'value' => 576, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_small_height', 'value' => 576, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_medium_width', 'value' => 992, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_medium_height', 'value' => 992, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_max_width', 'value' => 1920, 'type' => 'integer', ]));
+        array_push($out, array_merge($def, ['name' => 'images_max_height', 'value' => 1080, 'type' => 'integer', ]));
 
         return $out;
     }
@@ -116,17 +103,9 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'tags';
+
+        // general
         array_push($out, array_merge($def, ['name' => 'delimiter', 'value' => '-', ]));
-        array_push($out, array_merge($def, ['name' => 'reindex', 'value' => 'reindex', 'type' => 'submit', 'class' => 'btn btn-outline-primary', 'html_flags' => 'formaction="reindex" formmethod="get"', ]));
-
-        return $out;
-    }
-
-    protected function getThemes(array $def): array
-    {
-        $out = [];
-        $def['module_name'] = 'themes';
-        array_push($out, array_merge($def, ['name' => 'home_page_personalized', 'value' => true, 'type' => 'bool', ]));
 
         return $out;
     }
@@ -135,12 +114,15 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'users';
-        array_push($out, array_merge($def, ['name' => 'login_username', 'value' => 'name', 'type' => 'select', 'params' => '{"name":"name","email":"email"}', ]));
 
-        $def['fieldset'] = 'avatar';
+        // general
+        array_push($out, array_merge($def, ['name' => 'auth_username', 'value' => 'name', ]));
+        array_push($out, array_merge($def, ['name' => 'auth_allow_register', 'value' => false, 'type' => 'boolean', ]));
+
+        // avatar
         array_push($out, array_merge($def, ['name' => 'avatar_max_width', 'value' => 140, 'type' => 'integer', ]));
         array_push($out, array_merge($def, ['name' => 'avatar_max_height', 'value' => 140, 'type' => 'integer', ]));
-        array_push($out, array_merge($def, ['name' => 'gravatar_used', 'value' => false, 'type' => 'bool', ]));
+        array_push($out, array_merge($def, ['name' => 'gravatar_used', 'value' => false, 'type' => 'boolean', ]));
 
         return $out;
     }
@@ -149,53 +131,50 @@ class SettingsTableSeeder extends Seeder
     {
         $out = [];
         $def['module_name'] = 'system';
-        $def['fieldset'] = 'general';
+
+        // general
         array_push($out, array_merge($def, ['name' => 'app_name', 'value' => env('APP_NAME'), ]));
-        array_push($out, array_merge($def, ['name' => 'app_url', 'value' => env('APP_URL'), 'type' => 'url', 'html_flags' => 'required readonly', ]));
-        array_push($out, array_merge($def, ['name' => 'app_locale', 'value' => app_locale(), ]));
-        array_push($out, array_merge($def, ['name' => 'app_theme', 'value' => app_theme(), 'type' => 'select-themes', ]));
-        array_push($out, array_merge($def, ['name' => 'app_skin', 'value' => 'default', 'type' => 'select-skins', ]));
+        array_push($out, array_merge($def, ['name' => 'app_url', 'value' => env('APP_URL'), ]));
 
-        $def['fieldset'] = 'meta';
-        array_push($out, array_merge($def, ['name' => 'meta_title', 'value' => env('APP_NAME'), 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'meta_title_delimiter', 'value' => ' — ', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'meta_title_reverse', 'value' => false, 'type' => 'bool', ]));
-        array_push($out, array_merge($def, ['name' => 'meta_description', 'value' => 'BixBite - Content Management System', 'type' => 'text-inline', ]));
-        array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'BixBite CMS, BBCMS, CMS', 'type' => 'text-inline', ]));
+        // meta
+        array_push($out, array_merge($def, ['name' => 'meta_title', 'value' => env('APP_NAME'), ]));
+        array_push($out, array_merge($def, ['name' => 'meta_title_delimiter', 'value' => ' — ', ]));
+        array_push($out, array_merge($def, ['name' => 'meta_title_reverse', 'value' => false, 'type' => 'boolean', ]));
+        array_push($out, array_merge($def, ['name' => 'meta_description', 'value' => 'BixBite - Content Management System', ]));
+        array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'BixBite CMS, BBCMS, CMS', ]));
 
-        $def['fieldset'] = 'organization';
+        // organization
         array_push($out, array_merge($def, ['name' => 'organization', 'value' => '—', 'type' => 'string', ]));
         array_push($out, array_merge($def, ['name' => 'address_locality', 'value' => '—', 'type' => 'string', ]));
         array_push($out, array_merge($def, ['name' => 'address_street', 'value' => '—', 'type' => 'string', ]));
         array_push($out, array_merge($def, ['name' => 'contact_telephone', 'value' => '—', 'type' => 'string', ]));
         array_push($out, array_merge($def, ['name' => 'contact_email', 'value' => '—', 'type' => 'email', ]));
 
-        $def['section'] = 'security';
-        $def['fieldset'] = 'locked';
-        array_push($out, array_merge($def, ['name' => 'lock', 'value' => true, 'type' => 'bool', ]));
+        // security
+        array_push($out, array_merge($def, ['name' => 'lock', 'value' => false, 'type' => 'boolean', ]));
         array_push($out, array_merge($def, ['name' => 'reason', 'value' => 'Upgrading Database! Retry later.', ]));
         array_push($out, array_merge($def, ['name' => 'retry', 'value' => '3600', 'type' => 'integer', ]));
 
-        $def['fieldset'] = 'captcha';
-        array_push($out, array_merge($def, ['name' => 'captcha_used', 'value' => true, 'type' => 'bool', ]));
+        // captcha
+        array_push($out, array_merge($def, ['name' => 'captcha_used', 'value' => true, 'type' => 'boolean', ]));
         array_push($out, array_merge($def, ['name' => 'captcha_width', 'value' => 68, 'type' => 'integer', ]));
         array_push($out, array_merge($def, ['name' => 'captcha_height', 'value' => 38, 'type' => 'integer', ]));
-        array_push($out, array_merge($def, ['name' => 'captcha_font_family', 'value' => 'blowbrush', 'type' => 'select-fonts', ]));
+        array_push($out, array_merge($def, ['name' => 'captcha_font_family', 'value' => 'blowbrush', ]));
         array_push($out, array_merge($def, ['name' => 'captcha_font_size', 'value' => 20, 'type' => 'integer', ]));
 
-        $def['section'] = 'sitemap';
-        $def['fieldset'] = 'sitemap_home';
-        array_push($out, array_merge($def, ['name' => 'home_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
-            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']));
-        array_push($out, array_merge($def, ['name' => 'home_priority', 'value' => 0.9, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]));
-        $def['fieldset'] = 'sitemap_categories';
-        array_push($out, array_merge($def, ['name' => 'categories_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
-            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']));
-        array_push($out, array_merge($def, ['name' => 'categories_priority', 'value' => 0.6, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]));
-        $def['fieldset'] = 'sitemap_articles';
-        array_push($out, array_merge($def, ['name' => 'articles_changefreq', 'value' => 'daily', 'type' => 'select', 'params' =>
-            '{"always":"always","hourly":"hourly","daily":"daily","weekly":"weekly","monthly":"monthly","yearly":"yearly","never":"never"}']));
-        array_push($out, array_merge($def, ['name' => 'articles_priority', 'value' => 0.4, 'type' => 'float', 'html_flags' => 'required step="0.1" min="0.1" max="1.0"', ]));
+        // sitemap
+        array_push($out, array_merge($def, ['name' => 'home_changefreq', 'value' => 'daily', ]));
+        array_push($out, array_merge($def, ['name' => 'home_priority', 'value' => 0.9, 'type' => 'float', ]));
+        array_push($out, array_merge($def, ['name' => 'categories_changefreq', 'value' => 'daily', ]));
+        array_push($out, array_merge($def, ['name' => 'categories_priority', 'value' => 0.6, 'type' => 'float', ]));
+        array_push($out, array_merge($def, ['name' => 'articles_changefreq', 'value' => 'daily', ]));
+        array_push($out, array_merge($def, ['name' => 'articles_priority', 'value' => 0.4, 'type' => 'float', ]));
+
+        // personalized
+        array_push($out, array_merge($def, ['name' => 'app_locale', 'value' => app_locale(), ]));
+        array_push($out, array_merge($def, ['name' => 'app_theme', 'value' => app_theme(), ]));
+        array_push($out, array_merge($def, ['name' => 'app_skin', 'value' => 'default', ]));
+        array_push($out, array_merge($def, ['name' => 'homepage_personalized', 'value' => true, 'type' => 'boolean', ]));
 
         return $out;
     }

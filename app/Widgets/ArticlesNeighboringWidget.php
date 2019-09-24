@@ -8,6 +8,7 @@ use BBCMS\Support\WidgetAbstract;
 class ArticlesNeighboringWidget extends WidgetAbstract
 {
     protected $cacheTime = 1440;
+
     protected $casts = [
         'active' => 'boolean',
         'template' => 'string',
@@ -15,13 +16,14 @@ class ArticlesNeighboringWidget extends WidgetAbstract
         'title' => 'string',
         'current_id' => 'integer',
     ];
+
     protected $template = 'widgets.articles_neighboring';
 
     public function __construct(array $params = [])
     {
         // Check current article.
         if (! pageinfo('is_article') or ! pageinfo('article')->id) {
-            throw new \Exception('Widget ' . self::class . ' not available.');
+            throw new \Exception('Widget '.self::class.' not available on this page.');
         }
 
         parent::__construct($params);
@@ -40,36 +42,50 @@ class ArticlesNeighboringWidget extends WidgetAbstract
         ];
     }
 
-    protected function rules()
-    {
-        return [
-            // Frequent
-            'active' => ['required', 'boolean'],
-            'template' => ['required', 'string'],
-            'cache_time' => ['required', 'integer'],
-            'title' => ['required', 'string', 'regex:/^[\w\s\.-_]+$/u'],
-
-            'current_id' => ['required', 'integer'],
-        ];
-    }
-
     public function execute()
     {
         $id = $this->params['current_id'];
 
-        $output = Article::select(['articles.id', 'articles.title', 'articles.slug'])
+        $output = Article::with([
+                'categories' => function ($query) {
+                    $query->select([
+                        'categories.id',
+                        'categories.title',
+                        'categories.slug',
+                    ]);
+                },
+            ])
+            ->select([
+                'articles.id',
+                'articles.title',
+                'articles.slug',
+                'articles.state',
+            ])
             ->published()
             ->where('articles.id', '<', $id)
             ->orderBy('articles.id', 'desc')
             ->limit(1)
             ->unionAll(
-                Article::select(['articles.id', 'articles.title', 'articles.slug'])
+                Article::with([
+                        'categories' => function ($query) {
+                            $query->select([
+                                'categories.id',
+                                'categories.title',
+                                'categories.slug',
+                            ]);
+                        },
+                    ])
+                    ->select([
+                        'articles.id',
+                        'articles.title',
+                        'articles.slug',
+                        'articles.state',
+                    ])
                     ->published()
                     ->where('articles.id', '>', $id)
                     ->orderBy('articles.id', 'asc')
                     ->limit(1)
-                )
-            ->with(['categories:categories.id,categories.title,categories.slug'])
+            )
             ->get();
 
         return $output->count() ? [
@@ -77,5 +93,37 @@ class ArticlesNeighboringWidget extends WidgetAbstract
                 'prev' => $output->first()->id < $id ? $output->first() : null,
                 'next' => $output->last()->id > $id ? $output->last() : null,
             ] : '';
+    }
+
+    protected function rules()
+    {
+        return [
+            // Frequent
+            'active' => [
+                'required',
+                'boolean',
+            ],
+
+            'template' => [
+                'required',
+                'string',
+            ],
+
+            'cache_time' => [
+                'required',
+                'integer',
+            ],
+
+            'title' => [
+                'required',
+                'string',
+                'regex:/^[\w\s\.-_]+$/u',
+            ],
+
+            'current_id' => [
+                'required',
+                'integer',
+            ],
+        ];
     }
 }

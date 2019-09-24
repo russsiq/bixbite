@@ -7,11 +7,8 @@ class Theme
     /**
      * Creates a tree-structured array of directories and files from a given root folder.
      *
-     * Cleaned from: http://stackoverflow.com/questions/952263/deep-recursive-array-of-directory-structure-in-php
-     *
      * @param string $path
-     * @param string $regex
-     * @param boolean $ignoreEmpty Do not add empty directories to the tree
+     * @param string $regex\
      * @return array
      */
     public static function getTemplates($path = null, $regex = null)
@@ -26,14 +23,12 @@ class Theme
         }
 
         foreach ($path as $node) {
-            if ($node->isDir() and ! $node->isDot()) {
+            if ($node->isFile() and preg_match($regex, $name = $node->getFilename())) {
+                $data_path = str_replace(theme_path('views'), '', $node->getPathname());
+                $files[$data_path] = $name;
+            } elseif ($node->isDir() and ! $node->isDot()) {
                 if (count($tree = self::getTemplates($node->getPathname(), $regex))) {
                     $dirs[$node->getFilename()] = $tree;
-                }
-            } elseif ($node->isFile()) {
-                if (is_null($regex) or preg_match($regex, $name = $node->getFilename())) {
-                    $data_path = str_replace(theme_path('views'), '', $node->getPathname());
-                    $files[$data_path] = $name;
                 }
             }
         }

@@ -23,7 +23,7 @@ trait ArticleScopes
     public function scopeFullArticle($query, $id)
     {
         return $query->with([
-                'categories:categories.id,categories.title,categories.slug',
+                // 'categories:categories.id,categories.title,categories.slug',
                 'user:users.id,users.name,users.email,users.avatar',
                 'files',
             ])
@@ -45,11 +45,13 @@ trait ArticleScopes
             return $article;
         });
 
+        // Комментарии ни в коем случае не кэшируем.
         $article->comments = $article->comments_count ? $article->getComments(setting('comments.nested', true)) : [];
 
+        // Если в настройках указано вести подсчет количества просмотров записи.
         if (setting('articles.views_used', false)) {
             $article->increment('views');
-        };
+        }
 
         return $article;
     }
@@ -71,13 +73,13 @@ trait ArticleScopes
                 'articles.id','articles.user_id','articles.image_id',
                 'articles.slug','articles.title','articles.teaser',
                 'articles.created_at','articles.updated_at',
-                'articles.views',
+                'articles.views', 'articles.state',
             ])
             ->addSelect(
                 $this->x_fields->pluck('name')->all()
             )
             ->with([
-                'categories:categories.id,categories.slug,categories.title',
+                // 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',
                 'files' => function ($query) {
                     $query->select([

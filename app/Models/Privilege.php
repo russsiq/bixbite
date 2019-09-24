@@ -9,7 +9,9 @@ use BBCMS\Models\Observers\PrivilegeObserver;
 class Privilege extends BaseModel
 {
     protected $primaryKey = 'id';
+
     protected $table = 'privileges';
+
     protected $observables = [
         'tableUpdated'
     ];
@@ -23,27 +25,45 @@ class Privilege extends BaseModel
     public function roles()
     {
         return cache()->rememberForever('roles', function () {
-            return array_diff(Schema::getColumnListing($this->table),
-                    ['id', 'privilege', 'description', 'created_at', 'updated_at', 'deleted_at']
-                );
+            return array_diff(Schema::getColumnListing($this->table), [
+                'id',
+                'privilege',
+                'description',
+                'created_at',
+                'updated_at',
+                'deleted_at',
+            ]);
         });
     }
 
     public function privileges()
     {
         return cache()->rememberForever('privileges', function () {
-            return $this->select(['privilege'] + $this->roles())->get()
+            return $this->select([
+                    'privilege',
+                ])
+                ->addSelect(
+                    $this->roles()
+                )
+                ->get()
                 ->mapWithKeys(function ($item) {
                     $out = array_filter($item->toArray());
+
                     unset($out['privilege']);
-                    return [$item['privilege'] => $out];
-                })->toArray();
+
+                    return [
+                        $item['privilege'] => $out
+                    ];
+                })
+                ->toArray();
         });
     }
 
     public function saveTable(array $table)
     {
-        $roles = array_diff($this->roles(), ['owner']);
+        $roles = array_diff($this->roles(), [
+            'owner',
+        ]);
 
         foreach ($roles as $role) {
             if (isset($table[$role])) {

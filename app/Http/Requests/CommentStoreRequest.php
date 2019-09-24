@@ -14,35 +14,7 @@ class CommentStoreRequest extends Request
     public function authorize()
     {
         // Check if unregistered user are allowed to commenting.
-        return $this->user() or false == setting('comments.regonly');
-    }
-
-    public function sanitize()
-    {
-        $input = $this->except(['_token','_method','submit']);
-
-        if($this->user()) {
-            $input['user_id'] = $this->user()->id;
-        } else {
-            $input = array_merge($input, [
-                'name' => teaser($this->input('name'), 255),
-                'email' => filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL),
-                'captcha' => filter_var($this->input('captcha'), FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_EMPTY_STRING_NULL),
-            ]);
-        }
-
-        if (! setting('comments.use_html', false)) {
-            $input['content'] = html_clean($input['content']);
-        }
-
-        $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
-            function ($match) {
-                return '<pre>' . html_secure($match[1]) . '</pre>';
-            }, $input['content']
-        );
-        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
-
-        return $this->replace($input)->all();
+        return $this->user() or ! setting('comments.regonly');
     }
 
     /**
@@ -52,16 +24,48 @@ class CommentStoreRequest extends Request
      */
     protected function validationData()
     {
-        return $this->merge([
-            // Default value.
-            'is_approved' => 'owner' == user('role') or ! setting('comments.moderate'),
-            'parent_id' => $this->input('parent_id', null),
-            // Default value from route.
-            'commentable_id' => $this->route('commentable_id'),
-            'commentable_type' => string_slug($this->route('commentable_type'), '_'),
-            // Aditional default value.
-            'user_ip' => $this->ip(),
-        ])->all();
+        $input = $this->except(['
+            _token',
+            '_method',
+            'submit',
+        ]);
+
+        if ($this->user()) {
+            $input['user_id'] = $this->user()->id;
+        } else {
+            $input = array_merge($input, [
+                'name' => teaser($this->input('name'), 255),
+                'email' => filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL),
+                'captcha' => filter_var($this->input('captcha'), FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_EMPTY_STRING_NULL),
+            ]);
+        }
+
+        $input['content'] = preg_replace_callback(
+            "/\<code\>(.+?)\<\/code\>/is",
+            function ($match) {
+                return '<pre>'.html_secure($match[1]).'</pre>';
+            },
+            $this->input('content')
+        );
+
+        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
+
+        if (! setting('comments.use_html', false)) {
+            $input['content'] = html_clean($input['content']);
+        }
+
+        return $this->replace($input)
+            ->merge([
+                // Default value.
+                'is_approved' => ($this->user() and $this->user()->hasRole('owner')) or ! setting('comments.moderate'),
+                'parent_id' => $this->input('parent_id', null),
+                // Default value from route.
+                'commentable_id' => $this->route('commentable_id'),
+                'commentable_type' => string_slug($this->route('commentable_type'), '_'),
+                // Aditional default value.
+                'user_ip' => $this->ip(),
+            ])
+            ->all();
     }
 
     /**
@@ -76,21 +80,25 @@ class CommentStoreRequest extends Request
                 'required',
                 'boolean',
             ],
+
             'parent_id' => [
                 'nullable',
                 'integer',
                 'exists:comments,id',
             ],
+
             'user_id' => [
                 'sometimes',
                 'integer',
                 'exists:users,id',
             ],
+
             'commentable_type' => [
                 'bail',
                 'required',
                 'string',
             ],
+
             'commentable_id' => [
                 'bail',
                 'required',
@@ -105,23 +113,27 @@ class CommentStoreRequest extends Request
                 'string',
                 'unique:users,name',
             ],
+
             'email' => [
                 (auth()->check() ? 'sometimes' : 'required'),
                 'between:6,255',
                 'email',
                 'unique:users,email',
             ],
+
             'user_ip' => [
                 'required',
             ],
+
             'captcha' => [
                 (auth()->check() ? 'sometimes' : 'required'),
                 'digits:4',
             ],
+
             'content' => [
                 'required',
                 'string',
-                'between:4,1500',
+                'between:10,1500',
             ],
         ];
     }
@@ -134,7 +146,10 @@ class CommentStoreRequest extends Request
     public function attributes()
     {
         return [
-            // 'captcha' => 'верификационный код',
+            'name' => trans('auth.name'),
+            'email' => trans('auth.email'),
+            'captcha' => trans('auth.captcha'),
+            'content' => trans('comments.content'),
         ];
     }
 
@@ -142,7 +157,7 @@ class CommentStoreRequest extends Request
     {
         $validator->after(function ($validator) {
             // Check captcha for unregistered visitors
-            if (! auth()->check() and setting('system.captcha_used', true)) {
+            if (auth()->guest() and setting('system.captcha_used', true)) {
                 if (md5($this->captcha) != session('captcha')) {
                     $validator->errors()->add('captcha', __('validation.captcha'));
                 }

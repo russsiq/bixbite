@@ -8,40 +8,50 @@ use Storage;
 
 use BBCMS\Models\Module;
 use BBCMS\Models\BaseModel;
-use BBCMS\Models\Mutators\SettingMutators;
-use BBCMS\Models\Collections\SettingCollection;
+use BBCMS\Models\Observers\SettingObserver;
+
+use Illuminate\Support\Collection as BaseCollection;
 
 class Setting extends BaseModel
 {
-    use SettingMutators;
+    use Traits\Dataviewer;
 
     protected $primaryKey = 'id';
+
     protected $table = 'settings';
+
     public $timestamps = false;
-    protected $casts = [
-        'params' => 'array',
-    ];
+
     protected $fillable = [
-        'module_name', 'action', 'section', 'fieldset',
-        'name', 'type', 'value', 'params', 'class', 'html_flags',
-        'title', 'descr',
+        'module_name',
+        'name',
+        'type',
+        'value',
+    ];
+
+    protected $allowedFilters = [
+        //
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'module_name',
+        'name',
+        'created_at',
     ];
 
     protected static $_env = [
-        //
+        'APP_ENV',
+        'APP_LOCALE',
+        'APP_NAME',
+        'APP_THEME',
+        'APP_SKIN',
     ];
 
     protected static function boot()
     {
         parent::boot();
-
-        static::creating(function ($setting) {
-            $setting->langUpdate();
-        });
-
-        static::updating(function ($setting) {
-            $setting->langUpdate();
-        });
+        static::observe(SettingObserver::class);
     }
 
     // Relation
@@ -50,143 +60,152 @@ class Setting extends BaseModel
         return $this->belongsTo(Module::class, 'module_name', 'name', 'module');
     }
 
-    // As method makeFormFields().
-    public function newCollection(array $models = [])
-    {
-        return new SettingCollection($models);
-    }
-
     /**
-     * Update setting lang file with format json.
+     * Обновить настройки модуля, пришедшие от пользователя.
+     * @param  Module $module
+     * @param  array  $attributes
+     * @return Illuminate\Database\Eloquent\Collection
      */
-    public function langUpdate()
+    public static function massUpdateByModule(Module $module, array $attributes)
     {
-        $path = skin_path('lang'.DS.$this->module->name).DS.app_locale().'.json';
-        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        // 1 Извлечь все настройки модуля.
+        $settings = $module->settings()->get();
 
-        $data = array_filter(array_merge($data, [
-            $this->name => $this->title,
-            $this->name.'#descr' => $this->attributes['descr'],
-            'section.' . $this->section => request('section_lang', __('section.' . $this->section)),
-            'legend.' . $this->fieldset => request('legend_lang', __('legend.' . $this->fieldset)),
-        ]));
-
-        ksort($data);
-
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \RuntimeException(sprintf(
-                'Translation file `%s` contains an invalid JSON structure.', $path
-            ));
-        }
-
-        file_put_contents($path, $data);
-
-        return $this;
-    }
-
-    public static function moduleUpdate(Module $module, array $attributes)
-    {
-        // 1 update in DB.
-        DB::transaction(function () use ($module, $attributes) {
-            foreach ($attributes as $name => $value) {
-                $module->settings()->where('settings.name', $name)->update(['settings.value' => $value]);
-            }
+        // 2 Пробежаться по коллекции, изменить значения настроек.
+        $settings->each(function ($setting, $key) use ($attributes) {
+            $setting->value = $attributes[$setting->name];
         });
 
-        // 2 Update in config/settings path.
-        file_put_contents(
-            config_path('settings').DS.$module->name.'.php',
-            '<?php return ' . var_export($attributes, true) . ';'
-        );
+        // 4 Сохранить настройки модуля в БД.
+        $module->settings()->saveMany($settings);
 
-        // Set to session.
-        if (array_key_exists('app_theme', $attributes)) {
-            app_theme($attributes['app_theme']);
+        // $this->fireModelEvent('massUpdateByModule', false);
+
+        // 5 Получить массив обновляемых настроек для сохранения в файл.
+        $updated = $settings->mapWithKeys(function ($setting) {
+                return [
+                    $setting->name => $setting->value
+                ];
+            });
+
+        // 6 Обновление настроек в директории `config/settings`.
+        $path = config_path('settings');
+        $file = $path.DS.$module->name.'.php';
+        $content = '<?php return '.var_export($updated->toArray(), true).';';
+
+        if (! \File::isDirectory($path)) {
+            \File::makeDirectory($path);
         }
 
-        if (array_key_exists('app_locale', $attributes)) {
-            app_locale($attributes['app_locale']);
-        }
+        \File::put($file, $content, true);
 
-        // 3 Clear and cache config. But we will not see flash message.
+        // 8 Очистить и закешировать настройки.
         Artisan::call('config:cache');
+
+        // 9 Записать переменные окружения в файл.
+        self::pushToEnvFile($updated);
+
+        // 10 Возвращаем измененные настройки для модуля.
+        return $settings;
     }
 
     /**
-     * Automatic config screen generator.
+     * pushToEnvFile.
      *
-     * @param  \BBCMS\Models\Module  $module
-     * @param  string  $action
-     * @return array
+     * @param  BaseCollection  $collection
+     * @return void
+     *
+    * @throws \Exception
      */
-    public static function generate_page(Module $module, string $action)
+    protected static function pushToEnvFile(BaseCollection $collection)
     {
-        $settings = static::query()->where('module_name', $module->name)
-            ->where('action', $action)->get()->makeFormFields();
+        $env_file = app()->basePath('.env');
 
-        return [
-            'module' => $module,
-            'sections' => $settings->pluck('section')->unique(),
-            'fieldsets' => $settings->pluck('fieldset')->unique(),
-            'fields' => $settings->groupBy(['section', 'fieldset']),
-        ];
+        $collection = $collection->mapWithKeys(function ($value, $key) {
+                return [
+                    mb_strtoupper($key, 'UTF-8') => $value
+                ];
+            })
+            ->filter(function ($value, $key) {
+                return in_array($key, self::$_env);
+            });
+
+        if ($collection->isEmpty()) {
+            return null;
+        }
+
+        // В случае ошибки синтаксиса, данная функция вернет FALSE, а не пустой массив.
+        if (! $env = parse_ini_file($env_file, false, INI_SCANNER_RAW)) {
+            throw new \Exception(trans('common.msg.env_fails'));
+        }
+
+        $content = collect($env)
+            ->merge($collection)
+            ->transform(function ($item, $key) {
+                return $key . '=' . (str_contains($item, [' ', '=', '$']) ? '"' . $item . '"' : $item);
+            })
+            ->unique()
+            ->sort()
+            ->implode(PHP_EOL);
+
+        \File::put($env_file, $content.PHP_EOL, true);
+
+        return true;
     }
 
     public static function getAllowedFieldTypes()
     {
+
+        // <input type="button">
+        // <input type="checkbox">
+        // <input type="color">
+        // <input type="date">
+        // <input type="datetime">
+        // <input type="datetime-local">
+        // <input type="email">
+        // <input type="file">
+        // <input type="hidden">
+        // <input type="image">
+        // <input type="month">
+        // <input type="number">
+        // <input type="password">
+        // <input type="radio">
+        // <input type="range">
+        // <input type="reset">
+        // <input type="search">
+        // <input type="submit">
+        // <input type="tel">
+        // <input type="text">
+        // <input type="time">
+        // <input type="url">
+        // <input type="week">
+
         return [
-            'string', 'text', 'text-inline', 'bool', 'float', 'integer',
-            'select', 'select-with', 'select-lang', 'select-skins', 'select-themes', 'select-font', // 'select-dir',
-            'hidden', 'email', 'password', 'url', 'search', 'datetime-local',
-            'file', 'button', 'submit', 'html', 'manual', 'captcha',
+            'string',
+            'text',
+            'text-inline',
+            'bool',
+            'float',
+            'integer',
+            'select',
+            'select-with',
+            'select-lang',
+            'select-skins',
+            'select-themes',
+            'select-font',
+            // 'select-dir',
+            'hidden',
+            'email',
+            'password',
+            'url',
+            'search',
+            'datetime-local',
+            'file',
+            'button',
+            'submit',
+            'html',
+            'manual',
+            'captcha',
         ];
     }
-
-    /**
-     * [getSections description]
-     *
-     * @param  int    $module_name
-     * @return array
-     */
-    public static function getSections(string $module_name)
-    {
-        return static::query()->select('section')->distinct()->where('module_name', $module_name)->pluck('section');
-    }
-
-    /**
-     * [getFieldsets description]
-     *
-     * @param  int    $module_name
-     * @return array
-     */
-    public static function getFieldsets(string $module_name)
-    {
-        return  static::query()->select('fieldset')->distinct()->where('module_name', $module_name)->pluck('fieldset');
-    }
 }
-
-// <input type="button">
-// <input type="checkbox">
-// <input type="color">
-// <input type="date">
-// <input type="datetime">
-// <input type="datetime-local">
-// <input type="email">
-// <input type="file">
-// <input type="hidden">
-// <input type="image">
-// <input type="month">
-// <input type="number">
-// <input type="password">
-// <input type="radio">
-// <input type="range">
-// <input type="reset">
-// <input type="search">
-// <input type="submit">
-// <input type="tel">
-// <input type="text">
-// <input type="time">
-// <input type="url">
-// <input type="week">

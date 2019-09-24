@@ -1,7 +1,7 @@
 <section class="profile_page">
     <div class="profile_page__inner">
         <header class="profile_page__header">
-            <div class="profile_page__picture" style="background-image:url('{{ theme_asset('images/cover.jpg') }}')">
+            <div class="profile_page__picture" style="background-image:url('{{ theme('images/cover.jpg') }}')">
                 <div class="profile_page__picture_overlay"></div>
             </div>
             <div class="profile_page__box_layout">

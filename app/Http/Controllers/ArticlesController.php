@@ -119,6 +119,7 @@ class ArticlesController extends SiteController
 
         if (($article_slug !== $article->slug) or ($category_slug !== $article->categories->pluck('slug')->implode('_'))) {
             cache()->forget('cachedFullArticleWithRelation-'.$article_id);
+            
             return redirect()->to($article->url);
         }
 

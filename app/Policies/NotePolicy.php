@@ -4,12 +4,9 @@ namespace BBCMS\Policies;
 
 use BBCMS\Models\User;
 use BBCMS\Models\Note;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class NotePolicy
+class NotePolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     public function index(User $user)
     {
         return true;

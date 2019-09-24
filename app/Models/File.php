@@ -18,23 +18,58 @@ use \RuntimeException as FileException;
 
 class File extends BaseModel
 {
+    use Traits\Dataviewer;
     use FileMutators, FileScopes;
 
     protected $table = 'files';
+
     protected $primaryKey = 'id';
+
     protected $casts = [
         'properties' => 'object',
     ];
+
     protected $appends = [
-        'url', 'path',
+        'url',
+        'path',
     ];
+
     protected $fillable = [
-        'user_id', 'attachment_id', 'attachment_type',
-        'disk', 'category', 'type', 'name', 'extension', 'mime_type', 'filesize', 'checksum',
-        'title', 'description', 'properties', 'downloads',
+        'user_id',
+        'attachment_id',
+        'attachment_type',
+        'disk',
+        'category',
+        'type',
+        'name',
+        'extension',
+        'mime_type',
+        'filesize',
+        'checksum',
+        'title',
+        'description',
+        'properties',
+        'downloads',
     ];
+
     protected $hidden = [
         'checksum',
+    ];
+
+    protected $allowedFilters = [
+        'id',
+        'title',
+        'name',
+        'type',
+        'disk',
+        'category',
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'title',
+        'name',
+        'downloads',
     ];
 
     /**
@@ -90,7 +125,11 @@ class File extends BaseModel
 
     public function manageUpload(UploadedFile $file, array $data)
     {
-        return $this->fill($data)->uploadFile($file)->save() ? $this->toArray() : false;
+        $this->fill($data)
+            ->uploadFile($file)
+            ->save();
+
+        return  $this;
     }
 
     /**
@@ -111,7 +150,7 @@ class File extends BaseModel
         $disk = $this->storageDisk($data['disk']);
         $isLocalDisk = $disk->getDriver()->getAdapter() instanceof LocalAdapter;
 
-        @$disk->makeDirectory($data['type'].DS.$data['category']);
+        $disk->makeDirectory($data['type'].DS.$data['category']);
 
         // $name = $data['name'];
         // dump($name[0]);
@@ -220,7 +259,7 @@ class File extends BaseModel
 
         // Cutting images.
         foreach ($this->thumbSizes() as $key => $value) {
-            @$disk->makeDirectory($path_prefix.$key);
+            $disk->makeDirectory($path_prefix.$key);
             $image = $this->imageResave(
                 $this->getAbsolutePathAttribute(),
                 $disk->path($path_prefix.$key.$path_suffix),

@@ -11,9 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $vendorDir = dirname(dirname(__FILE__));
-        $baseDir = dirname($vendorDir);
-        spl_autoload_register(function ($className) use($baseDir) {
+        // Model::unguard();
+        
+        $baseDir = dirname(__FILE__);
+        
+        spl_autoload_register(function ($className) use ($baseDir) {
             if (file_exists($file = $baseDir . '/database/seeds/' . $className . '.php')) {
                 include($file);
                 return true;
@@ -25,5 +27,7 @@ class DatabaseSeeder extends Seeder
             PrivilegesTableSeeder::class,
             SettingsTableSeeder::class,
         ]);
+        
+        // Model::reguard();
     }
 }

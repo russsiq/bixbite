@@ -17,13 +17,15 @@ use Carbon\Carbon;
 
 use BBCMS\Models\Module;
 
+/**
+ * НУЖНО НАВЕСТИ ПОРЯДОК В ЭТОМ ПОСРЕДНИКЕ.
+ */
 class ThemeSwitcher
 {
     /**
-     * Handle an incoming request.
-     *
+     * Обработка входящего запроса.
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -31,17 +33,20 @@ class ThemeSwitcher
         App::setLocale(app_locale()); // Lang::setLocale($locale); // $request->setDefaultLocale($locale);
         Carbon::setLocale(app_locale());
 
-        if (in_array($request->segment(1), ['admin', 'installer'])) { // trim($request->route()->getPrefix(), '/')
+        if (in_array($request->segment(1), ['admin', 'panel', 'installer'])) { // trim($request->route()->getPrefix(), '/')
             // Load skin view.
             View::addLocation(skin_path('views'));
+
             // Load skin common lang.
             Lang::addJsonPath(skin_path('lang'));
+
             // Load skin section lang.
             Lang::addJsonPath(skin_path('lang' . DS . ($request->segment(2) ?? 'install')));
         } else {
-            // Load theme view.
+            // Загружаем шаблоны темы сайта.
             View::addLocation(theme_path('views'));
-            // Load theme lang.
+
+            // Загружаем язык темы сайта.
             Lang::addJsonPath(theme_path('lang'));
         }
 

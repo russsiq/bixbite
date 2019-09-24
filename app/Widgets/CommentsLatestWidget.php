@@ -2,8 +2,12 @@
 
 namespace BBCMS\Widgets;
 
+use BBCMS\Models\Article;
 use BBCMS\Models\Comment;
 use BBCMS\Support\WidgetAbstract;
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class CommentsLatestWidget extends WidgetAbstract
 {
@@ -28,6 +32,7 @@ class CommentsLatestWidget extends WidgetAbstract
             'title' => ['required', 'string', 'regex:/^[\w\s\.\-\_]+$/u'],
             'limit' => ['required', 'integer'],
             'content_length' => ['required', 'integer'],
+            'relation' => ['required', 'string', 'in:articles,profiles'],
         ];
     }
 
@@ -41,6 +46,7 @@ class CommentsLatestWidget extends WidgetAbstract
             'title' => setting('comments.widget_title', trans('comments.widget_title')),
             'limit' => setting('comments.widget_count', 4),
             'content_length' => setting('comments.widget_content_length', 150),
+            'relation' => 'articles',
         ];
     }
 
@@ -48,14 +54,13 @@ class CommentsLatestWidget extends WidgetAbstract
     {
         return [
             'title' => $this->params['title'],
-            'items' => Comment::latest()
-                // ->is_approved()
-                ->with([
+            'items' => Comment::with([
                     'user:users.id,users.name,users.email,users.avatar',
-                    'article:articles.id,articles.title,articles.slug',
-                    'article.categories:categories.id,categories.slug',
+                    'article:articles.id,articles.title,articles.slug,articles.state',
                 ])
                 ->where('commentable_type', 'articles')
+                ->where('is_approved', true)
+                ->latest()
                 ->limit($this->params['limit'])
                 ->get()
                 ->treated(false),

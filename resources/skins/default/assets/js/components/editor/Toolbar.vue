@@ -1,14 +1,11 @@
 <template>
 <div id="toolbar-container">
     <span class="ql-formats">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">{{ 'btn.save' | trans({name : 'Вася', year: 220}) }}</button>
-            <div class="dropdown-menu">
-                <button type="submit" name="state" value="published" class="dropdown-item">{{ 'action.published' | trans }}</button>
-                <button type="submit" name="state" value="unpublished" class="dropdown-item">{{ 'action.unpublished' | trans }}</button>
-                <button type="submit" name="state" value="draft" class="dropdown-item">{{ 'action.draft' | trans }}</button>
-            </div>
-        </div>
+        <select class="ql-save">
+            <option value='{"state":"published"}'>Опубликовать</option>
+            <option value='{"state":"unpublished"}'>Отправить на модерацию</option>
+            <option value='{"state":"draft"}'>Оставить в черновиках</option>
+        </select>
     </span>
 
     <span class="ql-formats">
@@ -88,6 +85,8 @@
 
 <script type="text/ecmascript-6">
 export default {
+    name: 'toolbar',
+
     components: {
         //
     },
@@ -109,10 +108,12 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                var items = document.querySelectorAll('.ql-shortcodes .ql-picker-options .ql-picker-item');
-                for (var i = 0; i < items.length; i++) {
-                    items[i].dataset.label = this.$refs['ql-shortcodes'][i].text
-                }
+                // Почему-то это стало не нужным.
+                // const [...shortcodes] = document.querySelectorAll('.ql-shortcodes .ql-picker-options .ql-picker-item');
+                //
+                // shortcodes.forEach((item, index) => {
+                //     item.dataset.label = this.$refs['ql-shortcodes'][index].text
+                // });
             }, 100)
         })
     },
@@ -135,11 +136,14 @@ export default {
     top: 0;
     z-index: 1040;
     border-top: 1px solid #008cba;
+    font-family: inherit;
+
+    background-image: linear-gradient(to bottom, #fbfbfb 0%, #eaeaea 100%);
 }
 
 @media (min-width: 768px) {
     .ql-toolbar.ql-snow {
-        top: 54px;
+        /* top: 54px; */
     }
 }
 
@@ -169,6 +173,11 @@ export default {
 .ql-snow .ql-toolbar button,
 .ql-snow.ql-toolbar button {
     width: auto;
+    line-height: 1;
+}
+
+.ql-snow .ql-stroke {
+    stroke: #222;
 }
 
 .ql-snow.ql-toolbar button.dropdown-item {
@@ -211,5 +220,13 @@ export default {
 
 .ql-snow .ql-picker.ql-shortcodes .ql-picker-label::before {
     content: '[[...]]';
+}
+
+.ql-snow .ql-picker.ql-save .ql-picker-item:before {
+    content: attr(data-label);
+}
+
+.ql-snow .ql-picker.ql-save .ql-picker-label::before {
+    content: 'Сохранить';
 }
 </style>

@@ -4,20 +4,19 @@ namespace BBCMS\Models\Mutators;
 
 trait CategoryMutators
 {
-    public function setSlugAttribute($value)
-    {
-        // $this->attributes['slug'] = string_slug((is_null($value) ? $this->title : $value), '-');
-        $this->attributes['slug'] = string_slug($value ?? $this->title);
-    }
-
     public function getUrlAttribute()
     {
-        return empty($this->alt_url) ? route(/*$this->table*/ "articles.category", ['category'=> $this->path]) : $this->alt_url;
+        return $this->alt_url ?? route(/*$this->table*/ "articles.category", ['category'=> $this->path]);
+    }
+
+    public function getEditPageAttribute()
+    {
+        return $this->id ? url('/panel/categories/'.$this->id.'/edit') : null;
     }
 
     public function getRootAttribute()
     {
-        return !$this->parent_id;
+        return ! $this->parent_id;
     }
 
     public function getPathAttribute($values)

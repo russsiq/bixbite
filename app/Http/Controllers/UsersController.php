@@ -4,7 +4,7 @@ namespace BBCMS\Http\Controllers;
 
 use BBCMS\Models\User;
 use BBCMS\Models\XField;
-use BBCMS\Http\Requests\Admin\UserRequest;
+use BBCMS\Http\Requests\Front\UserRequest;
 
 class UsersController extends SiteController
 {
@@ -19,7 +19,7 @@ class UsersController extends SiteController
 
     public function index() {
         $users = $this->model->latest()
-            ->paginate(setting('users.paginate', 8));
+            ->paginate(setting('users.paginate', 15));
 
         pageinfo([
             'title' => setting('users.meta_title', __('users.title')),
@@ -47,26 +47,35 @@ class UsersController extends SiteController
 
     public function update(UserRequest $request, User $user)
     {
-        $user->fill($request->all())->save();
+        $user->update($request->all());
 
         return redirect()->route('profile', $user)->withStatus(
             __('users.msg.profile_updated')
         );
     }
 
-    public function profile($id)
+    public function profile(int $id)
     {
         $user = $this->model
-            ->where('id', (int) $id)
+            ->where('id', $id)
             ->withCount([
-                'articles', 'comments', 'posts', 'follows'
+                'articles',
+                'comments',
+                'posts',
+                'follows',
             ])
             ->firstOrFail();
 
-        $user->posts = $user->posts_count
-            ? $user->posts()->with([
-                'user:users.id,users.name,users.email,users.avatar'
-            ])->latest()->get()->treated(true) : [];
+        if ($user->posts_count) {
+            $user->posts = $user->posts()
+                ->with([
+                    'user:users.id,users.name,users.email,users.avatar'
+                ])->latest()
+                ->get()
+                ->treated(true);
+        } else {
+            $user->posts = [];
+        }
 
         $x_fields = $user->x_fields;
 
@@ -90,17 +99,15 @@ class UsersController extends SiteController
     {
         auth()->user()->follow($user);
 
-        return redirect()->back()->withStatus(
-                __('users.msg.followed')
-            );
+        return redirect()->back()
+            ->withStatus(__('users.msg.followed'));
     }
 
     public function unfollow(User $user)
     {
         auth()->user()->unfollow($user);
 
-        return redirect()->back()->withStatus(
-                __('users.msg.unfollowed')
-            );
+        return redirect()->back()
+            ->withStatus(__('users.msg.unfollowed'));
     }
 }

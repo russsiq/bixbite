@@ -6,8 +6,6 @@ use BBCMS\Models\Article;
 use BBCMS\Models\File;
 use BBCMS\Models\Note;
 use BBCMS\Models\Comment;
-use BBCMS\Models\Privilege;
-use BBCMS\Models\Traits\hasOnline;
 
 use BBCMS\Models\Relations\Extensible;
 use BBCMS\Models\Relations\hasFollows;
@@ -15,36 +13,80 @@ use BBCMS\Models\Relations\hasFollows;
 use BBCMS\Models\Mutators\UserMutators;
 use BBCMS\Models\Observers\UserObserver;
 
+use BBCMS\Models\Traits\hasOnline;
+use BBCMS\Models\Traits\hasPrivileges;
+
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use Traits\Dataviewer;
     use Notifiable;
-    use Extensible, hasFollows, hasOnline, UserMutators;
-    // use Commentable; user not commentable, Profile is commentable !!!
+    use Extensible,
+        hasFollows,
+        UserMutators,
+        hasOnline,
+        hasPrivileges;
+    // use Commentable; user not commentable, Wall Profile is commentable !!!
 
     protected $table = 'users';
+
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'email',
-        'avatar',
         'password',
+        'role',
+        'avatar',
+        'info',
+        'where_from',
         'last_ip',
         'logined_at',
-        'where_from',
-        'info',
-        'role',
     ];
+
     protected $appends = [
-        'logined'
+        'logined',
+        'is_online'
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
-        'email',
+        // 'email',
         'password',
+        'api_token',
         'remember_token',
-        'role',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    protected $allowedFilters = [
+        //
+    ];
+
+    protected $orderableColumns = [
+        'id',
+        'name',
+        'logined_at',
+        'role'
     ];
 
     protected static function boot()
@@ -52,11 +94,6 @@ class User extends Authenticatable
         parent::boot();
         static::observe(UserObserver::class);
     }
-
-    // public function profile()
-    // {
-    //    return $this->hasOne(Profile::class);
-    // }
 
     public function articles()
     {
@@ -66,12 +103,6 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class);
-    }
-
-    // Posts - this is a comments on wall of user profile page.
-    public function posts()
-    {
-        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
     }
 
     public function files()
@@ -84,26 +115,39 @@ class User extends Authenticatable
         return $this->hasMany(Note::class);
     }
 
+    // public function profile()
+    // {
+    //    return $this->hasOne(Profile::class);
+    // }
+
     /**
-     * Checks if the user belongs to role.
-     * @param string $role
-     * @return bool
+     * Комментарии на стене профиля пользователя.
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function hasRole(string $role): bool
+    public function posts()
     {
-        return $role == $this->role;
+        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
+    }
+    
+    /**
+     * [generateApiToken description]
+     * @return string
+     */
+    public function generateApiToken(): string
+    {
+        $this->api_token = hash('sha256', Str::random(60));
+        $this->save();
+
+        return $this->api_token;
     }
 
     /**
-     * Checks if User has access to $privilege.
-     * @param string $privilege
-     * @return bool
+     * [resetApiToken description]
+     * @return void
      */
-    public function canDo(string $privilege): bool
+    public function resetApiToken()
     {
-        // $privileges = CacheFile::fromMap('privileges');
-        $privileges = cache('privileges') ?? Privilege::getModel()->privileges();
-
-        return $privileges[$privilege][$this->role] ?? false;
+        $this->api_token = null;
+        $this->save();
     }
 }

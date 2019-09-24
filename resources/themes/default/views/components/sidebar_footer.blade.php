@@ -13,18 +13,13 @@
                     <li class="footer_area__item"><a href="#" class="page_footer__link">FAQ</a></li>
                     <li class="footer_area__item"><a href="#" class="page_footer__link">Themes</a></li>
                     <li class="footer_area__item"><a href="#" class="page_footer__link">Modules</a></li>
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">Support</a></li>
+                    <li class="footer_area__item"><a href="{{ route('feedback.create') }}" class="page_footer__link">Поддержка</a></li>
                 </ul>
             </div>
             <div class="footer_area__feedback">
-                <h4 class="footer_area__title">Useful Links</h4>
-                <ul class="footer_area__list">
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">Documentation</a></li>
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">FAQ</a></li>
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">Themes</a></li>
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">Modules</a></li>
-                    <li class="footer_area__item"><a href="#" class="page_footer__link">Support</a></li>
-                </ul>
+                <h4 class="footer_area__title">Связаться с нами</h4>
+
+                <a href="{{ route('feedback.create') }}" class="btn btn-outline-primary">Форма обратной связи</a>
             </div>
         </div>
     </div>
