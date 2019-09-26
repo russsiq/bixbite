@@ -1,116 +1,19 @@
 /**
- * Default Axios Config
+ * Axios Config
  */
-
-import axios from 'axios';
 
 import store from '@/store';
 import router from '@/router';
-
-// // Add a request interceptor
-// axios.interceptors.request.use(function(config) {
-//     // Do something before request is sent
-//     return config;
-// }, function(error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-// });
-//
-// // Add a response interceptor
-// axios.interceptors.response.use(function(response) {
-//     // Do something with response data
-//     return response;
-// }, function(error) {
-//     // Do something with response error
-//     return Promise.reject(error);
-// });
-
-const http = {
-    /**
-     * Default URL
-     */
-    url: '/',
-
-    /**
-     * Default Method
-     */
-    method: 'get',
-
-    /**
-     * Default Base URL
-     */
-    baseURL: `${Pageinfo.api_url}/`,
-
-    /**
-     * Default Headers
-     */
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': `${Pageinfo.csrf_token}`,
-        'X-Requested-With': 'XMLHttpRequest',
-    },
-
-    // `data` is the data to be sent as the request body
-    // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
-    // When no `transformRequest` is set, must be of one of the following types:
-    // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
-    // - Browser only: FormData, File, Blob
-    // - Node only: Stream, Buffer
-    // data: {},
-
-    /**
-     * Default Timout
-     */
-    timeout: 0,
-
-    /**
-     * Default With Credentials Flag
-     */
-    withCredentials: false,
-
-    /**
-     * Default Response Type
-     */
-    responseType: 'json',
-
-    /**
-     * Default Response Encoding
-     */
-    responseEncoding: 'utf8',
-
-    /**
-     * Default Validate Status Method
-     * @param {number} status
-     */
-    validateStatus(status) {
-        return status >= 200 && status < 300; // default
-    },
-
-    /**
-     * Default Max Redirects
-     */
-    maxRedirects: 3,
-
-    /**
-     * Default Socket Path
-     */
-    socketPath: null,
-
-    /**
-     * Default Proxy
-     */
-    proxy: {},
-};
-
-const Axios = axios.create(http);
 
 export default {
     /**
      * Default create new axios instance, provide
      * option to pass an existing instance through.
+     * @NB: Невозможно использовать из-за
+     *      повторного отправления `onResponse`, подробнее:
+     *      https://github.com/vuex-orm/plugin-axios/issues/39
      */
-    axios: Axios, //axios.create(http),
+    // axios: axios.create(http),
 
     /**
      * Default URL.
@@ -126,6 +29,16 @@ export default {
      * Default method.
      */
     method: 'get',
+
+    /**
+     * Default Headers
+     */
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': `${Pageinfo.csrf_token}`,
+        'X-Requested-With': 'XMLHttpRequest',
+    },
 
     /**
      * Access token variable.
@@ -148,8 +61,6 @@ export default {
 
     /**
      * Обработка успешно выполненного запроса.
-     * @NB: При обновлении плагина проверяй повторное отправление, подробнее:
-     *      https://github.com/vuex-orm/plugin-axios/issues/39
      * @param {object} response
      */
     onResponse(response) {
@@ -176,7 +87,7 @@ export default {
 
         // Возвращаем данные для хранилища `vuex-orm`.
         // В Laravel всё, включая  постраничку, оборачиваем в `data`.
-        return data.data || data;
+        return data && data.data;
     },
 
     /**
