@@ -7,6 +7,24 @@ import axios from 'axios';
 import store from '@/store';
 import router from '@/router';
 
+// // Add a request interceptor
+// axios.interceptors.request.use(function(config) {
+//     // Do something before request is sent
+//     return config;
+// }, function(error) {
+//     // Do something with request error
+//     return Promise.reject(error);
+// });
+//
+// // Add a response interceptor
+// axios.interceptors.response.use(function(response) {
+//     // Do something with response data
+//     return response;
+// }, function(error) {
+//     // Do something with response error
+//     return Promise.reject(error);
+// });
+
 const http = {
     /**
      * Default URL
@@ -123,8 +141,6 @@ export default {
      * @param {Axios} Axios instance
      */
     onRequest(config, axios) {
-        Axios.interceptors.request.handlers = [];
-
         store.dispatch('loadingLayer/show');
 
         return config;
@@ -137,8 +153,6 @@ export default {
      * @param {object} response
      */
     onResponse(response) {
-        Axios.interceptors.response.handlers = [];
-
         store.dispatch('loadingLayer/hide');
 
         const statuses = {
@@ -280,7 +294,7 @@ export default {
         // Сбрасываем аутентификацию пользователя.
         store.dispatch('auth/logout');
 
-        // Перенаправляем на страницу регистрации.
+        // Перенапрвляем на страницу регистрации.
         router.push({
             name: 'login'
         });
