@@ -15,7 +15,7 @@ class CreateModulesTable extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
 
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name', 30);
             $table->string('title', 30)->nullable();
             $table->string('icon', 20)->default('fa fa-puzzle-piece');

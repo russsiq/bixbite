@@ -12,7 +12,7 @@ class CategoryRequest extends Request
         return true;
     }
 
-    protected function validationData()
+    public function validationData()
     {
         $input = $this->except([
             '_token',

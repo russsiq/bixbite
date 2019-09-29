@@ -43,10 +43,10 @@ class CreateFilesTable extends Migration
             //
 
 
-            $table->increments('id');
+            $table->bigIncrements('id');
 
             // Relation and other indexed keys.
-            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->nullableMorphs('attachment');
 
             // Main content.
@@ -59,7 +59,7 @@ class CreateFilesTable extends Migration
             $table->boolean('is_shared')->nullable();
 
             // Counters.
-            $table->unsignedInteger('downloads')->default(0); // download counters
+            $table->unsignedBigInteger('downloads')->default(0); // download counters
 
             // Appending when download.
             $table->string('type'); // ['archive', 'audio', 'doc', 'image', 'video', 'other']

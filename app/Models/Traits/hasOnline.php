@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 // if ($user = $request->user()) {
 //     cache()->put($user->isOnlineKey(), now(),
-//         now()->addMinutes($user->isOnlineMinutes())
+//         now()->addSeconds($user->isOnlineMinutes() * 60)
 //     );
 // }
 

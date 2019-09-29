@@ -15,10 +15,10 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
 
-            $table->increments('id');
-            $table->unsignedInteger('image_id')->nullable();
-            $table->unsignedInteger('parent_id')->default(0);
-            $table->unsignedInteger('position')->length(10)->default(1);
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('image_id')->nullable();
+            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->unsignedBigInteger('position')->length(10)->default(1);
 
             $table->string('title')->unique();
             $table->string('slug')->unique();
@@ -37,7 +37,8 @@ class CreateCategoriesTable extends Migration
 
             $table->index('parent_id');
             $table->index('position');
-            $table->foreign('image_id')->references('id')->on('files')->onDelete('set null');
+            $table->foreign('image_id')->references('id')->on('files')
+                  ->onDelete('set null');
 
             $table->timestamps();
         });

@@ -18,9 +18,10 @@ use BBCMS\Models\Traits\hasPrivileges;
 
 use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Traits\Dataviewer;
     use Notifiable;
@@ -128,7 +129,7 @@ class User extends Authenticatable
     {
         return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
     }
-    
+
     /**
      * [generateApiToken description]
      * @return string

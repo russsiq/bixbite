@@ -21,7 +21,7 @@ class CommentUpdateRequest extends Request
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         $input = $this->only([
             'content',

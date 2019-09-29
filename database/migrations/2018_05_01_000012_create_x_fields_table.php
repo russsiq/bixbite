@@ -15,7 +15,7 @@ class CreateXFieldsTable extends Migration
     {
         Schema::create('x_fields', function (Blueprint $table) {
 
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('extensible', 30);
             $table->string('name', 30);
             $table->string('type', 20)->default('string');

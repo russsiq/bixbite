@@ -17,12 +17,12 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
 
             // Relation and other indexed keys.
             $table->string('img')->nullable();
-            $table->unsignedInteger('user_id')->default(1);
-            $table->unsignedInteger('image_id')->nullable();
+            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('image_id')->nullable();
 
             // Main content.
             $table->enum('state', ['draft', 'unpublished', 'published'])->default('unpublished');
@@ -44,10 +44,10 @@ class CreateArticlesTable extends Migration
             $table->tinyInteger('allow_com')->unsigned()->default(2); // 0 - no; 1 - yes; 2 - by default
 
             // Counters.
-            $table->unsignedInteger('shares')->length(10)->default(0);
-            $table->unsignedInteger('views')->length(10)->default(0);
-            $table->unsignedInteger('votes')->length(10)->nullable();
-            $table->unsignedInteger('rating')->length(10)->nullable();
+            $table->unsignedInteger('shares')->default(0);
+            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('votes')->nullable();
+            $table->unsignedInteger('rating')->nullable();
 
             // Timestamps.
             $table->timestamps();
@@ -56,7 +56,8 @@ class CreateArticlesTable extends Migration
             $table->index('state');
             $table->index('user_id');
             // Do not call the onDelete() method if you want the `NO ACTION` option.
-            $table->foreign('image_id')->references('id')->on('files')->onDelete('set null');
+            $table->foreign('image_id')->references('id')->on('files')
+                  ->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users')
                   ->onDelete('CASCADE')
                   ->onUpdate('CASCADE');

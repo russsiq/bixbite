@@ -1,7 +1,6 @@
 <?php
 
 namespace BBCMS\Console;
-
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,9 +23,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // To run the scheduler, we need to call the php artisan schedule:run command, and it runs all the commands that should be triggered.
-        // $schedule->command('db:backup')->mondays()->at('23:00');
-
         // $schedule->command('inspire')
         //          ->hourly();
     }
@@ -39,7 +35,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
-
-        require app()->basePath('routes/console.php');
+        require base_path('routes/console.php');
     }
 }

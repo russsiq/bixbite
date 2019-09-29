@@ -81,6 +81,8 @@ if (! function_exists('app_theme')) {
      */
     function app_theme(string $theme = null): string
     {
+        return setting('system.app_theme', 'default');
+
         static $app_theme = null;
 
         if (is_null($app_theme)) {
@@ -91,10 +93,10 @@ if (! function_exists('app_theme')) {
                 setting('system.app_theme'),
                 env('APP_THEME'),
                 'default',
-                session('app_theme'),
+                // session('app_theme'),
             ] as $app_theme) {
                 if ($app_theme and is_dir(app()->resourcePath('themes'.DS.$app_theme))) {
-                    session(['app_theme' => $app_theme]);
+                    // session(['app_theme' => $app_theme]);
 
                     break;
                 }

@@ -2,6 +2,9 @@
 
 namespace BBCMS\Providers;
 
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,11 +21,16 @@ class EventServiceProvider extends ServiceProvider
         //     'BBCMS\Listeners\EventListener',
         // ],
 
+        // From https://laravel.com/docs/5.7/upgrade Email Verification
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+
         // From https://laravel.com/docs/master/authentication#events
         // 'Illuminate\Auth\Events\Registered' => [
         //     'BBCMS\Listeners\LogRegisteredUser',
         // ],
-        //
+        
         // 'Illuminate\Auth\Events\Attempting' => [
         //     'BBCMS\Listeners\LogAuthenticationAttempt',
         // ],

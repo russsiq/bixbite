@@ -19,7 +19,7 @@ class ArticleRequest extends Request
         return true;
     }
 
-    protected function validationData()
+    public function validationData()
     {
         // NB: if isset image_id then attach image.
         $input = $this->except([

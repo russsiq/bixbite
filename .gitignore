@@ -3,7 +3,6 @@
 /resources/themes/vlad-stroi
 /uploads
 /node_modules
-/public
 /storage/*.key
 /vendor
 /.idea

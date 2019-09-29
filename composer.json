@@ -1,7 +1,11 @@
 {
     "name": "russsiq/bixbite",
     "description": "Система для оперативного развертывания простейших сайтов на shared хостингах на базе Laravel.",
-    "keywords": ["bixbite", "cms", "laravel"],
+    "keywords": [
+        "bixbite",
+        "cms",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "version": "dev-master",
@@ -13,19 +17,18 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "fideloper/proxy": "~4.0",
-        "laravel/framework": "5.6.*",
-        "laravel/tinker": "~1.0",
+        "fideloper/proxy": "^4.0",
+        "laravel/framework": "^6.0",
+        "laravel/helpers": "^1.1",
+        "laravel/tinker": "^1.0",
         "russsiq/bixbite": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
-        "filp/whoops": "~2.0",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "~1.0",
-        "nunomaduro/collision": "~2.0",
-        "phpunit/phpunit": "~7.0",
-        "symfony/thanks": "^1.0"
+        "facade/ignition": "^1.4",
+        "fzaninotto/faker": "^1.4",
+        "mockery/mockery": "^1.0",
+        "nunomaduro/collision": "^3.0"
     },
     "repositories": [
         {
@@ -52,20 +55,19 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover --ansi"
         ]
     },
     "config": {
+        "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "optimize-autoloader": true
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true

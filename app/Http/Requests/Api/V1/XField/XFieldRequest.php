@@ -19,7 +19,7 @@ class XFieldRequest extends Request
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         $input = $this->except([
             '_token',

@@ -145,7 +145,7 @@ class SitemapController
     protected static function render(string $get, string $sitemap)
     {
         $cache_key = 'rss.'.$sitemap;
-        $cache_time = static::cacheTime($sitemap);
+        $cache_time = static::cacheTime($sitemap) * 60;
 
         if (false === $cache_time) {
             return view($cache_key, static::{$get}())->render();

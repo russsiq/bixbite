@@ -17,7 +17,7 @@ class TemplateRequest extends Request
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         $filename = $this->get('filename');
         $content = $this->get('content', null);

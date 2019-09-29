@@ -11,7 +11,7 @@ class ToggleRequest extends Request
         return true;
     }
 
-    protected function validationData()
+    public function validationData()
     {
         return $this->replace([
             'id' => (int) $this->route('id'),

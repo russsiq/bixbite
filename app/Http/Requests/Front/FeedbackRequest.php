@@ -11,7 +11,7 @@ class FeedbackRequest extends Request
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         return $this->merge([
                 'name' => teaser($this->input('name'), 100),

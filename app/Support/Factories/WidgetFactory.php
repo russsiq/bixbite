@@ -168,7 +168,7 @@ class WidgetFactory
     protected function getContentFromCache()
     {
         $cache_key = $this->widget->cacheKey();
-        $cache_time = $this->widget->cacheTime();
+        $cache_time = $this->widget->cacheTime() * 60;
 
         // Check the existence of the cache.
         if (! cache()->has($cache_key)) {

@@ -9,7 +9,12 @@
  *      - BBCMS\Providers\RouteServiceProvider
  */
 
-Auth::routes();
+
+Auth::routes([
+    // Подтверждение регистрации по e-mail.
+    'verify' => true,
+]);
+
 Route::get('/', 'HomeController@index')->name('home');
 
 // Вначале располагаем группу маршрутов, где не нужны регулярные выражения.

@@ -3,7 +3,7 @@
     @if ($errors->any())
         @each('install.components.alert', $errors->all(), 'message')
     @endif
-    @if ($message = session('status') or $message = session('message'))
+    @if ($message = session('status') ?? $message = session('message'))
         @include('install.components.alert', ['type' => 'success', 'message' => trim($message)])
     @endif
 </section>

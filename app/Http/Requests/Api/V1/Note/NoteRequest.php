@@ -19,7 +19,7 @@ class NoteRequest extends Request
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         $input = [];
 

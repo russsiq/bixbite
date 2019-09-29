@@ -142,6 +142,7 @@ class Setting extends BaseModel
         $content = collect($env)
             ->merge($collection)
             ->transform(function ($item, $key) {
+                // https://laravel.com/docs/5.8/upgrade#environment-variable-parsing
                 return $key . '=' . (str_contains($item, [' ', '=', '$']) ? '"' . $item . '"' : $item);
             })
             ->unique()

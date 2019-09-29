@@ -14,11 +14,11 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
 
             // Relation and other indexed keys.
-            $table->unsignedInteger('user_id')->nullable(); // if auth user add comment
-            $table->unsignedInteger('parent_id')->nullable(); // if not replies
+            $table->unsignedBigInteger('user_id')->nullable(); // if auth user add comment
+            $table->unsignedBigInteger('parent_id')->nullable(); // if not replies
             $table->morphs('commentable');
 
             // Main content.

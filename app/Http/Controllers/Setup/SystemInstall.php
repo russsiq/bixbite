@@ -173,6 +173,11 @@ class SystemInstall extends SetupController
                 'APP_SKIN' => 'default',
                 'APP_URL' => app('url')->to('/'),
 
+                'AWS_ACCESS_KEY_ID'=>'',
+                'AWS_SECRET_ACCESS_KEY'=>'',
+                'AWS_DEFAULT_REGION'=>'us-east-1',
+                'AWS_BUCKET'=>'',
+
                 'BROADCAST_DRIVER' => 'log',
                 'CACHE_DRIVER' => 'file',
                 'LOG_CHANNEL' => 'stack',
@@ -189,7 +194,8 @@ class SystemInstall extends SetupController
                 'PUSHER_APP_SECRET' => '',
                 'PUSHER_APP_CLUSTER' => 'mt1',
 
-                'QUEUE_DRIVER' => 'sync',
+                'CACHE_DRIVER'=>'file',
+                'QUEUE_CONNECTION'=>'sync',
 
                 'REDIS_HOST' => '127.0.0.1',
                 'REDIS_PASSWORD' => null,
@@ -205,6 +211,7 @@ class SystemInstall extends SetupController
                 'MIX_PUSHER_APP_CLUSTER' => '"${PUSHER_APP_CLUSTER}"',
             ])
             ->transform(function ($item, $key) {
+                // https://laravel.com/docs/5.8/upgrade#environment-variable-parsing
                 return $key . '=' . (str_contains($item, [' ', '=']) ? '"' . $item . '"' : $item);
             })
             ->unique()
@@ -242,6 +249,7 @@ class SystemInstall extends SetupController
         $data = collect($env)
             ->merge($collection)
             ->transform(function ($item, $key) {
+                // https://laravel.com/docs/5.8/upgrade#environment-variable-parsing
                 return $key . '=' . (str_contains($item, [' ', '=']) ? '"' . $item . '"' : $item);
             })
             ->unique()

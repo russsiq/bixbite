@@ -15,14 +15,15 @@ class CreateCategoryablesTable extends Migration
     {
         Schema::create('categoryables', function (Blueprint $table) {
 
-            $table->increments('id');
-            $table->unsignedInteger('category_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('category_id');
             $table->morphs('categoryable');
 
             $table->index('category_id');
             $table->index('categoryable_id');
             $table->index('categoryable_type');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')
+                  ->onDelete('cascade');
 
             // $table->timestamps();
         });

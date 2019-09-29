@@ -22,7 +22,7 @@ class MassUpdate extends Request
         return true;
     }
 
-    protected function validationData()
+    public function validationData()
     {
         return $this->all();
     }

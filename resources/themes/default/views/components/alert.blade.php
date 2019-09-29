@@ -1,5 +1,5 @@
 <noscript>
-    <div id="alert-message" class="alert alert-{{ $type or 'danger'}}">
+    <div id="alert-message" class="alert alert-{{ $type ?? 'danger'}}">
         @isset($title)
             <h5 class="alert-heading">@lang($title)</h5>
         @endisset
@@ -15,7 +15,7 @@
                     title: '@lang($title)',
                 @endisset
                 message: '@lang($message)',
-                type: '{{ $type or 'danger' }}'
+                type: '{{ $type ?? 'danger' }}'
             });
         });
     </script>

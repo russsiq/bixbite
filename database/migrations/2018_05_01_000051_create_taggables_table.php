@@ -15,14 +15,15 @@ class CreateTaggablesTable extends Migration
     {
         Schema::create('taggables', function (Blueprint $table) {
 
-            $table->increments('id');
-            $table->unsignedInteger('tag_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('tag_id');
             $table->morphs('taggable');
 
             $table->index('tag_id');
             $table->index('taggable_id');
             $table->index('taggable_type');
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')
+                  ->onDelete('cascade');
         });
     }
 

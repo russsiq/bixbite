@@ -14,7 +14,7 @@ class CreatePrivilegesTable extends Migration
     {
         Schema::create('privileges', function (Blueprint $table) {
 
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('privilege')->unique();
             $table->string('description')->nullable(); // ->default('No description available');
 

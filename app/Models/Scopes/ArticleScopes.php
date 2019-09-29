@@ -38,7 +38,7 @@ trait ArticleScopes
 
     public function scopeCachedFullArticleWithRelation($query, $id)
     {
-        $article = cache()->remember('articles-single-'.$id, setting('articles.cache_used', 1440), function () use ($id) {
+        $article = cache()->remember('articles-single-'.$id, setting('articles.cache_used', 1440) * 60, function () use ($id) {
             $article = $this->fullArticle($id);
             $article->tags = $article->tags_count ? $article->getTags() : [];
 
