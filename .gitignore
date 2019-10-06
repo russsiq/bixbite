@@ -1,6 +1,5 @@
 # remove files and folders
 /resources/themes/bixbite
-/resources/themes/vlad-stroi
 /uploads
 /node_modules
 /storage/*.key
@@ -10,6 +9,7 @@
 /.vagrant
 composer.lock
 npm-debug.log
+package-lock.json
 yarn-error.log
 .env
 
