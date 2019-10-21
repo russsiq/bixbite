@@ -21,7 +21,9 @@
         "laravel/framework": "^6.0",
         "laravel/helpers": "^1.1",
         "laravel/tinker": "^1.0",
-        "russsiq/bixbite": "dev-master"
+        "russsiq/bixbite": "dev-master",
+        "russsiq/laravel-grecaptcha": "dev-master",
+        "russsiq/laravel-selfupdater": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
