@@ -30,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
         // 'Illuminate\Auth\Events\Registered' => [
         //     'BBCMS\Listeners\LogRegisteredUser',
         // ],
-        
+
         // 'Illuminate\Auth\Events\Attempting' => [
         //     'BBCMS\Listeners\LogAuthenticationAttempt',
         // ],
@@ -58,6 +58,13 @@ class EventServiceProvider extends ServiceProvider
         // 'Illuminate\Auth\Events\PasswordReset' => [
         //     'BBCMS\Listeners\LogPasswordReset',
         // ],
+
+        \Russsiq\Updater\Events\UpdateAvailable::class => [
+            \Russsiq\Updater\Listeners\SendUpdateAvailableNotification::class
+        ],
+        \Russsiq\Updater\Events\UpdateSucceeded::class => [
+            \Russsiq\Updater\Listeners\SendUpdateSucceededNotification::class
+        ],
     ];
 
     /**
