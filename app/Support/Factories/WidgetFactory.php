@@ -151,11 +151,11 @@ class WidgetFactory
 
         $view = view($this->widget->template(), compact('widget'));
 
-        // Debug function if App has error:
-        // `Cannot end a section without first starting one.`
-        if (config('app.debug')) {
-            return $view;
-        }
+        // // Debug function if App has error:
+        // // `Cannot end a section without first starting one.`
+        // if (config('app.debug')) {
+        //     return $view;
+        // }
 
         return trim(preg_replace('/(\s|\r|\n|\t)+</', '<', $view->render()));
     }
