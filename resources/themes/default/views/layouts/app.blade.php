@@ -63,6 +63,7 @@
         <script src="{{ theme('js/vendor.js') }}" charset="utf-8"></script>
         <script src="{{ theme('js/app.js') }}" charset="utf-8"></script>
         <script src="{{ theme('js/script.js') }}" charset="utf-8"></script>
+        @g_recaptcha_script
 
         {{-- Скрипты, которые могут быть состыкованы из дочерних шаблонов. --}}
         @stack('scripts')
