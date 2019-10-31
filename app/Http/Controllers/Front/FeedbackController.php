@@ -19,7 +19,7 @@ class FeedbackController extends SiteController
     public function create()
     {
         pageinfo([
-            'title' => __('feedback.index_page'),
+            'title' => __('feedback.page.title'),
             'robots' => 'noindex,follow',
             'is_feedback' => true,
         ]);
@@ -34,16 +34,16 @@ class FeedbackController extends SiteController
         if ($request->expectsJson()) {
             return $complete ?
                 response()->json([
-                    'message' => trans('feedback.msg.success'),
+                    'message' => trans('feedback.messages.success'),
                 ], 200) :
                 response()->json([
-                    'message' => trans('feedback.msg.failure'),
+                    'message' => trans('feedback.messages.failure'),
                 ], 500);
         }
 
         return $complete ?
-            redirect()->to(url()->previous())->withStatus(trans('feedback.msg.success')) :
-            redirect()->route('feedback.create')->withErrors(trans('feedback.msg.failure'))->withInput();
+            redirect()->to(url()->previous())->withStatus(trans('feedback.messages.success')) :
+            redirect()->route('feedback.create')->withErrors(trans('feedback.messages.failure'))->withInput();
     }
 
     protected function mail($request)
@@ -57,7 +57,7 @@ class FeedbackController extends SiteController
         // Тестировать отправку почты на localhost https://mailtrap.io.
         Mail::send('emails.feedback', $data, function ($message) use ($request) {
             $message->to(config('mail.from.address'))
-                ->subject(trans('feedback.message.title'));
+                ->subject(trans('feedback.messages.subject'));
 
             $file = $request->file('file');
 

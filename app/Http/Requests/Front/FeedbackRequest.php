@@ -55,30 +55,19 @@ class FeedbackRequest extends Request
                 'file',
                 'max:51200',
                 'mimetypes:application/zip',
-            ]
+            ],
+
+            'g-recaptcha-response' => 'g_recaptcha',
         ];
     }
 
     public function messages()
     {
-        return [
-            'name.required' => trans('feedback.validation.name.required'),
-            'contact.required' => trans('feedback.validation.contact.required'),
-            'content.required' => trans('feedback.validation.content.required'),
-            'politics.accepted' => trans('feedback.validation.politics.accepted'),
-            'file.max' => trans('feedback.validation.file.max'),
-            'file.mimetypes' => trans('feedback.validation.file.mimetypes'),
-        ];
+        return trans('feedback.form.validation');
     }
 
     public function attributes()
     {
-        return [
-            'name' => trans('feedback.form.name'),
-            'contact' => trans('feedback.form.contact'),
-            'content' => trans('feedback.form.content'),
-            'politics' => trans('feedback.form.politics'),
-            'file' => trans('feedback.form.file'),
-        ];
+        return trans('feedback.form.attributes');
     }
 }
