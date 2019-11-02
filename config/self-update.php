@@ -1,80 +1,36 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default source repository type
-    |--------------------------------------------------------------------------
-    |
-    | The default source repository type you want to pull your updates from.
-    |
-    */
-
+    // Тип репозитория исходного кода для обновления приложения по умолчанию.
     'default' => env('SELF_UPDATER_SOURCE', 'github'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Version installed
-    |--------------------------------------------------------------------------
-    |
-    | Set this to the version of your software installed on your system.
-    |
-    */
+    // Установленная версия приложения.
+    'version_installed' => env('APP_VERSION'),
 
-    'version_installed' => env('SELF_UPDATER_VERSION_INSTALLED', ''),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Repository types
-    |--------------------------------------------------------------------------
-    |
-    | A repository can be of different types, which can be specified here.
-    | Current options:
-    | - github
-    | - http
-    |
-    */
-
+    // Типы репозиториев. В данный момент испольуется только `github`.
     'repository_types' => [
         'github' => [
             'type' => 'github',
-            'repository_vendor' => env('SELF_UPDATER_REPO_VENDOR', ''),
-            'repository_name' => env('SELF_UPDATER_REPO_NAME', ''),
-            'repository_url' => '',
-            'download_path' => storage_path('tmp'), // storage_path('app/update'), // env('SELF_UPDATER_DOWNLOAD_PATH', '/tmp'),
-        ],
-        'http' => [
-            'type' => 'http',
-            'repository_url' => env('SELF_UPDATER_REPO_URL', ''),
-            'pkg_filename_format' => env('SELF_UPDATER_PKG_FILENAME_FORMAT', 'v_VERSION_'),
-            'download_path' => storage_path('tmp'),
+            'repository_vendor' => env('SELF_UPDATER_REPO_VENDOR'),
+            'repository_name' => env('SELF_UPDATER_REPO_NAME'),
+            'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', storage_path('tmp')),
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Exclude folders from update
-    |--------------------------------------------------------------------------
-    |
-    | Specifiy folders which should not be updated and will be skipped during the
-    | update process.
-    |
-    | Here's already a list of good examples to skip. You may want to keep those.
-    |
-    */
-
+    // Указанные папки будут пропущены во время процесса обновления.
     'exclude_folders' => [
-        'node_modules',
         'bootstrap/cache',
-        'bower',
+        'node_modules',
         'storage/app',
         'storage/framework',
         'storage/logs',
-        'storage/self-update',
+        'storage/tmp',
         'vendor',
     ],
 
+    // Указанные файлы расположены в корне приложения и будут обновлены.
+    // А другие файлы (например, `.htaccess`, `robots.txt` и т.д.)
+    // будут исключены из списка во время обновления.
     'allowed_files' => [
         'composer.json',
         'LICENSE',
@@ -83,39 +39,17 @@ return [
         'webpack.mix.js',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Event Logging
-    |--------------------------------------------------------------------------
-    |
-    | Configure if fired events should be logged
-    |
-    */
-
+    // Регистрация событий.
     'log_events' => env('SELF_UPDATER_LOG_EVENTS', false),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Mail To Settings
-    |--------------------------------------------------------------------------
-    |
-    | Configure if fired events should be logged
-    |
-    */
-
+    // Настройки почтовых уведомлений о событиях.
+    // В данный момент не используются.
     'mail_to' => [
-        'address' => env('SELF_UPDATER_MAILTO_ADDRESS', ''),
-        'name' => env('SELF_UPDATER_MAILTO_NAME', ''),
-        'subject_update_available' => env('SELF_UPDATER_MAILTO_UPDATE_AVAILABLE_SUBJECT', 'Update available'),
-        'subject_update_succeeded' => env('SELF_UPDATER_MAILTO_UPDATE_SUCCEEDED_SUBJECT', 'Update succeeded'),
+        'address' => env('SELF_UPDATER_MAILTO_ADDRESS'),
+        'name' => env('SELF_UPDATER_MAILTO_NAME'),
     ],
 
-    /*
-    |---------------------------------------------------------------------------
-    | Register custom artisan commands
-    |---------------------------------------------------------------------------
-    */
-
+    // Регистрация пользовательских команд для Artisan.
     'artisan_commands' => [
         'pre_update' => [
             //'command:signature' => [
@@ -123,9 +57,9 @@ return [
             //    'params' => []
             //]
         ],
-        'post_update' => [
 
+        'post_update' => [
+            //
         ],
     ],
-
 ];
