@@ -62,8 +62,13 @@ class EventServiceProvider extends ServiceProvider
         \Russsiq\Updater\Events\UpdateAvailable::class => [
             \Russsiq\Updater\Listeners\SendUpdateAvailableNotification::class
         ],
+
         \Russsiq\Updater\Events\UpdateSucceeded::class => [
             \Russsiq\Updater\Listeners\SendUpdateSucceededNotification::class
+        ],
+
+        \Russsiq\Updater\Events\UpdateFailed::class => [
+            \Russsiq\Updater\Listeners\SendUpdateFailedNotification::class
         ],
     ];
 
