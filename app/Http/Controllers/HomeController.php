@@ -2,8 +2,6 @@
 
 namespace BBCMS\Http\Controllers;
 
-use BBCMS\Models\Article;
-
 class HomeController extends SiteController
 {
     protected $template = 'home';
