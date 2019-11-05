@@ -10,6 +10,8 @@ use BBCMS\Models\Privilege;
 
 use Illuminate\Encryption\Encrypter;
 
+use Russsiq\EnvManager\Support\Facades\EnvManager;
+
 /**
  * Проверка на то, что система является установленной.
  * В этой проверке также интересует физическое присутствие файла окружения.
@@ -22,7 +24,6 @@ use Illuminate\Encryption\Encrypter;
 class CheckEnvFileExists
 {
     protected $location;
-    protected $envFilePath;
 
     /**
      * Обработка входящего запроса.
@@ -34,9 +35,8 @@ class CheckEnvFileExists
     {
         $args = func_get_args();
         $this->location = $request->segment(1);
-        $this->envFilePath = app()->environmentFilePath();
 
-        return $this->envFileExists() ?
+        return EnvManager::fileExists() ?
             $this->handleWithEnvFile(...$args) :
             $this->handleWithoutEnvFile(...$args);
     }
@@ -49,13 +49,11 @@ class CheckEnvFileExists
      */
     public function handleWithEnvFile($request, Closure $next)
     {
-        $env = $this->envFileContent();
-
         // Ключ приложения.
-        $app_key = $env['APP_KEY'];
+        $app_key = EnvManager::get('APP_KEY');
 
         // Маркер, что приложение считается установленным.
-        $app_set = ! empty($env['APP_SET']);
+        $app_set = ! empty(EnvManager::get('APP_SET'));
 
         // Если ключ приложения уже был создан и
         // приложение считается установленным,
@@ -73,7 +71,8 @@ class CheckEnvFileExists
         }
 
         // Check the existence of the cache.
-        if (! cache()->has('roles') and $app_key and ! empty($env['DB_DATABASE'])) {
+        // Этому тут совсем не место!!!
+        if (! cache()->has('roles') and $app_key and ! empty(EnvManager::get('DB_DATABASE'))) {
             Privilege::getModel()->roles();
         }
 
@@ -126,36 +125,6 @@ class CheckEnvFileExists
     protected function isLocation(string $path): bool
     {
         return $path === $this->location();
-    }
-
-    /**
-     * Получить полный путь до файла окружения.
-     * @return string
-     */
-    protected function envFilePath()
-    {
-        return $this->envFilePath;
-    }
-
-    /**
-     * Проверить физическое существование файла окружения.
-     * @return bool
-     */
-    protected function envFileExists(): bool
-    {
-        return file_exists($this->envFilePath());
-    }
-
-    /**
-     * Получить содержимое файла окружения.
-     * @return array
-     */
-    protected function envFileContent(): array
-    {
-        return parse_ini_file($this->envFilePath(), false, INI_SCANNER_RAW);
-
-        // Необходимо проверить какие типы ошибок бывают при парсинге файла.
-        // throw new RuntimeException('Unable to read the environment file.');
     }
 
     /**
