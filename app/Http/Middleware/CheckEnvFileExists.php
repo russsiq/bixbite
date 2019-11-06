@@ -48,6 +48,8 @@ class CheckEnvFileExists
      * @param  \Illuminate\Http\Request  $request
      * @param  Closure  $next
      * @return mixed
+     *
+     * @throws LogicException
      */
     public function handleWithEnvFile($request, Closure $next)
     {
