@@ -129,7 +129,7 @@ class CommonRequest extends Request
                         // Set to new copied theme
                         'APP_THEME' => $theme ?? $data['APP_THEME'],
                         // Set to BBCMS is install complete
-                        'APP_SET' => 'true',
+                        'APP_INSTALLED_AT' => date('Y-m-d H:i:s'),
                         'APP_DEBUG' => 'false',
                         // Mail settings
                         'MAIL_FROM_NAME' => $data['name'],

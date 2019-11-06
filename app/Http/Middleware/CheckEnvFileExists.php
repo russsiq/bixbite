@@ -51,30 +51,27 @@ class CheckEnvFileExists
      */
     public function handleWithEnvFile($request, Closure $next)
     {
-        // Ключ приложения.
-        $app_key = EnvManager::get('APP_KEY');
-
         // Маркер, что приложение считается установленным.
-        $app_set = ! empty(EnvManager::get('APP_SET'));
+        $installed = strtotime(EnvManager::get('APP_INSTALLED_AT'));
 
         // Если ключ приложения уже был создан и
         // приложение считается установленным,
         // но был запрошен маршрут установщика.
-        if ($app_key and $app_set and $this->isLocation('installer')) {
+        if ($installed and $this->isLocation('installer')) {
             throw new LogicException('File `.env` already exists! Delete it and continue.');
         }
 
         // Если приложение не установлено и
         // текущий маршрут - не маршрут установщика,
         // то перенаправляем на установку.
-        if (! $app_set and ! $this->isLocation('installer')) {
+        if (! $installed and ! $this->isLocation('installer')) {
             return redirect()
                 ->route('system.install.step_choice');
         }
 
         // Check the existence of the cache.
         // Этому тут совсем не место!!!
-        if (! cache()->has('roles') and $app_key and ! empty(EnvManager::get('DB_DATABASE'))) {
+        if (! cache()->has('roles') and $installed) {
             Privilege::getModel()->roles();
         }
 
