@@ -14,6 +14,7 @@ class CacheFile extends FileStore
 
         // roles(), not simple
         'roles' => \BBCMS\Models\Privilege::class,
+
         // getPrivileges(), not simple
         'privileges' => \BBCMS\Models\User::class,
 
@@ -30,10 +31,13 @@ class CacheFile extends FileStore
     {
         $path = $this->path($key);
 
-        return $this->files->exists($path)
-            ? Carbon::createFromTimestamp(
+        if ($this->files->exists($path)) {
+            return Carbon::createFromTimestamp(
                 $this->files->lastModified($path)
-            ) : null;
+            );
+        }
+
+        return null;
     }
 
     /**
@@ -45,9 +49,12 @@ class CacheFile extends FileStore
     {
         $path = $this->path($key);
 
-        return $this->files->exists($path)
-            ? Carbon::createFromTimestamp(
+        if ($this->files->exists($path)) {
+            return Carbon::createFromTimestamp(
                 substr($this->files->get($path), 0, 10)
-            ) : null;
+            );
+        }
+
+        return null;
     }
 }

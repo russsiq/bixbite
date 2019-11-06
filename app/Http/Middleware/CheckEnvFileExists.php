@@ -36,9 +36,11 @@ class CheckEnvFileExists
         $args = func_get_args();
         $this->location = $request->segment(1);
 
-        return EnvManager::fileExists() ?
-            $this->handleWithEnvFile(...$args) :
-            $this->handleWithoutEnvFile(...$args);
+        if (EnvManager::fileExists()) {
+            return $this->handleWithEnvFile(...$args);
+        }
+
+        return $this->handleWithoutEnvFile(...$args);
     }
 
     /**
