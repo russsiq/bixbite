@@ -2,8 +2,8 @@
 
 namespace BBCMS\Models;
 
-use DB;
 use Artisan;
+use File;
 use Storage;
 
 use BBCMS\Models\Module;
@@ -96,11 +96,11 @@ class Setting extends BaseModel
         $file = $path.DS.$module->name.'.php';
         $content = '<?php return '.var_export($updated, true).';';
 
-        if (! \File::isDirectory($path)) {
-            \File::makeDirectory($path);
+        if (! File::isDirectory($path)) {
+            File::makeDirectory($path);
         }
 
-        \File::put($file, $content, true);
+        File::put($file, $content, true);
 
         // 8 Записать переменные окружения в файл.
         EnvManager::setMany($updated)->save();
