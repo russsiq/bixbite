@@ -12,6 +12,8 @@ use BBCMS\Models\Observers\SettingObserver;
 
 use Illuminate\Support\Collection as BaseCollection;
 
+use Russsiq\EnvManager\Support\Facades\EnvManager;
+
 class Setting extends BaseModel
 {
     use Traits\Dataviewer;
@@ -86,12 +88,13 @@ class Setting extends BaseModel
                 return [
                     $setting->name => $setting->value
                 ];
-            });
+            })
+            ->toArray();
 
         // 6 Обновление настроек в директории `config/settings`.
         $path = config_path('settings');
         $file = $path.DS.$module->name.'.php';
-        $content = '<?php return '.var_export($updated->toArray(), true).';';
+        $content = '<?php return '.var_export($updated, true).';';
 
         if (! \File::isDirectory($path)) {
             \File::makeDirectory($path);
@@ -99,59 +102,14 @@ class Setting extends BaseModel
 
         \File::put($file, $content, true);
 
-        // 8 Очистить и закешировать настройки.
-        Artisan::call('config:cache');
+        // 8 Записать переменные окружения в файл.
+        EnvManager::setMany($updated)->save();
 
-        // 9 Записать переменные окружения в файл.
-        self::pushToEnvFile($updated);
+        // 9 Очистить и закешировать настройки.
+        Artisan::call('config:cache');
 
         // 10 Возвращаем измененные настройки для модуля.
         return $settings;
-    }
-
-    /**
-     * pushToEnvFile.
-     *
-     * @param  BaseCollection  $collection
-     * @return void
-     *
-    * @throws \Exception
-     */
-    protected static function pushToEnvFile(BaseCollection $collection)
-    {
-        $env_file = app()->basePath('.env');
-
-        $collection = $collection->mapWithKeys(function ($value, $key) {
-                return [
-                    mb_strtoupper($key, 'UTF-8') => $value
-                ];
-            })
-            ->filter(function ($value, $key) {
-                return in_array($key, self::$_env);
-            });
-
-        if ($collection->isEmpty()) {
-            return null;
-        }
-
-        // В случае ошибки синтаксиса, данная функция вернет FALSE, а не пустой массив.
-        if (! $env = parse_ini_file($env_file, false, INI_SCANNER_RAW)) {
-            throw new \Exception(trans('common.msg.env_fails'));
-        }
-
-        $content = collect($env)
-            ->merge($collection)
-            ->transform(function ($item, $key) {
-                // https://laravel.com/docs/5.8/upgrade#environment-variable-parsing
-                return $key . '=' . (str_contains($item, [' ', '=', '$']) ? '"' . $item . '"' : $item);
-            })
-            ->unique()
-            ->sort()
-            ->implode(PHP_EOL);
-
-        \File::put($env_file, $content.PHP_EOL, true);
-
-        return true;
     }
 
     public static function getAllowedFieldTypes()
