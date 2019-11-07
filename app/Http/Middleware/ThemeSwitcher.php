@@ -30,8 +30,10 @@ class ThemeSwitcher
      */
     public function handle($request, Closure $next)
     {
-        App::setLocale(app_locale()); // Lang::setLocale($locale); // $request->setDefaultLocale($locale);
-        Carbon::setLocale(app_locale());
+        $locale = app_locale();
+
+        App::setLocale($locale); // Lang::setLocale($locale); // $request->setDefaultLocale($locale);
+        Carbon::setLocale($locale);
 
         if (in_array($request->segment(1), ['admin', 'panel', 'installer'])) { // trim($request->route()->getPrefix(), '/')
             // Load skin view.
