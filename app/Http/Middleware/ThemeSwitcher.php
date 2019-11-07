@@ -36,19 +36,22 @@ class ThemeSwitcher
         Carbon::setLocale($locale);
 
         if (in_array($request->segment(1), ['admin', 'panel', 'installer'])) { // trim($request->route()->getPrefix(), '/')
-            // Load skin view.
+            // Добавляем расположение шаблонов
+            // административной панели сайта.
             View::addLocation(skin_path('views'));
 
-            // Load skin common lang.
+            // Добавляем расположение общих языковых файлов
+            // административной панели сайта.
             Lang::addJsonPath(skin_path('lang'));
 
-            // Load skin section lang.
-            Lang::addJsonPath(skin_path('lang' . DS . ($request->segment(2) ?? 'install')));
+            // Добавляем расположение языковых файлов текущего подраздела
+            // административной панели сайта.
+            Lang::addJsonPath(skin_path('lang'.DS.($request->segment(2) ?? 'install')));
         } else {
-            // Загружаем шаблоны темы сайта.
+            // Добавляем расположение шаблонов темы сайта.
             View::addLocation(theme_path('views'));
 
-            // Загружаем язык темы сайта.
+            // Добавляем расположение языковых файлов темы сайта.
             Lang::addJsonPath(theme_path('lang'));
         }
 
