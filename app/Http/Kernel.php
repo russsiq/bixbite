@@ -14,6 +14,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \BBCMS\Http\Middleware\ThemeSwitcher::class,
         \BBCMS\Http\Middleware\CheckEnvFileExists::class,
         // \BBCMS\Http\Middleware\AccessToLockedSite::class,
         \BBCMS\Http\Middleware\CheckForMaintenanceMode::class,

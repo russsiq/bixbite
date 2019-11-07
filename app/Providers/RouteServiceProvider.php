@@ -100,13 +100,11 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Попробуем отключить посредников для rss лент.
-     * Оставим только указатель до шаблонов сайта.
      */
     protected function mapRssRoutes()
     {
         Route::middleware([
                 // 'web',
-                \BBCMS\Http\Middleware\ThemeSwitcher::class,
             ])
             ->namespace($this->namespace.'\Rss')
             ->group(app()->basePath('routes/web/rss.php'));
