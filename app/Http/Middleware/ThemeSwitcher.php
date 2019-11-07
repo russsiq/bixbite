@@ -55,6 +55,22 @@ class ThemeSwitcher
             Lang::addJsonPath(theme_path('lang'));
         }
 
+        // Создаем макрос перезагрузки `json` файлов переводов.
+        // Когда стронние пакеты используют помощник `trans`, в своих поставщиках,
+        // то метод `addJsonPath` не отрабатывает ожидаемым образом,
+        // т.к. метод `load` считает, что все уже загружено:
+        // https://github.com/laravel/framework/blob/6.x/src/Illuminate/Translation/Translator.php#L271
+        // Пакет на котором было отслежено данный факт:
+        // https://github.com/russsiq/laravel-grecaptcha/blob/master/src/app/GRecaptchaServiceProvider.php#L49
+        Lang::macro('reloadJsonPaths', function ($namespace, $group, $locale) {
+            $this->loaded[$namespace][$group][$locale] = array_merge(
+                $this->loaded[$namespace][$group][$locale],
+                $this->loader->load($locale, $group, $namespace)
+            );
+        });
+
+        Lang::reloadJsonPaths('*', '*', $locale);
+
         return $next($request);
     }
 }
