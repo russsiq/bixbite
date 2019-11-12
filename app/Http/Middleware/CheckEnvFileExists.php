@@ -73,7 +73,7 @@ class CheckEnvFileExists
 
         // Check the existence of the cache.
         // Этому тут совсем не место!!!
-        if (! cache()->has('roles') and $installed) {
+        if ($installed and ! cache()->has('roles')) {
             Privilege::getModel()->roles();
         }
 
