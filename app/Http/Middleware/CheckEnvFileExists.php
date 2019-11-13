@@ -34,7 +34,7 @@ class CheckEnvFileExists
     public function handle($request, Closure $next)
     {
         $args = func_get_args();
-        $this->location = $request->segment(1);
+        $this->location = $request->decodedPath();
 
         if (EnvManager::fileExists()) {
             return $this->handleWithEnvFile(...$args);
@@ -59,16 +59,16 @@ class CheckEnvFileExists
         // Если ключ приложения уже был создан и
         // приложение считается установленным,
         // но был запрошен маршрут установщика.
-        if ($installed and $this->isLocation('installer')) {
+        if ($installed and $this->isLocation('assistant/install')) {
             throw new LogicException('File `.env` already exists! Delete it and continue.');
         }
 
         // Если приложение не установлено и
         // текущий маршрут - не маршрут установщика,
         // то перенаправляем на установку.
-        if (! $installed and ! $this->isLocation('installer')) {
+        if (! $installed and ! $this->isLocation('assistant/install')) {
             return redirect()
-                ->route('system.install.step_choice');
+                ->route('assistant.install.step_choice');
         }
 
         // Check the existence of the cache.
@@ -99,9 +99,9 @@ class CheckEnvFileExists
         // Если в запросе не был передан ключ приложения или
         // текущий маршрут - не маршрут установщика,
         // то редирект на страницу установки с передачей ключа в запросе.
-        if (! $request->APP_KEY or ! $this->isLocation('installer')) {
+        if (! $request->APP_KEY or ! $this->isLocation('assistant/install')) {
             return redirect()
-                ->route('system.install.step_choice', [
+                ->route('assistant.install.step_choice', [
                     'APP_KEY' => $key,
                 ]);
         }
