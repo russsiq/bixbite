@@ -93,7 +93,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapRssRoutes();
         $this->mapApiRoutes();
         $this->mapCommonRoutes();
-        $this->mapSetupRoutes();
         $this->mapAdminRoutes();
         $this->mapWebRoutes();
     }
@@ -128,16 +127,6 @@ class RouteServiceProvider extends ServiceProvider
             ])
             ->namespace($this->namespace.'\Common')
             ->group(app()->basePath('routes/web/common.php'));
-    }
-
-    protected function mapSetupRoutes()
-    {
-        Route::prefix('installer')
-            ->middleware([
-                'web',
-            ])
-            ->namespace($this->namespace.'\Setup')
-            ->group(app()->basePath('routes/web/setup.php'));
     }
 
     protected function mapAdminRoutes()
