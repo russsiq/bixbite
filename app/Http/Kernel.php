@@ -7,9 +7,8 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
-     * The application's global HTTP middleware stack.
-     *
-     * These middleware are run during every request to your application.
+     * Глобальный стек HTTP посредников приложения.
+     * Эти посредники запускаются во время каждого запроса к вашему приложению.
      *
      * @var array
      */
@@ -25,7 +24,7 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware groups.
+     * Группы посредников маршрутов приложения.
      *
      * @var array
      */
@@ -51,9 +50,8 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
+     * Посредники маршрутов приложения.
+     * Эти посредники могут быть групповыми или использоваться по отдельности.
      *
      * @var array
      */
@@ -74,9 +72,8 @@ class Kernel extends HttpKernel
 
 
     /**
-     * The priority-sorted list of middleware.
-     *
-     * This forces non-global middleware to always be in the given order.
+     * Список посредников, отсортированный по приоритетности.
+     * Заставит неглобальных посредников всегда быть в заданном порядке.
      *
      * @var array
      */
