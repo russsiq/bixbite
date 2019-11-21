@@ -14,7 +14,7 @@ class PrivilegesController extends ApiController
         $this->authorizeResource(Privilege::class, 'privilege');
     }
 
-    public function index(Privilege  $model)
+    public function index(Privilege $model)
     {
         $roles = array_values($model->roles());
         $privileges = $model->get();
