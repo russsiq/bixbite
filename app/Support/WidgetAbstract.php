@@ -2,6 +2,7 @@
 
 namespace BBCMS\Support;
 
+use BBCMS\Models\Privilege;
 use Validator;
 
 abstract class WidgetAbstract
@@ -106,7 +107,7 @@ abstract class WidgetAbstract
     public function cacheKeys()
     {
         $keys = [];
-        $roles = array_merge(cache('roles'), ['guest']);
+        $roles = array_merge(Privilege::getModel()->roles(), ['guest']);
 
         foreach ($roles as $role) {
             $keys[] = $this->generateCacheKey($role);

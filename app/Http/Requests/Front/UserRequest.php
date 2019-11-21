@@ -2,6 +2,7 @@
 
 namespace BBCMS\Http\Requests\Front;
 
+use BBCMS\Models\Privilege;
 use BBCMS\Http\Requests\Request;
 
 class UserRequest extends Request
@@ -76,7 +77,7 @@ class UserRequest extends Request
                 'required',
                 'string',
                 'max:255',
-                'in:' . implode(',', cache('roles')),
+                'in:'.implode(',', Privilege::getModel()->roles()),
             ],
 
             'where_from' => [

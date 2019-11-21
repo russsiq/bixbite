@@ -2,6 +2,7 @@
 
 namespace BBCMS\Http\Resources;
 
+use BBCMS\Models\Privilege;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -37,7 +38,9 @@ class UserResource extends JsonResource
 
     public function with($request)
     {
-        $roles = array_reverse(array_values(cache('roles')));
+        $roles = array_reverse(array_values(
+            Privilege::getModel()->roles()
+        ));
 
         return [
             'meta' => [
