@@ -76,11 +76,11 @@ return [
 
         // Создание ссылок на директории: target => link.
         'symlinks' => [
-            storage_path('app/public') => public_path('storage'),
+            storage_path('app/uploads') => base_path('uploads'),
 
         ],
 
-        'before-installed' => '\\Russsiq\\Assistant\\Services\\BeforeInstalled',
+        'before-installed' => '\\BBCMS\\Services\\BeforeInstalled',
 
     ],
 
