@@ -6,7 +6,6 @@ use BBCMS\Models\User;
 use BBCMS\Http\Controllers\SiteController;
 
 use \Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -103,10 +102,6 @@ class RegisterController extends SiteController
         ]);
 
         return $user;
-
-        // Mail::raw("Some custom message here", function ($message){
-        //     $message->to($user->email)->subject("Please confirm your account");
-        // });
     }
 
     /**
