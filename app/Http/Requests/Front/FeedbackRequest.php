@@ -63,11 +63,15 @@ class FeedbackRequest extends Request
 
     public function messages()
     {
-        return trans('feedback.form.validation');
+        $trans = trans('feedback.form.validation');
+
+        return is_array($trans) ? $trans : [];
     }
 
     public function attributes()
     {
-        return trans('feedback.form.attributes');
+        $trans = trans('feedback.form.attributes');
+
+        return is_array($trans) ? $trans : [];
     }
 }
