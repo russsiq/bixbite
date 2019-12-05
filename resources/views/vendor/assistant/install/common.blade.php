@@ -1,8 +1,8 @@
 @extends('assistant::_layouts.app')
 
-@section('action_title', __('header.menu.common'))
-
 @section('card_body')
+	@lang('assistant::install.descriptions.common')
+
 	@if ($errors->any())
 	    <div class="alert alert-danger">
 	        <ul>
@@ -13,15 +13,15 @@
 	    </div>
 	@endif
 
-	<p>@lang('common.textblock')</p>
-
 	<fieldset>
-		<legend>@lang('legend.organization')</legend>
+		<legend>@lang('assistant::install.forms.legends.organization')</legend>
 		<div class="form-group row{{ $errors->has('APP_NAME') ? ' has-error' : '' }}">
-			<label class="col-sm-3 col-form-label">@lang('APP_NAME')</label>
+			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.APP_NAME')</label>
 			<div class="col-sm-9">
-				<input type="text" name="APP_NAME" value="{{ old('APP_NAME', '') }}" placeholder="@lang('common.app_name.default')" class="form-control"  />
-				@if ($errors->has('APP_NAME'))<div class="invalid-feedback d-block">{{ $errors->first('APP_NAME') }}</div>@endif
+				<input type="text" name="APP_NAME" value="{{ old('APP_NAME', '') }}" placeholder="@lang('assistant::install.forms.placeholders.APP_NAME')" class="form-control"  />
+				@if ($errors->has('APP_NAME'))
+					<div class="invalid-feedback d-block">{{ $errors->first('APP_NAME') }}</div>
+				@endif
 			</div>
 		</div>
 	</fieldset>
