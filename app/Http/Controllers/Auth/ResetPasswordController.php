@@ -14,7 +14,9 @@
 namespace BBCMS\Http\Controllers\Auth;
 
 use BBCMS\Http\Controllers\SiteController;
+
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends SiteController
 {
