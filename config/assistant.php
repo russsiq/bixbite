@@ -2,7 +2,7 @@
 
 return [
     // Логирование событий.
-    'log_events' => env('ASSISTENT_LOG_EVENTS', false),
+    'log_events' => env('ASSISTANT_LOG_EVENTS', false),
 
     // Настройки почтовых уведомлений о событиях.
     'mail' => [
@@ -80,7 +80,7 @@ return [
 
         ],
 
-        'before-installed' => '\\BBCMS\\Services\\BeforeInstalled',
+        'before-installed' => '\\BBCMS\\Services\\Assistant\\BeforeInstalled',
 
     ],
 
