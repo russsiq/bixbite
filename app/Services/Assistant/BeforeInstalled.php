@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Services;
+namespace BBCMS\Services\Assistant;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
