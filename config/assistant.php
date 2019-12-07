@@ -1,5 +1,7 @@
 <?php
 
+use BBCMS\Services\Assistant\BeforeInstalled;
+
 return [
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
@@ -80,7 +82,7 @@ return [
 
         ],
 
-        'before-installed' => '\\BBCMS\\Services\\Assistant\\BeforeInstalled',
+        'before-installed' => BeforeInstalled::class,
 
     ],
 
