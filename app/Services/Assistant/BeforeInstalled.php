@@ -129,6 +129,41 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
             ],
 
+            'ORG_NAME' => [
+                'nullable',
+                'string',
+                'max:255',
+
+            ],
+
+            'ORG_ADDRESS_LOCALITY' => [
+                'nullable',
+                'string',
+                'max:255',
+
+            ],
+
+            'ORG_ADDRESS_STREET' => [
+                'nullable',
+                'string',
+                'max:255',
+
+            ],
+
+            'ORG_CONTACT_TELEPHONE' => [
+                'nullable',
+                'string',
+                'max:255',
+
+            ],
+
+            'ORG_CONTACT_EMAIL' => [
+                'required',
+                'email',
+                'max:255',
+
+            ],
+
         ];
     }
 
@@ -140,7 +175,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
     protected function messages(): array
     {
         return [
-            //
+
         ];
     }
 
@@ -151,7 +186,10 @@ class BeforeInstalled extends AbstractBeforeInstalled
      */
     protected function attributes(): array
     {
-        return collect(trans('auth'))
+        return collect(array_merge(
+                trans('auth'),
+                trans('assistant::install.forms.attributes')
+            ))
             ->only(
                 array_keys($this->rules())
             )

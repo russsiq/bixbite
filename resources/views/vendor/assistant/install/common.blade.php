@@ -24,6 +24,56 @@
 				@endif
 			</div>
 		</div>
+
+		<div class="form-group row{{ $errors->has('ORG_NAME') ? ' has-error' : '' }}">
+			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.ORG_NAME')</label>
+			<div class="col-sm-9">
+				<input type="text" name="ORG_NAME" value="{{ old('ORG_NAME', '') }}" class="form-control" />
+				@if ($errors->has('ORG_NAME'))
+					<div class="invalid-feedback d-block">{{ $errors->first('ORG_NAME') }}</div>
+				@endif
+			</div>
+		</div>
+
+		<div class="form-group row{{ $errors->has('ORG_ADDRESS_LOCALITY') ? ' has-error' : '' }}">
+			<label class="col-sm-3 control-label">@lang('assistant::install.forms.labels.ORG_ADDRESS_LOCALITY')</label>
+			<div class="col-sm-9">
+				<input type="text" name="ORG_ADDRESS_LOCALITY" value="{{ old('ORG_ADDRESS_LOCALITY', '') }}" class="form-control" />
+				@if ($errors->has('ORG_ADDRESS_LOCALITY'))
+					<div class="invalid-feedback d-block">{{ $errors->first('ORG_ADDRESS_LOCALITY') }}</div>
+				@endif
+			</div>
+		</div>
+
+		<div class="form-group row{{ $errors->has('ORG_ADDRESS_STREET') ? ' has-error' : '' }}">
+			<label class="col-sm-3 control-label">@lang('assistant::install.forms.labels.ORG_ADDRESS_STREET')</label>
+			<div class="col-sm-9">
+				<input type="text" name="ORG_ADDRESS_STREET" value="{{ old('ORG_ADDRESS_STREET', '') }}" class="form-control" />
+				@if ($errors->has('ORG_ADDRESS_STREET'))
+					<div class="invalid-feedback d-block">{{ $errors->first('ORG_ADDRESS_STREET') }}</div>
+				@endif
+			</div>
+		</div>
+
+		<div class="form-group row{{ $errors->has('ORG_CONTACT_TELEPHONE') ? ' has-error' : '' }}">
+			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.ORG_CONTACT_TELEPHONE')</label>
+			<div class="col-sm-9">
+				<input type="text" name="ORG_CONTACT_TELEPHONE" value="{{ old('ORG_CONTACT_TELEPHONE', '') }}" class="form-control" />
+				@if ($errors->has('ORG_CONTACT_TELEPHONE'))
+					<div class="invalid-feedback d-block">{{ $errors->first('ORG_CONTACT_TELEPHONE') }}</div>
+				@endif
+			</div>
+		</div>
+
+		<div class="form-group row{{ $errors->has('ORG_CONTACT_EMAIL') ? ' has-error' : '' }}">
+			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.ORG_CONTACT_EMAIL')</label>
+			<div class="col-sm-9">
+				<input type="email" name="ORG_CONTACT_EMAIL" value="{{ old('ORG_CONTACT_EMAIL', '') }}" class="form-control"  />
+				@if ($errors->has('ORG_CONTACT_EMAIL'))
+					<div class="invalid-feedback d-block">{{ $errors->first('ORG_CONTACT_EMAIL') }}</div>
+				@endif
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset>
