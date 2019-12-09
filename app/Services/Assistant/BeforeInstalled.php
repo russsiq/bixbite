@@ -55,6 +55,27 @@ class BeforeInstalled extends AbstractBeforeInstalled
     }
 
     /**
+     * Регистрация собственника сайта.
+     *
+     * @param  array  $data Входящие данные
+     *
+     * @return void
+     */
+    protected function registerOwner(array $data)
+    {
+        \DB::table('users')->insert([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => 'owner',
+            'last_ip' => request()->ip(),
+            'created_at' => date('Y-m-d H:i:s'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+
+        ]);
+    }
+
+    /**
      * Получить валидатор для проверки входящих данных запроса.
      *
      * @param  array  $data
@@ -134,26 +155,5 @@ class BeforeInstalled extends AbstractBeforeInstalled
                 array_keys($this->rules())
             )
             ->toArray();
-    }
-
-    /**
-     * Регистрация собственника сайта.
-     *
-     * @param  array  $data Входящие данные
-     *
-     * @return void
-     */
-    protected function registerOwner(array $data)
-    {
-        \DB::table('users')->insert([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role' => 'owner',
-            'last_ip' => request()->ip(),
-            'created_at' => date('Y-m-d H:i:s'),
-            'email_verified_at' => date('Y-m-d H:i:s'),
-
-        ]);
     }
 }
