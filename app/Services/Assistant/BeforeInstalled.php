@@ -2,12 +2,15 @@
 
 namespace BBCMS\Services\Assistant;
 
+use Installer;
+
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Класс, который выполняется на финальной стадии,
@@ -48,11 +51,26 @@ class BeforeInstalled extends AbstractBeforeInstalled
         // Всегда валидируем входящие данные.
         $data = $this->validator($request->all())->validate();
 
+        // Копирование темы сайта.
+        $this->copyDirectoryTheme($request->all());
+
         // Регистрация собственника сайта.
         $this->registerOwner($data);
 
         // Перенаправляем на страницу входа на сайт.
         return redirect()->route('login');
+    }
+
+    protected function copyDirectoryTheme(array $data)
+    {
+        Installer::when(empty($data['original_theme']),
+            function ($installer) use ($data) {
+                $path = resource_path('themes'.DS);
+                $theme = Str::slug($data['APP_NAME']);
+
+                $installer->copyDirectory($path.$data['APP_THEME'], $path.$theme);
+            }
+        );
     }
 
     /**
@@ -161,6 +179,12 @@ class BeforeInstalled extends AbstractBeforeInstalled
                 'required',
                 'email',
                 'max:255',
+
+            ],
+
+            'original_theme' => [
+                'sometimes',
+                'boolean',
 
             ],
 

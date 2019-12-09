@@ -115,4 +115,48 @@
 			</div>
 		</div>
 	</fieldset>
+
+	<fieldset>
+		<legend>@lang('assistant::install.forms.legends.theme')</legend>
+
+		@if ($errors->has('APP_THEME'))
+			<div class="form-group">
+				<div class="alert alert-danger">{{ $errors->first('APP_THEME') }}</div>
+			</div>
+		@endif
+
+		<div id="theme-card-list" class="row">
+	    	@foreach (collect(select_dir('themes'))->map('theme_version')->filter() as $key => $theme)
+	    	<div class="col-12 col-lg-6 mb-4">
+	            <div class="theme-card" style="background-image: url({{ $theme->screenshot ?? '//via.placeholder.com/350x250' }})">
+	        		<div class="color-overlay clearfix">
+	        			<div class="icon-block">
+							<input type="radio" name="APP_THEME" value="{{ $theme->name }}" class="card-theme-radio" autocomplete="off" {{ $loop->first ? 'checked' : '' }}/>
+	    				</div>
+	        			<div class="theme-content">
+	        				<div class="theme-header">
+	        					<h3 class="theme-title">{{ $theme->id }}</h3>
+	        					<h4 class="theme-info"><a href="{{ $theme->author_url }}" target="_blank">{{ $theme->author }}</a><br>v{{ $theme->version }} ({{ $theme->reldate }})</h4>
+	        				</div>
+	        				<p class="theme-desc">{{ $theme->title }}<br>{{ teaser($theme->description, 150) }}</p>
+	        			</div>
+	        		</div>
+	    		</div>
+	    	</div>
+	        @endforeach
+	    </div>
+
+		<hr>
+
+		<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
+			<div class="col-sm-9 offset-sm-3">
+				<label class="col-form-label">
+					<input type="checkbox" name="original_theme" value="1" /> @lang('assistant::install.forms.labels.original_theme')
+				</label>
+				@if ($errors->has('original_theme'))
+					<div class="invalid-feedback d-block">{{ $errors->first('original_theme') }}</div>
+				@endif
+			</div>
+		</div>
+	</fieldset>
 @endsection
