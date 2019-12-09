@@ -54,6 +54,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('dashboard', function ($user) {
             return $user->canDo('dashboard');
         });
+
+        // Определить посредника, проверяющего,
+        // что текущий пользователь имеет право
+        // воспользоваться Ассистентом приложения.
+        Gate::define('use-assistant', function ($user) {
+            return $user->canDo('dashboard');
+        });
     }
 
     // Gate::define('notes.form', function ($user) {
