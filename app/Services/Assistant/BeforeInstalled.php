@@ -48,6 +48,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
         // Всегда валидируем входящие данные.
         $data = $this->validator($request->all())->validate();
 
+        // Регистрация собственника сайта.
         $this->registerOwner($data);
 
         // Перенаправляем на страницу входа на сайт.
