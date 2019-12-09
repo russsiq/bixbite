@@ -61,6 +61,13 @@ class BeforeInstalled extends AbstractBeforeInstalled
         return redirect()->route('login');
     }
 
+    /**
+     * Копирование темы сайта.
+     *
+     * @param  array  $data Входящие данные
+     *
+     * @return void
+     */
     protected function copyDirectoryTheme(array $data)
     {
         Installer::when(empty($data['original_theme']),
