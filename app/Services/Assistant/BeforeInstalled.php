@@ -217,10 +217,10 @@ class BeforeInstalled extends AbstractBeforeInstalled
      */
     protected function attributes(): array
     {
-        return collect(array_merge(
-                trans('auth'),
-                trans('assistant::install.forms.attributes')
-            ))
+        $auth = is_array($trans = trans('auth')) ? $trans : [];
+        $install = is_array($trans = trans('assistant::install.forms.attributes')) ? $trans : [];
+
+        return collect(array_merge($auth, $install))
             ->only(
                 array_keys($this->rules())
             )
