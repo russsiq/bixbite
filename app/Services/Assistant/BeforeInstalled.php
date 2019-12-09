@@ -48,10 +48,10 @@ class BeforeInstalled extends AbstractBeforeInstalled
         // Всегда валидируем входящие данные.
         $data = $this->validator($request->all())->validate();
 
-        // ... остальной код.
+        $this->registerOwner($data);
 
-        // Перенаправляем на страницу регистрации.
-        return redirect()->route('register');
+        // Перенаправляем на страницу входа на сайт.
+        return redirect()->route('login');
     }
 
     /**
@@ -63,7 +63,12 @@ class BeforeInstalled extends AbstractBeforeInstalled
      */
     protected function validator(array $data): ValidatorContract
     {
-        return validator($data, $this->rules());
+        return validator(
+            $data,
+            $this->rules(),
+            $this->messages(),
+            $this->attributes()
+        );
     }
 
     /**
@@ -75,13 +80,80 @@ class BeforeInstalled extends AbstractBeforeInstalled
     protected function rules(): array
     {
         return [
-            // // Пример возвращаемых данных.
-            // 'SOME_VAR' => [
-            //     'required',
-            //     'string',
-            //
-            // ],
+            // Псевдоним.
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+
+            ],
+
+            // Почта.
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+
+            ],
+
+            // Пароль.
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+
+            ],
 
         ];
+    }
+
+    /**
+     * Получить сообщения об ошибках валидации.
+     *
+     * @return array
+     */
+    protected function messages(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Получить названия атрибутов об ошибках валидации.
+     *
+     * @return array
+     */
+    protected function attributes(): array
+    {
+        return collect(trans('auth'))
+            ->only(
+                array_keys($this->rules())
+            )
+            ->toArray();
+    }
+
+    /**
+     * Регистрация собственника сайта.
+     *
+     * @param  array  $data Входящие данные
+     *
+     * @return void
+     */
+    protected function registerOwner(array $data)
+    {
+        \DB::table('users')->insert([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => 'owner',
+            'last_ip' => request()->ip(),
+            'created_at' => date('Y-m-d H:i:s'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+
+        ]);
     }
 }
