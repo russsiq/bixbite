@@ -15,7 +15,7 @@
                     title: '@lang($title)',
                 @endisset
                 message: '@lang($message)',
-                type: '{{ $type ?? 'danger' }}'
+                type: '{{ $type ?? 'error' }}'
             });
         });
     </script>
