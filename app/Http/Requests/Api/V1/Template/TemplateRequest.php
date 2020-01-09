@@ -13,7 +13,7 @@ class TemplateRequest extends Request
     }
 
     /**
-     * Get data to be validated from the request.
+     * Получить данные из запроса для валидации.
      *
      * @return array
      */
