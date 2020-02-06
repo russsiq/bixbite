@@ -153,7 +153,8 @@ abstract class WidgetAbstract
     }
 
     /**
-     * Get custom attributes for validator errors.
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
     protected function attributes()
