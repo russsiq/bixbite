@@ -25,8 +25,7 @@
         "russsiq/bixbite": "dev-master",
         "russsiq/laravel-assistant": "dev-master",
         "russsiq/laravel-env-manager": "dev-master",
-        "russsiq/laravel-grecaptcha": "dev-master",
-        "russsiq/laravel-selfupdater": "dev-master"
+        "russsiq/laravel-grecaptcha": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
