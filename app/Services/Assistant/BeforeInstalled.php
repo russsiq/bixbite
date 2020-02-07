@@ -2,7 +2,7 @@
 
 namespace BBCMS\Services\Assistant;
 
-use Installer;
+use Russsiq\Assistant\Support\Facades\Installer;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
@@ -94,7 +94,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'role' => 'owner',
-            'last_ip' => request()->ip(),
+            'last_ip' => $this->app->request->ip(),
             'created_at' => date('Y-m-d H:i:s'),
             'email_verified_at' => date('Y-m-d H:i:s'),
 
