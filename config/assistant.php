@@ -98,7 +98,7 @@ return [
             'node_modules',
             'public',
             'storage',
-            'vendor', // Перед релизом CMS закомментировать.
+            'vendor',
 
         ],
 
