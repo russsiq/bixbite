@@ -2,7 +2,7 @@
 
 namespace BBCMS\Services\Assistant;
 
-use Russsiq\Assistant\Support\Facades\Installer;
+use Installer;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
