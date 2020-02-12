@@ -12,8 +12,7 @@ import routes from './routes'
 
 // Define the base address of our panels.
 const base_url = `${Pageinfo.panel}`
-    .replace(/^https?:\//, '')
-    .replace(/^\/localhost/, '')
+    .replace(Pageinfo.app_url, '')
 
 // Instantiate and exports app router.
 const router = new VueRouter({
