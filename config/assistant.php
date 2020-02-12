@@ -60,7 +60,7 @@ return [
             'config',
             'config/settings',
             'storage/app/backups',
-            'storage/app/uploads',
+            'storage/app/public',
 
         ],
 
@@ -78,7 +78,9 @@ return [
 
         // Создание ссылок на директории: target => link.
         'symlinks' => [
-            storage_path('app/uploads') => base_path('uploads'),
+            storage_path('app/public') => public_path('storage'),
+            resource_path('skins/default/public') => public_path('skins/default'),
+            resource_path('themes/default/public') => public_path('themes/default'),
 
         ],
 

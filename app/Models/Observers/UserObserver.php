@@ -65,7 +65,7 @@ class UserObserver
     protected function attachAvatar(User $user, UploadedFile $avatar)
     {
         // Path to folder avatars for store.
-        $path = setting('users.avatar_path', 'uploads'.DS.'avatars');
+        $path = setting('users.avatar_path', 'storage'.DS.'avatars');
 
         // Formation of avatar file name.
         [$width, $height] = getimagesize($avatar->getRealPath());
@@ -83,7 +83,7 @@ class UserObserver
     {
         // Path to folder avatars for store.
         $path = app()->basePath(
-            setting('users.avatar_path', 'uploads'.DS.'avatars').DS
+            setting('users.avatar_path', 'storage'.DS.'avatars').DS
         );
 
         // Get old user avatar file name.

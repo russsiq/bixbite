@@ -201,9 +201,9 @@ if (! function_exists('get_avatar')) {
     function get_avatar($email, $user_avatar = null)
     {
         if (! empty($user_avatar)) {
-            return app('url')->asset('uploads/avatars/' . $user_avatar);
+            return app('url')->asset('storage/avatars/' . $user_avatar);
         } elseif (is_null($email) or ! setting('users.gravatar_used')) {
-            return app('url')->asset('uploads/avatars/noavatar.png');
+            return app('url')->asset('storage/avatars/noavatar.png');
         }
 
         return get_gravatar($email);
@@ -659,7 +659,7 @@ if (! function_exists('theme_version')) {
         }
 
         if (! empty($version['screenshot']) and file_exists($path.'public'.DS.$version['screenshot'])) {
-            $screenshot = app('url')->asset("resources/themes/$theme/public/$version[screenshot]");
+            $screenshot = app('url')->asset("themes/$theme/public/$version[screenshot]");
         }
 
         return (object) array_merge($version, [
