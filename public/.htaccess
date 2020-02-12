@@ -1,12 +1,46 @@
+# Sometimes
+php_flag short_open_tag off
 AddDefaultCharset utf-8
-Options -ExecCGI -MultiViews -Indexes
+DirectoryIndex index.php
 
-# Hide a specific file
-order deny,allow
-<FilesMatch "\.(?i:htaccess|env|php|cgi|pl|p?html?|sql)$">
-    deny from all
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -ExecCGI -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # If install in subdirectory.
+    # RewriteBase /
+
+    # www to w/o www.
+    # RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+    # RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+    # http to https.
+    # RewriteCond %{SERVER_PORT} !^443$
+    # RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# Force Files to Download
+<FilesMatch "\.(mov|mp3|pdf)$">
+    ForceType application/octet-stream
+    Header set Content-Disposition attachment
 </FilesMatch>
-allow from all
 
 # Browser Caching
 <IfModule mod_mime.c>
@@ -25,6 +59,7 @@ allow from all
     AddType video/mpeg .mpeg .mpg .mpe
     AddType application/zip .zip
 </ifModule>
+
 <ifModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access 3 days"
@@ -60,9 +95,3 @@ allow from all
         Header append Vary User-Agent
     </IfModule>
 </ifModule>
-
-# Force Files to Download
-<FilesMatch "\.(mov|mp3|pdf)$">
-    ForceType application/octet-stream
-    Header set Content-Disposition attachment
-</FilesMatch>
