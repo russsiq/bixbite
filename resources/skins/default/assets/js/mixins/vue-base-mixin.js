@@ -15,7 +15,7 @@ export default {
          */
         skin() {
             return (path) => {
-                return `${this.app_url}/resources/skins/${this.app_skin}/public/${path}`.replace(/\/+$/, '');
+                return `${this.app_url}/skins/${this.app_skin}/${path}`.replace(/\/+$/, '');
             }
         },
 

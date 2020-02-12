@@ -2,12 +2,12 @@
 <div class="">
     <div class="row mb-5">
         <div class="col-md-6">
-            <div class="theme-card" style="background-image: url(http://localhost/bixbite/resources/themes/default/public/images/screenshot.png)">
+            <div class="theme-card" style="background-image: url(./themes/default/images/screenshot.png)">
                 <div class="color-overlay clearfix">
                     <div class="theme-content">
                         <div class="theme-header">
                             <h3 class="theme-title">default</h3>
-                            <h4 class="theme-info"><a href="http://bixbite.site/" target="_blank">RusiQ</a>, v0.1 (2018-05-10)</h4>
+                            <h4 class="theme-info"><a href="https://github.com/russsiq/bixbite" target="_blank">RusiQ</a>, v0.1 (2018-05-10)</h4>
                         </div>
                         <p class="theme-desc">Новостной шаблон. Описание шаблона на локальном языке из файла version.</p>
                         <!-- <a href="http://localhost/bixbite/admin/themes/settings" class="btn btn-outline-primary theme-btn">Настроить тему</a> -->
