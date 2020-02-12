@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link href="{{ skin('css/app.css') }}" rel="stylesheet" />
-    <link href="{{ skin('favicon.ico') }}" rel="icon" />
+    <link href="favicon.ico" rel="icon" />
     {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
     @stack('styles')
 </head>
