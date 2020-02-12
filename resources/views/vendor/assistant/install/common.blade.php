@@ -126,7 +126,7 @@
 		@endif
 
 		<div id="theme-card-list" class="row">
-	    	@foreach (collect(select_dir('themes'))->map('theme_version')->filter() as $key => $theme)
+	    	@foreach (collect(select_dir(resource_path('themes')))->map('theme_version')->filter() as $key => $theme)
 	    	<div class="col-12 col-lg-6 mb-4">
 	            <div class="theme-card" style="background-image: url({{ $theme->screenshot ?? '//via.placeholder.com/350x250' }})">
 	        		<div class="color-overlay clearfix">
