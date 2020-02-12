@@ -18,11 +18,11 @@ define('DS', DIRECTORY_SEPARATOR);
  * select_dir (optional: `custom_views`, and folder in app()->resourcePath($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
- * skin - Generate a path to public folder for current skin of application.
+ * skin - Generate a url to asset for current skin of application.
  * skin_path - Get path to `resources/skins/{skin}/{path}` folder.
  * string_slug - Create a web friendly URL slug from a string.
  * teaser - Remove html tags and truncate string at the specified length.
- * theme - Generate an asset path for current theme of application.
+ * theme - Generate a url to asset for current theme of application.
  * theme_path - Get path to `resources\themes\\{theme-from-setting}\\{path}` resources $directory.
  * theme_version - Obtaining info about theme from version file.
  * user - Return curent logined user $attribute. Used only in admin panel.
@@ -413,7 +413,8 @@ if (! function_exists('setting')) {
 
 if (! function_exists('skin')) {
     /**
-     * Generate a path to public folder for current skin of application.
+     * Generate a url to asset for current skin of application.
+     * Ex.: `http://site.com/skins/{skin-from-setting}/css/app.css`.
      *
      * @param  string  $path
      * @param  bool    $secure
@@ -421,7 +422,7 @@ if (! function_exists('skin')) {
      */
     function skin($path, $secure = null)
     {
-        return app('url')->asset('resources/skins/' . setting('system.app_skin', 'default') . '/public/' . $path, $secure);
+        return app('url')->asset('skins/' . setting('system.app_skin', 'default') . '/' . $path, $secure);
     }
 }
 
@@ -612,8 +613,8 @@ if (! function_exists('teaser')) {
 
 if (! function_exists('theme')) {
     /**
-     * Generate an asset path for current theme of application.
-     * Ex.: `http://site.com/themes/{theme-from-setting}/public/css/app.css`
+     * Generate a url to asset for current theme of application.
+     * Ex.: `http://site.com/themes/{theme-from-setting}/css/app.css`.
      *
      * @param  string $path
      * @param  bool $secure
@@ -621,7 +622,7 @@ if (! function_exists('theme')) {
      */
     function theme($path, $secure = null)
     {
-        return app('url')->asset('resources/themes/' . app_theme() . '/public/' . $path, $secure);
+        return app('url')->asset('themes/' . app_theme() . '/' . $path, $secure);
     }
 }
 
