@@ -7,7 +7,7 @@ import Translator from './helpers/translator';
 
 window.langProvider = new Translator({
     locale: Pageinfo.locale,
-    url: `${Pageinfo.app_url}/resources/skins/${Pageinfo.app_skin}/lang/`,
+    url: `${Pageinfo.app_url}/skins/${Pageinfo.app_skin}/lang/`,
 });
 
 window.__ = function(key, replace) {
