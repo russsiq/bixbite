@@ -201,9 +201,9 @@ if (! function_exists('get_avatar')) {
     function get_avatar($email, $user_avatar = null)
     {
         if (! empty($user_avatar)) {
-            return app('url')->asset('storage/avatars/' . $user_avatar);
+            return asset('storage/avatars/' . $user_avatar);
         } elseif (is_null($email) or ! setting('users.gravatar_used')) {
-            return app('url')->asset('storage/avatars/noavatar.png');
+            return asset('storage/avatars/noavatar.png');
         }
 
         return get_gravatar($email);
@@ -422,7 +422,7 @@ if (! function_exists('skin')) {
      */
     function skin($path, $secure = null)
     {
-        return app('url')->asset('skins/' . setting('system.app_skin', 'default') . '/' . $path, $secure);
+        return asset('skins/' . setting('system.app_skin', 'default') . '/' . $path, $secure);
     }
 }
 
@@ -622,7 +622,7 @@ if (! function_exists('theme')) {
      */
     function theme($path, $secure = null)
     {
-        return app('url')->asset('themes/' . app_theme() . '/' . $path, $secure);
+        return asset('themes/' . app_theme() . '/' . $path, $secure);
     }
 }
 
@@ -659,7 +659,7 @@ if (! function_exists('theme_version')) {
         }
 
         if (! empty($version['screenshot']) and file_exists($path.'public'.DS.$version['screenshot'])) {
-            $screenshot = app('url')->asset("themes/$theme/public/$version[screenshot]");
+            $screenshot = asset("themes/$theme/public/$version[screenshot]");
         }
 
         return (object) array_merge($version, [
