@@ -73,9 +73,26 @@ class BeforeInstalled extends AbstractBeforeInstalled
         Installer::when(empty($data['original_theme']),
             function ($installer) use ($data) {
                 $path = resource_path('themes'.DS);
-                $theme = Str::slug($data['APP_NAME']);
+                $theme = Str::slug(
+                    config('app.name', Str::random(8))
+                );
 
                 $installer->copyDirectory($path.$data['APP_THEME'], $path.$theme);
+
+                // Создаем ссылки на необходимые директории.
+                $filesystem = $this->app->make('files');
+
+                $symlinks = [
+                    resource_path('themes/'.$theme.'/public') => public_path('themes/'.$theme)
+                ];
+
+                foreach ($symlinks as $target => $link) {
+                    clearstatcache(true, $link);
+
+                    if (! $filesystem->exists($link)) {
+                        $filesystem->link($target, $link);
+                    }
+                }
             }
         );
     }

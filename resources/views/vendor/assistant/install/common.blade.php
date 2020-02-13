@@ -12,20 +12,7 @@
 	        </ul>
 	    </div>
 	@endif
-
-	<fieldset>
-		<legend>@lang('assistant::install.forms.legends.organization')</legend>
-		<div class="form-group row{{ $errors->has('APP_NAME') ? ' has-error' : '' }}">
-			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.APP_NAME')</label>
-			<div class="col-sm-9">
-				<input type="text" name="APP_NAME" value="{{ old('APP_NAME', '') }}" placeholder="@lang('assistant::install.forms.placeholders.APP_NAME')" class="form-control"  />
-				@if ($errors->has('APP_NAME'))
-					<div class="invalid-feedback d-block">{{ $errors->first('APP_NAME') }}</div>
-				@endif
-			</div>
-		</div>
-	</fieldset>
-
+	
 	<fieldset>
 		<legend>@lang('auth.register')</legend>
 		<div class="form-group row{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -101,7 +88,7 @@
 		<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
 			<div class="col-sm-9 offset-sm-3">
 				<label class="col-form-label">
-					<input type="checkbox" name="original_theme" value="1" /> @lang('assistant::install.forms.labels.original_theme')
+					<input type="checkbox" name="original_theme" value="1" {{ old('original_theme') ? 'checked' : '' }} /> @lang('assistant::install.forms.labels.original_theme')
 				</label>
 				@if ($errors->has('original_theme'))
 					<div class="invalid-feedback d-block">{{ $errors->first('original_theme') }}</div>
