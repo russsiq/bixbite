@@ -68,9 +68,9 @@ class SettingsController extends ApiController
             $collection->additional([
                 'meta' => [
                     'fonts' => select_file('fonts'),
-                    'lang' => select_dir(app()->resourcePath('lang')),
-                    'skins' => select_dir(app()->resourcePath('skins')),
-                    'themes' => select_dir(app()->resourcePath('themes')),
+                    'lang' => select_dir(resource_path('lang')),
+                    'skins' => select_dir(resource_path('skins')),
+                    'themes' => select_dir(resource_path('themes')),
                 ]
             ]);
         }

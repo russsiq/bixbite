@@ -15,7 +15,7 @@ define('DS', DIRECTORY_SEPARATOR);
  * html_secure - Advanced htmlspecialchars. HTML & special symbols protection.
  * pageinfo - Working with global information about the page.
  * reading_time - Calculating of the time for which the text can be read.
- * select_dir (optional: `custom_views`, and folder in app()->resourcePath($path))
+ * select_dir (optional: `custom_views`, and folder in resource_path($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
  * skin - Generate a url to asset for current skin of application.
@@ -55,7 +55,7 @@ if (! function_exists('app_locale')) {
                 app()->getLocale(),
                 'ru',
             ] as $app_locale) {
-                if ($app_locale and is_dir(app()->resourcePath('lang'.DS.$app_locale))) {
+                if ($app_locale and is_dir(resource_path('lang'.DS.$app_locale))) {
                     session(['app_locale' => $app_locale]);
                     break;
                 }
@@ -95,7 +95,7 @@ if (! function_exists('app_theme')) {
                 'default',
                 // session('app_theme'),
             ] as $app_theme) {
-                if ($app_theme and is_dir(app()->resourcePath('themes'.DS.$app_theme))) {
+                if ($app_theme and is_dir(resource_path('themes'.DS.$app_theme))) {
                     // session(['app_theme' => $app_theme]);
 
                     break;
@@ -339,7 +339,7 @@ if (! function_exists('select_dir')) {
     /**
      * Get all name of the directories within a given directory.
      *
-     * Special $path: `custom_views`, and folder in app()->resourcePath($path).
+     * Special $path: `custom_views`, and folder in resource_path($path).
      *
      * @param  string    $path
      * @param  boolean   $with_default Added [null => 'By default']
@@ -355,7 +355,7 @@ if (! function_exists('select_dir')) {
             }
         }
 
-        if (is_dir($path) or is_dir($path = app()->resourcePath($path))) {
+        if (is_dir($path) or is_dir($path = resource_path($path))) {
             $dir = new \DirectoryIterator($path);
             foreach ($dir as $fileinfo) {
                 $filename = $fileinfo->getFilename();
@@ -385,7 +385,7 @@ if (! function_exists('select_file')) {
 
         $path = trim($path, '/');
 
-        if (is_dir($path) or is_dir($path = app()->resourcePath($path))) {
+        if (is_dir($path) or is_dir($path = resource_path($path))) {
             foreach (glob($path.DS.$pattern) as $file) {
                 $file = pathinfo($file)['filename'];
                 $files[$file] = $file;
@@ -435,7 +435,7 @@ if (! function_exists('skin_path')) {
      */
     function skin_path(string $path = null)
     {
-        $directory = app()->resourcePath('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
+        $directory = resource_path('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
 
         return is_dir($directory) ? $directory : null;
     }
@@ -635,7 +635,7 @@ if (! function_exists('theme_path')) {
      */
     function theme_path(string $path = null)
     {
-        $dir = app()->resourcePath('themes' . DS . app_theme()) . ($path ? DS . $path : $path) . DS;
+        $dir = resource_path('themes' . DS . app_theme()) . ($path ? DS . $path : $path) . DS;
 
         return is_dir($dir) ? $dir : null;
     }
@@ -651,7 +651,7 @@ if (! function_exists('theme_version')) {
     function theme_version(string $theme)
     {
         $locale = app_locale();
-        $path = app()->resourcePath('themes' . DS . $theme . DS);
+        $path = resource_path('themes' . DS . $theme . DS);
         $file = $path . 'version';
 
         if (! file_exists($file) or ! $version = parse_ini_file($file, true, INI_SCANNER_RAW)) {
@@ -681,7 +681,7 @@ if (! function_exists('skin_path')) {
      */
     function skin_path(string $path = null)
     {
-        $directory = app()->resourcePath('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
+        $directory = resource_path('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
 
         return is_dir($directory) ? $directory : null;
     }

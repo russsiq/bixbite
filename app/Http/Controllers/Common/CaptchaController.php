@@ -17,7 +17,7 @@ class CaptchaController
         $this->width = setting('system.captcha_width', 68);
         $this->height = setting('system.captcha_height', 38);
         $this->size = setting('system.captcha_font_size', 20);
-        $this->font = app()->resourcePath('fonts'.DS) . setting('system.captcha_font_family', 'blowbrush') . '.ttf';
+        $this->font = resource_path('fonts'.DS) . setting('system.captcha_font_family', 'blowbrush') . '.ttf';
     }
 
     public function make()
