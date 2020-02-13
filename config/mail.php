@@ -116,8 +116,8 @@ return [
         'theme' => 'default',
 
         'paths' => [
-            theme_path('views'.DS.'emails'),
-            resource_path('views'.DS.'vendor'.DS.'mail'),
+            theme_path('views/emails'),
+            resource_path('views/vendor/mail'),
         ],
     ],
 
