@@ -77,7 +77,7 @@
           "@type": "Organization",
           "name": "{{ setting('system.organization') }}",
           "url": "{{ setting('system.app_url') }}",
-          "logo": "{{ theme('favicon.ico') }}",
+          "logo": "{{ asset('favicon.ico') }}",
           "contactPoint": [{
             "@type": "ContactPoint",
             "telephone": "{{ setting('system.contact_telephone') }}",
