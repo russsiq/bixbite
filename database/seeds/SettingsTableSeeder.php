@@ -144,11 +144,11 @@ class SettingsTableSeeder extends Seeder
         array_push($out, array_merge($def, ['name' => 'meta_keywords', 'value' => 'BixBite CMS, BBCMS, CMS', ]));
 
         // organization
-        array_push($out, array_merge($def, ['name' => 'organization', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'address_locality', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'address_street', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'contact_telephone', 'value' => '—', 'type' => 'string', ]));
-        array_push($out, array_merge($def, ['name' => 'contact_email', 'value' => '—', 'type' => 'email', ]));
+        array_push($out, array_merge($def, ['name' => 'org_name', 'value' => env('ORG_NAME', '—'), 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'org_address_locality', 'value' => env('ORG_ADDRESS_LOCALITY', '—'), 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'org_address_street', 'value' => env('ORG_ADDRESS_STREET', '—'), 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'org_contact_telephone', 'value' => env('ORG_CONTACT_TELEPHONE', '—'), 'type' => 'string', ]));
+        array_push($out, array_merge($def, ['name' => 'org_contact_email', 'value' => env('ORG_CONTACT_EMAIL', '—'), 'type' => 'email', ]));
 
         // security
         array_push($out, array_merge($def, ['name' => 'lock', 'value' => false, 'type' => 'boolean', ]));

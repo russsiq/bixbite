@@ -107,7 +107,7 @@
                                     <label class="control-label">Название организации</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="text" v-model="form.organization" class="form-control" />
+                                    <input type="text" v-model="form.org_name" class="form-control" />
                                 </div>
                             </div>
 
@@ -116,7 +116,7 @@
                                     <label class="control-label">Населенный пункт (страна, область/край, город)</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="text" v-model="form.address_locality" class="form-control" />
+                                    <input type="text" v-model="form.org_address_locality" class="form-control" />
                                 </div>
                             </div>
 
@@ -125,7 +125,7 @@
                                     <label class="control-label">Адрес (улица, дом/строение)</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="text" v-model="form.address_street" class="form-control" />
+                                    <input type="text" v-model="form.org_address_street" class="form-control" />
                                 </div>
                             </div>
 
@@ -134,7 +134,7 @@
                                     <label class="control-label">Контактный телефон</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="text" v-model="form.contact_telephone" class="form-control" />
+                                    <input type="text" v-model="form.org_contact_telephone" class="form-control" />
                                 </div>
                             </div>
 
@@ -143,7 +143,7 @@
                                     <label class="control-label">Контактный email</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="email" v-model="form.contact_email" class="form-control" />
+                                    <input type="email" v-model="form.org_contact_email" class="form-control" />
                                 </div>
                             </div>
 

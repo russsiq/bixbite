@@ -48,6 +48,13 @@ class Setting extends BaseModel
         'APP_NAME',
         'APP_THEME',
         'APP_SKIN',
+        
+        'ORG_ADDRESS_LOCALITY',
+        'ORG_ADDRESS_STREET',
+        'ORG_CONTACT_EMAIL',
+        'ORG_CONTACT_TELEPHONE',
+        'ORG_NAME',
+
     ];
 
     protected static function boot()

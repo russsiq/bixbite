@@ -75,21 +75,21 @@
         {
           "@context": "http://schema.org",
           "@type": "Organization",
-          "name": "{{ setting('system.organization') }}",
+          "name": "{{ setting('system.org_name') }}",
           "url": "{{ setting('system.app_url') }}",
           "logo": "{{ asset('favicon.ico') }}",
           "contactPoint": [{
             "@type": "ContactPoint",
-            "telephone": "{{ setting('system.contact_telephone') }}",
+            "telephone": "{{ setting('system.org_contact_telephone') }}",
             "contactType": "customer service",
-            "email": "{{ setting('system.contact_email') }}",
+            "email": "{{ setting('system.org_contact_email') }}",
             "availableLanguage": "RU",
             "areaServed" : "RU"
           }],
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "{{ setting('system.address_locality') }}",
-            "streetAddress": "{{ setting('system.address_street') }}"
+            "addressLocality": "{{ setting('system.org_address_locality') }}",
+            "streetAddress": "{{ setting('system.org_address_street') }}"
           }
         }
     </script>

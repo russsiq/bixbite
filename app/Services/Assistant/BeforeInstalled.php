@@ -154,41 +154,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
             ],
 
-            'ORG_NAME' => [
-                'nullable',
-                'string',
-                'max:255',
-
-            ],
-
-            'ORG_ADDRESS_LOCALITY' => [
-                'nullable',
-                'string',
-                'max:255',
-
-            ],
-
-            'ORG_ADDRESS_STREET' => [
-                'nullable',
-                'string',
-                'max:255',
-
-            ],
-
-            'ORG_CONTACT_TELEPHONE' => [
-                'nullable',
-                'string',
-                'max:255',
-
-            ],
-
-            'ORG_CONTACT_EMAIL' => [
-                'required',
-                'email',
-                'max:255',
-
-            ],
-
             'original_theme' => [
                 'sometimes',
                 'boolean',
