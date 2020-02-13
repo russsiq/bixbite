@@ -3,6 +3,9 @@
 use BBCMS\Services\Assistant\BeforeInstalled;
 
 return [
+    // Имя маршрута для выхода из Ассистента приложения.
+    'exit_route' => 'panel',
+
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
 

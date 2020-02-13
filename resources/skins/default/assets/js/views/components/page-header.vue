@@ -34,13 +34,8 @@
                         <router-link :to="{name:'notes.create'}" class="dropdown-item">Заметка</router-link>
                     </div>
                 </li> -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" title="Очистка" data-toggle="dropdown"><i class="fa fa-recycle"></i> </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a :href="url('app_common/clearcache')" class="dropdown-item">Полная очистка кэша</a>
-                        <a :href="url('app_common/clearviews')" class="dropdown-item">Очистка шаблонов</a>
-                        <a :href="url('app_common/optimize')" class="dropdown-item">Комплексная оптимизация</a>
-                    </div>
+                <li class="nav-item">
+                    <a :href="url('assistant/clean')" class="nav-link" title="Ассистент приложения"><i class="fa fa-magic"></i></a>
                 </li>
                 <li class="nav-item">
                     <router-link :to="{name: 'templates'}" class="nav-link" title="Редактор шаблонов"><i class="fa fa-paint-brush"></i></router-link>
@@ -48,7 +43,9 @@
                 <li class="nav-item">
                     <router-link :to="{name: 'system.settings'}" class="nav-link" title="Настройки системы"><i class="fa fa-cogs"></i></router-link>
                 </li>
-                <li class="nav-item"><a href="https://github.com/russsiq/bixbite" target="_blank" class="nav-link" title="Справка по системе"><i class="fa fa-leanpub"></i></a></li>
+                <li class="nav-item">
+                    <a href="https://github.com/russsiq/bixbite" target="_blank" class="nav-link" title="Справка по системе"><i class="fa fa-leanpub"></i></a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" @click.prevent="showModal">
                         <img :src="currentUser.avatar" :alt="currentUser.name" class="rounded-circle" width="20" height="20" />
