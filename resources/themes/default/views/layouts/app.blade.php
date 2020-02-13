@@ -12,7 +12,7 @@
         @if(pageinfo('url'))<link href="{{ pageinfo('url') }}" rel="canonical" /> @endif
 
         <link href="{{ theme('css/app.css') }}" rel="stylesheet" type="text/css" />
-        <link href="favicon.ico" rel="icon" />
+        <link href="{{ asset('favicon.ico') }}" rel="icon" type="image/x-icon" />
         {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
         @stack('styles')
     </head>
