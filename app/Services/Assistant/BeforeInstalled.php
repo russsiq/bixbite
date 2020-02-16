@@ -7,8 +7,9 @@ use Russsiq\Assistant\Contracts\InstallerContract;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,20 +25,31 @@ use Illuminate\Support\Str;
 class BeforeInstalled extends AbstractBeforeInstalled
 {
     /**
-     * Экземпляр приложения.
+     * Экземпляр контейнера приложения.
      *
-     * @var Application
+     * @var Container
      */
-    protected $app;
+    protected $container;
+
+    /**
+     * Экземпляр репозитория конфигураций.
+     *
+     * @var ConfigRepositoryContract
+     */
+    protected $config;
 
     /**
      * Создать новый экземпляр класса.
      *
-     * @param  Application  $app
+     * @param  Container  $container
+     * 
+     * @return void
      */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        Container $container
+    ) {
+        $this->container = $container;
+        $this->config = $container->make('config');
     }
 
     /**
@@ -76,7 +88,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
         Installer::when(empty($request->original_theme),
             function (InstallerContract $installer) use ($request) {
                 $theme = Str::slug(
-                    $this->app->config->get('app.name', Str::random(8))
+                    $this->config->get('app.name', Str::random(8))
                 );
 
                 // Копируем выбранную тему сайта под новым названием.
