@@ -3,6 +3,7 @@
 namespace BBCMS\Services\Assistant;
 
 use Installer;
+use Russsiq\Assistant\Contracts\InstallerContract;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
@@ -51,8 +52,8 @@ class BeforeInstalled extends AbstractBeforeInstalled
         // Всегда валидируем входящие данные.
         $data = $this->validator($request->all())->validate();
 
-        // Копирование темы сайта.
-        $this->copyDirectoryTheme($request->all());
+        // Применить тему сайта.
+        $this->applyTheme($request);
 
         // Регистрация собственника сайта.
         $this->registerOwner($data);
@@ -62,38 +63,41 @@ class BeforeInstalled extends AbstractBeforeInstalled
     }
 
     /**
-     * Копирование темы сайта.
+     * Применить тему сайта.
      *
-     * @param  array  $data Входящие данные
+     * @param  Request  $request
      *
      * @return void
      */
-    protected function copyDirectoryTheme(array $data)
+    protected function applyTheme(Request $request)
     {
-        Installer::when(empty($data['original_theme']),
-            function ($installer) use ($data) {
-                $path = resource_path('themes'.DS);
+        // Если не была отмечена опция использования оригинальной темы,
+        // то копируем выбранную тему сайта под новым именем.
+        Installer::when(empty($request->original_theme),
+            function (InstallerContract $installer) use ($request) {
                 $theme = Str::slug(
-                    config('app.name', Str::random(8))
+                    $this->app->config->get('app.name', Str::random(8))
                 );
 
-                $installer->copyDirectory($path.$data['APP_THEME'], $path.$theme);
+                // Копируем выбранную тему сайта под новым названием.
+                $installer->copyDirectory(
+                    resource_path('themes/'.$request->APP_THEME),
+                    resource_path('themes/'.$theme)
+                );
 
-                // Создаем ссылки на необходимые директории.
-                $filesystem = $this->app->make('files');
+                // Меняем название темы сайта для
+                // последующей записи в файл окружения.
+                $request->merge([
+                    'APP_THEME' => $theme,
 
-                $symlinks = [
-                    resource_path('themes/'.$theme.'/public') => public_path('themes/'.$theme)
-                ];
-
-                foreach ($symlinks as $target => $link) {
-                    clearstatcache(true, $link);
-
-                    if (! $filesystem->exists($link)) {
-                        $filesystem->link($target, $link);
-                    }
-                }
+                ]);
             }
+        );
+
+        // Создание ссылки на директорию с темой.
+        Installer::createSymbolicLink(
+            resource_path('themes/'.$request->APP_THEME.'/public'),
+            public_path('themes/'.$request->APP_THEME)
         );
     }
 
@@ -174,6 +178,12 @@ class BeforeInstalled extends AbstractBeforeInstalled
             'original_theme' => [
                 'sometimes',
                 'boolean',
+
+            ],
+
+            'APP_THEME' => [
+                'required',
+                'string',
 
             ],
 
