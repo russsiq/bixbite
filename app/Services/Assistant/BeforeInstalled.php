@@ -2,11 +2,13 @@
 
 namespace BBCMS\Services\Assistant;
 
+// Зарегистрированные фасады приложения.
+use DB;
 use Installer;
+
+// Сторонние зависимости.
 use Russsiq\Assistant\Contracts\InstallerContract;
-
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
-
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
@@ -26,23 +28,19 @@ class BeforeInstalled extends AbstractBeforeInstalled
 {
     /**
      * Экземпляр контейнера приложения.
-     *
      * @var Container
      */
     protected $container;
 
     /**
      * Экземпляр репозитория конфигураций.
-     *
      * @var ConfigRepositoryContract
      */
     protected $config;
 
     /**
      * Создать новый экземпляр класса.
-     *
      * @param  Container  $container
-     * 
      * @return void
      */
     public function __construct(
@@ -54,9 +52,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Обработка входящего запроса.
-     *
      * @param  Request $request
-     *
      * @return RedirectResponse
      */
     public function handle(Request $request): RedirectResponse
@@ -76,9 +72,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Применить тему сайта.
-     *
      * @param  Request  $request
-     *
      * @return void
      */
     protected function applyTheme(Request $request)
@@ -115,14 +109,12 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Регистрация собственника сайта.
-     *
      * @param  array  $data Входящие данные
-     *
      * @return void
      */
     protected function registerOwner(array $data)
     {
-        \DB::table('users')->insert([
+        DB::table('users')->insert([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
@@ -136,9 +128,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Получить валидатор для проверки входящих данных запроса.
-     *
      * @param  array  $data
-     *
      * @return ValidatorContract
      */
     protected function validator(array $data): ValidatorContract
@@ -154,7 +144,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
     /**
      * Получить правила валидации,
      * применяемые к входящим данным запроса.
-     *
      * @return array
      */
     protected function rules(): array
@@ -187,12 +176,14 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
             ],
 
+            // Маркер использования оригинальной темы.
             'original_theme' => [
                 'sometimes',
                 'boolean',
 
             ],
 
+            // Название темы сайта.
             'APP_THEME' => [
                 'required',
                 'string',
@@ -204,7 +195,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Получить сообщения об ошибках валидации.
-     *
      * @return array
      */
     protected function messages(): array
@@ -216,7 +206,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Получить названия атрибутов об ошибках валидации.
-     *
      * @return array
      */
     protected function attributes(): array
