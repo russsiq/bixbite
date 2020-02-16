@@ -64,7 +64,14 @@ class BeforeInstalled extends AbstractBeforeInstalled
         $this->applyTheme($request);
 
         // Регистрация собственника сайта.
-        $this->registerOwner($data);
+        $this->registerOwner(array_merge($data, [
+            'ip' => $request->ip(),
+            'password' => bcrypt($data['password']),
+            'role' => 'owner',
+            'created_at' => date('Y-m-d H:i:s'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+
+        ]));
 
         // Перенаправляем на страницу входа на сайт.
         return redirect()->route('login');
@@ -117,11 +124,11 @@ class BeforeInstalled extends AbstractBeforeInstalled
         DB::table('users')->insert([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role' => 'owner',
-            'last_ip' => $this->container->request->ip(),
-            'created_at' => date('Y-m-d H:i:s'),
-            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => $data['password'],
+            'role' => $data['role'],
+            'last_ip' => $data['ip'],
+            'created_at' => $data['created_at'],
+            'email_verified_at' => $data['email_verified_at'],
 
         ]);
     }
