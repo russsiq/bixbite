@@ -10,9 +10,6 @@
                 <router-link :to="{name: 'x_fields'}" class="btn btn-outline-dark" :title="'XFields' | trans">
                     <span class="as-icon">χφ</span>
                 </router-link>
-                <router-link :to="{name: 'categories.settings'}" class="btn btn-outline-dark" title="Настройки">
-                    <i class="fa fa-cogs"></i>
-                </router-link>
             </div>
             <div class="btn-group ml-auto">
                 <button type="button" class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
