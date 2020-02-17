@@ -10,6 +10,7 @@ use BBCMS\Models\Category;
 class SitemapController
 {
     protected static $lastmod;
+
     protected static $changefreq = [
          // Not cached.
         'always' => false,
