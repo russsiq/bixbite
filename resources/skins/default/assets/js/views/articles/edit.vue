@@ -230,7 +230,9 @@ export default {
         }),
 
         setting() {
-            return this.meta.setting.articles;
+            // Если настройки не заданы,
+            // то возвращаем пустой массив.
+            return this.meta.setting.articles || [];
         },
 
         saveInterval() {
