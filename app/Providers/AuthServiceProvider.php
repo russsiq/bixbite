@@ -2,14 +2,19 @@
 
 namespace BBCMS\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+// Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Gate;
 
+// Сторонние зависимости.
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+
+/**
+ * Поставщик аутентификационных / авторизационных служб.
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
-     *
+     * Карта политик приложения.
      * @var array
      */
     protected $policies = [
@@ -26,31 +31,37 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
+     * Регистрация любых аутентификационных / авторизационных служб.
      * @return void
      */
     public function boot()
     {
+        // Регистрация политик, описанных в свойстве `$policies`.
         $this->registerPolicies();
+
+        // Регистрация глобальных политик.
         $this->registerGlobalPolicies();
-        $this->registerDashboardPolicies();
     }
 
+    /**
+     * Регистрация глобальных политик,
+     * прежде всего, не имеющих связей с моделями БД.
+     * @return void
+     */
     public function registerGlobalPolicies()
     {
+        // Доступ к заблокированному сайту.
+        // Не используется в текущей версии.
         Gate::define('global.locked', function ($user) {
             return $user->canDo('global.locked');
         });
 
+        // Доступ в административную панель.
         Gate::define('global.panel', function ($user) {
             return $user->canDo('global.panel');
         });
-    }
 
-    public function registerDashboardPolicies()
-    {
+        // Просмотр главной страницы админ. панели.
         Gate::define('dashboard', function ($user) {
             return $user->canDo('dashboard');
         });
@@ -62,21 +73,4 @@ class AuthServiceProvider extends ServiceProvider
             return $user->canDo('dashboard');
         });
     }
-
-    // Gate::define('notes.form', function ($user) {
-    //     return $user->canDo('notes.form');
-    // });
-    //
-    // Gate::resource('notes', NotePolicy::class, [
-    //     'index' => 'index',
-    //     'form' => 'form',
-    //     'create' => 'store',
-    //     'view' => 'show',
-    //     'update' => 'update',
-    //     'destroy' => 'destroy',
-    // ]);
-    //
-    // Gate::define('notes.form', 'BBCMS\Policies\NotePolicy@form');
-    //
-    // dd(auth('api')->user()->can('create', Note::class));
 }
