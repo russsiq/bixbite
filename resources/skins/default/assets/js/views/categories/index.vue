@@ -2,9 +2,7 @@
 <div class="filterable">
     <div class="card d-print-none">
         <div class="card-header d-flex">
-            <router-link :to="{name: 'categories.create'}" class="btn btn-outline-dark" :title="'Create' | trans">
-                <i class="fa fa-plus"></i> {{ 'Create' | trans }}
-            </router-link>
+            <router-link :to="{name: 'categories.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
             <div class="btn-group d-flex ml-auto">
                 <a :href="url('app_common/clearcache/categories|navigation')" :title="'Clear' | trans" class="btn btn-outline-dark">
                     <i class="fa fa-recycle"></i>

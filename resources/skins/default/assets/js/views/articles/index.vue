@@ -1,7 +1,7 @@
 <template>
 <filterable v-bind="filterable">
     <template #preaction>
-        <button type="button" class="btn btn-outline-dark" @click="create"><i class="fa fa-plus"></i></button>
+        <button type="button" class="btn btn-outline-dark" @click="create"><i class="fa fa-plus"></i> Создать</button>
         <div class="btn-group d-flex ml-auto">
             <router-link :to="{name: 'categories'}" class="btn btn-outline-dark" title="Категории"><i class="fa fa-folder-open-o"></i></router-link>
             <router-link :to="{name: 'x_fields'}" class="btn btn-outline-dark" title="Дополнительные поля"><span class="as-icon">χφ</span></router-link>
