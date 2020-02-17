@@ -13,7 +13,7 @@ class CategoryPolicy extends BasePolicy
      * @param  User $user
      * @return bool
      */
-    public function index(User $user): bool
+    public function viewAny(User $user): bool
     {
         return true;
     }

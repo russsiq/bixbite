@@ -7,7 +7,7 @@ use BBCMS\Models\Note;
 
 class NotePolicy extends BasePolicy
 {
-    public function index(User $user)
+    public function viewAny(User $user)
     {
         return true;
     }

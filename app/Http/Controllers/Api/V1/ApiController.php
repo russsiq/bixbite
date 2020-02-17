@@ -24,8 +24,7 @@ abstract class ApiController extends Controller
     protected function resourceAbilityMap()
     {
         return array_merge([
-            'index' => 'index',
-
+            'index' => 'viewAny',
             'show' => 'view',
             'create' => 'create',
             'store' => 'create',

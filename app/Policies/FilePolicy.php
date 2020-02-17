@@ -7,7 +7,7 @@ use BBCMS\Models\File;
 
 class FilePolicy extends BasePolicy
 {
-    public function index(User $user)
+    public function viewAny(User $user)
     {
         return true;
     }
