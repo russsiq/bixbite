@@ -52,7 +52,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Обработка входящего запроса.
-     * @param  Request $request
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function handle(Request $request): RedirectResponse
@@ -65,7 +65,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
         // Регистрация собственника сайта.
         $this->registerOwner(array_merge($data, [
-            'ip' => $request->ip(),
+            'last_ip' => $request->ip(),
             'password' => bcrypt($data['password']),
             'role' => 'owner',
             'created_at' => date('Y-m-d H:i:s'),
@@ -126,7 +126,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
             'email' => $data['email'],
             'password' => $data['password'],
             'role' => $data['role'],
-            'last_ip' => $data['ip'],
+            'last_ip' => $data['last_ip'],
             'created_at' => $data['created_at'],
             'email_verified_at' => $data['email_verified_at'],
 
