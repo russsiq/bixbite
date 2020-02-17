@@ -2,10 +2,12 @@
 
 namespace BBCMS\Providers;
 
+// Зарегистрированные фасады приложения.
+use Route;
+
+// Сторонние зависимости.
 use BBCMS\Models\Article;
 use BBCMS\Models\Category;
-
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
@@ -22,9 +24,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'BBCMS\Http\Controllers';
 
+    /**
+     * The path to the "home" route for your application.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
     protected $routePatterns = [
         'any' => '(.*)',
         'id' => '^[0-9]*$',
+
     ];
 
     /**
@@ -106,7 +116,7 @@ class RouteServiceProvider extends ServiceProvider
                 // 'web',
             ])
             ->namespace($this->namespace.'\Rss')
-            ->group(app()->basePath('routes/web/rss.php'));
+            ->group(base_path('routes/web/rss.php'));
     }
 
     protected function mapApiRoutes()
@@ -116,7 +126,7 @@ class RouteServiceProvider extends ServiceProvider
                 'api',
             ])
             ->namespace($this->namespace.'\Api')
-            ->group(app()->basePath('routes/api.php'));
+            ->group(base_path('routes/api.php'));
     }
 
     protected function mapCommonRoutes()
@@ -126,7 +136,7 @@ class RouteServiceProvider extends ServiceProvider
                 'web',
             ])
             ->namespace($this->namespace.'\Common')
-            ->group(app()->basePath('routes/web/common.php'));
+            ->group(base_path('routes/web/common.php'));
     }
 
     protected function mapAdminRoutes()
@@ -135,7 +145,7 @@ class RouteServiceProvider extends ServiceProvider
                 'web',
             ])
             ->namespace($this->namespace.'\Admin')
-            ->group(app()->basePath('routes/web/admin.php'));
+            ->group(base_path('routes/web/admin.php'));
     }
 
     /**
@@ -151,6 +161,6 @@ class RouteServiceProvider extends ServiceProvider
                 'web',
             ])
             ->namespace($this->namespace)
-            ->group(app()->basePath('routes/web.php'));
+            ->group(base_path('routes/web.php'));
     }
 }

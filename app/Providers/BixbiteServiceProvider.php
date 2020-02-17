@@ -2,20 +2,41 @@
 
 namespace BBCMS\Providers;
 
+// Зарегистрированные фасады приложения.
+use Blade;
+use Cache;
+
+// Сторонние зависимости.
 use BBCMS\Support\PageInfo;
 use BBCMS\Support\CacheFile;
 use BBCMS\Support\Factories\WidgetFactory;
-
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
+     * Все синглтоны (одиночки) контейнера,
+     * которые должны быть зарегистрированы.
+     * @var array
+     */
+    public $singletons = [
+        'pageinfo' => PageInfo::class,
+
+    ];
+
+    /**
+     * Все связывания контейнера,
+     * которые должны быть зарегистрированы.
+     * @var array
+     */
+    public $bindings = [
+        'widget' => WidgetFactory::class,
+
+    ];
+
+    /**
+     * Загрузка любых служб приложения.
      * @return void
      */
     public function boot()
@@ -49,27 +70,17 @@ class BixbiteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register any application services.
-     *
+     * Регистрация любых служб приложения.
      * @return void
      */
     public function register()
     {
-        // Only singleton. We only need one copy.
-        $this->app->singleton('pageinfo', function () {
-            return new PageInfo();
-        });
-
         // Only singleton. We only need one copy.
         $this->app->singleton('cachefile', function () {
             return new CacheFile(
                 Cache::store('file')->getFilesystem(),
                 Cache::store('file')->getDirectory()
             );
-        });
-
-        $this->app->bind('widget', function ($app) {
-            return new WidgetFactory();
         });
     }
 }

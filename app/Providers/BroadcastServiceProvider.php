@@ -2,20 +2,22 @@
 
 namespace BBCMS\Providers;
 
+// Зарегистрированные фасады приложения.
+use Broadcast;
+
+// Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Broadcast;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
+     * Загрузка любых служб приложения.
      * @return void
      */
     public function boot()
     {
         Broadcast::routes();
 
-        require app()->basePath('routes/channels.php');
+        require base_path('routes/channels.php');
     }
 }

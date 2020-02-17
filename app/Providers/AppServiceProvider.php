@@ -2,6 +2,7 @@
 
 namespace BBCMS\Providers;
 
+// Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -10,8 +11,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
-     *
+     * Регистрация любых служб приложения.
      * @return void
      */
     public function register()
@@ -20,8 +20,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
-     *
+     * Загрузка любых служб приложения.
      * @return void
      */
     public function boot()
