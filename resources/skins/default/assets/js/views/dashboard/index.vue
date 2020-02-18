@@ -2,7 +2,7 @@
 <div class="">
     <div class="row mb-5">
         <div class="col-md-6">
-            <div class="theme-card" style="background-image: url(./themes/default/images/screenshot.png)">
+            <div class="theme-card" style="background-image: url(../themes/default/images/screenshot.png)">
                 <div class="color-overlay clearfix">
                     <div class="theme-content">
                         <div class="theme-header">
