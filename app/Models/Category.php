@@ -2,20 +2,16 @@
 
 namespace BBCMS\Models;
 
+// Сторонние зависимости.
 use BBCMS\Models\Article;
-use BBCMS\Models\BaseModel;
-
-use BBCMS\Models\Mutators\CategoryMutators;
-use BBCMS\Models\Observers\CategoryObserver;
 use BBCMS\Models\Collections\CategoryCollection;
-
-use BBCMS\Models\Relations\Extensible;
-use BBCMS\Models\Relations\Fileable;
+use BBCMS\Models\Observers\CategoryObserver;
 
 class Category extends BaseModel
 {
-    use CategoryMutators;
-    use Extensible, Fileable;
+    use Mutators\CategoryMutators,
+        Relations\Extensible,
+        Relations\Fileable;
 
     /**
      * The table associated with the model.
