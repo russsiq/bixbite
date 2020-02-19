@@ -20,7 +20,7 @@ class Store extends FileRequest
                'mime' => ['application/pdf'],
            ],
            'image' => [
-               'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff'],
+               'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff','webp'],
                'mime' => [],
            ],
            'video' => [
@@ -118,7 +118,7 @@ class Store extends FileRequest
                 'alpha_dash',
                 'in:'.self::morphMap(),
             ],
-            
+
             // After that, we check for a record in the database.
             'attachment_id' => [
                 'bail',

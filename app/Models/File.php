@@ -302,6 +302,7 @@ class File extends BaseModel
 			case 2: $source = imagecreatefromjpeg($infile);break;
 			case 3: $source = imagecreatefrompng($infile); break;
 			case 6: $source = imagecreatefrombmp($infile); break;
+			case 18: $source = imagecreatefromwebp($infile); break;
 			default:
                 $instring = file_get_contents($infile);
                 $source = imagecreatefromstring($instring);break;
@@ -340,6 +341,8 @@ class File extends BaseModel
             imagepng($output, $outfile, round($quality / 100)); $extension = 'png';
         } elseif (6 == $imagetype and false === $is_convert) {
             imagebmp($output, $outfile, (int) round($quality / 100)); $extension = 'bmp';
+        } elseif (18 == $imagetype and false === $is_convert) {
+            imagewebp($output, $outfile, $quality); $extension = 'webp';
         } else {
             imagejpeg($output, $outfile, $quality); $extension = 'jpeg';
         }
