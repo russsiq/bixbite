@@ -4,22 +4,23 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\User;
-use BBCMS\Models\BaseModel;
-use BBCMS\Models\Mutators\FileMutators;
-use BBCMS\Models\Observers\FileObserver;
-use BBCMS\Models\Scopes\FileScopes;
+// Исключения.
+use RuntimeException as FileException;
 
+// Зарегистрированные фасады приложения.
 use Storage;
+
+// Сторонние зависимости.
+use BBCMS\Models\User;
+use BBCMS\Models\Observers\FileObserver;
 use Illuminate\Http\UploadedFile;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 
-use \RuntimeException as FileException;
-
 class File extends BaseModel
 {
-    use Traits\Dataviewer;
-    use FileMutators, FileScopes;
+    use Mutators\FileMutators,
+        Scopes\FileScopes,
+        Traits\Dataviewer;
 
     protected $table = 'files';
 
