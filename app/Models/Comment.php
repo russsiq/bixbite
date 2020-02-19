@@ -2,19 +2,16 @@
 
 namespace BBCMS\Models;
 
-
+// Сторонние зависимости.
 use BBCMS\Models\Article;
 use BBCMS\Models\User;
-use BBCMS\Models\BaseModel;
-
-use BBCMS\Models\Mutators\CommentMutators;
-use BBCMS\Models\Observers\CommentObserver;
 use BBCMS\Models\Collections\CommentCollection;
+use BBCMS\Models\Observers\CommentObserver;
 
 class Comment extends BaseModel
 {
-    use Traits\Dataviewer;
-    use CommentMutators;
+    use Mutators\CommentMutators,
+        Traits\Dataviewer;
 
     protected $primaryKey = 'id';
 
