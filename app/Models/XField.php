@@ -4,15 +4,12 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\BaseModel;
-
-use BBCMS\Models\Mutators\XFieldMutators;
 use BBCMS\Models\Observers\XFieldObserver;
 
 class XField extends BaseModel
 {
-    use Traits\Dataviewer;
-    use XFieldMutators;
+    use Mutators\XFieldMutators,
+        Traits\Dataviewer;
 
     protected $primaryKey = 'id';
 
@@ -57,7 +54,7 @@ class XField extends BaseModel
         'text',
         'timestamp',
     ];
-    
+
     protected $allowedFilters = [
         //
     ];
