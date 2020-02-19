@@ -2,11 +2,18 @@
 
 namespace BBCMS\Models;
 
-use \File; // \Illuminate\Filesystem\Filesystem
-use Illuminate\Support\Str;
+// Исключения.
+use Exception;
 
+// Базовые расширения PHP.
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+
+// Зарегистрированные фасады приложения.
+use File;
+
+// Сторонние зависимости.
+use Illuminate\Support\Str;
 
 class Template
 {
@@ -46,7 +53,7 @@ class Template
         $path = $this->path();
 
         // Определяем, что запрашиваемый файл существует.
-        $exists = \File::isFile($path) and \File::exists($path);
+        $exists = File::isFile($path) and File::exists($path);
 
         // Заполняем нулевую информацию.
         $this->attributes = [
@@ -60,9 +67,9 @@ class Template
 
         // Если файл существует, то добавляем всю необходимую информацию.
         if ($exists) {
-            $this->attributes['content'] = \File::get($path);
-            $this->attributes['modified'] = strftime('%Y-%m-%d %H:%M', \File::lastModified($path));
-            $this->attributes['size'] = formatBytes(\File::size($path));
+            $this->attributes['content'] = File::get($path);
+            $this->attributes['modified'] = strftime('%Y-%m-%d %H:%M', File::lastModified($path));
+            $this->attributes['size'] = formatBytes(File::size($path));
         }
     }
 
@@ -94,11 +101,11 @@ class Template
     {
         $this->fill($attributes);
 
-        if (! \File::isDirectory($dirname = dirname($this->path()))) {
-            \File::makeDirectory($dirname, 0777, true);
+        if (! File::isDirectory($dirname = dirname($this->path()))) {
+            File::makeDirectory($dirname, 0777, true);
         }
 
-        \File::put($this->path(), $this->content, true);
+        File::put($this->path(), $this->content, true);
 
         $this->processSelect();
 
@@ -113,7 +120,7 @@ class Template
      */
     public function delete()
     {
-        if (\File::delete($this->path())) {
+        if (File::delete($this->path())) {
             $this->exists = false;
 
             return true;
@@ -158,7 +165,7 @@ class Template
         $json = json_encode($this->jsonSerialize(), $options);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \Exception('Error encoding model [Template] to JSON: '.json_last_error_msg());
+            throw new Exception('Error encoding model [Template] to JSON: '.json_last_error_msg());
         }
 
         return $json;
