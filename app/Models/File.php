@@ -327,7 +327,7 @@ class File extends BaseModel
         $output = imagecreatetruecolor($width, $height);
 
         // Manipulate with `png` format.
-        if (3 == $imagetype and ! $is_convert) {
+        if (3 == $imagetype and false === $is_convert) {
             imagealphablending($output, false);imagesavealpha($output, true);
         } elseif (3 == $imagetype) {
             imagefill($output, 0, 0, 16777215); // 0xFFFFFF
@@ -336,9 +336,9 @@ class File extends BaseModel
         imagecopyresampled($output, $source, 0, 0, 0, 0, $width, $height, $w, $h);
 
         // if save extension.
-        if (3 == $imagetype and ! $is_convert) {
+        if (3 == $imagetype and false === $is_convert) {
             imagepng($output, $outfile, round($quality / 100)); $extension = 'png';
-        } elseif (6 == $imagetype and ! $is_convert) {
+        } elseif (6 == $imagetype and false === $is_convert) {
             imagebmp($output, $outfile, (int) round($quality / 100)); $extension = 'bmp';
         } else {
             imagejpeg($output, $outfile, $quality); $extension = 'jpeg';
