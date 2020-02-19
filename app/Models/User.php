@@ -2,34 +2,27 @@
 
 namespace BBCMS\Models;
 
+// Сторонние зависимости.
 use BBCMS\Models\Article;
+use BBCMS\Models\Comment;
 use BBCMS\Models\File;
 use BBCMS\Models\Note;
-use BBCMS\Models\Comment;
-
-use BBCMS\Models\Relations\Extensible;
-use BBCMS\Models\Relations\hasFollows;
-
-use BBCMS\Models\Mutators\UserMutators;
 use BBCMS\Models\Observers\UserObserver;
-
-use BBCMS\Models\Traits\hasOnline;
-use BBCMS\Models\Traits\hasPrivileges;
-
-use Illuminate\Support\Str;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Traits\Dataviewer;
-    use Notifiable;
-    use Extensible,
-        hasFollows,
-        UserMutators,
-        hasOnline,
-        hasPrivileges;
+    use Mutators\UserMutators,
+        Relations\Extensible,
+        Relations\hasFollows,
+        Traits\Dataviewer,
+        Traits\hasOnline,
+        Traits\hasPrivileges,
+        Notifiable;
+
     // use Commentable; user not commentable, Wall Profile is commentable !!!
 
     protected $table = 'users';
