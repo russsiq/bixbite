@@ -2,17 +2,16 @@
 
 namespace BBCMS\Models;
 
+// Зарегистрированные фасады приложения.
 use Artisan;
 use File;
+use EnvManager;
 use Storage;
 
+// Сторонние зависимости.
 use BBCMS\Models\Module;
-use BBCMS\Models\BaseModel;
 use BBCMS\Models\Observers\SettingObserver;
-
 use Illuminate\Support\Collection as BaseCollection;
-
-use Russsiq\EnvManager\Support\Facades\EnvManager;
 
 class Setting extends BaseModel
 {
@@ -29,6 +28,7 @@ class Setting extends BaseModel
         'name',
         'type',
         'value',
+
     ];
 
     protected $allowedFilters = [
@@ -40,6 +40,7 @@ class Setting extends BaseModel
         'module_name',
         'name',
         'created_at',
+
     ];
 
     protected static $_env = [
@@ -48,7 +49,7 @@ class Setting extends BaseModel
         'APP_NAME',
         'APP_THEME',
         'APP_SKIN',
-        
+
         'ORG_ADDRESS_LOCALITY',
         'ORG_ADDRESS_STREET',
         'ORG_CONTACT_EMAIL',
