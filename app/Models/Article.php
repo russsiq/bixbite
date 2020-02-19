@@ -2,25 +2,22 @@
 
 namespace BBCMS\Models;
 
+// Сторонние зависимости.
+use BBCMS\Models\Setting;
 use BBCMS\Models\User;
-use BBCMS\Models\BaseModel;
-
-use BBCMS\Models\Mutators\ArticleMutators;
 use BBCMS\Models\Observers\ArticleObserver;
-use BBCMS\Models\Scopes\ArticleScopes;
-
-use BBCMS\Models\Relations\Extensible;
-use BBCMS\Models\Relations\Fileable;
-use BBCMS\Models\Relations\Taggable;
-use BBCMS\Models\Relations\Commentable;
-use BBCMS\Models\Relations\Categoryable;
 
 class Article extends BaseModel
 {
-    use Traits\Dataviewer;
-    use Traits\FullTextSearch;
-    use ArticleMutators, ArticleScopes;
-    use Extensible, Fileable, Taggable, Commentable, Categoryable;
+    use Mutators\ArticleMutators,
+        Relations\Categoryable,
+        Relations\Commentable,
+        Relations\Extensible,
+        Relations\Fileable,
+        Relations\Taggable,
+        Scopes\ArticleScopes,
+        Traits\Dataviewer,
+        Traits\FullTextSearch;
 
     protected $primaryKey = 'id';
 
