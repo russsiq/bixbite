@@ -2,7 +2,7 @@
 
 namespace BBCMS\Models;
 
-use BBCMS\Models\BaseModel;
+// Сторонние зависимости.
 use BBCMS\Models\Article;
 
 class Tag extends BaseModel
