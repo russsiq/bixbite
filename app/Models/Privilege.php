@@ -2,8 +2,10 @@
 
 namespace BBCMS\Models;
 
+// Зарегистрированные фасады приложения.
 use Schema;
-use BBCMS\Models\BaseModel;
+
+// Сторонние зависимости.
 use BBCMS\Models\Observers\PrivilegeObserver;
 
 class Privilege extends BaseModel
