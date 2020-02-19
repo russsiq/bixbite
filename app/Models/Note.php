@@ -2,17 +2,14 @@
 
 namespace BBCMS\Models;
 
+// Сторонние зависимости.
 use BBCMS\Models\User;
-use BBCMS\Models\BaseModel;
-use BBCMS\Models\Mutators\NoteMutators;
 use BBCMS\Models\Observers\NoteObserver;
-
-use BBCMS\Models\Relations\Fileable;
 
 class Note extends BaseModel
 {
-    use NoteMutators;
-    use Fileable;
+    use Mutators\NoteMutators,
+        Relations\Fileable;
 
     /**
      * The table associated with the model.
