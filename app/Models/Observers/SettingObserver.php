@@ -27,10 +27,6 @@ class SettingObserver
     {
         // Слишком дорогая операция при сохранении массива настроек модуля.
         // $this->langUpdate();
-
-        // Установить необходимые настройки в сессии.
-        if ('app_theme' === $setting->name) app_theme($setting->value);
-        if ('app_locale' === $setting->name) app_locale($setting->value);
     }
 
     public function massUpdateByModule(Setting $setting)

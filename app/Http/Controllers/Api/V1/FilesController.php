@@ -10,7 +10,6 @@ use BBCMS\Http\Resources\FileCollection;
 use BBCMS\Http\Requests\Api\V1\File\Store as StoreFileRequest;
 use BBCMS\Http\Requests\Api\V1\File\Update as UpdateFileRequest;
 
-use Lang;
 use Illuminate\Http\JsonResponse;
 
 class FilesController extends ApiController
@@ -18,8 +17,6 @@ class FilesController extends ApiController
     public function __construct()
     {
         $this->authorizeResource(File::class, 'file');
-
-        Lang::addJsonPath(skin_path('lang'.DS.'files'));
     }
 
     /**

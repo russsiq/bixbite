@@ -36,7 +36,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
             // BBCMS Middleware
-            \BBCMS\Http\Middleware\ThemeSwitcher::class,
             \BBCMS\Http\Middleware\LastUserActivity::class,
         ],
 

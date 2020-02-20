@@ -9,7 +9,6 @@ use BBCMS\Http\Requests\Api\V1\Template\Show as ShowTemplateRequest;
 use BBCMS\Http\Requests\Api\V1\Template\Store as StoreTemplateRequest;
 use BBCMS\Http\Requests\Api\V1\Template\Update as UpdateTemplateRequest;
 
-use Lang;
 use Illuminate\Http\JsonResponse;
 
 class TemplatesController extends ApiController
@@ -28,8 +27,6 @@ class TemplatesController extends ApiController
     public function __construct()
     {
         $this->authorizeResource(Template::class, 'template');
-
-        Lang::addJsonPath(skin_path('lang'.DS.'templates'));
     }
 
     public function index()
