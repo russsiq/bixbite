@@ -9,7 +9,6 @@ class Kernel extends HttpKernel
     /**
      * Глобальный стек HTTP посредников приложения.
      * Эти посредники запускаются во время каждого запроса к вашему приложению.
-     *
      * @var array
      */
     protected $middleware = [
@@ -24,7 +23,6 @@ class Kernel extends HttpKernel
 
     /**
      * Группы посредников маршрутов приложения.
-     *
      * @var array
      */
     protected $middlewareGroups = [
@@ -44,14 +42,13 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
-            'bindings',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
      * Посредники маршрутов приложения.
      * Эти посредники могут быть групповыми или использоваться по отдельности.
-     *
      * @var array
      */
     protected $routeMiddleware = [
@@ -59,11 +56,12 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'debugbar.disable' => \BBCMS\Http\Middleware\DebugbarDisable::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'debugbar.disable' => \BBCMS\Http\Middleware\DebugbarDisable::class,
         'guest' => \BBCMS\Http\Middleware\RedirectIfAuthenticated::class,
-        'role' => \BBCMS\Http\Middleware\CheckRole::class,
         'own_profile' => \BBCMS\Http\Middleware\OwnProfile::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'role' => \BBCMS\Http\Middleware\CheckRole::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
@@ -73,7 +71,6 @@ class Kernel extends HttpKernel
     /**
      * Список посредников, отсортированный по приоритетности.
      * Заставит неглобальных посредников всегда быть в заданном порядке.
-     *
      * @var array
      */
     protected $middlewarePriority = [
