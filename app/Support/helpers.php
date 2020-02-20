@@ -3,8 +3,8 @@
 define('DS', DIRECTORY_SEPARATOR);
 
 /**
- * app_locale - Get or set current lang from different sides.
- * app_theme - Get or set current theme name from different sides.
+ * app_locale - Get current lang.
+ * app_theme - Get current theme name.
  * cluster - Remove empty array values and joined with delimiter.
  * extract_images - Extract existing images paths array from given html string.
  * formatBytes - Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
@@ -34,80 +34,23 @@ use BBCMS\Exceptions\BadLogic;
 
 if (! function_exists('app_locale')) {
     /**
-     * Get or set current lang from different sides, if dir lang exists.
-     *
-     * @param  string $locale
-     * @throws \LogicException if dir lang not exists.
+     * Get current lang.
      * @return string  Ex.: en, ru, etc.
      */
-    function app_locale(string $locale = null): string
+    function app_locale(): string
     {
-        static $app_locale = null;
-
-        if (is_null($app_locale)) {
-            // При сохранении настроек нужно обновлять `app_locale` и `app_theme`,
-            // находящиеся в `session('')`. Нужно переделать в куки
-            foreach ([
-                request('app_locale'),
-                $locale,
-                session('app_locale'),
-                setting('system.app_locale'),
-                app()->getLocale(),
-                'ru',
-            ] as $app_locale) {
-                if ($app_locale and is_dir(resource_path('lang'.DS.$app_locale))) {
-                    session(['app_locale' => $app_locale]);
-                    break;
-                }
-            }
-        }
-
-        if (is_null($app_locale)) {
-            throw new \LogicException('Locale not defined! ');
-        }
-
-        return $app_locale;
+        return app()->getLocale();
     }
 }
 
 if (! function_exists('app_theme')) {
     /**
-     * Get or set current theme name from different sides.
-     * @NB: НЕОБХОДИМО разобраться с сессиями. Сейчас полный бардак.
-     *
-     * @param  string $locale
-     * @throws \LogicException if dir theme not exists.
-     * @return string Name of folder theme. Ex.: default.
+     * Get current theme name.
+     * @return string  Name of folder theme. Ex.: default.
      */
-    function app_theme(string $theme = null): string
+    function app_theme(): string
     {
         return setting('system.app_theme', 'default');
-
-        static $app_theme = null;
-
-        if (is_null($app_theme)) {
-            // При сохранении настроек нужно обновлять `lang` и `theme`, находящиеся в `session('')`.
-            foreach ([
-                $theme,
-                request('app_theme'),
-                setting('system.app_theme'),
-                env('APP_THEME'),
-                'default',
-                // session('app_theme'),
-            ] as $app_theme) {
-                if ($app_theme and is_dir(resource_path('themes'.DS.$app_theme))) {
-                    // session(['app_theme' => $app_theme]);
-
-                    break;
-                }
-            }
-        }
-
-        if (is_null($app_theme)) {
-            throw new \LogicException('Theme not defined! ');
-        }
-
-        return $app_theme;
     }
 }
 
