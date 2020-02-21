@@ -10,11 +10,6 @@ use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Получить данные из запроса для валидации.
      *

@@ -7,11 +7,6 @@ use BBCMS\Http\Requests\BaseFormRequest;
 
 class TemplateRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Получить данные из запроса для валидации.
      *

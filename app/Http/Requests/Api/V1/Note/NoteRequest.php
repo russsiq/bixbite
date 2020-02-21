@@ -9,11 +9,6 @@ use Illuminate\Validation\Rule;
 
 class NoteRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Получить данные из запроса для валидации.
      *

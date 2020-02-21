@@ -14,11 +14,6 @@ class ArticleRequest extends BaseFormRequest
         'customdate',
     ];
 
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         // NB: if isset image_id then attach image.

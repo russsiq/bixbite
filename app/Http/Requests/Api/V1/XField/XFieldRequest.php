@@ -9,11 +9,6 @@ use Illuminate\Validation\Rule;
 
 class XFieldRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return auth('api')->user()->hasRole('owner');
-    }
-
     /**
      * Получить данные из запроса для валидации.
      *

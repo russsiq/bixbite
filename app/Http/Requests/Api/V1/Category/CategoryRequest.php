@@ -7,11 +7,6 @@ use BBCMS\Http\Requests\BaseFormRequest;
 
 class CategoryRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         $input = $this->except([

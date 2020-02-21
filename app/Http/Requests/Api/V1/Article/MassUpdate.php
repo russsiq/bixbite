@@ -18,11 +18,6 @@ class MassUpdate extends BaseFormRequest
         'is_catpinned',
     ];
 
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         return $this->all();

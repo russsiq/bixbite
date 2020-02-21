@@ -6,16 +6,6 @@ use BBCMS\Models\File;
 
 class Update extends FileRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         return $this->merge([
@@ -50,7 +40,7 @@ class Update extends FileRequest
                 'alpha_dash',
                 'in:'.self::morphMap(),
             ],
-            
+
             // After that, we check for a record in the database.
             'attachment_id' => [
                 'bail',

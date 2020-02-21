@@ -13,15 +13,6 @@ class MassUpdate extends BaseFormRequest
         'is_approved',
     ];
 
-    public function authorize()
-    {
-        // $comment = Comment::find($this->route('comment'));
-        //
-        // return $comment && $this->user()->can('update', $comment);
-
-        return true;
-    }
-
     public function validationData()
     {
         return $this->all();

@@ -29,16 +29,6 @@ class Store extends FileRequest
            ],
     ];
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         // Перед тем как собрать необходимую информацию о файле,

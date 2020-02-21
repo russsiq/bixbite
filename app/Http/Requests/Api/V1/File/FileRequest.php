@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class FileRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function attributes()
     {
         return [

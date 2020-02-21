@@ -10,16 +10,6 @@ use Illuminate\Validation\Rule;
 class SettingRequest extends BaseFormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return \Gate::allows('admin.settings.modify');
-    }
-
-    /**
      * Получить данные из запроса для валидации.
      *
      * @return array

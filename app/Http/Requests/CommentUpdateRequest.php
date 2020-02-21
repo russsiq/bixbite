@@ -7,16 +7,6 @@ use BBCMS\Http\Requests\BaseFormRequest;
 class CommentUpdateRequest extends BaseFormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
      * Получить данные из запроса для валидации.
      *
      * @return array

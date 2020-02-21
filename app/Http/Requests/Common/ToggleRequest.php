@@ -6,11 +6,6 @@ use BBCMS\Http\Requests\BaseFormRequest;
 
 class ToggleRequest extends BaseFormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function validationData()
     {
         return $this->replace([
