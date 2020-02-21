@@ -13,4 +13,14 @@ abstract class BaseFormRequest extends FormRequest
     protected $allowedForInRule = [
         // 'key' => ['one', 'two', 'other'],
     ];
+
+    /**
+     * Получить список допустимых значений для правила `in:список_значений`.
+     * @param  string  $key
+     * @return string
+     */
+    protected function allowedForInRule(string $key): string
+    {
+        return implode(',', $this->allowedForInRule[$key]);
+    }
 }
