@@ -2,13 +2,24 @@
 
 namespace BBCMS\Http\Requests\Api\V1\File;
 
-use BBCMS\Models\File;
-
 class Update extends FileRequest
 {
-    public function validationData()
+    /**
+     * Подготовить данные для валидации.
+     * @return void
+     */
+    protected function prepareForValidation()
     {
-        return $this->merge([
+        $input = $this->except([
+            '_token',
+            '_method',
+            'submit',
+            'name',
+
+        ]);
+
+        $this->replace($input)
+            ->merge([
                 // 1 Do not change the filename. He may become unavailable.
                 // 'name' => str_slug($this->input('title')).'_'.time(),
 
@@ -17,21 +28,16 @@ class Update extends FileRequest
 
                 // 3 Clean html tags in descroption.
                 'description' => html_clean($this->input('description', null)),
-            ])
-            ->except([
-                'name',
-                '_token',
-                '_method',
-                'submit',
+
             ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             // Always check the `attachment_type` first.
@@ -39,6 +45,7 @@ class Update extends FileRequest
                 'nullable',
                 'alpha_dash',
                 'in:'.self::morphMap(),
+
             ],
 
             // After that, we check for a record in the database.
@@ -48,6 +55,7 @@ class Update extends FileRequest
                 'integer',
                 'required_with:attachment_type',
                 'exists:'.$this->input('attachment_type').',id',
+
             ],
 
             'title' => [
@@ -55,13 +63,16 @@ class Update extends FileRequest
                 'string',
                 'max:255',
                 'regex:/^[\w\s\.\,\-\_\?\!\(\)]+$/u',
+
             ],
 
             'description' => [
                 'nullable',
                 'string',
                 'max:1000',
+
             ],
+
         ];
     }
 }

@@ -2,17 +2,17 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Template;
 
-use BBCMS\Models\Template;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
+use BBCMS\Models\Template;
 
 class TemplateRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $filename = $this->get('filename');
         $content = $this->get('content', null);
@@ -23,31 +23,44 @@ class TemplateRequest extends BaseFormRequest
 
         $template->get();
 
-        return $this->replace([
+        $this->replace([
                 'filename' => $filename,
                 'content' => $content,
+
             ])
             ->merge([
                 'template' => $template,
                 'path' => $template->path,
                 'exists' => $template->exists,
-            ])
-            ->all();
+
+            ]);
     }
 
-    public function attributes()
+    /**
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function attributes(): array
     {
         return [
-            'filename' => __('Template'),
-            'content' => __('Content'),
+            'filename' => trans('Template'),
+            'content' => trans('Content'),
+
         ];
     }
 
-    public function messages()
+    /**
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function messages(): array
     {
         return [
-            // 'filename.required' => __('msg.filename.required'),
-            'content.required' => __('msg.content.required'),
+            // 'filename.required' => trans('msg.filename.required'),
+            'content.required' => trans('msg.content.required'),
+
         ];
     }
 }

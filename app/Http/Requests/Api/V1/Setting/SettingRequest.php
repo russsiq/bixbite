@@ -2,21 +2,24 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Setting;
 
-use BBCMS\Models\Setting;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
 use Illuminate\Validation\Rule;
 
 class SettingRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
-        $input = $this->except(['_token', '_method', 'submit']);
+        $input = $this->except([
+            '_token',
+            '_method',
+            'submit',
+
+        ]);
 
         // Do not change, save as is: $input['section_lang'] and $input['legend_lang'].
 
@@ -34,49 +37,133 @@ class SettingRequest extends BaseFormRequest
             $input['params'] = array_combine($params, $params);
         }
 
-        return $this->replace($input)->all();
-
-        // НИЖЕ взято из NoteRequest
-        $input = [];
-
-        $input['user_id'] = $this->get('user_id', null);
-        $input['image_id'] = $this->get('image_id', null);
-        $input['title'] = $this->get('title', null);
-        $input['slug'] = string_slug($input['title']);
-        $input['description'] = teaser($this->get('description', null), 500);
-        $input['is_completed'] = $this->get('is_completed', false);
-
-        return $this->replace($input)->all();
+        $this->replace($input);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'module_name' => ['required', 'string', 'max:30', 'regex:/[a-z_]/'],
-            'action' => ['required', 'string', 'max:20', 'in:creat,edit,setting'],
-            'section' => ['required', 'string', 'max:20', 'alpha_dash'],
-            'fieldset' => ['required', 'string', 'max:20', 'alpha_dash'],
+            'module_name' => [
+                'required',
+                'string',
+                'max:30',
+                'regex:/[a-z_]/',
 
-            'name' => ['required', 'string', 'max:30', 'regex:/[a-z_]/'], // unique !!!
-            'type' => ['required', 'string', 'max:20', 'regex:/[a-z-]/'],
-            'value' => ['required', 'string', 'max:255'],
-            'params' => ['nullable', 'array', 'required_if:type,select'],
-            'params.*' => ['required', 'string', 'max:255'],
-            'class' => ['nullable', 'string', 'max:255', 'regex:/[a-z\s-_]/'],
-            'html_flags' => ['nullable', 'string', 'max:500'],
+            ],
 
-            'title' => ['required', 'string', 'max:125', 'regex:/[\w\s-_]/'],
-            'descr' => ['nullable', 'string', 'max:500'],
+            'action' => [
+                'required',
+                'string',
+                'max:20',
+                'in:creat,edit,setting',
+
+            ],
+
+            'section' => [
+                'required',
+                'string',
+                'max:20',
+                'alpha_dash',
+
+            ],
+
+            'fieldset' => [
+                'required',
+                'string',
+                'max:20',
+                'alpha_dash',
+
+            ],
+
+
+            'name' => [
+                'required',
+                'string',
+                'max:30',
+                'regex:/[a-z_]/',
+                // unique !!!,
+
+            ],
+
+            'type' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/[a-z-]/',
+
+            ],
+
+            'value' => [
+                'required',
+                'string',
+                'max:255',
+
+            ],
+
+            'params' => [
+                'nullable',
+                'array',
+                'required_if:type,select',
+
+            ],
+
+            'params.*' => [
+                'required',
+                'string',
+                'max:255',
+
+            ],
+
+            'class' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/[a-z\s-_]/',
+
+            ],
+
+            'html_flags' => [
+                'nullable',
+                'string',
+                'max:500',
+
+            ],
+
+            'title' => [
+                'required',
+                'string',
+                'max:125',
+                'regex:/[\w\s-_]/',
+
+            ],
+
+            'descr' => [
+                'nullable',
+                'string',
+                'max:500',
+
+            ],
 
             // Not fillable attributes. Saved in language file through request() helper.
-            'section_lang' => ['required', 'string', 'max:255'],
-            'legend_lang' => ['required', 'string', 'max:255'],
+            'section_lang' => [
+                'required',
+                'string',
+                'max:255',
+
+            ],
+
+            'legend_lang' => [
+                'required',
+                'string',
+                'max:255',
+
+            ],
+
         ];
     }
-
 }

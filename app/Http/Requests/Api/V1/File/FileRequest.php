@@ -2,39 +2,34 @@
 
 namespace BBCMS\Http\Requests\Api\V1\File;
 
-use BBCMS\Models\File;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
-use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class FileRequest extends BaseFormRequest
 {
-    public function attributes()
-    {
-        return [
-            // 'template' => __('Template'),
-            // 'content' => __('Content'),
-        ];
-    }
-
-    public function messages()
+    /**
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function messages(): array
     {
         return [
             'file.dimensions' => sprintf(
-                __('validation.dimensions_large'),
-                $this->input('properties')['width'],
-                $this->input('properties')['height']
+                trans('validation.dimensions_large'),
+                $this->input('properties.width'),
+                $this->input('properties.height')
             ),
+
         ];
     }
 
     /**
-     * Get the morph map for polymorphic relations.
-     *
-     * @return array
+     * Получить список из карты полиморфных отношений.
+     * @return string
      */
-    protected static function morphMap()
+    protected static function morphMap(): string
     {
         return implode(',', array_keys(Relation::morphMap()));
     }

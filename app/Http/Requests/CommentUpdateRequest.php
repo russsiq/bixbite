@@ -2,19 +2,20 @@
 
 namespace BBCMS\Http\Requests;
 
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
 
 class CommentUpdateRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->only([
             'content',
+
         ]);
 
         $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
@@ -29,18 +30,24 @@ class CommentUpdateRequest extends BaseFormRequest
             $input['content'] = html_clean($input['content']);
         }
 
-        return $this->replace($input)
-            ->all();
+        $this->replace($input);
     }
 
-    public function rules()
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'content' => [
                 'required',
                 'string',
                 'between:4,1500',
+
             ],
+
         ];
     }
 }

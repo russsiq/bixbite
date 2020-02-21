@@ -4,12 +4,17 @@ namespace BBCMS\Http\Requests\Api\V1\Article;
 
 class Store extends ArticleRequest
 {
-    public function validationData()
+    /**
+     * Подготовить данные для валидации.
+     * @return void
+     */
+    protected function prepareForValidation()
     {
         $this->merge([
             'date_at' => 'currdate',
+
         ]);
 
-        return parent::validationData();
+        return parent::prepareForValidation();
     }
 }

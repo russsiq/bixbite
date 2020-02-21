@@ -2,63 +2,94 @@
 
 namespace BBCMS\Http\Requests\Api\V1\XField;
 
-use BBCMS\Models\XField;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
-use Illuminate\Validation\Rule;
+use BBCMS\Models\XField;
 
 class XFieldRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except([
             '_token',
             '_method',
             'submit',
+
         ]);
 
-        return $this->replace($input)
-            ->merge([
-                //
-            ])
-            ->all();
+        $this->replace($input);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
-    public function rules()
+    public function attributes(): array
+    {
+        return [
+           'extensible' => trans('extensible'),
+           'name' => trans('name'),
+           'type' => trans('type'),
+           'params' => trans('params'),
+           'title' => trans('title'),
+           'descr' => trans('descr'),
+           'html_flags' => trans('html_flags'),
+
+       ];
+    }
+
+    /**
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'params.required_if' => trans('validation.params.required_if'),
+
+        ];
+    }
+
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'extensible' => [
                 'required',
                 'string',
                 'in:'.implode(',', XField::extensibles()),
+
             ],
 
             'name' => [
                 'required',
                 'string',
                 'regex:/^[a-z_]+$/',
+
             ],
 
             'type' => [
                 'required',
                 'string',
                 'in:'.implode(',', XField::fieldTypes()),
+
             ],
 
             'params' => [
                 'nullable',
                 'array',
                 'required_if:type,array',
+
             ],
 
             'title' => [
@@ -66,39 +97,23 @@ class XFieldRequest extends BaseFormRequest
                 'string',
                 'max:255',
                 'regex:/^[\w\s\d\-\_\.]+$/u',
+
             ],
 
             'descr' => [
                 'nullable',
                 'string',
                 'max:500',
+
             ],
 
             'html_flags' => [
                 'nullable',
                 'string',
                 'max:500',
+
             ],
-        ];
-    }
 
-    public function attributes()
-    {
-        return [
-           'extensible' => __('extensible'),
-           'name' => __('name'),
-           'type' => __('type'),
-           'params' => __('params'),
-           'title' => __('title'),
-           'descr' => __('descr'),
-           'html_flags' => __('html_flags'),
-       ];
-    }
-
-    public function messages()
-    {
-        return [
-            'params.required_if' => __('validation.params.required_if'),
         ];
     }
 }

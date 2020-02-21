@@ -2,25 +2,25 @@
 
 namespace BBCMS\Http\Requests\Api\V1\User;
 
+// Сторонние зависимости.
+use BBCMS\Http\Requests\BaseFormRequest;
 use BBCMS\Models\Privilege;
 use BBCMS\Models\User;
-use BBCMS\Http\Requests\BaseFormRequest;
-
 use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except([
             '_token',
             '_method',
             'submit',
+
         ]);
 
         if (empty($input['password'])) {
@@ -42,15 +42,15 @@ class UserRequest extends BaseFormRequest
 
         // !!! ДОБАВИТЬ ВСЕ ПРОВЕРКИ И САНИТАЦИИ - ЭТО Э ПОЛЬЗОВАТЕЛИ !!!
 
-        return $this->replace($input)->all();
+        $this->replace($input);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -58,59 +58,59 @@ class UserRequest extends BaseFormRequest
                 'string',
                 'between:3,255',
                 'regex:/^[\w\s\.\,\-\_]+$/u',
+
             ],
+
             'email' => [
                 'required',
                 'email',
                 'between:6,255',
                 Rule::unique('users')->ignore($this->user),
+
             ],
+
             'password' => [
                 'string',
                 'between:6,255',
                 'confirmed',
                 isset($this->user->id) ? 'nullable' : 'required',
+
             ],
+
             'role' => [
                 'sometimes',
                 'required',
                 'string',
                 'max:255',
                 'in:'.implode(',', Privilege::getModel()->roles()),
+
             ],
+
             'where_from' => [
                 'nullable',
                 'string',
                 'max:255',
                 'alpha_num',
+
             ],
+
             'info' => [
                 'nullable',
                 'string',
                 'max:500',
                 'regex:/^[\w\s\.\,\-\_\?\!\r\n]+$/u',
+
             ],
+
             'avatar' => [
                 'nullable',
                 'image',
                 'mimes:png,jpg,jpeg,gif,bmp',
                 'max:800',
                 'dimensions:max_width='.setting('users.avatar_max_width', 140).',max_height='.setting('users.avatar_max_height', 140),
+
             ],
-        ];
-    }
 
-    public function attributes()
-    {
-        return [
-            //
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            //
         ];
     }
 }

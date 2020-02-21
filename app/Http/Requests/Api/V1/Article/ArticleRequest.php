@@ -2,25 +2,37 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Article;
 
-use BBCMS\Models\Article;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
 use Illuminate\Validation\Rule;
 
 class ArticleRequest extends BaseFormRequest
 {
-    protected $allowedDateActions = [
-        'currdate',
-        'customdate',
+    /**
+     * Общий массив допустимых значений для правила `in:список_значений`.
+     * @var array
+     */
+    protected $allowedForInRule = [
+        'date_at' => [
+            'currdate',
+            'customdate',
+
+        ],
+
     ];
 
-    public function validationData()
+    /**
+     * Подготовить данные для валидации.
+     * @return void
+     */
+    protected function prepareForValidation()
     {
         // NB: if isset image_id then attach image.
         $input = $this->except([
             '_token',
             '_method',
             'submit',
+
         ]);
 
         $input['user_id'] = $this->route('article')->user_id ?? user('id') ?? 1;
@@ -68,7 +80,7 @@ class ArticleRequest extends BaseFormRequest
             $input['state'] = 'unpublished';
         }
 
-        return $this->replace($input)
+        $this->replace($input)
             ->merge([
                 // default value to the checkbox
                 'on_mainpage' => $this->input('on_mainpage', 0),
@@ -76,33 +88,45 @@ class ArticleRequest extends BaseFormRequest
                 'is_catpinned' => $this->input('is_catpinned', 0),
                 'is_favorite' => $this->input('is_favorite', 0),
                 'allow_com' => $this->input('allow_com', 2),
-            ])
-            ->all();
+
+            ]);
     }
 
-    public function attributes()
+    /**
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function attributes(): array
     {
         return [
-            'title' => __('Title'),
-            'slug' => __('Slug'),
-            'teaser' => __('Teaser'),
-        ];
-    }
+            'title' => trans('Title'),
+            'slug' => trans('Slug'),
+            'teaser' => trans('Teaser'),
 
-    public function messages()
-    {
-        return [
-            'title.unique' => 'Запись с таким заголовком уже существует.',
-            'slug.unique' => 'Возможно запись с таким заголовком уже существует.',
         ];
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
      * @return array
      */
-    public function rules()
+    public function messages(): array
+    {
+        return [
+            'title.unique' => 'Запись с таким заголовком уже существует.',
+            'slug.unique' => 'Возможно запись с таким заголовком уже существует.',
+
+        ];
+    }
+
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'user_id' => [
@@ -110,6 +134,7 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'integer',
                 'exists:users,id',
+
             ],
 
             // Main content.
@@ -119,6 +144,7 @@ class ArticleRequest extends BaseFormRequest
                 'string',
                 'max:255',
                 Rule::unique('articles')->ignore($this->route('article')),
+
             ],
 
             'slug' => [
@@ -127,29 +153,34 @@ class ArticleRequest extends BaseFormRequest
                 'string',
                 'max:255',
                 Rule::unique('articles')->ignore($this->route('article')),
+
             ],
 
             'teaser' => [
                 'nullable',
                 'string',
                 'max:255',
+
             ],
 
             'content' => [
                 'nullable',
                 'string',
+
             ],
 
             'description' => [
                 'nullable',
                 'string',
                 'max:255',
+
             ],
 
             'keywords' => [
                 'nullable',
                 'string',
                 'max:255',
+
             ],
 
             // Flags ?
@@ -157,26 +188,31 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'in:published,unpublished,draft',
+
             ],
 
             'on_mainpage' => [
                 'nullable',
                 'boolean',
+
             ],
 
             'is_favorite' => [
                 'nullable',
                 'boolean',
+
             ],
 
             'is_pinned' => [
                 'nullable',
                 'boolean',
+
             ],
 
             'is_catpinned' => [
                 'nullable',
                 'boolean',
+
             ],
 
             // Extension.
@@ -184,21 +220,25 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'numeric',
                 'in:0,1,2',
+
             ],
 
             'views' => [
                 'nullable',
                 'integer',
+
             ],
 
             'votes' => [
                 'nullable',
                 'integer',
+
             ],
 
             'rating' => [
                 'nullable',
                 'integer',
+
             ],
 
             // Relations types.
@@ -206,16 +246,19 @@ class ArticleRequest extends BaseFormRequest
                 'nullable',
                 'integer',
                 'exists:files,id',
+
             ],
 
             'categories' => [
                 'nullable',
                 'array',
+
             ],
 
             'categories.*' => [
                 'integer',
                 'exists:categories,id',
+
             ],
 
             /*'files' => [
@@ -241,43 +284,48 @@ class ArticleRequest extends BaseFormRequest
             'tags' => [
                 'nullable',
                 'array',
+
             ],
 
             'tags.*' => [
                 'string',
                 'max:255',
                 'regex:/^[\w-]+$/u',
+
             ],
 
             // Временные метки.
             'date_at' => [
                 'nullable',
                 'string',
-                'in:'.implode(',', $this->allowedDateActions),
+                'in:'.$this->allowedForInRule('date_at'),
+
             ],
 
             'created_at' => [
                 'nullable',
                 'required_with:date_at',
                 'date_format:"Y-m-d H:i:s"',
+
             ],
 
             'updated_at' => [
                 'nullable',
                 'required_without:date_at',
                 'date_format:"Y-m-d H:i:s"',
+
             ],
+
         ];
     }
 
     /**
      * Remove Emoji Characters in PHP by Himphen Hui.
-     * https://medium.com/coding-cheatsheet/remove-emoji-characters-in-php-236034946f51
-     *
-     * @param  string $string
+     * @source https://medium.com/coding-cheatsheet/remove-emoji-characters-in-php-236034946f51
+     * @param  string  $string
      * @return string
      */
-    public function removeEmoji(string $string)
+    protected function removeEmoji(string $string)
     {
         // Match Emoticons.
         $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';

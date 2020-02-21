@@ -2,31 +2,33 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Auth;
 
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
-use Illuminate\Validation\Rule;
 
 class AuthRequest extends BaseFormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'email' => [
                 'required',
                 'email',
                 'max:255',
+
             ],
 
             'password' => [
                 'required',
                 'string',
                 'between:6,25',
-            ]
+
+            ],
+
         ];
     }
 }

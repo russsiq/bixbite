@@ -2,52 +2,70 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Article;
 
-use BBCMS\Models\Article;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
 
 class MassUpdate extends BaseFormRequest
 {
-    protected $allowedActions = [
-        'published',
-        'unpublished',
-        'draft',
-        'on_mainpage',
-        'allow_com',
-        'currdate',
-        'is_favorite',
-        'is_catpinned',
+    /**
+     * Общий массив допустимых значений для правила `in:список_значений`.
+     * @var array
+     */
+    protected $allowedForInRule = [
+        'mass_action' => [
+            'published',
+            'unpublished',
+            'draft',
+            'on_mainpage',
+            'allow_com',
+            'currdate',
+            'is_favorite',
+            'is_catpinned',
+
+        ],
+
     ];
 
-    public function validationData()
+    /**
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
+     * @return array
+     */
+    public function messages(): array
     {
-        return $this->all();
+        return [
+            'articles.*' => trans('msg.validate.articles'),
+            'mass_action.*' => trans('msg.validate.mass_action'),
+
+        ];
     }
 
-    public function rules()
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'articles' => [
                 'required',
                 'array',
+
             ],
 
             'articles.*' => [
                 'integer',
+
             ],
 
             'mass_action' => [
                 'required',
                 'string',
-                'in:'.implode(',', $this->allowedActions),
-            ],
-        ];
-    }
+                'in:'.$this->allowedForInRule('mass_action'),
 
-    public function messages()
-    {
-        return [
-            'articles.*' => __('msg.validate.articles'),
-            'mass_action.*' => __('msg.validate.mass_action'),
+            ],
+
         ];
     }
 }

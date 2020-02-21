@@ -2,34 +2,48 @@
 
 namespace BBCMS\Http\Requests\Api\V1\File;
 
+// Сторонние зависимости.
 use BBCMS\Models\File;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class Store extends FileRequest
 {
-    protected static $allowedFileType = [
-           'archive' => [
-               'ext' => ['7z','cab','rar','zip'],
-               'mime' => ['application/x-gzip'],
-           ],
-           'audio' => [
-               'ext' => ['mpga','mp3','ogg'],
-               'mime' => [],
-           ],
-           'document' => [
-               'ext' => ['doc','docx','ods','odt','pdf','ppt','rtf','xls','xlsx','xml'],
-               'mime' => ['application/pdf'],
-           ],
-           'image' => [
-               'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff','webp'],
-               'mime' => [],
-           ],
-           'video' => [
-               'ext' => ['3gp','avi','f4v','flv','m4a','m4v','mkv','mov','mp4','mpeg','qt','swf','wmv'],
-               'mime' => [],
-           ],
+    /**
+     * Общий массив допустимых значений для правила `in:список_значений`.
+     * @var array
+     */
+    protected $allowedForInRule = [
+        'file_types' => [
+            'archive' => [
+                'ext' => ['7z','cab','rar','zip'],
+                'mime' => ['application/x-gzip'],
+            ],
+            'audio' => [
+                'ext' => ['mpga','mp3','ogg'],
+                'mime' => [],
+            ],
+            'document' => [
+                'ext' => ['doc','docx','ods','odt','pdf','ppt','rtf','xls','xlsx','xml'],
+                'mime' => ['application/pdf'],
+            ],
+            'image' => [
+                'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff','webp'],
+                'mime' => [],
+            ],
+            'video' => [
+                'ext' => ['3gp','avi','f4v','flv','m4a','m4v','mkv','mov','mp4','mpeg','qt','swf','wmv'],
+                'mime' => [],
+            ],
+
+        ],
+
     ];
 
-    public function validationData()
+    /**
+     * Подготовить данные для валидации.
+     * @return void
+     */
+    protected function prepareForValidation()
     {
         // Перед тем как собрать необходимую информацию о файле,
         // провалидиуем на его физическое присутствие.
@@ -45,8 +59,8 @@ class Store extends FileRequest
 
         // Prepare variables.
         $mime_type = $file->getMimeType();
-        $extension = self::detectExtension($file);
-        $type = self::getFileType($mime_type, $extension);
+        $extension = $this->detectExtension($file);
+        $type = $this->getFileType($mime_type, $extension);
 
         $title = $this->input('title', null) ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         // NB.: En. and rus. x letter.
@@ -58,7 +72,7 @@ class Store extends FileRequest
             [$properties['width'], $properties['height']] = getimagesize($file->getPathname());
         }
 
-        return $this->replace([
+        $this->replace([
             'user_id' => auth('api')->user()->id ?? $this->user()->id,
             'attachment_id' => $this->input('attachment_id', null),
             'attachment_type' => $this->input('attachment_type', null),
@@ -76,13 +90,12 @@ class Store extends FileRequest
             'title' => $title,
             'description' => html_clean($this->input('description', null)),
             'properties' => $properties,
-        ])
-        ->all();
+        ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
     public function rules()
@@ -94,12 +107,14 @@ class Store extends FileRequest
                 'file',
                 // imagealphablending or imagesavealpha == 500 error
                 ('image' == $this->input('type')) ? 'dimensions:max_width=3840,max_height=2400' : '',
+
             ],
 
             'user_id' => [
                 'required',
                 'integer',
                 'in:'.auth('api')->user()->id ?? $this->user()->id,
+
             ],
 
             // Always check the `attachment_type` first.
@@ -107,6 +122,7 @@ class Store extends FileRequest
                 'nullable',
                 'alpha_dash',
                 'in:'.self::morphMap(),
+
             ],
 
             // After that, we check for a record in the database.
@@ -116,42 +132,51 @@ class Store extends FileRequest
                 'integer',
                 'required_with:attachment_type',
                 'exists:'.$this->input('attachment_type').',id',
+
             ],
 
             'disk' => [
                 'required',
                 'in:'.implode(',', array_keys(config('filesystems.disks'))),
+
             ],
 
             'category' => [
                 'required',
-                'string','alpha_dash',
+                'string',
+                'alpha_dash',
+
             ],
 
             // Unstable data.
             'type' => [
                 'required',
+
             ],
 
             'mime_type' => [
                 'required',
                 'string',
+
             ],
 
             'name' => [
                 'required',
                 'string',
                 'alpha_dash',
+
             ],
 
             'extension' => [
                 'required',
                 'string',
+
             ],
 
             'filesize' => [
                 'required',
                 'integer',
+
             ],
 
             'checksum' => [
@@ -159,7 +184,8 @@ class Store extends FileRequest
                 'alpha_num',
                 // На уникальность проверяем ниже, так как
                 // нужна ссылка дубликата во всплывашке на фронте.
-                // 'unique:files'
+                // 'unique:files',
+
             ],
 
             'title' => [
@@ -167,43 +193,44 @@ class Store extends FileRequest
                 'string',
                 'max:255',
                 'regex:/^[\w\s\.\,\-\_\?\!\(\)\[\]]+$/u',
+
             ],
 
             'description' => [
                 'nullable',
                 'string',
                 'max:1000',
+
             ],
 
             'properties' =>  [
                 'nullable',
                 'array',
+
             ],
+
         ];
     }
 
     /**
-    * Configure the validator instance.
-    *
-    * @param  \Illuminate\Validation\Validator  $validator
-    * @return void
-    */
-    public function withValidator($validator)
+     * Надстройка экземпляра валидатора.
+     * @param  ValidatorContract  $validator
+     * @return void
+     */
+    public function withValidator(ValidatorContract $validator)
     {
-        $validator->after(function ($validator) {
+        $validator->after(function (ValidatorContract $validator) {
             if ($duplicate = File::whereChecksum($this->input('checksum'))->first()) {
                 $validator->errors()->add('checksum', sprintf(
-                    __('msg.already_exists'),
+                    trans('msg.already_exists'),
                     $duplicate->url,
                     $duplicate->title
                 ));
             }
         });
-
-        return $validator;
     }
 
-    protected static function detectExtension($file)
+    protected function detectExtension($file): string
     {
         $original = $file->getClientOriginalExtension();
         $extension = $file->guessExtension() ?? $original;
@@ -217,9 +244,9 @@ class Store extends FileRequest
         return $extension;
     }
 
-    protected static function getFileType(string $mime, string $ext)
+    protected function getFileType(string $mime, string $ext): string
     {
-        $allowed = self::$allowedFileType;
+        $allowed = $this->allowedForInRule['file_types'];
 
         foreach ($allowed as $type => $term) {
             if (in_array($ext, $term['ext']) or in_array($mime, $term['mime'])) {

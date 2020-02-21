@@ -2,19 +2,17 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Note;
 
-use BBCMS\Models\Note;
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
-
 use Illuminate\Validation\Rule;
 
 class NoteRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = [];
 
@@ -25,10 +23,15 @@ class NoteRequest extends BaseFormRequest
         $input['description'] = teaser($this->get('description', null), 500);
         $input['is_completed'] = $this->get('is_completed', false);
 
-        return $this->replace($input)->all();
+        $this->replace($input);
     }
 
-    public function rules()
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'title' => [
@@ -36,6 +39,7 @@ class NoteRequest extends BaseFormRequest
                 'string',
                 'max:225',
                 'regex:/^[\w\s\.\,\-\_\?\!\(\)\[\]]+$/u',
+
             ],
 
             'slug' => [
@@ -44,45 +48,35 @@ class NoteRequest extends BaseFormRequest
                 'max:225',
                 'alpha_dash',
                 Rule::unique('notes')->ignore($this->note),
+
             ],
 
             'description' => [
                 'required',
                 'string',
                 'max:500',
+
             ],
 
             'is_completed' => [
                 'required',
                 'boolean',
+
             ],
 
             // Relations types.
             'user_id' => [
                 'required',
                 Rule::in(auth('api')->user()->id),
+
             ],
 
             'image_id' => [
                 'nullable',
                 'exists:files,id',
+
             ],
-        ];
-    }
 
-    public function attributes()
-    {
-        return [
-            // 'template' => __('Template'),
-            // 'content' => __('Content'),
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            // // 'template.required' => __('msg.template.required'),
-            // 'content.required' => __('msg.content.required'),
         ];
     }
 }

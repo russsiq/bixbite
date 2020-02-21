@@ -2,21 +2,23 @@
 
 namespace BBCMS\Http\Requests;
 
+// Сторонние зависимости.
 use BBCMS\Http\Requests\BaseFormRequest;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class CommentStoreRequest extends BaseFormRequest
 {
     /**
-     * Получить данные из запроса для валидации.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except(['
             _token',
             '_method',
             'submit',
+
         ]);
 
         if ($this->user()) {
@@ -26,6 +28,7 @@ class CommentStoreRequest extends BaseFormRequest
                 'name' => teaser($this->input('name'), 255),
                 'email' => filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL),
                 'captcha' => filter_var($this->input('captcha'), FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_EMPTY_STRING_NULL),
+
             ]);
         }
 
@@ -43,7 +46,7 @@ class CommentStoreRequest extends BaseFormRequest
             $input['content'] = html_clean($input['content']);
         }
 
-        return $this->replace($input)
+        $this->replace($input)
             ->merge([
                 // Default value.
                 'is_approved' => ($this->user() and $this->user()->hasRole('owner')) or ! setting('comments.moderate'),
@@ -53,39 +56,59 @@ class CommentStoreRequest extends BaseFormRequest
                 'commentable_type' => string_slug($this->route('commentable_type'), '_'),
                 // Aditional default value.
                 'user_ip' => $this->ip(),
-            ])
-            ->all();
+
+            ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
-    public function rules()
+    public function attributes(): array
+    {
+        return [
+            'name' => trans('auth.name'),
+            'email' => trans('auth.email'),
+            'captcha' => trans('auth.captcha'),
+            'content' => trans('comments.content'),
+
+        ];
+    }
+
+    /**
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'is_approved' => [
                 'required',
                 'boolean',
+
             ],
 
             'parent_id' => [
                 'nullable',
                 'integer',
                 'exists:comments,id',
+
             ],
 
             'user_id' => [
                 'sometimes',
                 'integer',
                 'exists:users,id',
+
             ],
 
             'commentable_type' => [
                 'bail',
                 'required',
                 'string',
+
             ],
 
             'commentable_id' => [
@@ -93,6 +116,7 @@ class CommentStoreRequest extends BaseFormRequest
                 'required',
                 'integer',
                 'exists:'.$this->commentable_type.',id',
+
             ],
 
             // To prevent guests to use the email and name of users.
@@ -101,6 +125,7 @@ class CommentStoreRequest extends BaseFormRequest
                 'between:3,255',
                 'string',
                 'unique:users,name',
+
             ],
 
             'email' => [
@@ -108,51 +133,44 @@ class CommentStoreRequest extends BaseFormRequest
                 'between:6,255',
                 'email',
                 'unique:users,email',
+
             ],
 
             'user_ip' => [
                 'required',
+
             ],
 
             'captcha' => [
                 (auth()->check() ? 'sometimes' : 'required'),
                 'digits:4',
+
             ],
 
             'content' => [
                 'required',
                 'string',
                 'between:10,1500',
+
             ],
+
         ];
     }
 
     /**
-     * Set custom attributes for validator errors.
-     *
-     * @return array
+     * Надстройка экземпляра валидатора.
+     * @param  ValidatorContract  $validator
+     * @return void
      */
-    public function attributes()
+    public function withValidator(ValidatorContract $validator)
     {
-        return [
-            'name' => trans('auth.name'),
-            'email' => trans('auth.email'),
-            'captcha' => trans('auth.captcha'),
-            'content' => trans('comments.content'),
-        ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
+        $validator->after(function (ValidatorContract $validator) {
             // Check captcha for unregistered visitors
             if (auth()->guest() and setting('system.captcha_used', true)) {
-                if (md5($this->captcha) != session('captcha')) {
-                    $validator->errors()->add('captcha', __('validation.captcha'));
+                if (md5($this->captcha) !== session('captcha')) {
+                    $validator->errors()->add('captcha', trans('validation.captcha'));
                 }
             }
         });
-
-        return $validator;
     }
 }
