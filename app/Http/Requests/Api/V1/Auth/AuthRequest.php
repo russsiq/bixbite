@@ -2,11 +2,11 @@
 
 namespace BBCMS\Http\Requests\Api\V1\Auth;
 
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class AuthRequest extends Request
+class AuthRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.

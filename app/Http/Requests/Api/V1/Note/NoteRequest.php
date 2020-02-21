@@ -3,11 +3,11 @@
 namespace BBCMS\Http\Requests\Api\V1\Note;
 
 use BBCMS\Models\Note;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class NoteRequest extends Request
+class NoteRequest extends BaseFormRequest
 {
     public function authorize()
     {

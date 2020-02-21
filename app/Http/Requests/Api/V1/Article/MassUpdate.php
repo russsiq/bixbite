@@ -3,9 +3,9 @@
 namespace BBCMS\Http\Requests\Api\V1\Article;
 
 use BBCMS\Models\Article;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class MassUpdate extends Request
+class MassUpdate extends BaseFormRequest
 {
     protected $allowedActions = [
         'published',

@@ -3,12 +3,12 @@
 namespace BBCMS\Http\Requests\Api\V1\File;
 
 use BBCMS\Models\File;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class FileRequest extends Request
+class FileRequest extends BaseFormRequest
 {
     public function authorize()
     {

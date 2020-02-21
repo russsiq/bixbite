@@ -3,9 +3,9 @@
 namespace BBCMS\Http\Requests\Api\V1\Template;
 
 use BBCMS\Models\Template;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class TemplateRequest extends Request
+class TemplateRequest extends BaseFormRequest
 {
     public function authorize()
     {

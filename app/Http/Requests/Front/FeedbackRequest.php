@@ -2,9 +2,9 @@
 
 namespace BBCMS\Http\Requests\Front;
 
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class FeedbackRequest extends Request
+class FeedbackRequest extends BaseFormRequest
 {
     /**
      * Получить данные из запроса для валидации.

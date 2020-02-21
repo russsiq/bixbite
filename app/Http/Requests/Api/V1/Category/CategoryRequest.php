@@ -3,9 +3,9 @@
 namespace BBCMS\Http\Requests\Api\V1\Category;
 
 use BBCMS\Models\Category;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class CategoryRequest extends Request
+class CategoryRequest extends BaseFormRequest
 {
     public function authorize()
     {

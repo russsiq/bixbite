@@ -3,9 +3,9 @@
 namespace BBCMS\Http\Requests\Front;
 
 use BBCMS\Models\Privilege;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class UserRequest extends Request
+class UserRequest extends BaseFormRequest
 {
     /**
      * Получить данные из запроса для валидации.
@@ -93,7 +93,7 @@ class UserRequest extends Request
                 'max:500',
                 'regex:/^[\w\s\.\,\-\_\?\!\r\n]+$/u',
             ],
-            
+
             'avatar' => [
                 'nullable',
                 'image',

@@ -2,9 +2,9 @@
 
 namespace BBCMS\Http\Requests\Common;
 
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class ToggleRequest extends Request
+class ToggleRequest extends BaseFormRequest
 {
     public function authorize()
     {

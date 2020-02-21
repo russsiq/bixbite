@@ -2,9 +2,9 @@
 
 namespace BBCMS\Http\Requests;
 
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
-class CommentStoreRequest extends Request
+class CommentStoreRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

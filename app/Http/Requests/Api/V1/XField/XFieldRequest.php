@@ -3,11 +3,11 @@
 namespace BBCMS\Http\Requests\Api\V1\XField;
 
 use BBCMS\Models\XField;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class XFieldRequest extends Request
+class XFieldRequest extends BaseFormRequest
 {
     public function authorize()
     {

@@ -3,11 +3,11 @@
 namespace BBCMS\Http\Requests\Api\V1\Article;
 
 use BBCMS\Models\Article;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class ArticleRequest extends Request
+class ArticleRequest extends BaseFormRequest
 {
     protected $allowedDateActions = [
         'currdate',

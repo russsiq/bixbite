@@ -3,11 +3,11 @@
 namespace BBCMS\Http\Requests\Api\V1\Setting;
 
 use BBCMS\Models\Setting;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class SettingRequest extends Request
+class SettingRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

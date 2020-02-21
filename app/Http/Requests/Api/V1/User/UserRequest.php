@@ -4,11 +4,11 @@ namespace BBCMS\Http\Requests\Api\V1\User;
 
 use BBCMS\Models\Privilege;
 use BBCMS\Models\User;
-use BBCMS\Http\Requests\Request;
+use BBCMS\Http\Requests\BaseFormRequest;
 
 use Illuminate\Validation\Rule;
 
-class UserRequest extends Request
+class UserRequest extends BaseFormRequest
 {
     public function authorize()
     {
@@ -115,7 +115,7 @@ class UserRequest extends Request
     public function messages()
     {
         return [
-            // 
+            //
         ];
     }
 }
