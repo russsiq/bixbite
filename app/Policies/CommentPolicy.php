@@ -17,10 +17,14 @@ class CommentPolicy extends BasePolicy
         return $user->hasRole('owner') or $user->id === $comment->user_id;
     }
 
-    public function create(User $user)
+    public function create(?User $user)
     {
+        if ($user instanceof User) {
+            return true;
+        }
+
         // Check if unregistered user are allowed to commenting.
-        return $user->id or ! setting('comments.regonly');
+        return ! setting('comments.regonly');
     }
 
     public function update(User $user, Comment $comment)

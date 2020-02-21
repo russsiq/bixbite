@@ -26,6 +26,8 @@ class CommentsController extends SiteController
 
     public function store(CommentStoreRequest $request)
     {
+        $this->authorize('create', Comment::class);
+
         $comment = $this->model->create($request->all());
         $entity = $comment->commentable;
 
@@ -69,7 +71,7 @@ class CommentsController extends SiteController
      */
     public function edit(Comment $comment)
     {
-        $this->authorize($comment);
+        $this->authorize('update', $comment);
 
         pageinfo([
             'title' => __('comments.edit_page'),
@@ -88,7 +90,7 @@ class CommentsController extends SiteController
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
-        $this->authorize($comment);
+        $this->authorize('update', $comment);
 
         $comment->update($request->only(['content']));
 
@@ -103,7 +105,7 @@ class CommentsController extends SiteController
      */
     public function destroy(Comment $comment)
     {
-        $this->authorize($comment);
+        $this->authorize('delete', $comment);
 
         $url = $comment->commentable->url;
 
