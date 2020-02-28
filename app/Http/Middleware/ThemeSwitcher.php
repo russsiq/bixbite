@@ -151,12 +151,12 @@ class ThemeSwitcher
 
             // Добавляем расположение языковых файлов текущей секции
             // административной панели сайта.
-            if ('panel' === $prefix and $request->segment(2)) {
+            if ('panel' === $prefix and $request->segment(2) and 'login' !== $request->segment(2)) {
                 $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(2)));
             }
 
             // Если это запрос по API.
-            if ('api' === $prefix and $request->segment(3)) {
+            if ('api' === $prefix and $request->segment(3) and 'auth' !== $request->segment(3)) {
                 // Добавляем расположение языковых файлов текущего подраздела
                 // административной панели сайта.
                 $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(3)));
