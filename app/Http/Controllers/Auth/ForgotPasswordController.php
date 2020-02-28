@@ -1,47 +1,39 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Password Reset Controller
-|--------------------------------------------------------------------------
-|
-| This controller is responsible for handling password reset emails and
-| includes a trait which assists in sending these notifications from
-| your application to your users. Feel free to explore this trait.
-|
-*/
-
 namespace BBCMS\Http\Controllers\Auth;
 
+// Сторонние зависимости.
 use BBCMS\Http\Controllers\SiteController;
+use BBCMS\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
+/**
+ * Password Reset Controller
+ *
+ * This controller is responsible for handling password reset emails and
+ * includes a trait which assists in sending these notifications from
+ * your application to your users. Feel free to explore this trait.
+ */
 class ForgotPasswordController extends SiteController
 {
     use SendsPasswordResetEmails;
 
+    /**
+     * Пространство имен шаблонов.
+     * @var string
+     */
     protected $template = 'auth';
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
-
-    /**
-     * Display the form to request a password reset link.
-     *
-     * @return \Illuminate\Http\Response
+     * Показать форму запроса ссылки на сброс пароля.
+     * @return mixed
      */
     public function showLinkRequestForm()
     {
         pageinfo([
-            'title' => __('auth.reset'),
+            'title' => trans('auth.reset'),
             'robots' => 'noindex, follow',
+
         ]);
 
         return $this->makeResponse('passwords.email');

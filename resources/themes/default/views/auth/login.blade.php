@@ -5,23 +5,23 @@
         </header>
 
         <section class="action_page__content">
-            <form id="form_login" name="form_login" action="{{ route('login') }}" method="post">
+            <form action="{{ route('login') }}" method="POST">
                 <div class="form-group row">
                     @if ('name' == setting('users.login_username', 'name'))
                         <label for="name" class="col-md-4 col-form-label">@lang('auth.name')</label>
                         <div class="col-md-6">
-                            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-                            @if ($errors->has('name'))
-                                <span class="invalid-feedback">{{ $errors->first('name') }}</span>
-                            @endif
+                            <input id="name" type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" required autofocus />
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
                         </div>
                     @else
                         <label for="email" class="col-md-4 col-form-label">@lang('auth.email')</label>
                         <div class="col-md-6">
-                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-                            @if ($errors->has('email'))
-                                <span class="invalid-feedback">{{ $errors->first('email') }}</span>
-                            @endif
+                            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autofocus />
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
                         </div>
                     @endif
                 </div>
@@ -29,10 +29,10 @@
                 <div class="form-group row has-error">
                     <label for="password" class="col-md-4 col-form-label">@lang('auth.password')</label>
                     <div class="col-md-6">
-                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                        @if ($errors->has('password'))
-                            <span class="invalid-feedback">{{ $errors->first('password') }}</span>
-                        @endif
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 

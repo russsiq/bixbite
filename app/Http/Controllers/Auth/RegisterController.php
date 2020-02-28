@@ -2,30 +2,39 @@
 
 namespace BBCMS\Http\Controllers\Auth;
 
-use BBCMS\Models\User;
+// Сторонние зависимости.
 use BBCMS\Http\Controllers\SiteController;
-
-use \Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use BBCMS\Models\User;
+use BBCMS\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
+/**
+ * Register Controller
+ *
+ * This controller handles the registration of new users as well as their
+ * validation and creation. By default this controller uses a trait to
+ * provide this functionality without requiring any additional code.
+ */
 class RegisterController extends SiteController
 {
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
-     *
+     * Куда перенаправить пользователя после регистрации.
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
+    /**
+     * Пространство имен шаблонов.
+     * @var string
+     */
     protected $template = 'auth';
 
     /**
-     * Create a new controller instance.
-     *
+     * Создать новый экземпляр контроллера.
      * @return void
      */
     public function __construct()
@@ -34,15 +43,15 @@ class RegisterController extends SiteController
     }
 
     /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
+     * Показать форму регистрации.
+     * @return mixed
      */
     public function showRegistrationForm()
     {
         pageinfo([
-            'title' => __('auth.register'),
+            'title' => trans('auth.register'),
             'robots' => 'noindex, follow',
+
         ]);
 
         return $this->makeResponse('register');
@@ -62,25 +71,33 @@ class RegisterController extends SiteController
                 'string',
                 'max:255',
                 'unique:users',
+
             ],
+
             'email' => [
                 'required',
                 'string',
                 'max:255',
                 'unique:users',
                 'email',
+
             ],
+
             'password' => [
                 'required',
                 'string',
-                'min:6',
+                'min:8',
                 'confirmed',
+
             ],
+
             'registration_rules' => [
                 'required',
                 'boolean',
                 'accepted',
+
             ],
+
         ]);
     }
 
@@ -88,9 +105,9 @@ class RegisterController extends SiteController
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return User
      */
-    protected function create(array $data)
+    protected function create(array $data): User
     {
         $user = User::create([
             'name' => $data['name'],
@@ -99,29 +116,22 @@ class RegisterController extends SiteController
             'last_ip' => request()->ip(),
             // Only 'user'.
             'role' => 'user',
+
         ]);
 
         return $user;
     }
 
     /**
-     * The user has been registered.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * Пользователь зарегистрирован.
+     * @param  Request  $request
      * @param  mixed  $user
-     * @return mixed
+     * @return void
      */
     protected function registered(Request $request, $user)
     {
-        return $this->makeRedirect(true, $this->redirectPath(), __('Register complete!'));
-    }
-
-
-    protected function unfitPreviousUrl()
-    {
-        return in_array(url()->previous(), [
-            action('Auth\RegisterController@register'),
-            action('Auth\RegisterController@showRegistrationForm'),
-        ]);
+        // Только устанавливаем сообщение, ничего не возвращая.
+        // Будут отработаны редиректы, заданные по умолчанию.
+        session()->flash('status', trans('auth.register_complete'));
     }
 }

@@ -1,66 +1,46 @@
-<header class="page_header">
-    <h2 class="section-title">@lang('auth.reset')</h2>
-</header>
+<section class="action_page">
+    <div class="action_page__inner">
+        <header class="action_page__header">
+            <h2 class="action_page__title">@lang('auth.reset')</h2>
+        </header>
 
-<div class="article-container clearfix">
-    <div class="card">
-        <div class="card-header">{{ __('Reset Password') }}</div>
-
-        <div class="card-body">
-            <form method="POST" action="{{ route('password.request') }}">
-                @csrf
-
-                <input type="hidden" name="token" value="{{ $token }}">
+        <section class="action_page__content">
+            <form action="{{ route('password.update') }}" method="POST">
+                <input type="hidden" name="token" value="{{ $token }}" />
 
                 <div class="form-group row">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
+                    <label for="email" class="col-md-4 col-form-label">@lang('auth.email')</label>
                     <div class="col-md-6">
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" required autofocus>
-
-                        @if ($errors->has('email'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
+                        <input id="email" type="email" name="email" value="{{ $email ?? old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email" required autofocus />
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
+                    <label for="password" class="col-md-4 col-form-label">@lang('auth.password')</label>
                     <div class="col-md-6">
-                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                        @if ($errors->has('password'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
+                        <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" required>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                    <label for="password-confirm" class="col-md-4 col-form-label">@lang('auth.password_confirmation')</label>
                     <div class="col-md-6">
-                        <input id="password-confirm" type="password" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" name="password_confirmation" required>
-
-                        @if ($errors->has('password_confirmation'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('password_confirmation') }}</strong>
-                            </span>
-                        @endif
+                        <input id="password-confirm" type="password" name="password_confirmation" class="form-control" autocomplete="new-password" required>
                     </div>
                 </div>
 
-                <div class="form-group row mb-0">
+                <div class="form-group row">
                     <div class="col-md-6 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Reset Password') }}
-                        </button>
+                        <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('auth.btn.reset')</button>
                     </div>
                 </div>
             </form>
-        </div>
+        </section>
     </div>
-</div>
+</section>

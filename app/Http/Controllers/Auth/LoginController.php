@@ -2,10 +2,14 @@
 
 namespace BBCMS\Http\Controllers\Auth;
 
+// Сторонние зависимости.
 use BBCMS\Http\Controllers\SiteController;
+use BBCMS\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
+ * Login Controller
+ *
  * This controller handles authenticating users for the application and
  * redirecting them to your home screen. The controller uses a trait
  * to conveniently provide its functionality to your applications.
@@ -15,17 +19,19 @@ class LoginController extends SiteController
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
+     * Куда перенаправить пользователя после входа.
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
+    /**
+     * Пространство имен шаблонов.
+     * @var string
+     */
     protected $template = 'auth';
 
     /**
-     * Create a new controller instance.
-     *
+     * Создать новый экземпляр контроллера.
      * @return void
      */
     public function __construct()
@@ -33,28 +39,28 @@ class LoginController extends SiteController
         $this->middleware('guest')->except('logout');
     }
 
-    public function username()
-    {
-        return setting('users.auth_username', 'name');
-    }
-
+    /**
+     * Показать форму входа на сайт.
+     * @return mixed
+     */
     public function showLoginForm()
     {
         pageinfo([
-            'title' => __('auth.login'),
+            'title' => trans('auth.login'),
             'robots' => 'noindex, follow',
+
         ]);
 
         return $this->makeResponse('login');
     }
 
     /**
-     * Get the post register / login redirect path.
-     *
+     * Получить имя пользователя для входа,
+     * которое будет использоваться контроллером.
      * @return string
      */
-    public function redirectTo()
+    public function username()
     {
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return setting('users.auth_username', 'name');
     }
 }
