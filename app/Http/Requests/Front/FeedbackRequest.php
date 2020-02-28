@@ -92,7 +92,7 @@ class FeedbackRequest extends BaseFormRequest
             ],
 
             'file' => [
-                'sometimes',
+                'nullable',
                 'file',
                 'max:51200',
                 'mimetypes:application/zip',
