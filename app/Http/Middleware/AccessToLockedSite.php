@@ -2,7 +2,12 @@
 
 namespace BBCMS\Http\Middleware;
 
+// Базовые расширения PHP.
 use Closure;
+
+// Сторонние зависимости.
+use BBCMS\Models\User;
+use Illuminate\Http\Request;
 
 /**
  * Проверка на доступ к заблокированному сайту.
@@ -12,7 +17,7 @@ class AccessToLockedSite
 {
     /**
      * Обработка входящего запроса.
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Closure  $next
      * @return mixed
      */

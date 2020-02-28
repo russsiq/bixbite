@@ -137,8 +137,10 @@ class ThemeSwitcher
      */
     protected function associateResources(Request $request): self
     {
+        $prefix = $request->segment(1);
+
         // Если это панель или запрос по API.
-        if (in_array($request->segment(1), ['panel', 'api'])) {
+        if (in_array($prefix, ['panel', 'api'])) {
             // Добавляем расположение шаблонов
             // административной панели сайта.
             $this->addViewLocation(skin_path('views'));
@@ -149,12 +151,12 @@ class ThemeSwitcher
 
             // Добавляем расположение языковых файлов текущей секции
             // административной панели сайта.
-            if ('panel' === $request->segment(1) and $request->segment(2)) {
+            if ('panel' === $prefix and $request->segment(2)) {
                 $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(2)));
             }
 
             // Если это запрос по API.
-            if ('api' === $request->segment(1) and $request->segment(3)) {
+            if ('api' === $prefix and $request->segment(3)) {
                 // Добавляем расположение языковых файлов текущего подраздела
                 // административной панели сайта.
                 $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(3)));

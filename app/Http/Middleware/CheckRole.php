@@ -2,7 +2,13 @@
 
 namespace BBCMS\Http\Middleware;
 
+// Базовые расширения PHP.
 use Closure;
+
+// Сторонние зависимости.
+use BBCMS\Models\User;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Проверка на то, что текущий пользователь
@@ -14,25 +20,44 @@ class CheckRole
 {
     /**
      * Обработка входящего запроса.
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  Closure  $next
      * @param  string  $role
      * @return mixed
      */
     public function handle($request, Closure $next, string $role)
     {
-        if ($user = $request->user() and $user->hasRole($role)) {
-            return $next($request);
+        $this->verifyUserByRole($request->user(), $role);
+
+        return $next($request);
+    }
+
+    /**
+     * Проверить пользователя по группе пользователей.
+     * @param  ?User  $user
+     * @param  string  $role
+     * @return bool
+     */
+    protected function verifyUserByRole(?User $user, string $role): bool
+    {
+        if ($user instanceof User && $user->hasRole($role)) {
+            return true;
         }
 
-        if ($request->expectsJson()) {
-            return response(
-                __('common.error.403.message'), 403
-            );
-        }
+        $this->untrusted();
+    }
 
-        abort(403, __('common.error.403.message'), [
+    /**
+     * Обработать запрос от ненадежного пользователя.
+     * @return void
+     *
+     * @throws HttpException
+     */
+    protected function untrusted()
+    {
+        abort(403, trans('common.error.403.message'), [
             'X-Robots-Tag' => 'noindex, nofollow',
+
         ]);
     }
 }
