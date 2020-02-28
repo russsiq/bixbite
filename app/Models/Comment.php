@@ -13,10 +13,36 @@ class Comment extends BaseModel
     use Mutators\CommentMutators,
         Traits\Dataviewer;
 
-    protected $primaryKey = 'id';
-
+    /**
+    * Таблица БД, ассоциированная с моделью.
+    * @var string
+    */
     protected $table = 'comments';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Динамически добавляемые в массив или JSON представление модели атрибуты,
+     * для которых прописаны методы доступа (акцессоры).
+     * @var array
+     */
+    protected $appends = [
+        'url',
+        'created',
+        // 'updated',
+        'by_user',
+        // 'by_author',
+
+    ];
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
     protected $casts = [
         'is_approved' => 'boolean',
         'user_id' => 'integer',
@@ -32,16 +58,13 @@ class Comment extends BaseModel
         'updated' => 'timestamp',
         'by_user' => 'string',
         'by_author' => 'string',
+
     ];
 
-    protected $appends = [
-        'url',
-        'created',
-        // 'updated',
-        'by_user',
-        // 'by_author',
-    ];
-
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * @var array
+     */
     protected $fillable = [
         'is_approved',
         'parent_id',
@@ -54,6 +77,10 @@ class Comment extends BaseModel
         'content',
     ];
 
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
     protected $allowedFilters = [
         'id',
         'user_id',
@@ -64,14 +91,13 @@ class Comment extends BaseModel
         'created_at',
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'created_at',
-    ];
-
-    // Not used.
-    protected $with = [
-        // 'commentable'
     ];
 
     /**

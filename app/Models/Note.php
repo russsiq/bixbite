@@ -12,22 +12,19 @@ class Note extends BaseModel
         Relations\Fileable;
 
     /**
-     * The table associated with the model.
-     *
+     * Таблица БД, ассоциированная с моделью.
      * @var string
      */
     protected $table = 'notes';
 
     /**
-     * The primary key for the model.
-     *
+     * Первичный ключ таблицы БД.
      * @var string
      */
     protected $primaryKey = 'id';
 
     /**
-     * The model's default values for attributes.
-     *
+     * Значения по умолчанию для атрибутов модели.
      * @var array
      */
     protected $attributes = [
@@ -36,11 +33,11 @@ class Note extends BaseModel
         'slug' => '',
         'description' => '',
         'is_completed' => false,
+
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
+     * Атрибуты, которые должны быть приведены к базовым типам.
      * @var array
      */
     protected $casts = [
@@ -49,12 +46,12 @@ class Note extends BaseModel
         'title' => 'string',
         'slug' => 'string',
         'description' => 'string',
-        'is_completed' => 'bool',
+        'is_completed' => 'boolean',
+
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
+     * Атрибуты, для которых разрешено массовое присвоение значений.
      * @var array
      */
     protected $fillable = [
@@ -66,14 +63,24 @@ class Note extends BaseModel
         'is_completed',
     ];
 
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
     protected $allowedFilters = [
         'is_completed',
+
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'title',
         'created_at',
+
     ];
 
     /**

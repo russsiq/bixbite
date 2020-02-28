@@ -25,13 +25,40 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // use Commentable; user not commentable, Wall Profile is commentable !!!
 
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'users';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
-     * The attributes that are mass assignable.
-     *
+     * Динамически добавляемые в массив или JSON представление модели атрибуты,
+     * для которых прописаны методы доступа (акцессоры).
+     * @var array
+     */
+    protected $appends = [
+        'logined',
+        'is_online',
+
+    ];
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+
+    ];
+
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
      * @var array
      */
     protected $fillable = [
@@ -44,16 +71,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'where_from',
         'last_ip',
         'logined_at',
-    ];
 
-    protected $appends = [
-        'logined',
-        'is_online'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
+     * Скрываемые из массива или JSON представления модели атрибуты.
      * @var array
      */
     protected $hidden = [
@@ -61,26 +83,27 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'api_token',
         'remember_token',
+
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
+     * Атрибуты, по которым разрешена фильтрация сущностей.
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
     protected $allowedFilters = [
-        //
+
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'name',
         'logined_at',
-        'role'
+        'role',
+
     ];
 
     protected static function boot()

@@ -11,14 +11,31 @@ class XField extends BaseModel
     use Mutators\XFieldMutators,
         Traits\Dataviewer;
 
-    protected $primaryKey = 'id';
-
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'x_fields';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
     protected $casts = [
         'params' => 'array',
+
     ];
 
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * @var array
+     */
     protected $fillable = [
         'extensible',
         'name',
@@ -27,6 +44,26 @@ class XField extends BaseModel
         'title',
         'descr',
         'html_flags',
+
+    ];
+
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
+    protected $allowedFilters = [
+
+    ];
+
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
+    protected $orderableColumns = [
+        'id',
+        'title',
+        'created_at',
+
     ];
 
     protected static $xPrefix = 'x_';
@@ -40,6 +77,7 @@ class XField extends BaseModel
         'articles',
         'categories',
         'users',
+
     ];
 
     /**
@@ -53,16 +91,7 @@ class XField extends BaseModel
         'array',
         'text',
         'timestamp',
-    ];
 
-    protected $allowedFilters = [
-        //
-    ];
-
-    protected $orderableColumns = [
-        'id',
-        'title',
-        'created_at',
     ];
 
     protected static function boot()

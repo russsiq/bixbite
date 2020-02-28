@@ -17,12 +17,28 @@ class Setting extends BaseModel
 {
     use Traits\Dataviewer;
 
-    protected $primaryKey = 'id';
-
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'settings';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Указывает, следует ли обрабатывать временные метки модели.
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * Атрибуты, которым разрешено массовое присвоение.
+     * @var array
+     */
     protected $fillable = [
         'module_name',
         'name',
@@ -31,10 +47,18 @@ class Setting extends BaseModel
 
     ];
 
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
     protected $allowedFilters = [
-        //
+
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'module_name',

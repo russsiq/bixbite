@@ -14,22 +14,19 @@ class Category extends BaseModel
         Relations\Fileable;
 
     /**
-     * The table associated with the model.
-     *
+     * Таблица БД, ассоциированная с моделью.
      * @var string
      */
     protected $table = 'categories';
 
     /**
-     * The primary key for the model.
-     *
+     * Первичный ключ таблицы БД.
      * @var string
      */
     protected $primaryKey = 'id';
 
     /**
-     * The model's default values for attributes.
-     *
+     * Значения по умолчанию для атрибутов модели.
      * @var array
      */
     protected $attributes = [
@@ -47,11 +44,22 @@ class Category extends BaseModel
         'order_by' => 'id',
         'direction' => 'desc',
         'template' => null,
+
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
+     * Динамически добавляемые в массив или JSON представление модели атрибуты,
+     * для которых прописаны методы доступа (акцессоры).
+     * @var array
+     */
+    protected $appends = [
+        'root',
+        'url',
+
+    ];
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
      * @var array
      */
     protected $casts = [
@@ -73,11 +81,11 @@ class Category extends BaseModel
         'url' => 'string',
         // Необязательные поля.
         // 'alt_url' => null,
+
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
+     * Атрибуты, для которых разрешено массовое присвоение значений.
      * @var array
      */
     protected $fillable = [
@@ -95,24 +103,7 @@ class Category extends BaseModel
         'order_by',
         'direction',
         'template',
-    ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'root',
-        'url',
-    ];
-
-    protected $allowedFilters = [
-        //
-    ];
-
-    protected $orderableColumns = [
-        //
     ];
 
     /**

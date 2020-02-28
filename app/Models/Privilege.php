@@ -10,12 +10,26 @@ use BBCMS\Models\Observers\PrivilegeObserver;
 
 class Privilege extends BaseModel
 {
-    protected $primaryKey = 'id';
-
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'privileges';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * User exposed observable events.
+     * These are extra user-defined events observers may subscribe to.
+     * @var array
+     */
     protected $observables = [
-        'tableUpdated'
+        'tableUpdated',
+
     ];
 
     protected static function boot()

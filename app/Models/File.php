@@ -22,19 +22,42 @@ class File extends BaseModel
         Scopes\FileScopes,
         Traits\Dataviewer;
 
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'files';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
     protected $primaryKey = 'id';
 
-    protected $casts = [
-        'properties' => 'object',
-    ];
-
+    /**
+     * Динамически добавляемые в массив или JSON представление модели атрибуты,
+     * для которых прописаны методы доступа (акцессоры).
+     * @var array
+     */
     protected $appends = [
         'url',
         'path',
+
     ];
 
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
+    protected $casts = [
+        'properties' => 'object',
+
+    ];
+
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'attachment_id',
@@ -51,12 +74,13 @@ class File extends BaseModel
         'description',
         'properties',
         'downloads',
+
     ];
 
-    protected $hidden = [
-        'checksum',
-    ];
-
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
     protected $allowedFilters = [
         'id',
         'title',
@@ -64,23 +88,30 @@ class File extends BaseModel
         'type',
         'disk',
         'category',
+
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'title',
         'name',
         'downloads',
+
     ];
 
     /**
-     * Image thumbnail sizes in ascending order.
+     * Размеры миниатюр изображения в порядке возрастания.
      * @var array
      */
     protected $thumbSizes = [
         'thumb' => 240,
         'small' => 576,
         'medium' => 992,
+
     ];
 
     protected static function boot()

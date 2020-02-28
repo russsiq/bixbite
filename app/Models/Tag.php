@@ -7,14 +7,40 @@ use BBCMS\Models\Article;
 
 class Tag extends BaseModel
 {
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'tags';
+
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
     protected $primaryKey = 'id';
+
+    /**
+     * Следует ли обрабатывать временные метки модели.
+     * @var bool
+     */
     public $timestamps = false;
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
     protected $casts = [
         'title' => 'string',
+
     ];
+
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * @var array
+     */
     protected $fillable = [
         'title',
+
     ];
 
     public function getRouteKeyName()

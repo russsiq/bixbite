@@ -19,12 +19,41 @@ class Article extends BaseModel
         Traits\Dataviewer,
         Traits\FullTextSearch;
 
-    protected $primaryKey = 'id';
-
+    /**
+     * Таблица БД, ассоциированная с моделью.
+     * @var string
+     */
     protected $table = 'articles';
 
+    /**
+     * Первичный ключ таблицы БД.
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Следует ли обрабатывать временные метки модели.
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * Динамически добавляемые в массив или JSON представление модели атрибуты,
+     * для которых прописаны методы доступа (акцессоры).
+     * @var array
+     */
+    protected $appends = [
+        'url',
+        'created',
+        'updated',
+        // 'image',
+
+    ];
+
+    /**
+     * Атрибуты, которые должны быть приведены к базовым типам.
+     * @var array
+     */
     protected $casts = [
         'title' => 'string',
         'img' => 'array',
@@ -35,15 +64,13 @@ class Article extends BaseModel
         'is_catpinned' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+
     ];
 
-    protected $appends = [
-        'url',
-        'created',
-        'updated',
-        // 'image',
-    ];
-
+    /**
+     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'image_id',
@@ -68,8 +95,24 @@ class Article extends BaseModel
         // Dates
         'created_at',
         'updated_at',
+
     ];
 
+    /**
+     * Жадно загружаемые отношения при каждом запросе.
+     * При выводе списка комментариев нужно получить ссылку на комментарий,
+     * а ссылка на комментарий к записи формируется с использованием категорий.
+     * @var array
+     */
+    protected $with = [
+        'categories:categories.id,categories.title,categories.slug',
+
+    ];
+
+    /**
+     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * @var array
+     */
     protected $allowedFilters = [
         'id',
         'title',
@@ -87,31 +130,30 @@ class Article extends BaseModel
         'comments.created_at',
         'files.count',
         'categories.id',
+
     ];
 
+    /**
+     * Атрибуты, по которым разрешена сортировка сущностей.
+     * @var array
+     */
     protected $orderableColumns = [
         'id',
         'title',
         'views',
         'state',
         'created_at',
+
     ];
 
     /**
-     * The columns of the full text index.
+     * Атрибуты, по которым будет выполняться полнотекстовый поиск.
+     * @var array
      */
     protected $searchable = [
         'title',
         'content',
-    ];
 
-    /**
-     * The relations to eager load on every query.
-     * При выводе списка комментариев нужно получить ссылку на комментарий,
-     * а ссылка на комментарий к записи формируется с использованием категорий.
-     */
-    protected $with = [
-        'categories:categories.id,categories.title,categories.slug',
     ];
 
     /**

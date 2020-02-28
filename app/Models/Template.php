@@ -17,19 +17,28 @@ use Illuminate\Support\Str;
 
 class Template
 {
+    /**
+     * Разрешенные разрешения файлов.
+     * @var string
+     */
     const ALLOWED_EXTENSIONS = '/\.(tpl|ini|css|js|blade\.php)$/';
 
     /**
-     * The model's default values for attributes.
-     *
+     * Значения по умолчанию для атрибутов модели.
      * @var array
      */
     protected $attributes = [
-        //
+
     ];
 
-    public function __construct(array $attributes = [])
-    {
+    /**
+     * Создать новый экземпляр модели.
+     * @param  array  $attributes
+     * @return void
+     */
+    public function __construct(
+        array $attributes = []
+    ) {
         $this->fill($attributes);
     }
 
