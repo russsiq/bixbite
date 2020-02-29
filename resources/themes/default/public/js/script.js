@@ -81,6 +81,10 @@ function feedbackFormDataHandler(axios, data, event) {
             // В случае успешной отправки, очищаем форму.
             this.reset();
         });
+
+    // Если подключена GRecaptcha,
+    // то перезагружаем её.
+    grecaptcha && grecaptcha_reload();
 }
 
 /**
