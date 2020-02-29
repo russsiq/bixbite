@@ -31,10 +31,8 @@ export default {
             type: Object,
             required: true,
             validator(attachment) {
-                const valid_id = 'number' === typeof attachment.id;
-                const valid_type = 'string' === typeof attachment.type;
-
-                return valid_id && valid_type;
+                return 'number' === typeof attachment.id
+                    && 'string' === typeof attachment.type;
             }
         },
     },
