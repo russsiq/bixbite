@@ -43,18 +43,6 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="form-group">
-
-                <div class="card">
-                    <div class="card-header">
-                        <a href="#card_files" data-toggle="collapse" class="d-block"><i class="fa fa-files-o text-muted"></i> Прикрепленные файлы</a>
-                    </div>
-                    <div id="card_files" class="c-ollapse">
-                        <ul v-if="article.files">
-                            <li v-for="file in article.files" @click="fileDelete(file)">{{ file.id }}</li>
-                        </ul>
-                    </div>
-                </div>
-
                 <quill-editor :attachment="attachment" :value="form.content" @input="updateContent" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
@@ -63,6 +51,41 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
             <div id="accordion">
+                <div class="card card-table">
+                    <div class="card-header">
+                        <a href="#card_files" data-toggle="collapse" class="d-block"><i class="fa fa-files-o text-muted"></i> Прикрепленные файлы</a>
+                    </div>
+                    <div id="card_files" class="card-body table-responsive">
+                        <table v-if="article.files.length" class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Заголовок</th>
+                                    <th>Расширение</th>
+                                    <!-- <th>Категория</th> -->
+                                    <th class="text-right d-print-none">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="file in article.files" >
+                                    <td>{{ file.id }}</td>
+                                    <td>{{ file.title }}</td>
+                                    <td>{{ file.extension }}</td>
+                                    <!-- <td>{{ file.category }}</td> -->
+                                    <td class="text-right d-print-none">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-link" @click="fileDelete(file)">
+                                                <i class="fa fa-trash-o text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p v-else class="alert alert-info text-center">К этой записи нет прикрепленных файлов.</p>
+                    </div>
+                </div>
+
                 <div v-if="setting.manual_meta" class="card">
                     <div class="card-header">
                         <a href="#card_meta" data-toggle="collapse" class="d-block"><i class="fa fa-header text-muted"></i> Мета данные</a>
@@ -319,6 +342,7 @@ export default {
          * @param {Article} article
          */
         fillForm(article) {
+            console.log(article);
             this.form = Object.assign({}, this.form, article);
             this.form.categories = this.form.categories.map(cat => cat.id);
             this.form.tags = this.form.tags.map(tag => tag.title).join(', ');
@@ -365,7 +389,7 @@ export default {
                     },
 
                     // Не понятно: работает ли это?
-                    // update: ['files']
+                    update: ['files']
                 })
                 .then(this.fillForm)
                 .catch((error) => {})
@@ -373,7 +397,9 @@ export default {
         },
 
         fileDelete(file) {
-            if (this.form.image_id === file.id) return;
+            if (this.form.image_id === file.id) {
+                return alert(`Это основное изображение записи.`)
+            }
 
             const result = confirm(`Вы точно хотите удалить это изображение [${file.id}] с сервера?`);
 
