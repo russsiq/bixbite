@@ -137,7 +137,7 @@ return [
 
         // Драйвер, используемый по умолчанию.
         // Поддерживаемые типы: `github`.
-        'driver' => 'github',
+        'driver' => env('ASSISTANT_UPDATER_DRIVER', 'github'),
 
         // Настройки драйверов.
         'drivers' => [
