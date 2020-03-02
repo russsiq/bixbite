@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'used' => false,
+    'used' => true,
 
     // Логирование событий.
     'log_events' => env('GRECAPTCHA_LOG_EVENTS', false),
