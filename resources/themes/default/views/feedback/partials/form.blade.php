@@ -27,9 +27,8 @@
     </div>
 
     <div class="form-group-last">
-        <input type="hidden" name="_token" value="{{ pageinfo('csrf_token') }}" />
         @g_recaptcha_input
 
-        <button type="submit" class="btn btn-outline-primary">@lang('feedback.form.labels.submit')</button>
+        <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-outline-primary">@lang('feedback.form.labels.submit')</button>
     </div>
 </form>
