@@ -100,6 +100,9 @@ class FeedbackRequest extends BaseFormRequest
             ],
 
             'g-recaptcha-response' => [
+                'bail',
+                'required',
+                'string',
                 'g_recaptcha',
 
             ],
