@@ -139,7 +139,7 @@
 Откройте файл *C:\Windows\System32\drivers\etc\hosts* и добавьте следующую запись в этот файл:
 
 ```console
-127.0.0.1 bixbite.local
+127.0.0.1 blog.local
 ```
 
 ### Установка зависимостей пакетных менеджеров Composer и Node
