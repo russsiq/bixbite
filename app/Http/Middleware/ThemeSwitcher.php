@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * Посредник, добавляющий расположения файлов языка и шаблонов.
@@ -184,10 +184,10 @@ class ThemeSwitcher
     /**
      * Добавить язык приложения к кукам ответа.
      * @param  Request  $request
-     * @param  Response  $response
-     * @return Response
+     * @param  BaseResponse  $response
+     * @return BaseResponse
      */
-    protected function addCookieToResponse($request, $response): Response
+    protected function addCookieToResponse($request, $response): BaseResponse
     {
         if ($response instanceof Responsable) {
             $response = $response->toResponse($request);
