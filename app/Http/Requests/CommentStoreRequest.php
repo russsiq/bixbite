@@ -70,7 +70,6 @@ class CommentStoreRequest extends BaseFormRequest
         return [
             'name' => trans('auth.name'),
             'email' => trans('auth.email'),
-            'captcha' => trans('auth.captcha'),
             'content' => trans('comments.content'),
 
         ];
@@ -141,9 +140,17 @@ class CommentStoreRequest extends BaseFormRequest
 
             ],
 
-            'captcha' => [
-                (auth()->check() ? 'sometimes' : 'required'),
-                'digits:4',
+            // 'captcha' => [
+            //     (auth()->check() ? 'sometimes' : 'required'),
+            //     'digits:4',
+            //
+            // ],
+
+            'g-recaptcha-response' => [
+                'bail',
+                (! auth()->check() && config('g_recaptcha.used') ? 'required' : 'nullable'),
+                'string',
+                (! auth()->check() && config('g_recaptcha.used') ? 'g_recaptcha' : 'nullable'),
 
             ],
 
@@ -155,22 +162,5 @@ class CommentStoreRequest extends BaseFormRequest
             ],
 
         ];
-    }
-
-    /**
-     * Надстройка экземпляра валидатора.
-     * @param  ValidatorContract  $validator
-     * @return void
-     */
-    public function withValidator(ValidatorContract $validator)
-    {
-        $validator->after(function (ValidatorContract $validator) {
-            // Check captcha for unregistered visitors
-            if (auth()->guest() and setting('system.captcha_used', true)) {
-                if (md5($this->captcha) !== session('captcha')) {
-                    $validator->errors()->add('captcha', trans('validation.captcha'));
-                }
-            }
-        });
     }
 }

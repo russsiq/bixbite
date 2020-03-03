@@ -7,13 +7,24 @@ return [
     'log_events' => env('GRECAPTCHA_LOG_EVENTS', false),
 
     // Драйвер, используемый по умолчанию.
-    // Поддерживаемые типы: `nullable`, `google_v3`.
-    'driver' => env('GRECAPTCHA_DRIVER', 'google_v3'),
+    // Поддерживаемые типы: `nullable`, `image_code`, `google_v3`.
+    'driver' => env('GRECAPTCHA_DRIVER', 'image_code'),
 
     // Настройки драйверов.
     'drivers' => [
         'nullable' => [
             'driver' => 'nullable',
+
+        ],
+
+        'image_code' => [
+            'driver' => 'image_code',
+
+            'image_width' => 66,
+            'image_height' => 37,
+            'font_size' => 20,
+            // https://www.dafont.com/blowbrush.font
+            'font_path' => public_path('vendor/g_recaptcha/fonts/blowbrush.ttf'),
 
         ],
 

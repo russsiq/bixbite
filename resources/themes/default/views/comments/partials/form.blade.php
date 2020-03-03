@@ -30,9 +30,12 @@
                         </div>
 
                         <div class="col-md-4">
-                            @setting('system.captcha_used')
+                            {{-- @setting('system.captcha_used')
                                 @captcha('components.partials.captcha')
-                            @endsetting
+                            @endsetting --}}
+                            @if (config('g_recaptcha.used'))
+                                @g_recaptcha_input
+                            @endif
                         </div>
                     </div>
                 @endguest

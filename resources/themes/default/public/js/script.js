@@ -81,10 +81,6 @@ function feedbackFormDataHandler(axios, data, event) {
             // В случае успешной отправки, очищаем форму.
             this.reset();
         });
-
-    // Если подключена GRecaptcha,
-    // то перезагружаем её.
-    grecaptcha && grecaptcha_reload();
 }
 
 /**
@@ -130,6 +126,10 @@ function sendFormManager(event) {
 
         // Передаем данные обработчикам.
         handler.apply(form, [axios, data, event]);
+
+        // Если подключена GRecaptcha,
+        // то перезагружаем её.
+        grecaptcha && grecaptcha_reload();
     }
 }
 
@@ -228,9 +228,9 @@ function respondFormDataHandler(axios, data, event) {
  */
 function reloadCaptcha(event) {
     const source = this.dataset.src || this.src;
-    this.src = source.replace(/(rand=)[.*]+/, '$1' + Math.random());
+    this.src = source.replace(/(\d*)$/, Date.now);
 
-    this.closest('form').elements['captcha'].value = '';
+    this.closest('form').elements['g-recaptcha-response'].value = '';
 }
 
 /**

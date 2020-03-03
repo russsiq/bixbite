@@ -14,11 +14,13 @@
         <i class="fa fa-envelope-o form-control-feedback"></i>
     </div>
 
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label class="d-block">@lang('feedback.form.labels.file')</label>
         <input type="file" name="file" accept="application/x-zip-compressed" />
         <i class="fa fa-file-archive-o form-control-feedback"></i>
-    </div>
+    </div> --}}
+
+    <hr />
 
     <div class="form-group">
         <label class="control-label">
@@ -26,9 +28,17 @@
         </label>
     </div>
 
-    <div class="form-group-last">
-        @g_recaptcha_input
+    @if (config('g_recaptcha.used'))
+        <div class="form-group row">
+            <div class="col-md-4">
+                @g_recaptcha_input
+            </div>
+        </div>
+    @endif
 
-        <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-outline-primary">@lang('feedback.form.labels.submit')</button>
+    <div class="form-group-last row">
+        <div class="col-md-4">
+            <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-block btn-outline-primary">@lang('feedback.form.labels.submit')</button>
+        </div>
     </div>
 </form>

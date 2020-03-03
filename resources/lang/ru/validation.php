@@ -28,7 +28,7 @@ return [
         'array' => 'Количество элементов в поле :attribute должно быть между :min и :max.',
     ],
     'boolean' => 'Поле :attribute должно иметь значение логического типа.',
-    'captcha' => 'Вы ввели неверно верификационный код.', // :captcha
+    'g-recaptcha-response' => 'Вы ввели неверно верификационный код.', // :g-recaptcha-response
     'confirmed' => 'Поле :attribute не совпадает с подтверждением.',
     'date' => 'Поле :attribute не является датой.',
     'date_equals' => 'Поле :attribute должно быть датой равной :date.',
@@ -154,7 +154,7 @@ return [
     'attributes' => [
         'name' => 'Имя',
         'password' => 'Пароль',
-        'captcha' => 'верификационный код',
+        'g-recaptcha-response' => 'верификационный код',
 
     ],
 

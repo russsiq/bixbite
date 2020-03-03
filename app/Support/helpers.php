@@ -119,20 +119,6 @@ if (! function_exists('formatBytes')) {
     }
 }
 
-if (! function_exists('get_captcha')) {
-    /**
-     * Generate captcha html-block.
-     *
-     * @param  string $view
-     * @return string \Illuminate\Support\HtmlString containing captcha block
-     */
-    function get_captcha(string $view = 'components.partials.captcha')
-    {
-        // time()
-        return html_raw(view($view)->with('captcha_rand', mt_rand() / mt_getrandmax())->render());
-    }
-}
-
 if (! function_exists('get_avatar')) {
     /**
      * Get avatar url for img tag using specified user ID or email.

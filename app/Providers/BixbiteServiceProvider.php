@@ -61,10 +61,6 @@ class BixbiteServiceProvider extends ServiceProvider
             return $environment === user('role');
         });
 
-        Blade::directive('captcha', function ($expression) {
-            return "<?php echo get_captcha($expression); ?>";
-        });
-
         Blade::directive('widget', function ($expression) {
             return "<?php echo app('widget')->make($expression); ?>";
         });

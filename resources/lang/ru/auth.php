@@ -14,7 +14,7 @@ return [
     'email' => 'Почта',
     'password' => 'Пароль',
     'password_confirmation' => 'Подтверждение пароля',
-    'captcha' => 'Код',
+    'g-recaptcha-response' => 'Верификационный код',
     'register' => 'Регистрация на сайте',
     'registration_rules' => 'Я ознакомился с <a href="#" style="border-bottom:1px solid; text-decoration:none">правилами</a> и принимаю их.',
     'register_complete' => 'Регистрация успешно выполнена!',
