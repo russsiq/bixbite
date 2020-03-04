@@ -34,7 +34,7 @@ class CheckRole
 
     /**
      * Проверить пользователя по группе пользователей.
-     * @param  ?User  $user
+     * @param  User|null  $user
      * @param  string  $role
      * @return bool
      */
