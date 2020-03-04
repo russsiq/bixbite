@@ -7,11 +7,11 @@ use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode as Middleware;
 class CheckForMaintenanceMode extends Middleware
 {
     /**
-     * The URIs that should be reachable while maintenance mode is enabled.
-     *
+     * Доступность разделов при включенном режиме обслуживания.
      * @var array
      */
     protected $except = [
-        //
+        'assistant/*',
+
     ];
 }
