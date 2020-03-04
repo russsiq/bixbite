@@ -2,4 +2,4 @@
 
 @section('title', __('common.error.403.title'))
 
-@section('message', __('common.error.403.message'))
+@section('message', __($exception->getMessage() ?: 'common.error.403.message'))
