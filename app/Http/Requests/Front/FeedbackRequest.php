@@ -100,10 +100,7 @@ class FeedbackRequest extends BaseFormRequest
             ],
 
             'g-recaptcha-response' => [
-                'bail',
-                config('g_recaptcha.used') ? 'required' : 'nullable',
-                'string',
-                'g_recaptcha',
+                config('g_recaptcha.used') ? 'g_recaptcha' : 'nullable',
 
             ],
 
