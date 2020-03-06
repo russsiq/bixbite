@@ -72,11 +72,11 @@ document.addEventListener('DOMContentLoaded', function() {
  * @param  {Axios} axios Экземляр AJAX провайдера.
  * @param  {FormData} data Экземляр объекта серилизованных данных формы.
  * @param  {Event} event Объект события `submit`.
- * @return {void}
+ * @return {Promise}
  */
 function feedbackFormDataHandler(axios, data, event) {
     // Отправляем AJAX запрос.
-    axios.post(this.action, data)
+    return axios.post(this.action, data)
         .then((response) => {
             // В случае успешной отправки, очищаем форму.
             this.reset();
@@ -125,11 +125,17 @@ function sendFormManager(event) {
         const data = new FormData(form);
 
         // Передаем данные обработчикам.
-        handler.apply(form, [axios, data, event]);
+        const promise = handler.apply(form, [axios, data, event]);
 
-        // Если подключена GRecaptcha,
-        // то перезагружаем её.
-        grecaptcha && grecaptcha_reload();
+        // Если подключена GRecaptcha, то перезагружаем её.
+        promise.finally(() => {
+            if ('grecaptcha' in window) {
+                grecaptcha_reload();
+            } else if ('img_captcha' in window) {
+                // Давайте пока просто кликнем.
+                window['img_captcha'].click();
+            }
+        });
     }
 }
 
@@ -141,7 +147,7 @@ function sendFormManager(event) {
  * @param  {Axios} axios Экземляр AJAX провайдера.
  * @param  {FormData} data Экземляр объекта серилизованных данных формы.
  * @param  {Event} event Объект события `submit`.
- * @return {void}
+ * @return {Promise}
  */
 function commentInterceptor(axios, data, event) {
     const id = this.action.split('/').pop();
@@ -149,7 +155,7 @@ function commentInterceptor(axios, data, event) {
     const _method = data.get('_method').toLowerCase();
 
     // Отправляем AJAX запрос.
-    axios.post(this.action, data)
+    return axios.post(this.action, data)
         .then((response) => {
             // В случае успешной отправки:
             switch (_method) {
@@ -179,7 +185,7 @@ function commentInterceptor(axios, data, event) {
 function respondFormDataHandler(axios, data, event) {
     // Отправляем AJAX запрос, а также передаем форму
     // для подсветки невалидных полей.
-    axios.post(this.action, data, {
+    return axios.post(this.action, data, {
             targetForm: event.target
         })
         .then((response) => {
