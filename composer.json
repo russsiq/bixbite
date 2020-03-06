@@ -25,7 +25,7 @@
         "laravel/tinker": "^1.0",
         "russsiq/bixbite": "dev-master",
         "russsiq/laravel-assistant": "dev-master",
-        "russsiq/laravel-env-manager": "dev-master",
+        "russsiq/laravel-env-manager": "^0.1",
         "russsiq/laravel-grecaptcha": "^0.1"
     },
     "require-dev": {
