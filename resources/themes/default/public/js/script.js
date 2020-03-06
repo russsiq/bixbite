@@ -68,22 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Отправка данных формы обратной связи по AJAX.
- * @param  {Axios} axios Экземляр AJAX провайдера.
- * @param  {FormData} data Экземляр объекта серилизованных данных формы.
- * @param  {Event} event Объект события `submit`.
- * @return {Promise}
- */
-function feedbackFormDataHandler(axios, data, event) {
-    // Отправляем AJAX запрос.
-    return axios.post(this.action, data)
-        .then((response) => {
-            // В случае успешной отправки, очищаем форму.
-            this.reset();
-        });
-}
-
-/**
  * Менеджер отправки данных форм по AJAX.
  * @param  {Event} event Объект события `submit`.
  * @return {void}
@@ -137,6 +121,22 @@ function sendFormManager(event) {
             }
         });
     }
+}
+
+/**
+ * Отправка данных формы обратной связи по AJAX.
+ * @param  {Axios} axios Экземляр AJAX провайдера.
+ * @param  {FormData} data Экземляр объекта серилизованных данных формы.
+ * @param  {Event} event Объект события `submit`.
+ * @return {Promise}
+ */
+function feedbackFormDataHandler(axios, data, event) {
+    // Отправляем AJAX запрос.
+    return axios.post(this.action, data)
+        .then((response) => {
+            // В случае успешной отправки, очищаем форму.
+            this.reset();
+        });
 }
 
 /**
