@@ -12,36 +12,36 @@
 	        </ul>
 	    </div>
 	@endif
-	
+
 	<fieldset>
 		<legend>@lang('auth.register')</legend>
-		<div class="form-group row{{ $errors->has('name') ? ' has-error' : '' }}">
+		<div class="form-group row @error('name') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.name')</label>
 			<div class="col-sm-9">
 				<input type="text" name="name" value="{{ old('name', '') }}" placeholder="admin" class="form-control" />
-				@if ($errors->has('name'))
-					<div class="invalid-feedback d-block">{{ $errors->first('name') }}</div>
-				@endif
+				@error ('name')
+					<div class="invalid-feedback d-block">{{ $message }}</div>
+				@enderror
 			</div>
 		</div>
 
-		<div class="form-group row{{ $errors->has('email') ? ' has-error' : '' }}">
+		<div class="form-group row @error('email') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.email')</label>
 			<div class="col-sm-9">
 				<input type="email" name="email" value="{{ old('email', '') }}" placeholder="{{ $email }}" class="form-control" />
-				@if ($errors->has('email'))
-					<div class="invalid-feedback d-block">{{ $errors->first('email') }}</div>
-				@endif
+				@error ('email')
+					<div class="invalid-feedback d-block">{{ $message }}</div>
+				@enderror
 			</div>
 		</div>
 
-		<div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
+		<div class="form-group row @error('password') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.password')</label>
 			<div class="col-sm-9">
 				<input type="password" name="password" value="" placeholder="********" class="form-control" autocomplete="new-password"  />
-				@if ($errors->has('password'))
-					<div class="invalid-feedback d-block">{{ $errors->first('password') }}</div>
-				@endif
+				@error ('password')
+					<div class="invalid-feedback d-block">{{ $message }}</div>
+				@enderror
 			</div>
 		</div>
 
@@ -56,11 +56,11 @@
 	<fieldset>
 		<legend>@lang('assistant::install.forms.legends.theme')</legend>
 
-		@if ($errors->has('APP_THEME'))
+		@error ('APP_THEME')
 			<div class="form-group">
-				<div class="alert alert-danger">{{ $errors->first('APP_THEME') }}</div>
+				<div class="alert alert-danger">{{ $message }}</div>
 			</div>
-		@endif
+		@enderror
 
 		<div id="theme-card-list" class="row">
 	    	@foreach (collect(select_dir(resource_path('themes')))->map('theme_version')->filter() as $key => $theme)
@@ -85,14 +85,14 @@
 
 		<hr>
 
-		<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
+		<div class="form-group row @error('original_theme') is-invalid @enderror">
 			<div class="col-sm-9 offset-sm-3">
 				<label class="col-form-label">
 					<input type="checkbox" name="original_theme" value="1" {{ old('original_theme') ? 'checked' : '' }} /> @lang('assistant::install.forms.labels.original_theme')
 				</label>
-				@if ($errors->has('original_theme'))
-					<div class="invalid-feedback d-block">{{ $errors->first('original_theme') }}</div>
-				@endif
+				@error ('original_theme')
+					<div class="invalid-feedback d-block">{{ $message }}</div>
+				@enderror
 			</div>
 		</div>
 	</fieldset>
