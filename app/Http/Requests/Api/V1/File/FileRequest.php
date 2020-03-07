@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class FileRequest extends BaseFormRequest
 {
     /**
-     * Получить массив пользовательских строк
+     * Получить массив пользовательских строк перевода
      * для формирования сообщений валидатора.
      * @return array
      */

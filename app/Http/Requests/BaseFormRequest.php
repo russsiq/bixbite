@@ -2,8 +2,13 @@
 
 namespace BBCMS\Http\Requests;
 
+// Сторонние зависимости.
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Абстрактынй класс обработки запросов пользовательских форм.
+ * @var class
+ */
 abstract class BaseFormRequest extends FormRequest
 {
     /**
