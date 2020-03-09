@@ -22,10 +22,17 @@ abstract class BaseFormRequest extends FormRequest
     /**
      * Получить список допустимых значений для правила `in:список_значений`.
      * @param  string  $key
+     * @param  array  $exclude  Массив исключаемых значений.
      * @return string
      */
-    protected function allowedForInRule(string $key): string
+    protected function allowedForInRule(string $key, array $exclude = []): string
     {
-        return implode(',', $this->allowedForInRule[$key]);
+        $allowed = $this->allowedForInRule[$key];
+
+        if ($exclude) {
+            $allowed = array_diff($allowed, $exclude);
+        }
+
+        return implode(',', $allowed);
     }
 }
