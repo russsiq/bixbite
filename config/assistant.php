@@ -16,7 +16,99 @@ return [
 
     // Настройки Архивариуса.
     'archivist' => [
-        //
+        // Путь к рабочей папке, содержащей архивы приложения.
+        'store_path' => env('ASSISTANT_ARCHIVIST_PATH', storage_path('app/backups')),
+
+        // Поясняющая карта директорий относительно корня приложения `base_path`.
+        'directories' => [
+            // Системные файлы.
+            'system' => [
+                // Копируем необходимые.
+                'include' => [
+                    'app',
+                    'bootstrap',
+                    'config',
+                    'database',
+                    'routes',
+                    'vendor',
+
+                ],
+
+                // Удаляем ненужные.
+                'exclude' => [
+                    'bootstrap/cache',
+
+                ],
+
+                // Создаём необходимые `пустые` директории.
+                'create' => [
+                    'bootstrap/cache',
+                    'storage/app',
+                    'storage/app/backups',
+                    'storage/framework',
+                    'storage/framework/cache',
+                    'storage/framework/sessions',
+                    'storage/framework/views',
+                    'storage/logs',
+
+                ],
+
+            ],
+
+            // Активная тема.
+            'theme' => [
+                // Добавляем необходимые.
+                'include' => [
+                    'resources',
+                    'public',
+
+                ],
+
+            ],
+
+            // Вложенные файлы.
+            'uploads' => [
+                // Добавляем необходимые.
+                'include' => [
+                    'storage/app/public',
+
+                ],
+
+            ],
+
+        ],
+
+        // Создание ссылок на директории: target => link.
+        'symlinks' => [
+            storage_path('app/public') => public_path('storage'),
+
+        ],
+
+        // Указанные файлы расположены в корне приложения и будут добавлены в архив.
+        // А другие файлы (например, `webpack.mix.js`)
+        // будут исключены из списка файлов, участвующих в архивировании.
+        'allowed_files' => [
+            '.env.example',
+            'artisan',
+            'composer.json',
+            'LICENSE',
+            'package.json',
+            'readme.md',
+            'server.php',
+            // 'webpack.mix.js',
+
+        ],
+
+        'backup' => [
+
+        ],
+
+        'restore' => [
+
+        ],
+
+        'driver' => env('ASSISTANT_ARCHIVIST_DRIVER', 'zip'),
+
     ],
 
     // Настройки Чистильщика.
@@ -111,11 +203,13 @@ return [
         // А другие файлы (например, `webpack.mix.js`)
         // будут исключены из списка обновляемых.
         'allowed_files' => [
+            '.env.example',
             'artisan',
             'composer.json',
             'LICENSE',
             'package.json',
             'readme.md',
+            'server.php',
             // 'webpack.mix.js',
 
         ],
