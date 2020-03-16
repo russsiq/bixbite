@@ -117,11 +117,47 @@
                     <div class="card-header">
                         <a href="#card_tags" data-toggle="collapse" class="d-block"><i class="fa fa-tags text-muted"></i> Список тегов</a>
                     </div>
-                    <div id="card_tags" class="collapse">
+                    <div id="card_tags">
                         <div class="card-body">
                             <div class="form-group has-float-label">
                                 <label class="control-label">Теги</label>
                                 <input type="text" v-model="form.tags" maxlength="255" class="form-control" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="x_fields.length" class="card card-default">
+                    <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
+                    <div class="card-body">
+                        <div v-for="field in x_fields" class="form-group row">
+                            <div class="col-sm-5">
+                                <label class="control-label">{{ field.title }}</label>
+                                <small class="form-text text-muted">{{ field.descr }}</small>
+                            </div>
+                            <div class="col-sm-7">
+                                <template v-if="'string' === field.type">
+                                    <input type="text" v-model="form[field.name]" class="form-control" />
+                                </template>
+                                <template v-else-if="'integer' === field.type">
+                                    <input type="number" v-model="form[field.name]" class="form-control" />
+                                </template>
+                                <template v-else-if="'boolean' === field.type">
+                                    <input type="checkbox" v-model="form[field.name]" />
+                                </template>
+                                <template v-else-if="'array' === field.type">
+                                    <select v-model="form[field.name]" class="form-control">
+                                        <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
+                                    </select>
+                                </template>
+                                <template v-else-if="'text' === field.type">
+                                    <textarea v-model="form[field.name]" rows="4" class="form-control"></textarea>
+                                </template>
+                                <template v-else-if="'timestamp' === field.type">
+                                    <input-datetime-local v-model="form[field.name]" class="form-control"></input-datetime-local>
+                                </template>
+
+                                <div v-else class="alert alert-danger">Неизвестный тип поля.</div>
                             </div>
                         </div>
                     </div>
@@ -251,6 +287,10 @@ export default {
         ...mapGetters({
             meta: 'meta/all',
         }),
+
+        x_fields() {
+            return this.meta.x_fields || [];
+        },
 
         setting() {
             // Если настройки не заданы,

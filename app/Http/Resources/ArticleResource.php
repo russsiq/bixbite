@@ -51,6 +51,7 @@ class ArticleResource extends JsonResource
                 'setting' => [
                     'articles' => setting('articles'),
                 ],
+                'x_fields' => $this->x_fields,
             ],
         ];
     }

@@ -73,7 +73,7 @@ class ArticlesController extends ApiController
     public function show(Article $article)
     {
         $article->load([
-            // 'categories',
+            'categories',
             'files',
             'tags',
             'user',
@@ -94,6 +94,13 @@ class ArticlesController extends ApiController
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $article->update($request->all());
+
+        $article->load([
+            'categories',
+            'files',
+            'tags',
+            'user',
+        ]);
 
         $resource = new ArticleResource($article);
 
