@@ -84,7 +84,7 @@ class Store extends FileRequest
             'name' => str_slug($title).'_'.time(),
             'extension' => $extension,
             'mime_type' => $mime_type,
-            'filesize' => $file->getClientSize(),
+            'filesize' => $file->getSize(),
             'checksum' => md5_file($file->getPathname()),
 
             'title' => $title,
