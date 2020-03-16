@@ -222,7 +222,7 @@
                                     <label class="control-label">Семейство шрифтов</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.captcha_font_family" class="form-control">
+                                    <select v-model="form.captcha_font_family" class="form-control" readonly>
                                         <option v-for="font in meta.fonts" :value="font">{{ font }}</option>
                                     </select>
                                 </div>
