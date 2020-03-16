@@ -506,7 +506,11 @@ if (! function_exists('string_slug')) {
         $str = trim($str, $options['delimiter']);
         $str = trim($str);
 
-        return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str ?: null;
+        if ($str && $options['lowercase'] === true) {
+            return mb_strtolower($str, 'UTF-8');
+        }
+
+        return $str ?: null;
     }
 }
 
