@@ -14,11 +14,13 @@ class Kernel extends HttpKernel
     protected $middleware = [
         \BBCMS\Http\Middleware\ThemeSwitcher::class,
         // \BBCMS\Http\Middleware\AccessToLockedSite::class,
+        \BBCMS\Http\Middleware\TrustProxies::class,
+        \Fruitcake\Cors\HandleCors::class,
         \BBCMS\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \BBCMS\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \BBCMS\Http\Middleware\TrustProxies::class,
+
     ];
 
     /**
@@ -37,12 +39,15 @@ class Kernel extends HttpKernel
 
             // BBCMS Middleware
             \BBCMS\Http\Middleware\LastUserActivity::class,
+
         ],
 
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
         ],
+
     ];
 
     /**
@@ -64,6 +69,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
     ];
 
 
@@ -75,10 +81,14 @@ class Kernel extends HttpKernel
     protected $middlewarePriority = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        // Эта строка из документации, но зачем это?
+        // https://laravel.com/docs/7.x/middleware#sorting-middleware
+        // \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \BBCMS\Http\Middleware\Authenticate::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+
     ];
 }

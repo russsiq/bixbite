@@ -53,6 +53,9 @@ class BixbiteServiceProvider extends ServiceProvider
             'users' => \BBCMS\Models\User::class,
         ], true);
 
+        // Disable Blade's built-in tag component (7.x) functionality.
+        Blade::withoutComponentTags();
+
         Blade::if('setting', function (string $environment) {
             return setting($environment);
         });

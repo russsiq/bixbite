@@ -37,14 +37,16 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['single'],
             'ignore_exceptions' => false,
+
         ],
 
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
+
         ],
 
         'daily' => [
@@ -52,6 +54,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 14,
+
         ],
 
         'slack' => [
@@ -60,6 +63,7 @@ return [
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             'level' => 'critical',
+
         ],
 
         'papertrail' => [
@@ -69,7 +73,9 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
+
             ],
+
         ],
 
         'stderr' => [
@@ -78,28 +84,34 @@ return [
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
+
             ],
+
         ],
 
         'syslog' => [
             'driver' => 'syslog',
             'level' => 'debug',
+
         ],
 
         'errorlog' => [
             'driver' => 'errorlog',
             'level' => 'debug',
+
         ],
 
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
+
         ],
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+
         ],
-        
+
     ],
 
 ];

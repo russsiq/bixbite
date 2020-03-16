@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /**
  * Данная группа маршрутов имеет общие:
  *      - префикс: `app_common`;

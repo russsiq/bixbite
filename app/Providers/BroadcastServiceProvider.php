@@ -3,7 +3,7 @@
 namespace BBCMS\Providers;
 
 // Зарегистрированные фасады приложения.
-use Broadcast;
+use Illuminate\Support\Facades\Broadcast;
 
 // Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;

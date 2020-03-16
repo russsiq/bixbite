@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
 
             // Relation and other indexed keys.
             $table->string('img')->nullable();

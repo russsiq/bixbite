@@ -15,7 +15,7 @@ class CreateCategoryablesTable extends Migration
     {
         Schema::create('categoryables', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('category_id');
             $table->morphs('categoryable');
 

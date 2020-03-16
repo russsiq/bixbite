@@ -3,7 +3,7 @@
 namespace BBCMS\Providers;
 
 // Зарегистрированные фасады приложения.
-use Route;
+use Illuminate\Support\Facades\Route;
 
 // Сторонние зависимости.
 use BBCMS\Models\Article;
@@ -16,6 +16,12 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 class RouteServiceProvider extends ServiceProvider
 {
     /**
+     * The path to the "home" route for your application.
+     * @var string
+     */
+    public const HOME = '/';
+
+    /**
      * This namespace is applied to your controller routes.
      *
      * In addition, it is set as the URL generator's root namespace.
@@ -23,13 +29,6 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'BBCMS\Http\Controllers';
-
-    /**
-     * The path to the "home" route for your application.
-     *
-     * @var string
-     */
-    public const HOME = '/';
 
     protected $routePatterns = [
         'any' => '(.*)',
@@ -39,12 +38,10 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
      * @return void
      */
     public function boot()
     {
-
         Route::pattern('any', $this->routePattern('any'));
         Route::pattern('id', $this->routePattern('id'));
 
@@ -70,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('attribute', '^[a-zA-Z_]+$');
 
         Route::bind('category', function($value) {
-            $attribute = intval($value) ? 'id' : 'slug';
+            $attribute = is_int($value) ? 'id' : 'slug';
 
             return Category::where($attribute, $value)->first();
         });
@@ -95,7 +92,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the routes for the application.
-     *
      * @return void
      */
     public function map()
@@ -150,9 +146,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "web" routes for the application.
-     *
      * These routes all receive session state, CSRF protection, etc.
-     *
      * @return void
      */
     protected function mapWebRoutes()

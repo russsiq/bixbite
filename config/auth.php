@@ -18,6 +18,7 @@ return [
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
+
     ],
 
     /*
@@ -41,13 +42,16 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+
         ],
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             // 'hash' => true,
+
         ],
+
     ],
 
     /*
@@ -71,6 +75,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => User::class,
+
         ],
 
         // 'users' => [
@@ -100,7 +105,9 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+
         ],
+
     ],
 
     /*

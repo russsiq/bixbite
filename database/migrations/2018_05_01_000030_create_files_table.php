@@ -43,7 +43,7 @@ class CreateFilesTable extends Migration
             //
 
 
-            $table->bigIncrements('id');
+            $table->id();
 
             // Relation and other indexed keys.
             $table->unsignedBigInteger('user_id')->nullable();

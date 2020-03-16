@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 // Карты сайта. https://www.sitemaps.org/protocol.html.
 Route::get('sitemap.xml', 'SitemapController@index')->name('sitemap.xml');
 Route::get('sitemap/home.xml', 'SitemapController@home')->name('sitemap.home.xml');

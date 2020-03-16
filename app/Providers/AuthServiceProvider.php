@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         \BBCMS\Models\Template::class => \BBCMS\Policies\TemplatePolicy::class,
         \BBCMS\Models\User::class => \BBCMS\Policies\UserPolicy::class,
         \BBCMS\Models\XField::class => \BBCMS\Policies\XFieldPolicy::class,
+
     ];
 
     /**
