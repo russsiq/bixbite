@@ -320,17 +320,23 @@ function clickHandler(event) {
 
 function tabHandler(event) {
     const selector = this.getAttribute('href') || this.dataset.target;
-    const parent = this.closest('.nav-tabs').parentNode;
+    const parent = this.closest('[role="tablist"]').parentNode;
 
-    const [...tabs] = parent.querySelectorAll('.nav-tabs a');
-    const [...panes] = parent.querySelectorAll('.tab-content .tab-pane');
+    const [...tabs] = parent.querySelectorAll('[role="tab"]');
+    const [...panes] = parent.querySelectorAll('[role="tabpanel"]');
 
     tabs.forEach(function(item) {
-        item.classList.toggle('active', item.matches(`[href="${selector}"]`));
+        const isActive = item.matches(`[href="${selector}"]`);
+
+        item.classList.toggle('active', isActive);
+        item.classList.toggle('show', isActive);
     });
 
     panes.forEach(function(item) {
-        item.classList.toggle('active', item.matches(selector));
+        const isActive = item.matches(selector);
+
+        item.classList.toggle('active', isActive);
+        item.classList.toggle('show', isActive);
     });
 }
 
