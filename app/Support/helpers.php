@@ -530,13 +530,16 @@ if (! function_exists('teaser')) {
         }
 
         $text = html_clean($text);
-        if ((mb_strlen($text, 'UTF-8') <= $length) or (0 == $length)) {
+
+        if ((mb_strlen($text) <= $length) or (0 == $length)) {
             return $text;
         }
-        $text = mb_substr($text, 0, $length, 'UTF-8');
+
+        $text = mb_substr($text, 0, $length);
         $text = rtrim($text, ' :!,.-\xC2\xA0');
+
         if (strpos($text, ' ')) {
-            $text = mb_substr($text, 0, mb_strrpos($text, ' ', 'UTF-8'), 'UTF-8');
+            $text = mb_substr($text, 0, mb_strrpos($text, ' '));
             $text = rtrim($text, ' :!,.-\xC2\xA0');
         }
 

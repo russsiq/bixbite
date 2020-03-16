@@ -70,14 +70,14 @@ class WidgetFactory
             }
 
             return false;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $this->widgetParams['expects_json']
                 ? $this->invalidJson($e)
                 : $this->invalid($e);
         }
     }
 
-    protected function invalid(Exception $exception)
+    protected function invalid(Throwable $exception)
     {
         if ($exception instanceof ValidationException) {
             $error = $exception->validator->errors()->first();
@@ -89,7 +89,7 @@ class WidgetFactory
         return sprintf(trans('common.msg.error'), $message);
     }
 
-    protected function invalidJson(Exception $exception)
+    protected function invalidJson(Throwable $exception)
     {
         $response['message'] = $exception->getMessage();
 
