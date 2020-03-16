@@ -36,7 +36,9 @@ trait ArticleMutators
     public function getContentAttribute()
     {
         if (empty($content = $this->attributes['content'])) {
-            return null;
+            // Возвращаем пустую строку, чтобы `quill-editor`
+            // не ругался при валидации входящих данных.
+            return '';
         }
 
         // Give shortcodes from app settings. static::$shortcodes ???
