@@ -34,10 +34,14 @@ return [
     |
     */
 
+   /**
+    * Логирование по дням ("daily") удобнее.
+    */
+
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily'],
             'ignore_exceptions' => false,
 
         ],
