@@ -67,7 +67,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('attribute', '^[a-zA-Z_]+$');
 
         Route::bind('category', function($value) {
-            $attribute = is_int($value) ? 'id' : 'slug';
+            $attribute = intval($value) ? 'id' : 'slug';
 
             return Category::where($attribute, $value)->first();
         });
