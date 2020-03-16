@@ -21,8 +21,9 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
-        // getOriginal не проходит проверку cast, hidden.
+        // ->getRawOriginal не проходит проверку cast, hidden.
         // >getDirty неизвесто
+        // >getOriginal проходит проверку cast, hidden.
         return array_merge($this->resource->getOriginal(), [
             'url' => $this->url,
             'categories' => new CategoryResource($this->whenLoaded('categories')),
