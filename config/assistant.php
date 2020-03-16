@@ -119,7 +119,7 @@ return [
     // Настройки Установщика.
     'installer' => [
         'requirements' => [
-            'php' => '7.2.0',
+            'php' => '7.2.5',
             'ext-bcmath' => '*',
             'ext-ctype' => '*',
             'ext-curl' => '*',
