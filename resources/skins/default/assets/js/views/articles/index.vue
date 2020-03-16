@@ -32,7 +32,7 @@
             <td>{{ row.id }}</td>
             <td>
                 <router-link :to="editpage(row)" class="d-block">{{ row.title }}</router-link>
-                {{ row.created_at }} {{ row.updated_at || '' }}
+                [{{ row.created_at | dateToString }}] <span v-if="row.updated_at">[{{ row.updated_at | dateToString }}]</span>
             </td>
             <td class="hidden-xs">
                 <span v-for="category in row.categories" class="cat-links mr-1">

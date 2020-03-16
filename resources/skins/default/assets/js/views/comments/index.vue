@@ -26,7 +26,7 @@
             <td>
                 <i>{{ row.user && row.user.name }}</i>: {{ row.content }}
             </td>
-            <td style="white-space: nowrap;">{{ row.created_at }}</td>
+            <td style="white-space: nowrap;">{{ row.created_at | dateToString }}</td>
             <td class="text-right d-print-none">
                 <div class="btn-group">
                     <button type="button" class="btn btn-link" @click="toggleStateComment(row)">

@@ -32,8 +32,9 @@
             </td>
             <td>{{ row.role | trans }}</td>
             <td class="d-print-none">{{ row.email }}</td>
-            <td class="hidden-xs">{{ row.created_at }}</td>
-            <td class="hidden-xs">{{ row.logined_at || 'Не заходил' }}</td>
+            <td class="hidden-xs">{{ row.created_at | dateToString }}</td>
+            <td class="hidden-xs" v-if="row.logined_at">{{ row.logined_at | dateToString }}</td>
+            <td v-else>Не заходил</td>
             <td>{{ row.articles_count }}</td>
             <td>{{ row.comments_count }}</td>
             <td class="text-right d-print-none">

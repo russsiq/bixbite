@@ -31,6 +31,12 @@ export default {
         },
     },
 
+    filters: {
+        dateToString(value) {
+            return !value ? '' : (new Date(value)).toLocaleString();
+        }
+    },
+
     // methods: {
     //     can(...args) {
     //         return args

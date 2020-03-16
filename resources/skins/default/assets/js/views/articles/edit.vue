@@ -146,11 +146,11 @@
                             </tr>
                             <tr>
                                 <td>Создание</td>
-                                <td>{{ form.created_at }}</td>
+                                <td>{{ form.created_at | dateToString }}</td>
                             </tr>
-                            <tr>
+                            <tr v-if="form.updated_at">
                                 <td>Обновление</td>
-                                <td>{{ form.updated_at }}</td>
+                                <td>{{ form.updated_at | dateToString }}</td>
                             </tr>
                         </tbody>
                     </table>

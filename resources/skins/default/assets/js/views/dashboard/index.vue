@@ -24,7 +24,7 @@
                             <tr v-for="note in notes" class="notes-item warning" :key="note.id">
                                 <td>
                                     <router-link :to="{name: 'note.edit', params:{id: note.id}}" class="notes-title text-dark">{{ note.title }}</router-link>
-                                    <p class="notes-description text-muted small">{{ note.created_at }}</p>
+                                    <p class="notes-description text-muted small">{{ note.created_at | dateToString }}</p>
                                     <p class="notes-description text-muted">{{ note.description }}</p>
                                 </td>
                                 <td class="text-right">
