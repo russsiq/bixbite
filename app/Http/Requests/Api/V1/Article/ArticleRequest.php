@@ -305,14 +305,14 @@ class ArticleRequest extends BaseFormRequest
             'created_at' => [
                 'nullable',
                 'required_with:date_at',
-                'date_format:"Y-m-d H:i:s"',
+                // 'date_format:"Y-m-d H:i:s"',
 
             ],
 
             'updated_at' => [
                 'nullable',
                 'required_without:date_at',
-                'date_format:"Y-m-d H:i:s"',
+                // 'date_format:"Y-m-d H:i:s"',
 
             ],
 
