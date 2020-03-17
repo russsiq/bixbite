@@ -143,7 +143,7 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('articles')->ignore($this->route('article')),
+                // Rule::unique('articles')->ignore($this->route('article')),
 
             ],
 
@@ -152,7 +152,7 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('articles')->ignore($this->route('article')),
+                // Rule::unique('articles')->ignore($this->route('article')),
 
             ],
 

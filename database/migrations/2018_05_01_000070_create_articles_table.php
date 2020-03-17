@@ -27,7 +27,7 @@ class CreateArticlesTable extends Migration
             // Main content.
             $table->enum('state', ['draft', 'unpublished', 'published'])->default('unpublished');
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('teaser')->nullable();
             $table->text('content');
 
