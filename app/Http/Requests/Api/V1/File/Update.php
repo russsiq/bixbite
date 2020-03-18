@@ -21,7 +21,7 @@ class Update extends FileRequest
         $this->replace($input)
             ->merge([
                 // 1 Do not change the filename. He may become unavailable.
-                // 'name' => str_slug($this->input('title')).'_'.time(),
+                // 'name' => Str::slug($this->input('title')).'_'.time(),
 
                 // 2 Do not change the file title. Leave for validation.
                 // 'title' => $this->input('title', null),

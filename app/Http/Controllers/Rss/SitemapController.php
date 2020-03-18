@@ -2,8 +2,10 @@
 
 namespace BBCMS\Http\Controllers\Rss;
 
+// Сторонние зависимости.
 use BBCMS\Models\Article;
 use BBCMS\Models\Category;
+use Illuminate\Support\Str;
 
 // @NB: Need chunk to articles.
 
@@ -203,7 +205,7 @@ class SitemapController
     {
         if (method_exists(static::class, $get = 'get'.ucfirst($method))) {
             return response(
-                    static::render($get, snake_case($method)),
+                    static::render($get, Str::snake($method)),
                     200, ['Content-Type' => 'text/xml']
                 );
         }

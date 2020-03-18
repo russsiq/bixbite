@@ -2,6 +2,9 @@
 
 namespace BBCMS\Models\Support;
 
+// Сторонние зависимости.
+use Illuminate\Support\Str;
+
 /**
 * @source https://github.com/codekerala/Laravel-5.6-and-Vue.j-2-Dataviewer-Advanced-Filter
 */
@@ -29,17 +32,17 @@ class CustomQueryBuilder
             list($relation, $filter['column']) = explode('.', $filter['column']);
 
             if ($filter['column'] == 'count') {
-                $this->{camel_case($filter['operator'])}($filter, $query, $relation);
+                $this->{Str::camel($filter['operator'])}($filter, $query, $relation);
             } else {
                 $filter['column'] = $relation.'.'.$filter['column'];
 
                 $query->whereHas($relation, function ($q) use ($filter) {
-                    $this->{camel_case($filter['operator'])}($filter, $q);
+                    $this->{Str::camel($filter['operator'])}($filter, $q);
                 });
             }
         } else {
             // Normal column.
-            $this->{camel_case($filter['operator'])}($filter, $query);
+            $this->{Str::camel($filter['operator'])}($filter, $query);
         }
     }
 

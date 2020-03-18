@@ -5,6 +5,7 @@ namespace BBCMS\Http\Requests\Api\V1\File;
 // Сторонние зависимости.
 use BBCMS\Models\File;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Support\Str;
 
 class Store extends FileRequest
 {
@@ -66,7 +67,7 @@ class Store extends FileRequest
         // NB.: En. and rus. x letter.
         $title = preg_replace('/[-_хx\d]+$/u', '', $title);
         $title = preg_replace('/\.tar$/', '', $title);
-        $title = empty($title) ? str_random(8) : $title;
+        $title = empty($title) ? Str::random(8) : $title;
         $properties = $this->input('properties', null);
         if ('image' == $type) {
             [$properties['width'], $properties['height']] = getimagesize($file->getPathname());
@@ -81,7 +82,7 @@ class Store extends FileRequest
 
             // Unstable data.
             'type' => $type,
-            'name' => str_slug($title).'_'.time(),
+            'name' => Str::slug($title).'_'.time(),
             'extension' => $extension,
             'mime_type' => $mime_type,
             'filesize' => $file->getSize(),

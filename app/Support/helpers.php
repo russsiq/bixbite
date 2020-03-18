@@ -29,8 +29,10 @@ define('DS', DIRECTORY_SEPARATOR);
  * wrap_attr - Wrapping entity attributes with html-tags by template.
  */
 
-use Illuminate\Support\HtmlString;
+// Сторонние зависимости.
 use BBCMS\Exceptions\BadLogic;
+use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 if (! function_exists('app_locale')) {
     /**
@@ -288,7 +290,7 @@ if (! function_exists('select_dir')) {
             $dir = new \DirectoryIterator($path);
             foreach ($dir as $fileinfo) {
                 $filename = $fileinfo->getFilename();
-                if ($fileinfo->isDir() and ! $fileinfo->isDot() and ! starts_with($filename, '_')) {
+                if ($fileinfo->isDir() and ! $fileinfo->isDot() and ! Str::startsWith($filename, '_')) {
                     $dirs[$filename] = $filename;
                 }
             }

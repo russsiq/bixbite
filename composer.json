@@ -22,7 +22,6 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.5",
         "laravel/framework": "^7.0",
-        "laravel/helpers": "^1.2",
         "laravel/tinker": "^2.0",
         "russsiq/laravel-assistant": "dev-master",
         "russsiq/laravel-env-manager": "^0.1",
