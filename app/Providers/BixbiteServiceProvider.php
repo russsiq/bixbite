@@ -10,7 +10,6 @@ use Lang;
 // Сторонние зависимости.
 use BBCMS\Support\PageInfo;
 use BBCMS\Support\CacheFile;
-use BBCMS\Support\Factories\WidgetFactory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -32,7 +31,6 @@ class BixbiteServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-        'widget' => WidgetFactory::class,
 
     ];
 
@@ -62,10 +60,6 @@ class BixbiteServiceProvider extends ServiceProvider
 
         Blade::if('role', function (string $environment) {
             return $environment === user('role');
-        });
-
-        Blade::directive('widget', function ($expression) {
-            return "<?php echo app('widget')->make($expression); ?>";
         });
 
         // Создаем макрос перезагрузки `json` файлов переводов.

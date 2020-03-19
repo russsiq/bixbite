@@ -49,14 +49,4 @@
     </div>
 </article>
 
-@widget('articles.neighboring')
-
-@widget('articles.related', [
-    'active' => true,
-    // 'cache_time' => 0,
-    // 'title' => 'Related',
-    // 'limit' => 3,
-    // 'template' => 'widgets.articles_related',
-])
-
 @include('comments.area', ['entity' => $article])
