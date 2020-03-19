@@ -4,8 +4,9 @@ namespace BBCMS\View\Components\Widgets;
 
 // Сторонние зависимости.
 use BBCMS\Models\Article;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 /**
  * Компонент виджета соседних записей.
@@ -37,6 +38,12 @@ class ArticlesNeighboring extends Component
     public $cacheTime = 24 * 60 *60;
 
     /**
+     * Текущая запись.
+     * @var Article
+     */
+    public $article;
+
+    /**
      * Создать экземпляр компонента.
      */
     public function __construct(
@@ -52,15 +59,61 @@ class ArticlesNeighboring extends Component
      */
     protected function configure(array $parameters): void
     {
+        // Проверить существование текущей записи.
+        if (! pageinfo('is_article') or ! pageinfo('article')->id) {
+            throw new \Exception('Widget '.self::class.' not available on this page.');
+        }
+
+        $this->article = pageinfo('article');
 
     }
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return View|string
+     * @return Renderable
      */
-    public function render()
+    public function render(): Renderable
     {
         return view($this->template);
+    }
+
+    /**
+     * Получить предыдущую запись.
+     * @return Article|null
+     */
+    public function previous(): ?Article
+    {
+        return Article::select([
+                'articles.id',
+                'articles.title',
+                'articles.slug',
+                'articles.state',
+            ])
+            ->published()
+            ->where('articles.id', '<', $this->article->id)
+            ->orderBy('articles.id', 'desc')
+            ->limit(1)
+            ->get()
+            ->first();
+    }
+
+    /**
+     * Получить следющую запись.
+     * @return Article|null
+     */
+    public function next(): ?Article
+    {
+        return Article::select([
+                'articles.id',
+                'articles.title',
+                'articles.slug',
+                'articles.state',
+            ])
+            ->published()
+            ->where('articles.id', '>', $this->article->id)
+            ->orderBy('articles.id', 'asc')
+            ->limit(1)
+            ->get()
+            ->last();
     }
 }

@@ -4,8 +4,9 @@ namespace BBCMS\View\Components\Widgets;
 
 // Сторонние зависимости.
 use BBCMS\Models\Article;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 /**
  * Компонент виджета архива записей.
@@ -57,10 +58,30 @@ class ArticlesArchives extends Component
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return View|string
+     * @return Renderable
      */
-    public function render()
+    public function render(): Renderable
     {
         return view($this->template);
+    }
+
+    public function items(): Collection
+    {
+        return Article::without('categories')
+            ->selectRaw('
+                year(created_at) year,
+                monthname(created_at) month,
+                count(*) as count
+            ')
+            ->published()
+            ->groupBy('year', 'month')
+            ->orderByRaw('min(created_at) desc')
+            ->limit($this->parameters['limit'] ?? 6)
+            ->get()
+            ->transform(function ($item, $key) {
+                $item->monthname = __('common.'.$item->month);
+
+                return $item;
+            });
     }
 }

@@ -4,8 +4,9 @@ namespace BBCMS\View\Components\Widgets;
 
 // Сторонние зависимости.
 use BBCMS\Models\Tag;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 /**
  * Компонент виджета облака тегов.
@@ -57,10 +58,27 @@ class TagsCloud extends Component
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return View|string
+     * @return Renderable
      */
-    public function render()
+    public function render(): Renderable
     {
         return view($this->template);
+    }
+
+    /**
+     * Получить коллекцию тегов.
+     * @return Collection
+     */
+    public function tags(): Collection
+    {
+        return Tag::select([
+                'tags.id',
+                'tags.title',
+            ])
+            ->withCount('articles')
+            ->whereHas('articles')
+            ->orderBy('articles_count', 'desc')
+            ->limit(8)
+            ->get();
     }
 }

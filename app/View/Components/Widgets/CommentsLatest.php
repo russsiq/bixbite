@@ -4,8 +4,9 @@ namespace BBCMS\View\Components\Widgets;
 
 // Сторонние зависимости.
 use BBCMS\Models\Comment;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
-use Illuminate\View\View;
 
 /**
  * Компонент виджета последних комментариев.
@@ -57,10 +58,28 @@ class CommentsLatest extends Component
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return View|string
+     * @return Renderable
      */
-    public function render()
+    public function render(): Renderable
     {
         return view($this->template);
+    }
+
+    /**
+     * Получить коллекцию комментариев.
+     * @return Collection
+     */
+    public function comments(): Collection
+    {
+        return Comment::with([
+                'user:users.id,users.name,users.email,users.avatar',
+                'article:articles.id,articles.title,articles.slug,articles.state',
+            ])
+            ->where('commentable_type', 'articles')
+            ->where('is_approved', true)
+            ->latest()
+            ->limit(8)
+            ->get()
+            ->treated(false);
     }
 }
