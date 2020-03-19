@@ -49,4 +49,14 @@
     </div>
 </article>
 
+<x-widgets.articles-neighboring />
+
+<x-widgets.articles-related :parameters="[
+    'active' => true,
+    // 'cache_time' => 0,
+    // 'title' => 'Related',
+    // 'limit' => 3,
+    // 'template' => 'widgets.articles_related',
+]"></x-comments-latest-widget>
+
 @include('comments.area', ['entity' => $article])
