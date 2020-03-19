@@ -28,7 +28,7 @@ class ArticlesFeatured extends Component
      * Шаблон виджета.
      * @var string
      */
-    public $template = 'components.widgets.articles-archives';
+    public $template = 'components.widgets.articles-featured';
 
     /**
      * Время кэширования виджета.

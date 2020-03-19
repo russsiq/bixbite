@@ -28,7 +28,7 @@ class TagsCloud extends Component
      * Шаблон виджета.
      * @var string
      */
-    public $template = 'components.widgets.articles-archives';
+    public $template = 'components.widgets.tags-cloud';
 
     /**
      * Время кэширования виджета.
