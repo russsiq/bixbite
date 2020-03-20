@@ -69,14 +69,15 @@ class ArticlesArchives extends Component
     {
         return Article::without('categories')
             ->selectRaw('
-                year(created_at) year,
-                monthname(created_at) month,
-                count(*) as count
+                YEAR(created_at) AS year,
+                MONTHNAME(created_at) AS month,
+                count(*) AS count
             ')
+            ->distinct()
             ->published()
             ->groupBy('year', 'month')
-            ->orderByRaw('min(created_at) desc')
-            ->limit($this->parameters['limit'] ?? 6)
+            ->orderBy('created_at', 'desc')
+            ->limit($this->parameters['limit'] ?? 12)
             ->get();
     }
 }
