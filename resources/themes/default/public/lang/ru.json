@@ -15,6 +15,19 @@
     "Please click the button below to verify your email address.": "Пожалуйста, нажмите кнопку ниже, чтобы подтвердить свой адрес электронной почты.",
     "If you did not create an account, no further action is required.": "Если вы не создавали учетной записи, то никаких дальнейших действий не требуется.",
 
+    "January": "Январь",
+    "February": "Февраль",
+    "March": "Март",
+    "April": "Апрель",
+    "May": "Май",
+    "June": "Июнь",
+    "July": "Июль",
+    "August": "Август",
+    "September": "Сентябрь",
+    "October": "Октябрь",
+    "November": "Ноябрь",
+    "December": "Декабрь",
+
     "articles": "Новости",
     "msg.theme_not_found": ""
 }
