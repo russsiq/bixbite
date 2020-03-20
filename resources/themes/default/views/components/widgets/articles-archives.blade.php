@@ -7,12 +7,12 @@
             <h4 class="widget__title">{{ $title }}</h4>
         </div>
         <div class="widget__body">
-            <ul class="list-unstyled">
-                @forelse($items as $item)
+            <ul class="widget__list">
+                @forelse($months as $date)
                     <li class="widget__item">
-                        <a href="{{ route('articles.index', ['year'=> $item->year, 'month' => $item->month]) }}">
-                            <span>{{ $item->monthname }} {{ $item->year }}</span>
-                            <small class="pull-right">{{ $item->count }} {{ trans_choice('articles.num', $item->count) }}</small>
+                        <a href="{{ route('articles.index', ['year'=> $date->year, 'month' => $date->month]) }}">
+                            <span>{{ trans($date->month) }} {{ $date->year }}</span>
+                            <small class="pull-right">{{ $date->count }} {{ trans_choice('articles.num', $date->count) }}</small>
                         </a>
                     </li>
                 @empty

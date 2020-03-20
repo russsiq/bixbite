@@ -65,7 +65,7 @@ class ArticlesArchives extends Component
         return view($this->template);
     }
 
-    public function items(): Collection
+    public function months(): Collection
     {
         return Article::without('categories')
             ->selectRaw('
@@ -77,11 +77,6 @@ class ArticlesArchives extends Component
             ->groupBy('year', 'month')
             ->orderByRaw('min(created_at) desc')
             ->limit($this->parameters['limit'] ?? 6)
-            ->get()
-            ->transform(function ($item, $key) {
-                $item->monthname = __('common.'.$item->month);
-
-                return $item;
-            });
+            ->get();
     }
 }
