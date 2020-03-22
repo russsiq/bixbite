@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Common;
+namespace App\Http\Requests\Common;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 
 class ToggleRequest extends BaseFormRequest
 {

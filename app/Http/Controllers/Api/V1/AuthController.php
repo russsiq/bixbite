@@ -1,12 +1,12 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\User;
-use BBCMS\Http\Resources\UserResource;
+use App\Models\User;
+use App\Http\Resources\UserResource;
 
-use BBCMS\Http\Requests\Api\V1\Auth\Login as AuthLoginRequest;
-use BBCMS\Http\Requests\Api\V1\Auth\Logout as AuthLogoutRequest;
+use App\Http\Requests\Api\V1\Auth\Login as AuthLoginRequest;
+use App\Http\Requests\Api\V1\Auth\Logout as AuthLogoutRequest;
 
 use Hash;
 use Illuminate\Http\Request;

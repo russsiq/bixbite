@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Middleware;
+namespace App\Http\Middleware;
 
 // Базовые расширения PHP.
 use Closure;

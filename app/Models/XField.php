@@ -2,9 +2,9 @@
 
 // http://designpatternsphp.readthedocs.io/ru/latest/More/EAV/README.html
 
-namespace BBCMS\Models;
+namespace App\Models;
 
-use BBCMS\Models\Observers\XFieldObserver;
+use App\Models\Observers\XFieldObserver;
 
 class XField extends BaseModel
 {

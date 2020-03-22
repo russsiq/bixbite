@@ -1,13 +1,13 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Route;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
-use BBCMS\Models\Category;
+use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'BBCMS\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers';
 
     protected $routePatterns = [
         'any' => '(.*)',
@@ -73,9 +73,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Для новостей , статей не надо этого. Для пользователей не знаю
-        // Route::model('article', \BBCMS\Models\Article::class);
-        // Route::model('category', \BBCMS\Models\Category::class);
-        // Route::model('users', BBCMS\Models\User::class);
+        // Route::model('article', \App\Models\Article::class);
+        // Route::model('category', \App\Models\Category::class);
+        // Route::model('users', App\Models\User::class);
 
         parent::boot();
     }

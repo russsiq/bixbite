@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
+use App\Models\Article;
 
 class Tag extends BaseModel
 {

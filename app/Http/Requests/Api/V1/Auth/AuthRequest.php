@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Auth;
+namespace App\Http\Requests\Api\V1\Auth;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 
 class AuthRequest extends BaseFormRequest
 {

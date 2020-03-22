@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
 // Сторонние зависимости.
-use BBCMS\Http\Controllers\SiteController;
-use BBCMS\Providers\RouteServiceProvider;
+use App\Http\Controllers\SiteController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 

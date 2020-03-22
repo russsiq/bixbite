@@ -1,7 +1,7 @@
 <?php
 
-use BBCMS\Models\Article;
-use BBCMS\Models\User;
+use App\Models\Article;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 /**

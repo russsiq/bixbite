@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\View\Components\Widgets;
+namespace App\View\Components\Widgets;
 
 // Сторонние зависимости.
-use BBCMS\Models\Tag;
+use App\Models\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;

@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Resources;
+namespace App\Http\Resources;
 
-use BBCMS\Models\Setting;
+use App\Models\Setting;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SettingResource extends JsonResource

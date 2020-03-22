@@ -1,12 +1,12 @@
 <?php
 
-namespace BBCMS\Http\Middleware;
+namespace App\Http\Middleware;
 
 // Базовые расширения PHP.
 use Closure;
 
 // Сторонние зависимости.
-use BBCMS\Models\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Category;
+namespace App\Http\Requests\Api\V1\Category;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 
 class CategoryRequest extends BaseFormRequest
 {

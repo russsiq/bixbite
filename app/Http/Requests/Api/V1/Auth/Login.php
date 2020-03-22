@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Auth;
+namespace App\Http\Requests\Api\V1\Auth;
 
 class Login extends AuthRequest
 {

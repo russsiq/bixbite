@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models\Relations;
+namespace App\Models\Relations;
 
-use BBCMS\Models\XField;
+use App\Models\XField;
 
 trait Extensible
 {

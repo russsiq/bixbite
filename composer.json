@@ -42,7 +42,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "BBCMS\\": "app/"
+            "App\\": "app/"
         },
         "files": [
             "app/Support/helpers.php"

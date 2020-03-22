@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\File;
 
 // Сторонние зависимости.
-use BBCMS\Models\File;
+use App\Models\File;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Str;
 

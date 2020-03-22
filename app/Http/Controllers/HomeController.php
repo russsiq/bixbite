@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
 class HomeController extends SiteController
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\Setting;
-use BBCMS\Models\User;
-use BBCMS\Models\Observers\ArticleObserver;
+use App\Models\Setting;
+use App\Models\User;
+use App\Models\Observers\ArticleObserver;
 
 class Article extends BaseModel
 {

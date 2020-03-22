@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support\Contracts;
+namespace App\Support\Contracts;
 
 interface PageInfoContract
 {

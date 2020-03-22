@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
 // Сторонние зависимости.
-use BBCMS\Http\Controllers\SiteController;
-use BBCMS\Providers\RouteServiceProvider;
+use App\Http\Controllers\SiteController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

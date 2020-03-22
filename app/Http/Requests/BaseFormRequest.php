@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Requests;
+namespace App\Http\Requests;
 
 // Сторонние зависимости.
 use Illuminate\Foundation\Http\FormRequest;

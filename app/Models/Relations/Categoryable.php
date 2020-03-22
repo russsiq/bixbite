@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models\Relations;
+namespace App\Models\Relations;
 
-use BBCMS\Models\Category;
+use App\Models\Category;
 
 trait Categoryable
 {
@@ -40,6 +40,6 @@ trait Categoryable
     public function category()
     {
         return $this->categories()->last();
-        //return $this->belongsTo('BBCMS\Models\Category');
+        //return $this->belongsTo('App\Models\Category');
     }*/
 }

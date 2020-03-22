@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\Comment;
+use App\Models\Comment;
 
 class CommentObserver
 {

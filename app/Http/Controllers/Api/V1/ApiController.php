@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;

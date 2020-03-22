@@ -1,7 +1,7 @@
 <?php
 
-use BBCMS\Models\Article;
-use BBCMS\Models\Tag;
+use App\Models\Article;
+use App\Models\Tag;
 
 use Illuminate\Database\Seeder;
 

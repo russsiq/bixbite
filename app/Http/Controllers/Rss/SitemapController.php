@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Rss;
+namespace App\Http\Controllers\Rss;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
-use BBCMS\Models\Category;
+use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Support\Str;
 
 // @NB: Need chunk to articles.

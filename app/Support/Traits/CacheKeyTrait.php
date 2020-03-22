@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support\Traits;
+namespace App\Support\Traits;
 
 // Сторонние зависимости.
 use Illuminate\Support\Arr;

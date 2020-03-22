@@ -1,12 +1,12 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Зарегистрированные фасады приложения.
 use Schema;
 
 // Сторонние зависимости.
-use BBCMS\Models\Observers\PrivilegeObserver;
+use App\Models\Observers\PrivilegeObserver;
 
 class Privilege extends BaseModel
 {

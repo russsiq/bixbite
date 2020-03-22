@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use BBCMS\Http\Controllers\BaseController;
+use App\Http\Controllers\BaseController;
 
 class PanelController extends BaseController
 {

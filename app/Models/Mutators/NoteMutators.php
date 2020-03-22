@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models\Mutators;
+namespace App\Models\Mutators;
 
 trait NoteMutators
 {

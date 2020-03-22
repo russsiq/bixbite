@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\Comment;
-use BBCMS\Http\Requests\CommentStoreRequest;
-use BBCMS\Http\Requests\CommentUpdateRequest;
+use App\Models\Comment;
+use App\Http\Requests\CommentStoreRequest;
+use App\Http\Requests\CommentUpdateRequest;
 
 class CommentsController extends SiteController
 {
@@ -66,7 +66,7 @@ class CommentsController extends SiteController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \BBCMS\Models\Comment  $comment
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function edit(Comment $comment)
@@ -84,8 +84,8 @@ class CommentsController extends SiteController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \BBCMS\Http\Requests\CommentUpdateRequest  $request
-     * @param  \BBCMS\Models\Comment  $comment
+     * @param  \App\Http\Requests\CommentUpdateRequest  $request
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
@@ -100,7 +100,7 @@ class CommentsController extends SiteController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \BBCMS\Models\Comment  $comment
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)

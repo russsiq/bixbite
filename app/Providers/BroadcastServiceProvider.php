@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Broadcast;

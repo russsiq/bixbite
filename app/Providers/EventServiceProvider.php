@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Event;
@@ -19,8 +19,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         // Example
-        // 'BBCMS\Events\Event' => [
-        //     'BBCMS\Listeners\EventListener',
+        // 'App\Events\Event' => [
+        //     'App\Listeners\EventListener',
         // ],
 
         // From https://laravel.com/docs/5.7/upgrade Email Verification
@@ -30,35 +30,35 @@ class EventServiceProvider extends ServiceProvider
 
         // From https://laravel.com/docs/master/authentication#events
         // 'Illuminate\Auth\Events\Registered' => [
-        //     'BBCMS\Listeners\LogRegisteredUser',
+        //     'App\Listeners\LogRegisteredUser',
         // ],
 
         // 'Illuminate\Auth\Events\Attempting' => [
-        //     'BBCMS\Listeners\LogAuthenticationAttempt',
+        //     'App\Listeners\LogAuthenticationAttempt',
         // ],
         //
         // 'Illuminate\Auth\Events\Authenticated' => [
-        //     'BBCMS\Listeners\LogAuthenticated',
+        //     'App\Listeners\LogAuthenticated',
         // ],
 
         'Illuminate\Auth\Events\Login' => [
-            'BBCMS\Listeners\LogSuccessfulLogin',
+            'App\Listeners\LogSuccessfulLogin',
         ],
 
         // 'Illuminate\Auth\Events\Failed' => [
-        //     'BBCMS\Listeners\LogFailedLogin',
+        //     'App\Listeners\LogFailedLogin',
         // ],
         //
         // 'Illuminate\Auth\Events\Logout' => [
-        //     'BBCMS\Listeners\LogSuccessfulLogout',
+        //     'App\Listeners\LogSuccessfulLogout',
         // ],
         //
         // 'Illuminate\Auth\Events\Lockout' => [
-        //     'BBCMS\Listeners\LogLockout',
+        //     'App\Listeners\LogLockout',
         // ],
         //
         // 'Illuminate\Auth\Events\PasswordReset' => [
-        //     'BBCMS\Listeners\LogPasswordReset',
+        //     'App\Listeners\LogPasswordReset',
         // ],
 
         \Russsiq\Updater\Events\UpdateAvailable::class => [

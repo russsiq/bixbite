@@ -1,14 +1,14 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\File;
+use App\Models\File;
 
-use BBCMS\Http\Resources\FileResource;
-use BBCMS\Http\Resources\FileCollection;
+use App\Http\Resources\FileResource;
+use App\Http\Resources\FileCollection;
 
-use BBCMS\Http\Requests\Api\V1\File\Store as StoreFileRequest;
-use BBCMS\Http\Requests\Api\V1\File\Update as UpdateFileRequest;
+use App\Http\Requests\Api\V1\File\Store as StoreFileRequest;
+use App\Http\Requests\Api\V1\File\Update as UpdateFileRequest;
 
 use Illuminate\Http\JsonResponse;
 

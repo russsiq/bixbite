@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models\Collections;
+namespace App\Models\Collections;
 
 use Illuminate\Database\Eloquent\Collection;
 

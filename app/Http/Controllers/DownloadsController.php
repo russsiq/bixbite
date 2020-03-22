@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\File;
+use App\Models\File;
 
 class DownloadsController extends BaseController
 {

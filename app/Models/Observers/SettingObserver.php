@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\Setting;
-use BBCMS\Models\Traits\CacheForgetByKeys;
+use App\Models\Setting;
+use App\Models\Traits\CacheForgetByKeys;
 
 class SettingObserver
 {

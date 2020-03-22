@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\User;
-use BBCMS\Models\XField;
-use BBCMS\Http\Requests\Front\UserRequest;
+use App\Models\User;
+use App\Models\XField;
+use App\Http\Requests\Front\UserRequest;
 
 class UsersController extends SiteController
 {

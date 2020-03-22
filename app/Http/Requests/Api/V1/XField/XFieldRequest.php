@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\XField;
+namespace App\Http\Requests\Api\V1\XField;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
-use BBCMS\Models\XField;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\XField;
 
 class XFieldRequest extends BaseFormRequest
 {

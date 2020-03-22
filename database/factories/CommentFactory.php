@@ -1,8 +1,8 @@
 <?php
 
-use BBCMS\Models\Article;
-use BBCMS\Models\Comment;
-use BBCMS\Models\User;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\User;
 
 use Faker\Generator as Faker;
 

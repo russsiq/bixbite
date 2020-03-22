@@ -1,13 +1,13 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Note;
-use BBCMS\Http\Resources\NoteResource;
-use BBCMS\Http\Resources\NoteCollection;
+use App\Models\Note;
+use App\Http\Resources\NoteResource;
+use App\Http\Resources\NoteCollection;
 
-use BBCMS\Http\Requests\Api\V1\Note\Store as StoreNoteRequest;
-use BBCMS\Http\Requests\Api\V1\Note\Update as UpdateNoteRequest;
+use App\Http\Requests\Api\V1\Note\Store as StoreNoteRequest;
+use App\Http\Requests\Api\V1\Note\Update as UpdateNoteRequest;
 
 use Illuminate\Http\JsonResponse;
 

@@ -30,7 +30,7 @@ define('DS', DIRECTORY_SEPARATOR);
  */
 
 // Сторонние зависимости.
-use BBCMS\Exceptions\BadLogic;
+use App\Exceptions\BadLogic;
 use Illuminate\Support\Str;
 use Illuminate\Support\HtmlString;
 
@@ -228,7 +228,7 @@ if (! function_exists('pageinfo')) {
      *
      * @param  array|string  $data
      * @throws \BadMethodCallException  If $data not a string or array.
-     * @return BBCMS\Support\PageInfo|BBCMS\Support\Contracts\PageInfoContract
+     * @return App\Support\PageInfo|App\Support\Contracts\PageInfoContract
      */
     function pageinfo($data = null)
     {
@@ -632,7 +632,7 @@ if (! function_exists('user')) {
      * @param  string $attribute
      * @param  string $guard
      * @throws BadLogic When requesting hidden attributes.
-     * @return null|string|BBCMS\Models\User
+     * @return null|string|App\Models\User
      */
     function user(string $attribute = null, string $guard = null)
     {

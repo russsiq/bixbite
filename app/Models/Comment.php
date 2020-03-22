@@ -1,12 +1,12 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
-use BBCMS\Models\User;
-use BBCMS\Models\Collections\CommentCollection;
-use BBCMS\Models\Observers\CommentObserver;
+use App\Models\Article;
+use App\Models\User;
+use App\Models\Collections\CommentCollection;
+use App\Models\Observers\CommentObserver;
 
 class Comment extends BaseModel
 {

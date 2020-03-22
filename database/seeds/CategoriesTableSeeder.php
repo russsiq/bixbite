@@ -1,6 +1,6 @@
 <?php
 
-use BBCMS\Models\Category;
+use App\Models\Category;
 
 use Illuminate\Database\Seeder;
 

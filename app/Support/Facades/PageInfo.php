@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support\Facades;
+namespace App\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

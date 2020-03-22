@@ -3,10 +3,10 @@
 // retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
 // Mass assigned not Observed.
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\XField;
-use BBCMS\Models\Traits\CacheForgetByKeys;
+use App\Models\XField;
+use App\Models\Traits\CacheForgetByKeys;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

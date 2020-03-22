@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Policies;
+namespace App\Policies;
 
-use BBCMS\Models\User;
+use App\Models\User;
 
 class UserPolicy extends BasePolicy
 {

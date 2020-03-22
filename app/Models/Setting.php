@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Зарегистрированные фасады приложения.
 use Artisan;
@@ -9,8 +9,8 @@ use EnvManager;
 use Storage;
 
 // Сторонние зависимости.
-use BBCMS\Models\Module;
-use BBCMS\Models\Observers\SettingObserver;
+use App\Models\Module;
+use App\Models\Observers\SettingObserver;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Setting extends BaseModel

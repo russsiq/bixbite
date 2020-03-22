@@ -9,7 +9,7 @@
 //     );
 // }
 
-namespace BBCMS\Models\Traits;
+namespace App\Models\Traits;
 
 trait hasOnline
 {

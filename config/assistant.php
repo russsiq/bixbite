@@ -1,6 +1,6 @@
 <?php
 
-use BBCMS\Services\Assistant\BeforeInstalled;
+use App\Services\Assistant\BeforeInstalled;
 
 return [
     // Имя маршрута для выхода из Ассистента приложения.

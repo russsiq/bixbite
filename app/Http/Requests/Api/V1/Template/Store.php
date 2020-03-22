@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Template;
+namespace App\Http\Requests\Api\V1\Template;
 
 class Store extends TemplateRequest
 {

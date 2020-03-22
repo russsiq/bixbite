@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Models\Relations;
+namespace App\Models\Relations;
 
 // Сторонние зависимости.
-use BBCMS\Models\File;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 

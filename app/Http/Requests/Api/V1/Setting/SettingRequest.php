@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Setting;
+namespace App\Http\Requests\Api\V1\Setting;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
 class SettingRequest extends BaseFormRequest

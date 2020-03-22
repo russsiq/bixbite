@@ -1,7 +1,7 @@
 <?php
 
-use BBCMS\Models\Article;
-use BBCMS\Models\Category;
+use App\Models\Article;
+use App\Models\Category;
 
 use Illuminate\Database\Seeder;
 

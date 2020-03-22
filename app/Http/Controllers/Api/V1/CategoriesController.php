@@ -1,14 +1,14 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Category;
+use App\Models\Category;
 
-use BBCMS\Http\Resources\CategoryResource;
-use BBCMS\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryCollection;
 
-use BBCMS\Http\Requests\Api\V1\Category\Store as StoreCategoryRequest;
-use BBCMS\Http\Requests\Api\V1\Category\Update as UpdateCategoryRequest;
+use App\Http\Requests\Api\V1\Category\Store as StoreCategoryRequest;
+use App\Http\Requests\Api\V1\Category\Update as UpdateCategoryRequest;
 
 use Illuminate\Http\JsonResponse;
 

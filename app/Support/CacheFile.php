@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support;
+namespace App\Support;
 
 use Carbon\Carbon;
 use Illuminate\Cache\FileStore;
@@ -10,16 +10,16 @@ class CacheFile extends FileStore
     protected $cacheMap = [
         // getCachedCategories()
         // Not simple: orderByRaw('ISNULL(`position`), `position` ASC')
-        'categories' => \BBCMS\Models\XField::class,
+        'categories' => \App\Models\XField::class,
 
         // roles(), not simple
-        'roles' => \BBCMS\Models\Privilege::class,
+        'roles' => \App\Models\Privilege::class,
 
         // getPrivileges(), not simple
-        'privileges' => \BBCMS\Models\User::class,
+        'privileges' => \App\Models\User::class,
 
         // fields(), simple ->get()
-        'x_fields' => \BBCMS\Models\XField::class,
+        'x_fields' => \App\Models\XField::class,
     ];
 
     /**

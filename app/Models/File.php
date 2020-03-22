@@ -1,8 +1,8 @@
 <?php
 
-// To do: class FileUploader extend BBCMS\Models\File\BaseFile
+// To do: class FileUploader extend App\Models\File\BaseFile
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Исключения.
 use RuntimeException as FileException;
@@ -11,8 +11,8 @@ use RuntimeException as FileException;
 use Storage;
 
 // Сторонние зависимости.
-use BBCMS\Models\User;
-use BBCMS\Models\Observers\FileObserver;
+use App\Models\User;
+use App\Models\Observers\FileObserver;
 use Illuminate\Http\UploadedFile;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 
@@ -142,7 +142,7 @@ class File extends BaseModel
 
     /**
      * Get path to file.
-     * Used in `BBCMS\Models\Mutators\FileMutators` and `BBCMS\Models\Observers\FileObserver`.
+     * Used in `App\Models\Mutators\FileMutators` and `App\Models\Observers\FileObserver`.
      *
      * @param  string|null $thumbSize Thumbnail size for the image file.
      * @return string

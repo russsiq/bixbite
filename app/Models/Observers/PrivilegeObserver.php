@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\Privilege;
-use BBCMS\Models\Traits\CacheForgetByKeys;
+use App\Models\Privilege;
+use App\Models\Traits\CacheForgetByKeys;
 
 class PrivilegeObserver
 {

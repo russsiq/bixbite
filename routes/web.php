@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Route;
  * Данная группа маршрутов имеет общие:
  *      - посредники: `web`.
  * Дополнительная информация:
- *      - BBCMS\Http\Kernel - middleware.
- *      - BBCMS\Providers\RouteServiceProvider
+ *      - App\Http\Kernel - middleware.
+ *      - App\Providers\RouteServiceProvider
  */
 
 

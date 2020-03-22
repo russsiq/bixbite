@@ -1,6 +1,6 @@
 <?php
 
-use BBCMS\Models\Comment;
+use App\Models\Comment;
 
 use Illuminate\Database\Seeder;
 

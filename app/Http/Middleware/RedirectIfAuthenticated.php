@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Middleware;
+namespace App\Http\Middleware;
 
 // Базовые расширения PHP.
 use Closure;
@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 
 // Сторонние зависимости.
-use BBCMS\Providers\RouteServiceProvider;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 
 /**

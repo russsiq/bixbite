@@ -1,13 +1,13 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
-use BBCMS\Models\Comment;
-use BBCMS\Models\File;
-use BBCMS\Models\Note;
-use BBCMS\Models\Observers\UserObserver;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\File;
+use App\Models\Note;
+use App\Models\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

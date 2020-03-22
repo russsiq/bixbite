@@ -1,11 +1,11 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\Article;
-use BBCMS\Models\Collections\CategoryCollection;
-use BBCMS\Models\Observers\CategoryObserver;
+use App\Models\Article;
+use App\Models\Collections\CategoryCollection;
+use App\Models\Observers\CategoryObserver;
 
 class Category extends BaseModel
 {

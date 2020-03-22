@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests;
+namespace App\Http\Requests;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class CommentStoreRequest extends BaseFormRequest

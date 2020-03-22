@@ -1,13 +1,13 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Module;
-use BBCMS\Models\Setting;
-use BBCMS\Http\Resources\SettingResource;
+use App\Models\Module;
+use App\Models\Setting;
+use App\Http\Resources\SettingResource;
 
-use BBCMS\Http\Requests\Api\V1\Setting\Store as StoreSettingRequest;
-use BBCMS\Http\Requests\Api\V1\Setting\Update as UpdateSettingRequest;
+use App\Http\Requests\Api\V1\Setting\Store as StoreSettingRequest;
+use App\Http\Requests\Api\V1\Setting\Update as UpdateSettingRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;

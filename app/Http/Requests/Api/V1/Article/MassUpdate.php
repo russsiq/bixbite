@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Article;
+namespace App\Http\Requests\Api\V1\Article;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 
 class MassUpdate extends BaseFormRequest
 {

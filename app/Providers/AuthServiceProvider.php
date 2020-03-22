@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Gate;
@@ -18,16 +18,16 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        \BBCMS\Models\Article::class => \BBCMS\Policies\ArticlePolicy::class,
-        \BBCMS\Models\Category::class => \BBCMS\Policies\CategoryPolicy::class,
-        \BBCMS\Models\Comment::class => \BBCMS\Policies\CommentPolicy::class,
-        \BBCMS\Models\File::class => \BBCMS\Policies\FilePolicy::class,
-        \BBCMS\Models\Note::class => \BBCMS\Policies\NotePolicy::class,
-        \BBCMS\Models\Privilege::class => \BBCMS\Policies\PrivilegePolicy::class,
-        \BBCMS\Models\Setting::class => \BBCMS\Policies\SettingPolicy::class,
-        \BBCMS\Models\Template::class => \BBCMS\Policies\TemplatePolicy::class,
-        \BBCMS\Models\User::class => \BBCMS\Policies\UserPolicy::class,
-        \BBCMS\Models\XField::class => \BBCMS\Policies\XFieldPolicy::class,
+        \App\Models\Article::class => \App\Policies\ArticlePolicy::class,
+        \App\Models\Category::class => \App\Policies\CategoryPolicy::class,
+        \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
+        \App\Models\File::class => \App\Policies\FilePolicy::class,
+        \App\Models\Note::class => \App\Policies\NotePolicy::class,
+        \App\Models\Privilege::class => \App\Policies\PrivilegePolicy::class,
+        \App\Models\Setting::class => \App\Policies\SettingPolicy::class,
+        \App\Models\Template::class => \App\Policies\TemplatePolicy::class,
+        \App\Models\User::class => \App\Policies\UserPolicy::class,
+        \App\Models\XField::class => \App\Policies\XFieldPolicy::class,
 
     ];
 

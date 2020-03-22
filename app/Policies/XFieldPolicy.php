@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Policies;
+namespace App\Policies;
 
-use BBCMS\Models\User;
-use BBCMS\Models\XField;
+use App\Models\User;
+use App\Models\XField;
 
 /**
  * Данные привилегии доступны только владельцам сайта.

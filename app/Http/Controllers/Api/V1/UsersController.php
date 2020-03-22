@@ -1,14 +1,14 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\User;
+use App\Models\User;
 
-use BBCMS\Http\Resources\UserResource;
-use BBCMS\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
-// use BBCMS\Http\Requests\Api\V1\User\Store as StoreUserRequest;
-use BBCMS\Http\Requests\Api\V1\User\Update as UpdateUserRequest;
+// use App\Http\Requests\Api\V1\User\Store as StoreUserRequest;
+use App\Http\Requests\Api\V1\User\Update as UpdateUserRequest;
 
 use Illuminate\Http\JsonResponse;
 

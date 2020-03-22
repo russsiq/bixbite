@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 class Theme
 {

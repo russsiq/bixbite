@@ -164,14 +164,14 @@ return [
         /*
          * Application Service Providers...
          */
-        BBCMS\Providers\AppServiceProvider::class,
-        BBCMS\Providers\AuthServiceProvider::class,
-        // BBCMS\Providers\BroadcastServiceProvider::class,
-        BBCMS\Providers\EventServiceProvider::class,
-        BBCMS\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
         // BBCMS Service Providers
-        BBCMS\Providers\BixbiteServiceProvider::class,
+        App\Providers\BixbiteServiceProvider::class,
 
         // BBCMS vendor Package Service Providers...
         Barryvdh\Debugbar\ServiceProvider::class,
@@ -229,9 +229,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // BBCMS Aliases
-        'CacheFile' => BBCMS\Support\Facades\CacheFile::class,
-        'PageInfo' => BBCMS\Support\Facades\PageInfo::class,
-        'Widget' => BBCMS\Support\Facades\Widget::class,
+        'CacheFile' => App\Support\Facades\CacheFile::class,
+        'PageInfo' => App\Support\Facades\PageInfo::class,
+        'Widget' => App\Support\Facades\Widget::class,
     ],
 
 ];

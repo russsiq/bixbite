@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
 use Blade;
@@ -8,8 +8,8 @@ use Cache;
 use Lang;
 
 // Сторонние зависимости.
-use BBCMS\Support\PageInfo;
-use BBCMS\Support\CacheFile;
+use App\Support\PageInfo;
+use App\Support\CacheFile;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -41,14 +41,14 @@ class BixbiteServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
-            'articles' => \BBCMS\Models\Article::class,
-            'categories' => \BBCMS\Models\Category::class,
-            'comments' => \BBCMS\Models\Comment::class,
-            'files' => \BBCMS\Models\File::class,
-            // 'images' => \BBCMS\Models\Image::class,
-            'notes' => \BBCMS\Models\Note::class,
-            'tags' => \BBCMS\Models\Tag::class,
-            'users' => \BBCMS\Models\User::class,
+            'articles' => \App\Models\Article::class,
+            'categories' => \App\Models\Category::class,
+            'comments' => \App\Models\Comment::class,
+            'files' => \App\Models\File::class,
+            // 'images' => \App\Models\Image::class,
+            'notes' => \App\Models\Note::class,
+            'tags' => \App\Models\Tag::class,
+            'users' => \App\Models\User::class,
         ], true);
 
         Blade::if('setting', function (string $environment) {

@@ -1,6 +1,6 @@
 <?php
 
-use BBCMS\Models\User;
+use App\Models\User;
 
 use Illuminate\Database\Seeder;
 

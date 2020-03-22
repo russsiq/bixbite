@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\Template;
+namespace App\Http\Requests\Api\V1\Template;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
-use BBCMS\Models\Template;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\Template;
 
 class TemplateRequest extends BaseFormRequest
 {

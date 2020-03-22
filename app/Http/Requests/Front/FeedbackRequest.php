@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Front;
+namespace App\Http\Requests\Front;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 
 class FeedbackRequest extends BaseFormRequest
 {

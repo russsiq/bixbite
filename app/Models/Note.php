@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
 // Сторонние зависимости.
-use BBCMS\Models\User;
-use BBCMS\Models\Observers\NoteObserver;
+use App\Models\User;
+use App\Models\Observers\NoteObserver;
 
 class Note extends BaseModel
 {

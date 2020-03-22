@@ -1,15 +1,15 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Article;
+use App\Models\Article;
 
-use BBCMS\Http\Resources\ArticleResource;
-use BBCMS\Http\Resources\ArticleCollection;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleCollection;
 
-use BBCMS\Http\Requests\Api\V1\Article\Store as StoreArticleRequest;
-use BBCMS\Http\Requests\Api\V1\Article\Update as UpdateArticleRequest;
-use BBCMS\Http\Requests\Api\V1\Article\MassUpdate as MassUpdateArticleRequest;
+use App\Http\Requests\Api\V1\Article\Store as StoreArticleRequest;
+use App\Http\Requests\Api\V1\Article\Update as UpdateArticleRequest;
+use App\Http\Requests\Api\V1\Article\MassUpdate as MassUpdateArticleRequest;
 
 use Illuminate\Http\JsonResponse;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\User;
+namespace App\Http\Requests\Api\V1\User;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
-use BBCMS\Models\Privilege;
-use BBCMS\Models\User;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\Privilege;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseFormRequest

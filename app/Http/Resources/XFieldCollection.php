@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Resources;
+namespace App\Http\Resources;
 
-use BBCMS\Models\XField;
+use App\Models\XField;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

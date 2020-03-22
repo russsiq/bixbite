@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\File;
 
 class Update extends FileRequest
 {

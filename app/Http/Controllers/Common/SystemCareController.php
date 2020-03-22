@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Common;
+namespace App\Http\Controllers\Common;
 
 use Artisan;
-use BBCMS\Http\Controllers\BaseController;
+use App\Http\Controllers\BaseController;
 
 class SystemCareController extends BaseController
 {

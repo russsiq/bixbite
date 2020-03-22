@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Resources;
+namespace App\Http\Resources;
 
-use BBCMS\Models\Privilege;
+use App\Models\Privilege;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource

@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models\Scopes;
+namespace App\Models\Scopes;
 
 trait FileScopes
 {

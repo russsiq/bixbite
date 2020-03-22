@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models\Traits;
+namespace App\Models\Traits;
 
-use BBCMS\Models\Support\CustomQueryBuilder;
+use App\Models\Support\CustomQueryBuilder;
 
 /**
 * @source https://github.com/codekerala/Laravel-5.6-and-Vue.j-2-Dataviewer-Advanced-Filter

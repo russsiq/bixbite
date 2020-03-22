@@ -4,9 +4,9 @@
 // $original = $user->getOriginal();
 // $dirty = $user->getDirty();
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\User;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
 class UserObserver

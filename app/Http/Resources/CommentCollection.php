@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Resources;
+namespace App\Http\Resources;
 
-use BBCMS\Models\Comment;
+use App\Models\Comment;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

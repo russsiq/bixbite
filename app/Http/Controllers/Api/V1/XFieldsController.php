@@ -1,14 +1,14 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\XField;
+use App\Models\XField;
 
-use BBCMS\Http\Resources\XFieldResource;
-use BBCMS\Http\Resources\XFieldCollection;
+use App\Http\Resources\XFieldResource;
+use App\Http\Resources\XFieldCollection;
 
-use BBCMS\Http\Requests\Api\V1\XField\Store as StoreXFieldRequest;
-use BBCMS\Http\Requests\Api\V1\XField\Update as UpdateXFieldRequest;
+use App\Http\Requests\Api\V1\XField\Store as StoreXFieldRequest;
+use App\Http\Requests\Api\V1\XField\Update as UpdateXFieldRequest;
 
 use Illuminate\Http\JsonResponse;
 

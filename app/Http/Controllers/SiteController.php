@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\Category;
-use BBCMS\Support\PageInfo;
+use App\Models\Category;
+use App\Support\PageInfo;
 
 class SiteController extends BaseController
 {

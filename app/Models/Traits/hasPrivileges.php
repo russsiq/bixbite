@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models\Traits;
+namespace App\Models\Traits;
 
-use BBCMS\Models\Privilege;
+use App\Models\Privilege;
 
 trait hasPrivileges
 {

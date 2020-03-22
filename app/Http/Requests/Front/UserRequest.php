@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Requests\Front;
+namespace App\Http\Requests\Front;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
-use BBCMS\Models\Privilege;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\Privilege;
 
 class UserRequest extends BaseFormRequest
 {

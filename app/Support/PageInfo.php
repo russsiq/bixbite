@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Support;
+namespace App\Support;
 
 use RuntimeException;
 use BadMethodCallException;

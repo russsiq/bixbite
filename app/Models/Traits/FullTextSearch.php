@@ -4,7 +4,7 @@
  * Source https://arianacosta.com/php/laravel/tutorial-full-text-search-laravel-5/.
  */
 
-namespace BBCMS\Models\Traits;
+namespace App\Models\Traits;
 
 trait FullTextSearch
 {

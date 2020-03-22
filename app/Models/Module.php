@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Models;
+namespace App\Models;
 
-use BBCMS\Models\{BaseModel, Setting};
+use App\Models\{BaseModel, Setting};
 
 class Module extends BaseModel
 {

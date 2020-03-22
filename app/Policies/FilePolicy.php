@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Policies;
+namespace App\Policies;
 
-use BBCMS\Models\User;
-use BBCMS\Models\File;
+use App\Models\User;
+use App\Models\File;
 
 class FilePolicy extends BasePolicy
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Comment;
+use App\Models\Comment;
 
-use BBCMS\Http\Resources\CommentResource;
-use BBCMS\Http\Resources\CommentCollection;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\CommentCollection;
 
-use BBCMS\Http\Requests\Api\V1\Comment\Store as StoreCommentRequest;
-use BBCMS\Http\Requests\Api\V1\Comment\Update as UpdateCommentRequest;
-use BBCMS\Http\Requests\Api\V1\Comment\MassUpdate as MassUpdateCommentRequest;
+use App\Http\Requests\Api\V1\Comment\Store as StoreCommentRequest;
+use App\Http\Requests\Api\V1\Comment\Update as UpdateCommentRequest;
+use App\Http\Requests\Api\V1\Comment\MassUpdate as MassUpdateCommentRequest;
 
 use Illuminate\Http\JsonResponse;
 // use Illuminate\Database\Eloquent\Relations\MorphTo;

@@ -8,7 +8,7 @@
 // ];
 // Run in Class: $this->cacheForgetByKeys($entity);
 
-namespace BBCMS\Models\Traits;
+namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Model as ParentModel;
 

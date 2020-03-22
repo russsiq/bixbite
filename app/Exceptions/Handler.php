@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Exceptions;
+namespace App\Exceptions;
 
 use View;
 

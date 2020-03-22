@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Front;
+namespace App\Http\Controllers\Front;
 
-use BBCMS\Http\Controllers\SiteController;
-use BBCMS\Http\Requests\Front\FeedbackRequest;
+use App\Http\Controllers\SiteController;
+use App\Http\Requests\Front\FeedbackRequest;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -79,4 +79,4 @@ class FeedbackController extends SiteController
 // ];
 //
 // \Illuminate\Support\Facades\Mail::to('russsiq@************.ru')
-//     ->send(new \BBCMS\Mail\Feedback($params));
+//     ->send(new \App\Mail\Feedback($params));

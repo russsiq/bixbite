@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\File;
 
 // Сторонние зависимости.
-use BBCMS\Http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class FileRequest extends BaseFormRequest

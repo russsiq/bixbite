@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Resources;
+namespace App\Http\Resources;
 
-use BBCMS\Models\Note;
+use App\Models\Note;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

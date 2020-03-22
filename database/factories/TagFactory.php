@@ -1,6 +1,6 @@
 <?php
 
-use BBCMS\Models\Tag;
+use App\Models\Tag;
 
 use Faker\Generator as Faker;
 

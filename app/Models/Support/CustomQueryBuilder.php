@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models\Support;
+namespace App\Models\Support;
 
 // Сторонние зависимости.
 use Illuminate\Support\Str;

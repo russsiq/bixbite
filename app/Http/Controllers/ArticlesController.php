@@ -1,10 +1,10 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\Tag;
-use BBCMS\Models\Article;
-use BBCMS\Models\Category;
+use App\Models\Tag;
+use App\Models\Article;
+use App\Models\Category;
 
 class ArticlesController extends SiteController
 {

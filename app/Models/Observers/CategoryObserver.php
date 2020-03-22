@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Models\Observers;
+namespace App\Models\Observers;
 
-use BBCMS\Models\Category;
-use BBCMS\Models\Traits\CacheForgetByKeys;
+use App\Models\Category;
+use App\Models\Traits\CacheForgetByKeys;
 
 class CategoryObserver
 {

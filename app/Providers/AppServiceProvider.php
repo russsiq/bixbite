@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Providers;
+namespace App\Providers;
 
 // Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;

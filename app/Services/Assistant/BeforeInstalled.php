@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Services\Assistant;
+namespace App\Services\Assistant;
 
 // Зарегистрированные фасады приложения.
 use DB;

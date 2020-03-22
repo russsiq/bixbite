@@ -1,6 +1,6 @@
 <?php
 
-namespace BBCMS\Models\Contracts;
+namespace App\Models\Contracts;
 
 interface ObserverContract
 {

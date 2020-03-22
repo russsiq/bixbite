@@ -1,8 +1,8 @@
 <?php
 
-namespace BBCMS\Http\Controllers;
+namespace App\Http\Controllers;
 
-use BBCMS\Models\Tag;
+use App\Models\Tag;
 
 class TagsController extends SiteController
 {

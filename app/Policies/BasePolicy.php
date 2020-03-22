@@ -1,12 +1,12 @@
 <?php
 
-namespace BBCMS\Policies;
+namespace App\Policies;
 
 // Исключения.
 use BadMethodCallException;
 
 // Сторонние зависимости.
-use BBCMS\Models\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**

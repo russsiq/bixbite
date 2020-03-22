@@ -1,9 +1,9 @@
 <?php
 
-namespace BBCMS\Policies;
+namespace App\Policies;
 
-use BBCMS\Models\User;
-use BBCMS\Models\Template;
+use App\Models\User;
+use App\Models\Template;
 
 /**
  * Данные привилегии доступны только владельцам сайта.

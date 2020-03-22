@@ -1,13 +1,13 @@
 <?php
 
-namespace BBCMS\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1;
 
-use BBCMS\Models\Template;
-use BBCMS\Http\Resources\TemplateResource;
-use BBCMS\Http\Resources\TemplateCollection;
-use BBCMS\Http\Requests\Api\V1\Template\Show as ShowTemplateRequest;
-use BBCMS\Http\Requests\Api\V1\Template\Store as StoreTemplateRequest;
-use BBCMS\Http\Requests\Api\V1\Template\Update as UpdateTemplateRequest;
+use App\Models\Template;
+use App\Http\Resources\TemplateResource;
+use App\Http\Resources\TemplateCollection;
+use App\Http\Requests\Api\V1\Template\Show as ShowTemplateRequest;
+use App\Http\Requests\Api\V1\Template\Store as StoreTemplateRequest;
+use App\Http\Requests\Api\V1\Template\Update as UpdateTemplateRequest;
 
 use Illuminate\Http\JsonResponse;
 
