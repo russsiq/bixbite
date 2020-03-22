@@ -26,7 +26,7 @@ class Tag extends BaseModel
     public $timestamps = false;
 
     /**
-     * Атрибуты, которые должны быть приведены к базовым типам.
+     * Атрибуты, которые должны быть типизированы.
      * @var array
      */
     protected $casts = [

@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Атрибуты, которые должны быть приведены к базовым типам.
+     * Атрибуты, которые должны быть типизированы.
      * @var array
      */
     protected $casts = [
