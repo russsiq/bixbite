@@ -173,9 +173,6 @@ return [
         // BBCMS Service Providers
         App\Providers\BixbiteServiceProvider::class,
 
-        // BBCMS vendor Package Service Providers...
-        Barryvdh\Debugbar\ServiceProvider::class,
-
     ],
 
     /*
