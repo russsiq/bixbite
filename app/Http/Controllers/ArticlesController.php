@@ -19,19 +19,21 @@ class ArticlesController extends SiteController
 
     public function index()
     {
-        $query = filter_input_array(INPUT_GET, [
+        $filters = filter_input_array(INPUT_GET, [
             'year' => FILTER_SANITIZE_NUMBER_INT,
             'month' => FILTER_SANITIZE_STRING,
             'user_id' => FILTER_SANITIZE_NUMBER_INT,
         ]);
 
         $articles = $this->model->shortArticle()
-            ->filter($query)
+            ->when($filters, function($query, $filters) {
+                $query->filter($filters);
+            })
             ->where('on_mainpage', 1)
             ->orderBy('is_pinned', 'desc')
             ->orderBy(setting('articles.order_by', 'id'), setting('articles.direction', 'desc'))
             ->paginate(setting('articles.paginate', 8))
-            ->appends($query);
+            ->appends($filters);
 
         pageinfo()->unless('onHomePage', [
             'title' => setting('articles.meta_title', 'Articles'),
@@ -95,6 +97,7 @@ class ArticlesController extends SiteController
     public function search()
     {
         $query = html_secure(request('query'));
+
         $articles = $query
             ? $this->model->shortArticle()
                 ->search($query)
@@ -119,7 +122,7 @@ class ArticlesController extends SiteController
 
         if (($article_slug !== $article->slug) or ($category_slug !== $article->categories->pluck('slug')->implode('_'))) {
             cache()->forget('cachedFullArticleWithRelation-'.$article_id);
-            
+
             return redirect()->to($article->url);
         }
 
