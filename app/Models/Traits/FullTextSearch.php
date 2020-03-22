@@ -18,7 +18,6 @@ trait FullTextSearch
      */
     public function scopeSearch(Builder $query, string $term): void
     {
-        dd($term);
         $columns = implode(',', $this->searchable);
 
         $query->whereRaw(
