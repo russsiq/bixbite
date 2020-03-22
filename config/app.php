@@ -231,7 +231,7 @@ return [
         // BBCMS Aliases
         'CacheFile' => App\Support\Facades\CacheFile::class,
         'PageInfo' => App\Support\Facades\PageInfo::class,
-        'Widget' => App\Support\Facades\Widget::class,
+
     ],
 
 ];
