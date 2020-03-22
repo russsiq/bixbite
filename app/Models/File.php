@@ -19,7 +19,6 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 class File extends BaseModel
 {
     use Mutators\FileMutators,
-        Scopes\FileScopes,
         Traits\Dataviewer;
 
     /**
