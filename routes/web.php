@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
  * Дополнительная информация:
  *      - App\Http\Kernel - middleware.
  *      - App\Providers\RouteServiceProvider
+ *      - Laravel\Ui\AuthRouteMethods
  */
 
 
@@ -57,24 +59,3 @@ Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->
 // Данные маршруты всегда должны распологаться последними.
 Route::get('{category}', 'ArticlesController@category')->name('articles.category');
 Route::get('{category_slug}/{article_id}-{article_slug}.html', 'ArticlesController@article')->name('articles.article');
-
-// // Authentication Routes...
-// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-// Route::post('login', 'Auth\LoginController@login');
-// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-//
-// // Registration Routes...
-// Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-// Route::post('register', 'Auth\RegisterController@register');
-//
-// // Password Reset Routes...
-// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-
-// Route::get('route-list', function () {
-//    $exitCode = Artisan::call('route:list');
-//
-//    dd(Artisan::output());
-// });
