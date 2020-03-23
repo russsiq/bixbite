@@ -1,5 +1,5 @@
 <nav class="navbar header-navbar" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
-    <a href="{{ url('/') }}" class="navbar-brand" rel="home">{{ setting('system.app_name', 'BixBite') }}</a>
+    <a href="{{ route('home') }}" class="navbar-brand" rel="home">{{ setting('system.app_name', 'BixBite') }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
     <div id="navbarSupportedContent" class="collapse navbar-collapse">

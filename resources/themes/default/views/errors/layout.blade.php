@@ -84,8 +84,8 @@
 <body>
     <div class="wrapper">
         <nav class="nav">
-            <a href="{{ url('/') }}" class="nav__link">@lang('common.home')</a>
-            <a href="{{ url('search') }}" class="nav__link">@lang('common.search')</a>
+            <a href="{{ route('home') }}" class="nav__link">@lang('common.home')</a>
+            <a href="{{ route('articles.search') }}" class="nav__link">@lang('common.search')</a>
         </nav>
 
         <main class="content">

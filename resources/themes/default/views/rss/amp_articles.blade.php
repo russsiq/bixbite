@@ -3,7 +3,7 @@
     xmlns:turbo="http://turbo.yandex.ru"
     version="2.0">
     <channel>
-        <link>{{ url('/') }}</link>
+        <link>{{ route('home') }}</link>
         <title>{{ setting('system.app_name') }}</title>
         <description>{{ setting('system.meta_description') }}</description>
         {{-- <turbo:analytics id="88888888" type="Yandex"></turbo:analytics> --}}
