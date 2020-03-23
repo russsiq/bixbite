@@ -4,6 +4,7 @@ namespace App\Models;
 
 // Сторонние зависимости.
 use App\Models\Article;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends BaseModel
 {
@@ -43,34 +44,49 @@ class Tag extends BaseModel
 
     ];
 
-    public function getRouteKeyName()
+    /**
+     * Получить ключ маршрута для модели.
+     * @return string
+     */
+    public function getRouteKeyName(): string
     {
         return 'title';
     }
 
-    public function articles()
+    /**
+     * [articles description]
+     * @return MorphToMany [description]
+     */
+    public function articles(): MorphToMany
     {
         return $this->morphedByMany(Article::class, 'taggable');
     }
 
-    public function getUrlAttribute()
+    /**
+     * Получить атрибут `url`.
+     * @return string
+     */
+    public function getUrlAttribute(): string
     {
         return route('tags.tag', $this);
     }
 
-    // Delete unused tags
-    public function reIndex()
+    /**
+     * Удалить неиспользуемые теги.
+     * @return void
+     */
+    public function reIndex(): void
     {
-        $tags = $this->select(['tags.id', 'taggables.tag_id as pivot_tag_id'])
+        $tags = $this->select([
+                'tags.id',
+                'taggables.tag_id as pivot_tag_id',
+            ])
             ->join('taggables', 'tags.id', '=', 'taggables.tag_id')
-            ->get()->keyBy('id')->all();
+            ->get()
+            ->keyBy('id')
+            ->all();
 
-        $this->whereNotIn('id', array_keys($tags))->delete();
-
-        // dd($this->has($model->getMorphClass(), '=', 0)->toSql());
-        //
-        // The commentable relation on the Comment model will return either a
-        // Post or Video instance, depending on which type of model owns the comment.
-        // $commentable = $comment->commentable;
+        $this->whereNotIn('id', array_keys($tags))
+            ->delete();
     }
 }
