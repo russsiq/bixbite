@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
-use Blade;
-use Cache;
-use Lang;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
 
 // Сторонние зависимости.
 use App\Support\PageInfo;
