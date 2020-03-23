@@ -4,9 +4,10 @@
 
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-            @each('components.partials.navigation', pageinfo('navigation'), 'item')
+            @each('components.partials.navigation', pageinfo('navigation'), 'category')
         </ul>
-            <!-- Authentication Links -->
+
+        <!-- Authentication Links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 @guest
