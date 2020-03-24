@@ -74,7 +74,7 @@ class BaseController extends Controller
      */
     protected function renderOutput(string $template, array $vars = [])
     {
-        $tpl = $this->template . '.'. $template;
+        $tpl = $this->template.'.'.$template;
 
         if (view()->exists($tpl)) {
             return view($tpl, $vars)->render();
