@@ -9,9 +9,11 @@
         @if ($image = $category->image)
             {{ $image->picture_box }}
         @endif
+
         @if ($category->info)
             <p class="archive_page__teaser">{{ $category->info }}</p>
         @endif
+
         {{ wrap_attr(
             $sub_categories,
             '<li class="cat-links"><a href="%url" rel="category">%title</a></li>',
