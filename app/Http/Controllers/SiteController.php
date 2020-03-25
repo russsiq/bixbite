@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+// Сторонние зависимости.
 use App\Models\Category;
+use App\Models\Collections\CategoryCollection;
 use App\Support\PageInfo;
 
 class SiteController extends BaseController
@@ -14,14 +16,17 @@ class SiteController extends BaseController
 
     }
 
-    protected function makeNavigation()
+    /**
+     * Извлечь коллекцию категорий из хранилища.
+     * @return CategoryCollection
+     */
+    protected function resolveCategories(): CategoryCollection
     {
-        return app(Category::class)->getCachedNavigationCategories();
-    }
-
-    protected function getCategories()
-    {
-        return app(Category::class)->getCachedCategories();
+        return cache()->rememberForever('categories', function () {
+            return Category::short()
+                ->orderByPosition()
+                ->get();
+        });
     }
 
     /**
@@ -35,9 +40,8 @@ class SiteController extends BaseController
     protected function renderOutput(string $template, array $vars = [])
     {
         pageinfo([
-            'categories' => $this->getCategories(),
-            'navigation' => $this->makeNavigation(),
-        ]);
+           'categories' => $this->resolveCategories(),
+       ]);
 
         $tpl = $this->template.'.'.$template;
 
