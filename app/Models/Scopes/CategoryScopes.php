@@ -19,11 +19,20 @@ trait CategoryScopes
             'categories.id',
             'categories.title',
             'categories.slug',
-            'categories.alt_url',
             'categories.parent_id',
             'categories.show_in_menu',
 
         ]);
+    }
+
+    /**
+     * [scopeIncludeExternal description]
+     * @param  Builder  $builder
+     * @return void
+     */
+    public function scopeIncludeExternal(Builder $builder): void
+    {
+        $builder->addSelect('categories.alt_url');
     }
 
     /**

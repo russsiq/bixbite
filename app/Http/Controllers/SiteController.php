@@ -24,6 +24,7 @@ class SiteController extends BaseController
     {
         return cache()->rememberForever('categories', function () {
             return Category::short()
+                ->includeExternal()
                 ->orderByPosition()
                 ->get();
         });
