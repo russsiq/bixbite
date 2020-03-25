@@ -38,8 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $primaryKey = 'id';
 
     /**
-     * Динамически добавляемые в массив или JSON представление модели атрибуты,
-     * для которых прописаны методы доступа (акцессоры).
+     * Аксессоры, добавляемые при сериализации модели.
      * @var array
      */
     protected $appends = [
