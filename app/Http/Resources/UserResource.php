@@ -2,18 +2,19 @@
 
 namespace App\Http\Resources;
 
+// Сторонние зависимости.
 use App\Models\Privilege;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
     /**
      * Преобразовать ресурс в массив.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return parent::toArray($request);
 
@@ -36,7 +37,13 @@ class UserResource extends JsonResource
         ];
     }
 
-    public function with($request)
+    /**
+     * Получить дополнительные данные, которые
+     * должны быть возвращены с массивом ресурса.
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function with($request): array
     {
         $roles = array_reverse(array_values(
             Privilege::getModel()->roles()
@@ -45,7 +52,9 @@ class UserResource extends JsonResource
         return [
             'meta' => [
                 'roles' => $roles,
+
             ],
+
         ];
     }
 }

@@ -10,12 +10,13 @@ use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
 // Зарегистрированные фасады приложения.
-use File;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\File;
 
 // Сторонние зависимости.
 use Illuminate\Support\Str;
 
-class Template
+class Template implements Arrayable
 {
     /**
      * Разрешенные разрешения файлов.
