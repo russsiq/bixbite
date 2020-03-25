@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class SettingCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * Преобразовать коллекцию ресурсов в массив.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

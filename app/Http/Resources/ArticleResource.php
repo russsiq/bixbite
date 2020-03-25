@@ -14,7 +14,7 @@ class ArticleResource extends JsonResource
     // public static $wrap = null;
 
     /**
-     * Transform the resource into an array.
+     * Преобразовать ресурс в массив.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

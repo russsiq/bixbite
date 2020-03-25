@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class NoteResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Преобразовать ресурс в массив.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
