@@ -11,7 +11,8 @@ class Category extends BaseModel
 {
     use Mutators\CategoryMutators,
         Relations\Extensible,
-        Relations\Fileable;
+        Relations\Fileable,
+        Scopes\CategoryScopes;
 
     /**
      * Таблица БД, ассоциированная с моделью.
@@ -125,33 +126,6 @@ class Category extends BaseModel
     public function newCollection(array $models = [])
     {
         return new CategoryCollection($models);
-    }
-
-    public function getCachedCategories()
-    {
-        return cache()->rememberForever('categories', function () {
-            return $this->select([
-                    'categories.id',
-                    'categories.title',
-                    'categories.slug',
-                    'categories.alt_url',
-                    'categories.parent_id',
-                    'categories.show_in_menu',
-                ])
-                ->orderByRaw('ISNULL(`position`), `position` ASC')
-                ->get();
-        });
-    }
-
-    public function getCachedNavigationCategories()
-    {
-        return cache()->rememberForever('navigation', function () {
-            return $this->getCachedCategories()
-                ->filter(function ($category) {
-                    return $category->show_in_menu;
-                })
-                ->nested();
-        });
     }
 
     // return count changed categories
