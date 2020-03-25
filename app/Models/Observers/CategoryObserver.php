@@ -11,7 +11,6 @@ class CategoryObserver
 
     protected $keysToForgetCache = [
         'categories' => 'getCachedCategories',
-        'navigation' => 'getCachedNavigationCategories',
     ];
 
     public function retrieved(Category $category)
