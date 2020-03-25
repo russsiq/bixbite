@@ -4,7 +4,7 @@
 
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-            @each('components.partials.navigation', pageinfo('navigation'), 'category')
+            @each('components.partials.navigation', pageinfo('categories')->filter->show_in_menu->nested(), 'category')
         </ul>
 
         <!-- Authentication Links -->
