@@ -34,6 +34,7 @@ class SitemapController
                     'articles.state',
                     'articles.created_at',
                     'articles.updated_at',
+
                 ])
                 ->published()
                 ->orderBy('updated_at', 'desc')
@@ -42,6 +43,7 @@ class SitemapController
             'categories' => Category::select([
                     'categories.created_at',
                     'categories.updated_at',
+
                 ])
                 ->orderBy('updated_at', 'desc')
                 ->first(),
@@ -65,13 +67,20 @@ class SitemapController
                     'articles.created_at',
                     'articles.updated_at',
                     'articles.state',
+
                 ])
                 ->with([
                     'files' => function ($query) {
                         $query->select([
-                            'files.id', 'files.disk', 'files.type',
-                            'files.category', 'files.name', 'files.extension',
-                            'files.attachment_type','files.attachment_id'
+                            'files.id',
+                            'files.disk',
+                            'files.type',
+                            'files.category',
+                            'files.name',
+                            'files.extension',
+                            'files.attachment_type',
+                            'files.attachment_id',
+
                         ])
                         ->join('articles', function ($join) {
                             $join->on('files.id', '=', 'articles.image_id');
@@ -98,13 +107,20 @@ class SitemapController
                     'articles.title',
                     'articles.content',
                     'articles.state',
+
                 ])
                 ->with([
                     'files' => function ($query) {
                         $query->select([
-                            'files.id', 'files.disk', 'files.type',
-                            'files.category', 'files.name', 'files.extension',
-                            'files.attachment_type','files.attachment_id'
+                            'files.id',
+                            'files.disk',
+                            'files.type',
+                            'files.category',
+                            'files.name',
+                            'files.extension',
+                            'files.attachment_type',
+                            'files.attachment_id',
+
                         ])
                         ->join('articles', function ($join) {
                             $join->on('files.id', '=', 'articles.image_id');
@@ -123,17 +139,24 @@ class SitemapController
         return [
             'categories' => Category::select([
                     'categories.id',
-                    'categories.image_id',
                     'categories.slug',
+                    'categories.image_id',
                     'categories.created_at',
                     'categories.updated_at',
+
                 ])
                 ->with([
                     'files' => function ($query) {
                         $query->select([
-                            'files.id', 'files.disk', 'files.type',
-                            'files.category', 'files.name', 'files.extension',
-                            'files.attachment_type','files.attachment_id'
+                            'files.id',
+                            'files.disk',
+                            'files.type',
+                            'files.category',
+                            'files.name',
+                            'files.extension',
+                            'files.attachment_type',
+                            'files.attachment_id',
+
                         ])
                         ->join('categories', function ($join) {
                             $join->on('files.id', '=', 'categories.image_id');
