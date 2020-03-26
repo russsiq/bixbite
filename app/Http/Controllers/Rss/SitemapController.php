@@ -54,7 +54,8 @@ class SitemapController
     protected static function getIndex(): array
     {
         return [
-            'articles' => Article::select([
+            'articles' => Article::without('categories')
+                ->select([
                     'articles.created_at',
                     'articles.updated_at',
 
