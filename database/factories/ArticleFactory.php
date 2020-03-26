@@ -3,6 +3,7 @@
 use App\Models\Article;
 use App\Models\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 /**
  * Define the factory to generate new Article model instances
@@ -18,7 +19,7 @@ $factory->define(Article::class, function (Faker $faker) {
 
     return [
         'title' => $title,
-        'slug' => str_slug($title),
+        'slug' => Str::slug($title),
         'teaser' => $faker->text(mt_rand(120, 255)),
         'content' => $content,
         'user_id' => User::inRandomOrder()->first()->id,
