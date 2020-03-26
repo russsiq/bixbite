@@ -45,7 +45,6 @@ class BixbiteServiceProvider extends ServiceProvider
             'categories' => \App\Models\Category::class,
             'comments' => \App\Models\Comment::class,
             'files' => \App\Models\File::class,
-            // 'images' => \App\Models\Image::class,
             'notes' => \App\Models\Note::class,
             'tags' => \App\Models\Tag::class,
             'users' => \App\Models\User::class,
