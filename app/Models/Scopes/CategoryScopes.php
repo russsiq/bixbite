@@ -42,7 +42,7 @@ trait CategoryScopes
      */
     public function scopeExcludeExternal(Builder $builder): void
     {
-        $builder->whereNull('alt_url');
+        $builder->whereNull('categories.alt_url');
     }
 
     /**
