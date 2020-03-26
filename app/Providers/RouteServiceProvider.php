@@ -66,12 +66,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('model', '^[a-zA-Z_]+$');
         Route::pattern('attribute', '^[a-zA-Z_]+$');
 
-        Route::bind('category', function($value) {
-            $attribute = intval($value) ? 'id' : 'slug';
-
-            return Category::where($attribute, $value)->first();
-        });
-
         // Для новостей , статей не надо этого. Для пользователей не знаю
         // Route::model('article', \App\Models\Article::class);
         // Route::model('category', \App\Models\Category::class);

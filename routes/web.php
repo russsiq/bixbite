@@ -57,5 +57,5 @@ Route::get('profile/{user}/edit', 'UsersController@edit')->name('profile.edit')-
 Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
 
 // Данные маршруты всегда должны распологаться последними.
-Route::get('{category}', 'ArticlesController@category')->name('articles.category');
+Route::get('{category:slug}', 'ArticlesController@category')->name('articles.category');
 Route::get('{category_slug}/{article_id}-{article_slug}.html', 'ArticlesController@article')->name('articles.article');
