@@ -4,12 +4,20 @@
 
 namespace App\Models;
 
+// Сторонние зависимости.
 use App\Models\Observers\XFieldObserver;
+use Illuminate\Database\Eloquent\Collection;
 
 class XField extends BaseModel
 {
     use Mutators\XFieldMutators,
         Traits\Dataviewer;
+
+    /**
+     * Префикс имени столбца в таблице БД.
+     * @const string
+     */
+    const X_PREFIX = 'x_';
 
     /**
      * Таблица БД, ассоциированная с моделью.
@@ -66,8 +74,6 @@ class XField extends BaseModel
 
     ];
 
-    protected static $xPrefix = 'x_';
-
     /**
      * Разрешенные имена таблиц в БД,
      * для которых доступно создание новых полей.
@@ -100,7 +106,12 @@ class XField extends BaseModel
         static::observe(XFieldObserver::class);
     }
 
-    public static function fields($table = null)
+    /**
+     * Получить коллекцию полей для указанной таблицы.
+     * @param  string|null  $table
+     * @return Collection
+     */
+    public static function fields(string $table = null): Collection
     {
         $fields = cache()
             ->rememberForever(static::getModel()->getTable(), function () {
@@ -110,18 +121,31 @@ class XField extends BaseModel
         return is_null($table) ? $fields : $fields->where('extensible', $table);
     }
 
-    public static function extensibles()
+    /**
+     * Получить список с разрешенными именами таблиц в БД,
+     * для которых доступно создание новых полей.
+     * @return array
+     */
+    public static function extensibles(): array
     {
         return static::$extensibles;
     }
 
-    public static function fieldTypes()
+    /**
+     * Получить список с типами дополнительных полей.
+     * @return array
+     */
+    public static function fieldTypes(): array
     {
         return static::$fieldTypes;
     }
 
-    public function xPrefix()
+    /**
+     * Получить префикс имени столбца в таблице БД.
+     * @return string
+     */
+    public function xPrefix(): string
     {
-        return static::$xPrefix;
+        return self::X_PREFIX;
     }
 }
