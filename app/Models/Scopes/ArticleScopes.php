@@ -125,9 +125,7 @@ trait ArticleScopes
                 'articles.state',
 
             ])
-            ->addSelect(
-                $this->x_fields->pluck('name')->all()
-            )
+            ->includeXFieldsNames()
             ->with([
                 // 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',
