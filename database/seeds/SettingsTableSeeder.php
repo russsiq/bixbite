@@ -169,6 +169,7 @@ class SettingsTableSeeder extends Seeder
         array_push($out, array_merge($def, ['name' => 'categories_priority', 'value' => 0.6, 'type' => 'float', ]));
         array_push($out, array_merge($def, ['name' => 'articles_changefreq', 'value' => 'daily', ]));
         array_push($out, array_merge($def, ['name' => 'articles_priority', 'value' => 0.4, 'type' => 'float', ]));
+        array_push($out, array_merge($def, ['name' => 'amp_articles_changefreq', 'value' => 'daily', ]));
 
         // personalized
         array_push($out, array_merge($def, ['name' => 'app_locale', 'value' => app_locale(), ]));
