@@ -59,7 +59,7 @@ class SitemapController
 
                 ])
                 ->published()
-                ->orderBy('updated_at', 'desc')
+                ->latest('updated_at')
                 ->first(),
 
             'categories' => Category::select([
@@ -67,7 +67,7 @@ class SitemapController
                     'categories.updated_at',
 
                 ])
-                ->orderBy('updated_at', 'desc')
+                ->latest('updated_at')
                 ->first(),
         ];
     }
@@ -118,7 +118,7 @@ class SitemapController
                     },
                 ])
                 ->published()
-                ->orderBy('updated_at', 'desc')
+                ->latest('updated_at')
                 ->get(),
         ];
     }
@@ -161,7 +161,7 @@ class SitemapController
                     },
                 ])
                 ->published()
-                ->orderBy('updated_at', 'desc')
+                ->latest('updated_at')
                 ->get(),
         ];
     }
