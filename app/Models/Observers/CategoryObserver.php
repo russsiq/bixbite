@@ -8,7 +8,7 @@ use App\Models\Category;
 /**
  * Наблюдатель модели `Category`.
  */
-class CategoryObserver
+class CategoryObserver extends BaseObserver
 {
     /**
      * Массив ключей для очистки кэша.
