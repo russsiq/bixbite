@@ -316,6 +316,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card card-default">
+                        <div class="card-header"><i class="fa fa-th-list"></i> Турбо страницы Яндекс</div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-sm-7">
+                                    <label class="control-label">Вероятная частота изменения страниц</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select v-model="form.amp_articles_changefreq" class="form-control">
+                                        <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="pane-themes" class="tab-pane">
