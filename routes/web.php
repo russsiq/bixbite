@@ -45,16 +45,16 @@ Route::resource('comments', 'CommentsController')->only(['edit','update','destro
 Route::get('articles', 'ArticlesController@index')->name('articles.index');
 Route::match(['get','post'], 'search', 'ArticlesController@search')->name('articles.search');
 Route::get('tags', 'TagsController@index')->name('tags.index');
-Route::get('tags/{tag}', 'ArticlesController@tag')->name('tags.tag');
+Route::get('tags/{tag:title}', 'ArticlesController@tag')->name('tags.tag');
 
 Route::get('download/{id}', 'DownloadsController@download')->name('file.download');
 
 Route::get('users', 'UsersController@index')->name('users.index');
-Route::get('follow/{user}', 'UsersController@follow')->name('follow');
-Route::get('unfollow/{user}', 'UsersController@unfollow')->name('unfollow');
-Route::get('@{user}', 'UsersController@profile')->name('profile');
-Route::get('profile/{user}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
-Route::put('profile/{user}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
+Route::get('follow/{user:id}', 'UsersController@follow')->name('follow');
+Route::get('unfollow/{user:id}', 'UsersController@unfollow')->name('unfollow');
+Route::get('@{user:id}', 'UsersController@profile')->name('profile');
+Route::get('profile/{user:id}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
+Route::put('profile/{user:id}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
 
 // Данные маршруты всегда должны распологаться последними.
 Route::get('{category:slug}', 'ArticlesController@category')->name('articles.category');
