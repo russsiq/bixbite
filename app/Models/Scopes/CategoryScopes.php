@@ -36,6 +36,16 @@ trait CategoryScopes
     }
 
     /**
+     * [scopeExcludeExternal description]
+     * @param  Builder  $builder
+     * @return void
+     */
+    public function scopeExcludeExternal(Builder $builder): void
+    {
+        $builder->whereNull('alt_url');
+    }
+
+    /**
      * [scopeShowInMenu description]
      * @param  Builder  $builder
      * @return void

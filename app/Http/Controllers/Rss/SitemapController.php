@@ -67,6 +67,7 @@ class SitemapController
                     'categories.updated_at',
 
                 ])
+                ->excludeExternal()
                 ->latest('updated_at')
                 ->first(),
         ];
@@ -200,6 +201,7 @@ class SitemapController
                         ->where('type', 'image');
                     },
                 ])
+                ->excludeExternal()
                 ->get(),
         ];
     }
