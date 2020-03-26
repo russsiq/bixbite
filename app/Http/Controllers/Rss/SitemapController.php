@@ -127,49 +127,6 @@ class SitemapController
     }
 
     /**
-     * Получить массив переменных для турбо-страниц.
-     * @return array
-     */
-    protected static function getAmpArticles(): array
-    {
-        return [
-            'articles' => Article::select([
-                    'articles.id',
-                    'articles.image_id',
-                    'articles.slug',
-                    'articles.created_at',
-                    'articles.updated_at',
-
-                    'articles.title',
-                    'articles.content',
-
-                ])
-                ->with([
-                    'files' => function ($query) {
-                        $query->select([
-                            'files.id',
-                            'files.disk',
-                            'files.type',
-                            'files.category',
-                            'files.name',
-                            'files.extension',
-                            'files.attachment_type',
-                            'files.attachment_id',
-
-                        ])
-                        ->join('articles', function ($join) {
-                            $join->on('files.id', '=', 'articles.image_id');
-                        })
-                        ->where('type', 'image');
-                    },
-                ])
-                ->published()
-                ->latest('updated_at')
-                ->get(),
-        ];
-    }
-
-    /**
      * Получить массив переменных для XML-карты категорий.
      * @return array
      */

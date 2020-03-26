@@ -9,4 +9,4 @@ Route::get('sitemap/articles.xml', 'SitemapController@articles')->name('sitemap.
 Route::get('sitemap/categories.xml', 'SitemapController@categories')->name('sitemap.categories.xml');
 
 // Турбо страницы для Yandex. https://yandex.ru/support/webmaster/turbo/feed.html.
-Route::get('amp/articles.xml', 'SitemapController@ampArticles')->name('amp.articles.xml');
+Route::get('amp/articles.xml', 'AmpController')->name('amp.articles.xml');
