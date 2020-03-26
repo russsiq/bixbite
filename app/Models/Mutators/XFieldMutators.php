@@ -7,12 +7,21 @@ use Illuminate\Support\Str;
 
 trait XFieldMutators
 {
-    public function setNameAttribute(string $value)
+    /**
+     * Задать атрибуту `name` значение.
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute(string $value): void
     {
         $this->attributes['name'] = trim(Str::start($value, $this->xPrefix()), '_');
     }
 
-    public function getNameAttribute()
+    /**
+     * Получить значение атрибута `name`.
+     * @return string
+     */
+    public function getNameAttribute(): string
     {
         return trim(Str::start($this->attributes['name'], $this->xPrefix()), '_');
     }
