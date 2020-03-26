@@ -12,11 +12,18 @@ use Faker\Generator as Faker;
  */
 $factory->define(Comment::class, function (Faker $faker) {
     $article = Article::inRandomOrder()
+        ->select('id')
         ->published()
-        ->first();
+        ->first([
+            'id',
+
+        ]);
 
     $user = User::inRandomOrder()
-        ->first();
+        ->first([
+            'id',
+
+        ]);
 
     return [
         'user_id' => $user->id,

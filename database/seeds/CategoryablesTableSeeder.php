@@ -4,6 +4,7 @@ use App\Models\Article;
 use App\Models\Category;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class CategoryablesTableSeeder extends Seeder
 {
@@ -25,7 +26,7 @@ class CategoryablesTableSeeder extends Seeder
 
         foreach ($articles as $id) {
             $categoryables[] = [
-                'category_id' => array_random($categories),
+                'category_id' => Arr::random($categories),
                 'categoryable_id' => $id,
                 'categoryable_type' => 'articles',
             ];

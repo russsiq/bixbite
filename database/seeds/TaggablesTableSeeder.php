@@ -4,6 +4,7 @@ use App\Models\Article;
 use App\Models\Tag;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class TaggablesTableSeeder extends Seeder
 {
@@ -25,8 +26,8 @@ class TaggablesTableSeeder extends Seeder
 
         foreach (range(1, 120) as $step) {
             $taggables[] = [
-                'tag_id' => array_random($tags),
-                'taggable_id' => array_random($articles),
+                'tag_id' => Arr::random($tags),
+                'taggable_id' => Arr::random($articles),
                 'taggable_type' => 'articles',
             ];
         }
