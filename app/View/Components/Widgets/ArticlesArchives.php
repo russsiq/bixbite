@@ -76,7 +76,7 @@ class ArticlesArchives extends Component
             ->distinct()
             ->published()
             ->groupBy('year', 'month')
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->limit($this->parameters['limit'] ?? 12)
             ->get();
     }
