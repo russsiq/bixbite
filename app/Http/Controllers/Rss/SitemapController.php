@@ -280,10 +280,11 @@ class SitemapController
     public function __call($method, $parameters)
     {
         if (method_exists(static::class, $get = 'get'.ucfirst($method))) {
-            return response(
-                    static::render($get, Str::snake($method)),
-                    200, ['Content-Type' => 'text/xml']
-                );
+            return response(static::render($get, Str::snake($method)), 200)
+                ->withHeaders([
+                    'Content-Type' => 'text/xml',
+
+                ]);
         }
 
         abort(404);
