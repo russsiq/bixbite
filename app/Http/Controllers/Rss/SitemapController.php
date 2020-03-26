@@ -6,28 +6,51 @@ namespace App\Http\Controllers\Rss;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 // @NB: Need chunk to articles.
 
 class SitemapController
 {
+    /**
+     * Дата последнего изменения информации на сайте.
+     * @var Carbon
+     */
     protected static $lastmod;
 
+    /**
+     * Вероятная частота изменения информации на сайте.
+     * Алгоритмов поисков роботов не знаем, поэтому сокращаем месяц и год.
+     * @var array
+     */
     protected static $changefreq = [
-         // Not cached.
+        // Постоянно изменяется. Не использовать кэш.
         'always' => false,
+
+        // Каждый час.
         'hourly' => 60,
-        'daily' => 60*24,
-        'weekly' => 60*24*7,
-        // Accounting month.
-        'monthly' => 60*24*7*21,
-        // Venusian year.
-        'yearly' => 60*24*224,
-        // Remember forever.
+
+        // Ежедневно.
+        'daily' => 60 * 24,
+
+        // Еженедельно.
+        'weekly' => 60 * 24 * 7,
+
+        // Бухгалтерский месяц.
+        'monthly' => 60 * 24 * 7 * 21,
+
+        // Венерианский год.
+        'yearly' => 60 * 24 * 224,
+
+        // Никогда не изменяется. Кэшировать навсегда.
         'never' => 0,
     ];
 
-    protected static function getIndex()
+    /**
+     * Получить массив переменных для основной XML-карты.
+     * @return array
+     */
+    protected static function getIndex(): array
     {
         return [
             'articles' => Article::select([
@@ -49,13 +72,21 @@ class SitemapController
         ];
     }
 
-    protected static function getHome()
+    /**
+     * Получить массив переменных для XML-карты домашней страницы.
+     * @return array
+     */
+    protected static function getHome(): array
     {
         return [
             'lastmod' => static::lastmod(),
         ];
     }
 
+    /**
+     * Получить массив переменных для XML-карты записей.
+     * @return array
+     */
     protected static function getArticles()
     {
         return [
@@ -92,7 +123,11 @@ class SitemapController
         ];
     }
 
-    protected static function getAmpArticles()
+    /**
+     * Получить массив переменных для турбо-страниц.
+     * @return array
+     */
+    protected static function getAmpArticles(): array
     {
         return [
             'articles' => Article::select([
@@ -131,7 +166,11 @@ class SitemapController
         ];
     }
 
-    protected static function getCategories()
+    /**
+     * Получить массив переменных для XML-карты категорий.
+     * @return array
+     */
+    protected static function getCategories(): array
     {
         return [
             'categories' => Category::select([
@@ -165,7 +204,13 @@ class SitemapController
         ];
     }
 
-    protected static function render(string $get, string $sitemap)
+    /**
+     * Получить XML-строковое представление указанной карты.
+     * @param  string  $get
+     * @param  string  $sitemap
+     * @return string
+     */
+    protected static function render(string $get, string $sitemap): string
     {
         $cache_key = 'rss.'.$sitemap;
         $cache_time = static::cacheTime($sitemap) * 60;
@@ -195,14 +240,23 @@ class SitemapController
             });
     }
 
-    protected static function cacheTime(string $sitemap)
+    /**
+     * Получить время кеширования указанной карты.
+     * @param  string  $sitemap
+     * @return int
+     */
+    protected static function cacheTime(string $sitemap): int
     {
         return static::$changefreq[
-                setting('system.'.$sitemap.'_changefreq', 'daily')
-            ] ?? false;
+            setting('system.'.$sitemap.'_changefreq', 'daily')
+        ];
     }
 
-    protected static function lastmod()
+    /**
+     * Получить дату последнего изменения информации на сайте.
+     * @return Carbon
+     */
+    protected static function lastmod(): Carbon
     {
         if (is_null($index = self::$lastmod)) {
             $index = static::getIndex();
@@ -215,8 +269,7 @@ class SitemapController
     }
 
     /**
-     * Dynamically create sitemap.
-     *
+     * Динамическое создание карты сайта.
      * @param  string  $method
      * @param  array  $parameters
      * @return mixed
