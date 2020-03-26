@@ -1,94 +1,189 @@
 <?php
 
-// retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
-// Mass assigned not Observed.
-
 namespace App\Models\Observers;
 
-use App\Models\XField;
-use App\Models\Traits\CacheForgetByKeys;
+// Исключения.
+use Illuminate\Validation\ValidationException;
 
+// Сторонние зависимости.
+use App\Models\XField;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
-class XFieldObserver
+/**
+ * Наблюдатель модели `XField`.
+ */
+class XFieldObserver extends BaseObserver
 {
-    use CacheForgetByKeys;
-
+    /**
+     * Массив ключей для очистки кэша.
+     * @var array
+     */
     protected $keysToForgetCache = [
         'x_fields' => 'fields',
+
     ];
 
-    // Not used.
-    protected $methodsToForgetCache = [
-        'created', 'updated', 'saved', 'restored', 'deleted'
-    ];
-
-    public function creating(XField $x_field)
+    /**
+     * Обработать событие `creating` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function creating(XField $xField): void
     {
-        if ($this->columnExists($x_field->extensible, $x_field->name)) {
-            return $this->fireColumnExists($x_field->extensible, $x_field->name);
-        }
+        $this->ensureColumnDoesntAlreadyExists(
+            $table = $xField->extensible,
+            $column = $xField->name
+        );
 
-        Schema::table($x_field->extensible, function (Blueprint $table) use ($x_field) {
-            if ('array' == $x_field->type) {
-                $table->string($x_field->name)->after('id')->nullable();
+        Schema::table($table, function (Blueprint $table) use ($xField) {
+            if ('array' === $xField->type) {
+                $table->string($column)->after('id')->nullable();
             } else {
-                $table->{$x_field->type}($x_field->name)->after('id')->nullable();
+                $table->{$xField->type}($column)->after('id')->nullable();
             }
         });
     }
 
-    public function updating(XField $x_field)
+    /**
+     * Обработать событие `created` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function created(XField $xField): void
     {
-        if (! $this->columnExists($table = $x_field->extensible, $column = $x_field->name)) {
-            return $this->fireColumnNotExists($table, $column);
-        }
+
     }
 
-    public function deleting(XField $x_field)
+    /**
+     * Обработать событие `updating` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function updating(XField $xField): void
     {
-        if (! $this->columnExists($table = $x_field->extensible, $column = $x_field->name)) {
-            return $this->fireColumnNotExists($table, $column);
-        }
+        $this->ensureColumnExists(
+            $table = $xField->extensible,
+            $column = $xField->name
+        );
+    }
+
+    /**
+     * Обработать событие `updated` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function updated(XField $xField): void
+    {
+
+    }
+
+    /**
+     * Обработать событие `saving` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function saving(XField $xField): void
+    {
+
+    }
+
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function saved(XField $xField): void
+    {
+        $this->forgetCacheByKeys($xField);
+    }
+
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function deleting(XField $xField): void
+    {
+        $this->ensureColumnExists(
+            $table = $xField->extensible,
+            $column = $xField->name
+        );
 
         Schema::table($table, function (Blueprint $table) use ($column) {
             $table->dropColumn($column);
         });
     }
 
-    protected function columnExists(string $table, string $column): bool
+    /**
+     * Обработать событие `deleted` модели.
+     * @param  XField  $xField
+     * @return void
+     */
+    public function deleted(XField $xField): void
+    {
+        $this->forgetCacheByKeys($xField);
+    }
+
+    /**
+     * Проверить существование столбца в таблице.
+     * @param  string  $table
+     * @param  string  $column
+     * @return bool
+     */
+    protected function columnExist(string $table, string $column): bool
     {
         return Schema::hasColumn($table, $column);
     }
 
-    protected function fireColumnExists(string $table, string $column): bool
+    /**
+     * Проверить отсутствие столбца в таблице.
+     * @param  string  $table
+     * @param  string  $column
+     * @return bool
+     */
+    protected function columnMissing(string $table, string $column): bool
     {
-        info(sprintf(
-            'Column `%s` in table `%s` already exists.', $table, $column
-        ));
-
-        return false;
+        return ! $this->columnExist($table, $column);
     }
 
-    protected function fireColumnNotExists(string $table, string $column): bool
+    /**
+     * Убедиться, что столбца не существует в таблице,
+     * например, перед созданием нового столбца.
+     * @param  string  $table
+     * @param  string  $column
+     * @return void
+     *
+     * @throws ValidationException
+     */
+    protected function ensureColumnDoesntAlreadyExists(string $table, string $column): void
     {
-        info(sprintf(
-            'Column `%s` in table `%s` does not exists.', $table, $column
-        ));
-
-        return false;
+        if ($this->columnExist($table, $column)) {
+            throw ValidationException::withMessages([
+                'name' => sprintf(
+                    'Column [%s] in table [%s] already exists.', $column, $table
+                )
+            ]);
+        }
     }
 
-    public function saved(XField $x_field)
+    /**
+     * Убедиться, что столбец существует в таблице,
+     * например, перед обновлением / удалением столбца.
+     * @param  string  $table
+     * @param  string  $column
+     * @return void
+     *
+     * @throws ValidationException
+     */
+    protected function ensureColumnExists(string $table, string $column): void
     {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($x_field);
-    }
-
-    public function deleted(XField $x_field)
-    {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($x_field);
+        if ($this->columnMissing($table, $column)) {
+            throw ValidationException::withMessages([
+                'name' => sprintf(
+                    'Column [%s] in table [%s] does not exists.', $column, $table
+                )
+            ]);
+        }
     }
 }

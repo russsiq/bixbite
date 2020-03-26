@@ -2,11 +2,20 @@
 
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\Note;
 
-class NoteObserver
+/**
+ * Наблюдатель модели `Note`.
+ */
+class NoteObserver extends BaseObserver
 {
-    public function saved(Note $note)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  Note  $note
+     * @return void
+     */
+    public function saved(Note $note): void
     {
         $dirty = $note->getDirty();
 
@@ -20,12 +29,22 @@ class NoteObserver
         }
     }
 
-    public function deleting(Note $note)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  Note  $note
+     * @return void
+     */
+    public function deleting(Note $note): void
     {
         $note->files()->get()->each->delete();
     }
 
-    protected function attachImage(Note $note)
+    /**
+     * Прикрепить изображение к указанной заметке.
+     * @param  Note  $note
+     * @return void
+     */
+    protected function attachImage(Note $note): void
     {
         if (is_int($image_id = $note->image_id)) {
             $note->files()
@@ -38,7 +57,12 @@ class NoteObserver
         }
     }
 
-    protected function deleteImage(Note $note)
+    /**
+     * Открепить и удалить изображение от указанной записи.
+     * @param  Note  $note
+     * @return void
+     */
+    protected function deleteImage(Note $note): void
     {
         if (is_int($image_id = $note->getOriginal('image_id'))) {
             $note->files()

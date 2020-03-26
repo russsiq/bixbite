@@ -2,27 +2,22 @@
 
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\File;
 
-class FileObserver
+/**
+ * Наблюдатель модели `Article`.
+ */
+class FileObserver extends BaseObserver
 {
     /**
-     * Get original path to file.
-     *
-     * @param  string|null $thumbSize
-     * @return string
+     * Обработать событие `updating` модели.
+     * @param  File  $file
+     * @return void
      */
-    protected function originalPath(File $file, string $thumbSize = null)
+    public function updating(File $file): void
     {
-        return $file->getOriginal('type')
-            .DS.$file->getOriginal('category')
-            .($thumbSize ? DS.$thumbSize : '')
-            .DS.$file->getOriginal('name').'.'.$file->getOriginal('extension');
-    }
-
-    public function updating(File $file)
-    {
-        if ($this->originalPath($file) != $file->path()) {
+        if ($this->originalPath($file) !== $file->path()) {
             $disk = $file->storageDisk();
             $disk->rename($this->originalPath($file), $file->path());
 
@@ -36,12 +31,17 @@ class FileObserver
         }
     }
 
-    public function deleting(File $file)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  File  $file
+     * @return void
+     */
+    public function deleting(File $file): void
     {
         $disk = $file->storageDisk();
         $disk->delete($file->path());
 
-        if ('image' == $file->type) {
+        if ('image' === $file->type) {
             // Automatically seting null image_id, see in migration to attachment.
             foreach ($file->thumbSizes() as $size => $value) {
                 $disk->delete($file->getPathAttribute($size));
@@ -49,27 +49,17 @@ class FileObserver
         }
     }
 
-    // protected function dettachImage(Article $article)
-    // {
-    //     if (is_int($image_id = $article->image_id)) {
-    //         $article->files()
-    //             ->getRelated()
-    //             ->whereId($image_id)
-    //             ->update([
-    //                 'attachment_type' => $article->getMorphClass(),
-    //                 'attachment_id' => $article->id,
-    //             ]);
-    //     }
-    // }
-    //
-    // protected function deleteImage(Article $article)
-    // {
-    //     if (is_int($image_id = $article->getOriginal('image_id'))) {
-    //         $article->files()
-    //             ->whereId($image_id)
-    //             ->get()
-    //             ->each
-    //             ->delete();
-    //     }
-    // }
+    /**
+     * Get original path to file.
+     *
+     * @param  string|null $thumbSize
+     * @return string
+     */
+    protected function originalPath(File $file, string $thumbSize = null)
+    {
+        return $file->getOriginal('type')
+            .DS.$file->getOriginal('category')
+            .($thumbSize ? DS.$thumbSize : '')
+            .DS.$file->getOriginal('name').'.'.$file->getOriginal('extension');
+    }
 }

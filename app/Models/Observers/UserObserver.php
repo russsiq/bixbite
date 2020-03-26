@@ -1,17 +1,22 @@
 <?php
 
-// retrieved, creating, created, updating, updated, saving, saved, deleting,  deleted, restoring, restored
-// $original = $user->getOriginal();
-// $dirty = $user->getDirty();
-
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
-class UserObserver
+/**
+ * Наблюдатель модели `User`.
+ */
+class UserObserver extends BaseObserver
 {
-    public function retrieved(User $user)
+    /**
+     * Обработать событие `retrieved` модели.
+     * @param  User  $user
+     * @return void
+     */
+    public function retrieved(User $user): void
     {
         $user->fillable(array_merge(
             $user->getFillable(),
@@ -19,12 +24,12 @@ class UserObserver
         ));
     }
 
-    public function saving(User $user)
-    {
-        //  dd($user);
-    }
-
-    public function updating(User $user)
+    /**
+     * Обработать событие `updating` модели.
+     * @param  User  $user
+     * @return void
+     */
+    public function updating(User $user): void
     {
         $dirty = $user->getDirty();
 
@@ -41,7 +46,22 @@ class UserObserver
         }
     }
 
-    public function deleting(User $user)
+    /**
+     * Обработать событие `saving` модели.
+     * @param  User  $user
+     * @return void
+     */
+    public function saving(User $user): void
+    {
+
+    }
+
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  User  $user
+     * @return void
+     */
+    public function deleting(User $user): void
     {
         // // 1 Roles. Not used in this version App.
         // $user->roles()->detach();
@@ -62,10 +82,16 @@ class UserObserver
         $this->deleteAvatar($user);
     }
 
-    protected function attachAvatar(User $user, UploadedFile $avatar)
+    /**
+     * Прикрепить аватар к указанному пользователю..
+     * @param  User  $user
+     * @param  UploadedFile  $avatar
+     * @return void
+     */
+    protected function attachAvatar(User $user, UploadedFile $avatar): void
     {
         // Path to folder avatars for store.
-        $path = setting('users.avatar_path', 'public'.DS.'avatars');
+        $path = setting('users.avatar_path', 'public/avatars');
 
         // Formation of avatar file name.
         [$width, $height] = getimagesize($avatar->getRealPath());
@@ -79,20 +105,28 @@ class UserObserver
         $user->avatar = $filename;
     }
 
-    protected function deleteAvatar(User $user)
+    /**
+     * Открепить и удалить аватар от указанного пользователя.
+     * @param  User  $user
+     * @return void
+     */
+    protected function deleteAvatar(User $user): void
     {
-        // Path to folder avatars for store.
-        $path = app()->basePath(
-            setting('users.avatar_path', 'public'.DS.'avatars').DS
-        );
-
         // Get old user avatar file name.
         $avatar = $user->getOriginal('avatar') ?? null;
 
-        // Check and delete, if user already has an avatar.
-        if ($avatar and is_file($path.$avatar)) {
-            unlink($path.$avatar);
+        if ($avatar) {
+            // Path to folder avatars for store.
+            $path = base_path(
+                setting('users.avatar_path', 'public/avatars')
+            );
+
+            // Check and delete, if user already has an avatar.
+            if (is_file($filename = $path.'/'.$avatar)) {
+                unlink($filename);
+            }
         }
+
         // ???.
         $user->avatar = null;
     }

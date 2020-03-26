@@ -2,33 +2,50 @@
 
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\Setting;
-use App\Models\Traits\CacheForgetByKeys;
 
-class SettingObserver
+/**
+ * Наблюдатель модели `Setting`.
+ */
+class SettingObserver extends BaseObserver
 {
-    use CacheForgetByKeys;
-
-    protected $keysToForgetCache = [
-        //
-    ];
-
-    public function retrieved(Setting $setting)
+    /**
+     * Обработать событие `retrieved` модели.
+     * @param  Setting  $setting
+     * @return void
+     */
+    public function retrieved(Setting $setting): void
     {
         $setting->value = $this->castAttribute($setting);
     }
 
-    public function saving(Setting $setting)
+    /**
+     * Обработать событие `saving` модели.
+     * @param  Setting  $setting
+     * @return void
+     */
+    public function saving(Setting $setting): void
     {
         $setting->value = $this->castAttribute($setting);
     }
 
-    public function saved(Setting $setting)
+    /**
+     * Обработать событие `saved` модели.
+     * @param  Setting  $setting
+     * @return void
+     */
+    public function saved(Setting $setting): void
     {
         // Слишком дорогая операция при сохранении массива настроек модуля.
         // $this->langUpdate();
     }
 
+    /**
+     * Обработать событие `massUpdateByModule` модели.
+     * @param  Setting  $setting
+     * @return void
+     */
     public function massUpdateByModule(Setting $setting)
     {
         //
@@ -66,9 +83,10 @@ class SettingObserver
 
     /**
      * Cast an attribute to a native PHP type.
-     * @source Illuminate\Database\Eloquent\Concerns\HasAttributes
      * @param  Setting  $setting
      * @return mixed
+     *
+     * @source Illuminate\Database\Eloquent\Concerns\HasAttributes
      */
     protected function castAttribute(Setting $setting)
     {
@@ -112,10 +130,11 @@ class SettingObserver
 
     /**
      * Decode the given JSON back into an array or object.
-     * @source Illuminate\Database\Eloquent\Concerns\HasAttributes
      * @param  string  $value
      * @param  bool  $asObject
      * @return mixed
+     *
+     * @source Illuminate\Database\Eloquent\Concerns\HasAttributes
      */
     protected function fromJson($value, $asObject = false)
     {

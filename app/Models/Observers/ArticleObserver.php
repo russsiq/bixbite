@@ -2,18 +2,28 @@
 
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\Article;
-use App\Models\Traits\CacheForgetByKeys;
 
-class ArticleObserver
+/**
+ * Наблюдатель модели `Article`.
+ */
+class ArticleObserver extends BaseObserver
 {
-    use CacheForgetByKeys;
-
+    /**
+     * Массив ключей для очистки кэша.
+     * @var array
+     */
     protected $keysToForgetCache = [
-        //
+
     ];
 
-    public function retrieved(Article $article)
+    /**
+     * Обработать событие `retrieved` модели.
+     * @param  Article  $article
+     * @return void
+     */
+    public function retrieved(Article $article): void
     {
         $article->fillable(array_merge(
             $article->getFillable(),
@@ -21,7 +31,12 @@ class ArticleObserver
         ));
     }
 
-    public function saved(Article $article)
+    /**
+     * Обработать событие `saved` модели.
+     * @param  Article  $article
+     * @return void
+     */
+    public function saved(Article $article): void
     {
         $article->categories()->sync(request()->categories);
 
@@ -58,10 +73,15 @@ class ArticleObserver
             'articles-single-'.$article->id => false,
         ]);
 
-        $this->cacheForgetByKeys($article);
+        $this->forgetCacheByKeys($article);
     }
 
-    public function deleting(Article $article)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  Article  $article
+     * @return void
+     */
+    public function deleting(Article $article): void
     {
         $article->tags()->detach();
         $article->categories()->detach();
@@ -75,11 +95,24 @@ class ArticleObserver
         $this->addToCacheKeys([
             'articles-single-'.$article->id => false,
         ]);
-
-        $this->cacheForgetByKeys($article);
     }
 
-    protected function attachImage(Article $article)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  Article  $article
+     * @return void
+     */
+    public function deleted(Article $article): void
+    {
+        $this->forgetCacheByKeys($article);
+    }
+
+    /**
+     * Прикрепить изображение к указанной записи.
+     * @param  Article  $article
+     * @return void
+     */
+    protected function attachImage(Article $article): void
     {
         if (is_int($image_id = $article->image_id)) {
             $article->files()
@@ -92,7 +125,12 @@ class ArticleObserver
         }
     }
 
-    protected function deleteImage(Article $article)
+    /**
+     * Открепить и удалить изображение от указанной записи.
+     * @param  Article  $article
+     * @return void
+     */
+    protected function deleteImage(Article $article): void
     {
         if (is_int($image_id = $article->getOriginal('image_id'))) {
             $article->files()

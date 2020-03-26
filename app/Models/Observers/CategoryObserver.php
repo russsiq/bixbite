@@ -2,18 +2,29 @@
 
 namespace App\Models\Observers;
 
+// Сторонние зависимости.
 use App\Models\Category;
-use App\Models\Traits\CacheForgetByKeys;
 
+/**
+ * Наблюдатель модели `Category`.
+ */
 class CategoryObserver
 {
-    use CacheForgetByKeys;
-
+    /**
+     * Массив ключей для очистки кэша.
+     * @var array
+     */
     protected $keysToForgetCache = [
-        'categories' => 'getCachedCategories',
+        'categories' => null,
+
     ];
 
-    public function retrieved(Category $category)
+    /**
+     * Обработать событие `retrieved` модели.
+     * @param  Category  $category
+     * @return void
+     */
+    public function retrieved(Category $category): void
     {
         $category->fillable(array_merge(
             $category->getFillable(),
@@ -21,7 +32,12 @@ class CategoryObserver
         ));
     }
 
-    public function saved(Category $category)
+    /**
+     * Обработать событие `saved` модели.
+     * @param  Category  $category
+     * @return void
+     */
+    public function saved(Category $category): void
     {
         $dirty = $category->getDirty();
 
@@ -33,48 +49,48 @@ class CategoryObserver
             // Attaching.
             $this->attachImage($category);
         }
+
+        $this->forgetCacheByKeys($category);
     }
 
-    public function deleting(Category $category)
+    /**
+     * Обработать событие `deleting` модели.
+     * @param  Category  $category
+     * @return void
+     */
+    public function deleting(Category $category): void
     {
         $category->articles()
             ->select([
                 'articles.id',
-                'articles.state'
+                'articles.state',
+
             ])
             ->update([
                 'articles.state' => 'draft',
+
             ]);
 
         $category->articles()->detach();
         $category->files()->get()->each->delete();
     }
 
-    public function created(Category $category)
+    /**
+     * Обработать событие `deleted` модели.
+     * @param  Category  $category
+     * @return void
+     */
+    public function deleted(Category $category): void
     {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($category);
+        $this->forgetCacheByKeys($category);
     }
 
-    public function updated(Category $category)
-    {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($category);
-    }
-
-    public function restored(Category $category)
-    {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($category);
-    }
-
-    public function deleted(Category $category)
-    {
-        // Clear and rebuild the cache.
-        $this->cacheForgetByKeys($category);
-    }
-
-    protected function attachImage(Category $category)
+    /**
+     * Прикрепить изображение к указанной категории.
+     * @param  Category  $category
+     * @return void
+     */
+    protected function attachImage(Category $category): void
     {
         if (is_int($image_id = $category->image_id)) {
             $category->files()
@@ -87,7 +103,12 @@ class CategoryObserver
         }
     }
 
-    protected function deleteImage(Category $category)
+    /**
+     * Открепить и удалить изображение от указанной категории.
+     * @param  Category  $category
+     * @return void
+     */
+    protected function deleteImage(Category $category): void
     {
         if (is_int($image_id = $category->getOriginal('image_id'))) {
             $category->files()
