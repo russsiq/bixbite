@@ -78,12 +78,16 @@ trait ArticleScopes
     }
 
     /**
-     * [scopePublished description]
+     * Диапазон только опубикованных записей.
      * @param  Builder  $builder
      * @return void
      */
     public function scopePublished(Builder $builder): void
     {
+        if (! $builder->getQuery()->distinct) {
+            $builder->addSelect('articles.state');
+        }
+
         $builder->where('articles.state', 'published');
     }
 

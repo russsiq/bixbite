@@ -31,7 +31,6 @@ class SitemapController
     {
         return [
             'articles' => Article::select([
-                    'articles.state',
                     'articles.created_at',
                     'articles.updated_at',
 
@@ -66,7 +65,6 @@ class SitemapController
                     'articles.slug',
                     'articles.created_at',
                     'articles.updated_at',
-                    'articles.state',
 
                 ])
                 ->with([
@@ -106,7 +104,6 @@ class SitemapController
 
                     'articles.title',
                     'articles.content',
-                    'articles.state',
 
                 ])
                 ->with([

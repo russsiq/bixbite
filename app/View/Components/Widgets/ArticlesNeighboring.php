@@ -87,7 +87,7 @@ class ArticlesNeighboring extends Component
                 'articles.id',
                 'articles.title',
                 'articles.slug',
-                'articles.state',
+
             ])
             ->published()
             ->where('articles.id', '<', $this->article->id)
@@ -107,7 +107,7 @@ class ArticlesNeighboring extends Component
                 'articles.id',
                 'articles.title',
                 'articles.slug',
-                'articles.state',
+
             ])
             ->published()
             ->where('articles.id', '>', $this->article->id)
