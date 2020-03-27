@@ -5,246 +5,286 @@ namespace App\Http\Controllers\Rss;
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Category;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
-// @NB: Need chunk to articles.
-
-class SitemapController
+/**
+ * Контроллер для генерации карт сайта.
+ *
+ * @NB: Need chunk to articles.
+ */
+class SitemapController extends BaseController
 {
-    /**
-     * Дата последнего изменения информации на сайте.
-     * @var Carbon
-     */
-    protected static $lastmod;
+    const TEMPLATE_PREFIX = 'rss.sitemap.';
 
     /**
-     * Вероятная частота изменения информации на сайте.
-     * Алгоритмов поисков роботов не знаем, поэтому сокращаем месяц и год.
+     * Текущая карта сайта.
+     * @var string
+     */
+    protected $sitemap;
+
+    /**
+     * Массив данных для шаблона текущей карты.
      * @var array
      */
-    protected static $changefreq = [
-        // Постоянно изменяется. Не использовать кэш.
-        'always' => false,
-
-        // Каждый час.
-        'hourly' => 60,
-
-        // Ежедневно.
-        'daily' => 60 * 24,
-
-        // Еженедельно.
-        'weekly' => 60 * 24 * 7,
-
-        // Бухгалтерский месяц.
-        'monthly' => 60 * 24 * 7 * 21,
-
-        // Венерианский год.
-        'yearly' => 60 * 24 * 224,
-
-        // Никогда не изменяется. Кэшировать навсегда.
-        'never' => 0,
-
-    ];
+    protected $data = [];
 
     /**
-     * Получить массив переменных для основной XML-карты.
-     * @return array
+     * Последняя добавленная / измененная запись сайта.
+     * @var Article|null
      */
-    protected static function getIndex(): array
+    protected $latestArticle;
+
+    /**
+     * Последняя добавленная / измененная категория сайта.
+     * @var Category|null
+     */
+    protected $latestCategory;
+
+    /**
+     * Основная карта сайта, содержащая ссылки на остальные карты.
+     * @return Response
+     */
+    public function index(): Response
     {
-        return [
-            'articles' => Article::without('categories')
-                ->select([
-                    'articles.created_at',
-                    'articles.updated_at',
+        $this->sitemap = 'index';
 
-                ])
-                ->published()
-                ->latest('updated_at')
-                ->first(),
+        $this->data = [
+            'article' => $this->latestArticle(),
+            'category' => $this->latestCategory(),
 
-            'categories' => Category::select([
-                    'categories.created_at',
-                    'categories.updated_at',
-
-                ])
-                ->excludeExternal()
-                ->latest('updated_at')
-                ->first(),
         ];
+
+        return $this();
     }
 
     /**
-     * Получить массив переменных для XML-карты домашней страницы.
-     * @return array
+     * Карта домашней страницы сайта.
+     * @return Response
      */
-    protected static function getHome(): array
+    public function home(): Response
     {
-        return [
-            'lastmod' => static::lastmod(),
+        $this->sitemap = 'home';
+
+        $this->data = [
+            'lastmod' => $this->lastmod(),
+
         ];
+
+        return $this();
     }
 
     /**
-     * Получить массив переменных для XML-карты записей.
-     * @return array
+     * Карта записей сайта.
+     * @return Response
      */
-    protected static function getArticles()
+    public function articles(): Response
     {
-        return [
-            'articles' => Article::select([
-                    'articles.id',
-                    'articles.image_id',
-                    'articles.slug',
-                    'articles.created_at',
-                    'articles.updated_at',
+        $this->sitemap = 'articles';
 
-                ])
-                ->with([
-                    'files' => function ($query) {
-                        $query->select([
-                            'files.id',
-                            'files.disk',
-                            'files.type',
-                            'files.category',
-                            'files.name',
-                            'files.extension',
-                            'files.attachment_type',
-                            'files.attachment_id',
+        $this->data = [
+            'articles' => $this->resolveArticles(),
 
-                        ])
-                        ->join('articles', function ($join) {
-                            $join->on('files.id', '=', 'articles.image_id');
-                        })
-                        ->where('type', 'image');
-                    },
-                ])
-                ->published()
-                ->latest('updated_at')
-                ->get(),
         ];
+
+        return $this();
     }
 
     /**
-     * Получить массив переменных для XML-карты категорий.
-     * @return array
+     * Карта записей сайта.
+     * @return Response
      */
-    protected static function getCategories(): array
+    public function categories(): Response
     {
-        return [
-            'categories' => Category::select([
-                    'categories.id',
-                    'categories.slug',
-                    'categories.image_id',
-                    'categories.created_at',
-                    'categories.updated_at',
+        $this->sitemap = 'categories';
 
-                ])
-                ->with([
-                    'files' => function ($query) {
-                        $query->select([
-                            'files.id',
-                            'files.disk',
-                            'files.type',
-                            'files.category',
-                            'files.name',
-                            'files.extension',
-                            'files.attachment_type',
-                            'files.attachment_id',
+        $this->data = [
+            'categories' => $this->resolveCategories(),
 
-                        ])
-                        ->join('categories', function ($join) {
-                            $join->on('files.id', '=', 'categories.image_id');
-                        })
-                        ->where('type', 'image');
-                    },
-                ])
-                ->excludeExternal()
-                ->get(),
         ];
+
+        return $this();
     }
 
     /**
-     * Получить XML-строковое представление указанной карты.
-     * @param  string  $get
-     * @param  string  $sitemap
+     * Получить ключ кэша карты.
      * @return string
      */
-    protected static function render(string $get, string $sitemap): string
+    protected function cacheKey(): string
     {
-        $cache_key = 'rss.'.$sitemap;
-        $cache_time = static::cacheTime($sitemap) * 60;
-
-        if (false === $cache_time) {
-            return view($cache_key, static::{$get}())->render();
-        }
-
-        if (static::lastmod() > \CacheFile::created($cache_key)) {
-            cache()->forget($cache_key);
-        }
-
-        if (0 === $cache_time) {
-            return cache()->store('file')->rememberForever($cache_key,
-                function () use ($cache_key, $get) {
-                    return trim(preg_replace('/(\s|\r|\n)+</', '<',
-                        view($cache_key, static::{$get}())->render()
-                    ));
-                });
-        }
-
-        return cache()->store('file')->remember($cache_key, $cache_time,
-            function () use ($cache_key, $get) {
-                return trim(preg_replace('/(\s|\r|\n)+</', '<',
-                    view($cache_key, static::{$get}())->render()
-                ));
-            });
+        return $this->template();
     }
 
     /**
-     * Получить время кеширования указанной карты.
+     * Получить время кеширования текущей карты.
      * @param  string  $sitemap
-     * @return int
+     * @return int|null
      */
-    protected static function cacheTime(string $sitemap): int
+    protected function cacheTime(): ?int
     {
-        return static::$changefreq[
-            setting('system.'.$sitemap.'_changefreq', 'daily')
+        return $this->changefreq[
+            setting('system.'.$this->sitemap.'_changefreq', 'daily')
         ];
     }
 
     /**
-     * Получить дату последнего изменения информации на сайте.
+     * Получить дату последнего изменения информации,
+     * которая будет представлена в текущей ленте.
      * @return Carbon
      */
-    protected static function lastmod(): Carbon
+    protected function lastmod(): Carbon
     {
-        if (is_null($index = self::$lastmod)) {
-            $index = static::getIndex();
-        }
-
         return max([
-            $index['articles']->updated_at ?? $index['articles']->created_at,
-            $index['categories']->updated_at ?? $index['categories']->created_at
+            $this->latestArticle()->updated_at,
+            $this->latestCategory()->updated_at
         ]);
     }
 
     /**
-     * Динамическое создание карты сайта.
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
+     * Получить компилируемое представление текущей карты.
+     * @return Renderable
      */
-    public function __call($method, $parameters)
+    protected function view(): Renderable
     {
-        if (method_exists(static::class, $get = 'get'.ucfirst($method))) {
-            return response(static::render($get, Str::snake($method)), 200)
-                ->withHeaders([
-                    'Content-Type' => 'text/xml',
+        return view($this->template(), $this->data());
+    }
+
+    /**
+     * Получить шаблон текущей карты.
+     * @return string
+     */
+    public function template(): string
+    {
+        return self::TEMPLATE_PREFIX.$this->sitemap;
+    }
+
+    /**
+     * Получить Массив данных для шаблона текущей карты.
+     * @return array
+     */
+    public function data(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * Получить последнюю запись сайта или создать новую.
+     * @return Article
+     */
+    protected function latestArticle(): Article
+    {
+        return $this->latestArticle
+            ?? $this->latestArticle = Article::without('categories')
+                ->select([
+                    'articles.id',
+                    'articles.created_at',
+                    'articles.updated_at',
+
+                ])
+                ->published()
+                ->latest('updated_at')
+                ->firstOrNew([], [
+                    'updated_at' => now(),
 
                 ]);
-        }
+    }
 
-        abort(404);
+    /**
+     * Получить последнюю категорию сайта или создать новую.
+     * @return Category
+     */
+    protected function latestCategory(): Category
+    {
+        return $this->latestCategory
+            ?? $this->latestCategory = Category::select([
+                'categories.id',
+                'categories.created_at',
+                'categories.updated_at',
+
+            ])
+            ->excludeExternal()
+            ->latest('updated_at')
+            ->first()
+            ->firstOrNew([], [
+                'updated_at' => now(),
+
+            ]);
+    }
+
+    /**
+     * Извлечь все записи из базы данных.
+     * @return Collection
+     */
+    protected function resolveArticles(): Collection
+    {
+        return Article::select([
+                'articles.id',
+                'articles.image_id',
+                'articles.slug',
+                'articles.created_at',
+                'articles.updated_at',
+
+            ])
+            ->with([
+                'files' => function ($query) {
+                    $query->select([
+                        'files.id',
+                        'files.disk',
+                        'files.type',
+                        'files.category',
+                        'files.name',
+                        'files.extension',
+                        'files.attachment_type',
+                        'files.attachment_id',
+
+                    ])
+                    ->join('articles', function ($join) {
+                        $join->on('files.id', '=', 'articles.image_id');
+                    })
+                    ->where('type', 'image');
+                },
+            ])
+            ->published()
+            ->latest('updated_at')
+            ->get();
+    }
+
+    /**
+     * Извлечь все категории из базы данных.
+     * @return Collection
+     */
+    protected function resolveCategories(): Collection
+    {
+        return Category::select([
+                'categories.id',
+                'categories.slug',
+                'categories.image_id',
+                'categories.created_at',
+                'categories.updated_at',
+
+            ])
+            ->with([
+                'files' => function ($query) {
+                    $query->select([
+                        'files.id',
+                        'files.disk',
+                        'files.type',
+                        'files.category',
+                        'files.name',
+                        'files.extension',
+                        'files.attachment_type',
+                        'files.attachment_id',
+
+                    ])
+                    ->join('categories', function ($join) {
+                        $join->on('files.id', '=', 'categories.image_id');
+                    })
+                    ->where('type', 'image');
+                },
+            ])
+            ->excludeExternal()
+            ->get();
     }
 }

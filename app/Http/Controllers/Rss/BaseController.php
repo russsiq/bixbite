@@ -9,9 +9,9 @@ use App\Support\Facades\CacheFile;
 use Illuminate\Contracts\Cache\Factory as CacheFactoryContract;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Абстрактный класс-контроллер генерации RSS лент.
@@ -121,7 +121,7 @@ abstract class BaseController
 
     /**
      * Получить время кеширования ленты.
-     * По умолчанию возвращаем ежедневное кеширование ленты
+     * По умолчанию возвращаем ежедневное кеширование ленты.
      * @return int|null
      */
     protected function cacheTime(): ?int
@@ -140,7 +140,7 @@ abstract class BaseController
 
     /**
      * Получить дату последнего изменения информации,
-     * представляемой в текущей ленте.
+     * которая будет представлена в текущей ленте.
      * @return Carbon
      */
     abstract protected function lastmod(): Carbon;
