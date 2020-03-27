@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @NB: Need chunk to articles.
  */
-class AmpController
+class AmpController extends BaseController
 {
     /**
      * Ключ кэша турбо страниц.
