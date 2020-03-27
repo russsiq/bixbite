@@ -3,13 +3,14 @@
 namespace App\Models;
 
 // Зарегистрированные фасады приложения.
-use Artisan;
-use File;
-use EnvManager;
-use Storage;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Russsiq\EnvManager\Facades\EnvManager;
 
 // Сторонние зависимости.
 use App\Models\Module;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Setting extends BaseModel
@@ -67,7 +68,11 @@ class Setting extends BaseModel
 
     ];
 
-    protected static $_env = [
+    /**
+     * Разрешенные переменные для сохранения в файл переменных окружения.
+     * @var array
+     */
+    protected static $allowedVariablesForEnv = [
         'APP_ENV',
         'APP_LOCALE',
         'APP_NAME',
@@ -82,19 +87,22 @@ class Setting extends BaseModel
 
     ];
 
-    // Relation
-    public function module()
+    /**
+     * Получить модуль, к которому относится настройка.
+     * @return BelongsTo
+     */
+    public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class, 'module_name', 'name', 'module');
     }
 
     /**
      * Обновить настройки модуля, пришедшие от пользователя.
-     * @param  Module $module
+     * @param  Module  $module
      * @param  array  $attributes
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public static function massUpdateByModule(Module $module, array $attributes)
+    public static function massUpdateByModule(Module $module, array $attributes): Collection
     {
         // 1 Извлечь все настройки модуля.
         $settings = $module->settings()->get();
@@ -109,23 +117,11 @@ class Setting extends BaseModel
 
         // $this->fireModelEvent('massUpdateByModule', false);
 
-        // 5 Получить массив обновляемых настроек для сохранения в файл.
-        $updated = $settings->mapWithKeys(function ($setting) {
-                return [
-                    $setting->name => $setting->value
-                ];
-            });
+        // 5 Получить коллекцию обновленных настроек для сохранения в файл.
+        $updated = $settings->pluck('value', 'name');
 
         // 6 Обновление настроек в директории `config/settings`.
-        $path = config_path('settings');
-        $file = $path.DS.$module->name.'.php';
-        $content = '<?php return '.var_export($updated->toArray(), true).';';
-
-        if (! File::isDirectory($path)) {
-            File::makeDirectory($path);
-        }
-
-        File::put($file, $content, true);
+        self::updateSettingsFile($module->name, $updated);
 
         // 8 Записать переменные окружения в файл.
         self::pushToEnvFile($updated);
@@ -139,23 +135,38 @@ class Setting extends BaseModel
 
     /**
      * Записать доступные переменные окружения в файл.
-     *
-     * @param  BaseCollection  $collection
+     * @param  BaseCollection  $updated
      * @return void
      */
-    protected static function pushToEnvFile(BaseCollection $collection)
+    protected static function pushToEnvFile(BaseCollection $updated): void
     {
-        $collection = $collection->mapWithKeys(function ($value, $key) {
+        $updated = $updated->mapWithKeys(function ($value, $name) {
                 return [
-                    mb_strtoupper($key, 'UTF-8') => $value
+                    strtoupper($name) => $value
                 ];
             })
-            ->filter(function ($value, $key) {
-                return in_array($key, self::$_env);
+            ->filter(function ($value, $name) {
+                return in_array($name, self::$allowedVariablesForEnv);
             });
 
-        if ($collection->isNotEmpty()) {
-            EnvManager::setMany($collection->toArray())->save();
+        if ($updated->isNotEmpty()) {
+            EnvManager::setMany($updated->toArray())->save();
         }
+    }
+
+    /**
+     * Обновить настройки в файл настроек модуля.
+     * @param  string  $modulename
+     * @param  BaseCollection  $updated
+     * @return void
+     */
+    protected static function updateSettingsFile(string $modulename, BaseCollection $updated): void
+    {
+        $path = config_path('settings');
+        $file = $path.DS.$modulename.'.php';
+        $content = '<?php return '.var_export($updated->toArray(), true).';';
+
+        File::ensureDirectoryExists($path);
+        File::put($file, $content, true);
     }
 }
