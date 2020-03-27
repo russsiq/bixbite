@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rss;
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -25,78 +26,7 @@ class AmpController extends BaseController
      * Шаблон представления.
      * @var string
      */
-    protected $template = 'rss.amp_articles';
-
-    /**
-     * Вероятная частота изменения информации на сайте.
-     * Алгоритмов поисков роботов не знаем, поэтому сокращаем месяц и год.
-     * @var array
-     */
-    protected $changefreq = [
-        // Постоянно изменяется. Не использовать кэш.
-        'always' => null,
-
-        // Каждый час.
-        'hourly' => 60,
-
-        // Ежедневно.
-        'daily' => 60 * 24,
-
-        // Еженедельно.
-        'weekly' => 60 * 24 * 7,
-
-        // Бухгалтерский месяц.
-        'monthly' => 60 * 24 * 7 * 21,
-
-        // Венерианский год.
-        'yearly' => 60 * 24 * 224,
-
-        // Никогда не изменяется. Кэшировать навсегда.
-        'never' => 0,
-
-    ];
-
-    public function __invoke()
-    {
-        return response($this->content(), 200)
-            ->withHeaders([
-                'Content-Type' => 'text/xml',
-
-            ]);
-    }
-
-    /**
-     * Получить скомпилированное содержимое карты турбо-страниц.
-     * @param  string  $get
-     * @param  string  $sitemap
-     * @return string
-     */
-    protected function content()
-    {
-        $cacheTime = $this->cacheTime();
-
-        if (is_null($cacheTime)) {
-            return $this->view();
-        }
-
-        if ($this->isExpired()) {
-            cache()->forget($this->cacheKey());
-        }
-
-        $cacheTime = $cacheTime * 60;
-
-        if (0 === $cacheTime) {
-            return cache()->store('file')
-                ->rememberForever($this->cacheKey(), function () {
-                    return $this->prepareForCache($this->view());
-                });
-        }
-
-        return cache()->store('file')
-            ->remember($this->cacheKey(), $cacheTime, function () {
-                return $this->prepareForCache($this->view());
-            });
-    }
+    protected $template = 'rss.amp-articles';
 
     /**
      * Получить ключ кэша карты.
@@ -119,15 +49,6 @@ class AmpController extends BaseController
     }
 
     /**
-     * Проверить просроченность карты турбо-страниц.
-     * @return bool
-     */
-    protected function isExpired(): bool
-    {
-        return $this->lastmod() > \CacheFile::created($this->cacheKey());
-    }
-
-    /**
      * Получить дату последнего изменения информации на сайте.
      * @return Carbon
      */
@@ -141,24 +62,14 @@ class AmpController extends BaseController
     }
 
     /**
-     * Получить XML-строковое представление карты турбо-страниц.
-     * @return string
+     * Получить компилируемое представление карты турбо-страниц.
+     * @return Renderable
      */
-    protected function view(): string
+    protected function view(): Renderable
     {
         $articles = $this->resolveArticles();
 
-        return view($this->template, compact('articles'))
-            ->render();
-    }
-
-    /**
-     * Подготовить XML-строковое представление к кэшированию.
-     * @return string
-     */
-    protected function prepareForCache(string $view): string
-    {
-        return trim(preg_replace('/(\s|\r|\n)+</', '<', $view));
+        return view($this->template, compact('articles'));
     }
 
     /**
