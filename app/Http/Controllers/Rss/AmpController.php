@@ -80,22 +80,31 @@ class AmpController
         }
 
         if ($this->isExpired()) {
-            cache()->forget(self::CACHE_KEY);
+            cache()->forget($this->cacheKey());
         }
 
         $cacheTime = $cacheTime * 60;
 
         if (0 === $cacheTime) {
             return cache()->store('file')
-                ->rememberForever(self::CACHE_KEY, function () {
+                ->rememberForever($this->cacheKey(), function () {
                     return $this->prepareForCache($this->view());
                 });
         }
 
         return cache()->store('file')
-            ->remember(self::CACHE_KEY, $cacheTime, function () {
+            ->remember($this->cacheKey(), $cacheTime, function () {
                 return $this->prepareForCache($this->view());
             });
+    }
+
+    /**
+     * Получить ключ кэша карты.
+     * @return string
+     */
+    protected function cacheKey(): string
+    {
+        return self::CACHE_KEY;
     }
 
     /**
@@ -115,7 +124,7 @@ class AmpController
      */
     protected function isExpired(): bool
     {
-        return $this->lastmod() > \CacheFile::created(self::CACHE_KEY);
+        return $this->lastmod() > \CacheFile::created($this->cacheKey());
     }
 
     /**
