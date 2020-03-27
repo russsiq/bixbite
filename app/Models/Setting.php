@@ -14,7 +14,8 @@ use Illuminate\Support\Collection as BaseCollection;
 
 class Setting extends BaseModel
 {
-    use Traits\Dataviewer;
+    use Mutators\SettingMutators,
+        Traits\Dataviewer;
 
     /**
      * Таблица БД, ассоциированная с моделью.
