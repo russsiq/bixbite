@@ -3,10 +3,7 @@
 namespace App\Models;
 
 // Зарегистрированные фасады приложения.
-use Schema;
-
-// Сторонние зависимости.
-use App\Models\Observers\PrivilegeObserver;
+use Illuminate\Support\Facades\Schema;
 
 class Privilege extends BaseModel
 {
@@ -31,12 +28,6 @@ class Privilege extends BaseModel
         'tableUpdated',
 
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(PrivilegeObserver::class);
-    }
 
     public function roles()
     {

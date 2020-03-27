@@ -12,7 +12,6 @@ use Storage;
 
 // Сторонние зависимости.
 use App\Models\User;
-use App\Models\Observers\FileObserver;
 use Illuminate\Http\UploadedFile;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 
@@ -111,12 +110,6 @@ class File extends BaseModel
         'medium' => 992,
 
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(FileObserver::class);
-    }
 
     public function attachment()
     {

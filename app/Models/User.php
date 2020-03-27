@@ -7,7 +7,6 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\File;
 use App\Models\Note;
-use App\Models\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -104,12 +103,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
 
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(UserObserver::class);
-    }
 
     public function articles()
     {

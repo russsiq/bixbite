@@ -6,7 +6,6 @@ namespace App\Models;
 use App\Models\Article;
 use App\Models\User;
 use App\Models\Collections\CommentCollection;
-use App\Models\Observers\CommentObserver;
 
 class Comment extends BaseModel
 {
@@ -98,17 +97,6 @@ class Comment extends BaseModel
         'id',
         'created_at',
     ];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(CommentObserver::class);
-    }
 
     /**
      * All of the relationships to be touched.

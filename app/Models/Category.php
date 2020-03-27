@@ -5,7 +5,6 @@ namespace App\Models;
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Collections\CategoryCollection;
-use App\Models\Observers\CategoryObserver;
 
 class Category extends BaseModel
 {
@@ -105,17 +104,6 @@ class Category extends BaseModel
         'template',
 
     ];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(CategoryObserver::class);
-    }
 
     // Polymorphic relation with articles
     public function articles()

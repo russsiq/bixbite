@@ -10,7 +10,6 @@ use Storage;
 
 // Сторонние зависимости.
 use App\Models\Module;
-use App\Models\Observers\SettingObserver;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Setting extends BaseModel
@@ -81,12 +80,6 @@ class Setting extends BaseModel
         'ORG_NAME',
 
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(SettingObserver::class);
-    }
 
     // Relation
     public function module()

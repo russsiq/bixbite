@@ -40,6 +40,16 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
+        \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
+        \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
+        \App\Models\File::observe(\App\Models\Observers\FileObserver::class);
+        \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
+        \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
+        \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
+        \App\Models\User::observe(\App\Models\Observers\UserObserver::class);
+        \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
+
         Relation::morphMap([
             'articles' => \App\Models\Article::class,
             'categories' => \App\Models\Category::class,

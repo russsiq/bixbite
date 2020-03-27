@@ -5,7 +5,6 @@ namespace App\Models;
 // Сторонние зависимости.
 use App\Models\Setting;
 use App\Models\User;
-use App\Models\Observers\ArticleObserver;
 
 class Article extends BaseModel
 {
@@ -154,17 +153,6 @@ class Article extends BaseModel
         'content',
 
     ];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(ArticleObserver::class);
-    }
 
     public function user()
     {

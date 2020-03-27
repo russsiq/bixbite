@@ -4,7 +4,6 @@ namespace App\Models;
 
 // Сторонние зависимости.
 use App\Models\User;
-use App\Models\Observers\NoteObserver;
 
 class Note extends BaseModel
 {
@@ -82,17 +81,6 @@ class Note extends BaseModel
         'created_at',
 
     ];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(NoteObserver::class);
-    }
 
     public function user()
     {

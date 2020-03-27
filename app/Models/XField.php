@@ -5,7 +5,6 @@
 namespace App\Models;
 
 // Сторонние зависимости.
-use App\Models\Observers\XFieldObserver;
 use Illuminate\Database\Eloquent\Collection;
 
 class XField extends BaseModel
@@ -99,12 +98,6 @@ class XField extends BaseModel
         'timestamp',
 
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::observe(XFieldObserver::class);
-    }
 
     /**
      * Получить коллекцию полей для указанной таблицы.
