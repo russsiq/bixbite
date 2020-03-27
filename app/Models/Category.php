@@ -80,6 +80,8 @@ class Category extends BaseModel
         'url' => 'string',
         // Необязательные поля.
         // 'alt_url' => null,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
 
     ];
 
@@ -102,6 +104,9 @@ class Category extends BaseModel
         'order_by',
         'direction',
         'template',
+        // Dates
+        'created_at',
+        'updated_at',
 
     ];
 
