@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Rss;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 /**
  * Контроллер для генерации XML карты турбо-страниц для Яндекса.
