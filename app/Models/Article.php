@@ -5,7 +5,12 @@ namespace App\Models;
 // Сторонние зависимости.
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Модель Записи.
+ */
 class Article extends BaseModel
 {
     use Mutators\ArticleMutators,
@@ -78,7 +83,7 @@ class Article extends BaseModel
         'content',
         'description',
         'keywords',
-        // Flags
+        // Флаги.
         'allow_com',
         'state',
         'robots',
@@ -86,11 +91,11 @@ class Article extends BaseModel
         'is_favorite',
         'is_pinned',
         'is_catpinned',
-        // Extension
+        // Расширения.
         'views',
         'votes',
         'rating',
-        // Dates
+        // Даты.
         'created_at',
         'updated_at',
 
@@ -98,7 +103,7 @@ class Article extends BaseModel
 
     /**
      * Отношения, которые всегда должны быть загружены.
-     * При выводе списка комментариев нужно получить ссылку на комментарий,
+     * Пример: при выводе списка комментариев нужно получить ссылку на комментарий,
      * а ссылка на комментарий к записи формируется с использованием категорий.
      * @var array
      */
@@ -121,7 +126,7 @@ class Article extends BaseModel
         // 'votes',
         // 'rating',
 
-        // Nested filters.
+        // Вложенная фильтрация.
         'comments.content',
         'comments.is_approved',
         'comments.count',
@@ -154,12 +159,20 @@ class Article extends BaseModel
 
     ];
 
-    public function user()
+    /**
+     * Получить автора записи.
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }
 
-    public function settings()
+    /**
+     * Получить настройки записей.
+     * @return HasMany
+     */
+    public function settings(): HasMany
     {
         return $this->hasMany(Setting::class, 'module_name');
     }

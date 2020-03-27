@@ -7,6 +7,9 @@ namespace App\Models;
 // Сторонние зависимости.
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Модель Дополнительного поля.
+ */
 class XField extends BaseModel
 {
     use Mutators\XFieldMutators,

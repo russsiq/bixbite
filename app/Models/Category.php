@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+// Зарегистрированные фасады приложения.
+use Illuminate\Support\Facades\DB;
+
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Collections\CategoryCollection;
 
+/**
+ * Модель Категории.
+ */
 class Category extends BaseModel
 {
     use Mutators\CategoryMutators,
@@ -75,13 +81,16 @@ class Category extends BaseModel
         'order_by' => 'string',
         'direction' => 'string',
         'template' => 'string',
+
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+
         // Прикрепляемые поля.
         'root' => 'boolean',
         'url' => 'string',
+
         // Необязательные поля.
         // 'alt_url' => null,
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
 
     ];
 
@@ -104,44 +113,76 @@ class Category extends BaseModel
         'order_by',
         'direction',
         'template',
-        // Dates
+        // Даты.
         'created_at',
         'updated_at',
 
     ];
 
-    // Polymorphic relation with articles
+    /**
+     * Получить все записи, относящиеся к данной категории.
+     * @return MorphToMany
+     */
     public function articles()
     {
-        return $this->morphedByMany(Article::class, 'categoryable');
+        return $this->morphedByMany(
+            /* $related */ Article::class,
+            /* $name */ 'categoryable',
+            /* $table */ 'categoryables',
+            /* $foreignPivotKey */ 'category_id',
+            /* $relatedPivotKey */ 'categoryable_id'
+        );
     }
 
-    public function newCollection(array $models = [])
+    /**
+     * Создать новый экземпляр коллекции Eloquent.
+     * @param  array  $models
+     * @return CategoryCollection
+     */
+    public function newCollection(array $models = []): CategoryCollection
     {
         return new CategoryCollection($models);
     }
 
-    // return count changed categories
-    public function positionReset()
+    /**
+     * Сбросить позиции для всех категорий и
+     * сохранить обновленные модели в базу данных.
+     * @return bool
+     */
+    public function positionReset(): bool
     {
         return $this->where('parent_id', '>', 0)
             ->orWhere('position', '>', 0)
             ->update([
                 'parent_id' => 0,
                 'position' => null,
+
             ]);
     }
 
-    public function positionUpdate(object $data)
+    /**
+     * Обновить позиции для всех категорий и
+     * сохранить обновленные модели в базу данных.
+     * @return bool
+     */
+    public function positionUpdate(object $data): bool
     {
-        \DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data) {
             $this->_saveList($data->list);
         });
 
         return true;
     }
 
-    protected function _saveList(array $list, int $parent_id = 0, int &$m_order = 0)
+    /**
+     * Обновить позиции для каждой категорий из списка и
+     * сохранить обновленные модели в базу данных.
+     * @param  array  $list
+     * @param  integer  $parent_id
+     * @param  integer  $m_order
+     * @return void
+     */
+    protected function _saveList(array $list, int $parent_id = 0, int &$m_order = 0): void
     {
         foreach ($list as $item) {
             $m_order++;
@@ -150,6 +191,7 @@ class Category extends BaseModel
                 ->update([
                     'parent_id' => $parent_id,
                     'position' => $m_order,
+
                 ]);
 
             if (array_key_exists('children', $item)) {

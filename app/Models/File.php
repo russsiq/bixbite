@@ -8,13 +8,18 @@ namespace App\Models;
 use RuntimeException as FileException;
 
 // Зарегистрированные фасады приложения.
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 // Сторонние зависимости.
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 
+/**
+ * Модель Файла.
+ */
 class File extends BaseModel
 {
     use Mutators\FileMutators,
@@ -111,15 +116,24 @@ class File extends BaseModel
 
     ];
 
-    public function attachment()
+    /**
+     * Получить родительскую модель комментария.
+     * @return MorphTo
+     */
+    public function attachment(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function user()
+    /**
+     * Получить пользователя, загрузившего файл.
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 
     public function thumbSizes()
     {

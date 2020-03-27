@@ -8,10 +8,15 @@ use App\Models\Comment;
 use App\Models\File;
 use App\Models\Note;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
+/**
+ * Модель Пользователя.
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Mutators\UserMutators,
@@ -104,22 +109,38 @@ class User extends Authenticatable implements MustVerifyEmail
 
     ];
 
-    public function articles()
+    /**
+     * Получить все записи пользователя.
+     * @return HasMany
+     */
+    public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
     }
 
-    public function comments()
+    /**
+     * Получить все комментарии пользователя.
+     * @return HasMany
+     */
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function files()
+    /**
+     * Получить все файлы, загруженные пользователем.
+     * @return HasMany
+     */
+    public function files(): HasMany
     {
         return $this->hasMany(File::class);
     }
 
-    public function notes()
+    /**
+     * Получить все заметки пользователя.
+     * @return HasMany
+     */
+    public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
     }
@@ -131,11 +152,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Комментарии на стене профиля пользователя.
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
-    public function posts()
+    public function posts(): MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
+        return $this->morphMany(
+            Comment::class,
+            'commentable',
+            'commentable_type',
+            'commentable_id',
+            'id'
+        );
     }
 
     /**

@@ -6,23 +6,36 @@ namespace App\Models;
 use Exception;
 
 // Базовые расширения PHP.
+use ArrayAccess;
+use JsonSerializable;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
 // Зарегистрированные фасады приложения.
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\File;
 
 // Сторонние зависимости.
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class Template implements Arrayable
+/**
+ * Модель шаблонов.
+ */
+class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {
     /**
      * Разрешенные разрешения файлов.
      * @var string
      */
     const ALLOWED_EXTENSIONS = '/\.(tpl|ini|css|js|blade\.php)$/';
+
+    // /**
+    //  * [protected description]
+    //  * @var string|null
+    //  */
+    // protected $filename;
 
     /**
      * Значения по умолчанию для атрибутов модели.
@@ -83,17 +96,30 @@ class Template implements Arrayable
         }
     }
 
-    public function path()
+    /**
+     * [path description]
+     * @return string|null
+     */
+    public function path(): ?string
     {
-        return $this->filename ? $this->themePath().$this->filename : null;
+        return $this->filename ? $this->themePath($this->filename) : null;
     }
 
-    public function themePath()
+    /**
+     * [themePath description]
+     * @param  string|null  $path
+     * @return string
+     */
+    public function themePath(string $path = null): string
     {
-        return theme_path('views');
+        return theme_path('views').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
-    public function get()
+    /**
+     * [get description]
+     * @return self
+     */
+    public function get(): self
     {
         $this->processSelect();
 
@@ -105,16 +131,13 @@ class Template implements Arrayable
      *
      * @param  string  $path
      * @param  string  $contents
-     * @return $this
+     * @return self
      */
-    public function save(array $attributes = [])
+    public function save(array $attributes = []): self
     {
         $this->fill($attributes);
 
-        if (! File::isDirectory($dirname = dirname($this->path()))) {
-            File::makeDirectory($dirname, 0777, true);
-        }
-
+        File::ensureDirectoryExists(dirname($this->path()));
         File::put($this->path(), $this->content, true);
 
         $this->processSelect();
@@ -128,7 +151,7 @@ class Template implements Arrayable
      * @param  string  $path
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         if (File::delete($this->path())) {
             $this->exists = false;
@@ -141,21 +164,21 @@ class Template implements Arrayable
 
     /**
      * Creates a flaten-structured array of files from a current theme root folder.
-     *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public static function all()
+    public static function all(): Collection
     {
         $files = collect([]);
+        $themePath = theme_path('views');
 
-        $dirIterator = new RecursiveDirectoryIterator(theme_path('views'), RecursiveDirectoryIterator::SKIP_DOTS);
+        $dirIterator = new RecursiveDirectoryIterator($themePath, RecursiveDirectoryIterator::SKIP_DOTS);
         $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::LEAVES_ONLY); // RecursiveIteratorIterator::SELF_FIRST
 
         foreach ($iterator as $node) {
             if ($node->isFile() and preg_match(static::ALLOWED_EXTENSIONS, $node->getFilename())) {
 
                 $template = new Template([
-                    'filename' => str_replace(theme_path('views'), '', $node->getPathname()),
+                    'filename' => str_replace($themePath, '', $node->getPathname()),
                 ]);
 
                 $files = $files->push($template->get());

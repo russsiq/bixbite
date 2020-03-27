@@ -4,7 +4,11 @@ namespace App\Models;
 
 // Сторонние зависимости.
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Модель Заметки.
+ */
 class Note extends BaseModel
 {
     use Mutators\NoteMutators,
@@ -60,6 +64,7 @@ class Note extends BaseModel
         'slug',
         'description',
         'is_completed',
+
     ];
 
     /**
@@ -82,7 +87,11 @@ class Note extends BaseModel
 
     ];
 
-    public function user()
+    /**
+     * Получить владельца заметки.
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }

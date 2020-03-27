@@ -2,28 +2,45 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+// Сторонние зависимости.
 use App\Models\Module;
 use App\Models\Setting;
-use App\Http\Resources\SettingResource;
-
 use App\Http\Requests\Api\V1\Setting\Store as StoreSettingRequest;
 use App\Http\Requests\Api\V1\Setting\Update as UpdateSettingRequest;
-
-use Illuminate\Http\Request;
+use App\Http\Resources\SettingResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
+/**
+ * [SettingsController description]
+ */
 class SettingsController extends ApiController
 {
+    /**
+     * Дополнение к карте сопоставления
+     * методов ресурса и методов в классе политик.
+     * @var array
+     */
     protected $advancedAbilityMap = [
         'getModule' => 'getModule',
         'updateModule' => 'updateModule',
+
     ];
 
+    /**
+     * Массив дополнительных методов, не имеющих
+     * конкретной модели в качестве параметра класса политик.
+     * @var array
+     */
     protected $advancedMethodsWithoutModels = [
         'getModule',
         'updateModule',
+
     ];
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Setting::class, 'setting');
@@ -31,15 +48,15 @@ class SettingsController extends ApiController
 
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $settings = Setting::with([
-                //
+
             ])
             ->withCount([
-                //
+
             ])
             ->advancedFilter();
 
@@ -52,18 +69,18 @@ class SettingsController extends ApiController
 
     /**
      * Отобразить список настроек для определенного модуля.
-     * @param  Request $request
+     * @param  Request  $request
      * @param  Module  $module
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getModule(Request $request, Module $module)
+    public function getModule(Request $request, Module $module): JsonResponse
     {
         $settings = $module->settings()->get();
 
         $collection = SettingResource::collection($settings);
 
         // Для системных настроек дополнительно загружаем массив
-        // с системными папками для выпадающих списков.
+        // с системными директориями для выпадающих списков.
         if ('system' === $module->name) {
             $collection->additional([
                 'meta' => [
@@ -71,7 +88,9 @@ class SettingsController extends ApiController
                     'lang' => select_dir(resource_path('lang')),
                     'skins' => select_dir(resource_path('skins')),
                     'themes' => select_dir(resource_path('themes')),
-                ]
+
+                ],
+
             ]);
         }
 
@@ -83,27 +102,27 @@ class SettingsController extends ApiController
     /**
      * Создать и сохранить сущность в хранилище.
      * @param  StoreSettingRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function store(StoreSettingRequest $request)
+    public function store(StoreSettingRequest $request): JsonResponse
     {
         $setting = Setting::create($request->all());
 
-       $resource = new SettingResource($setting);
+        $resource = new SettingResource($setting);
 
-       return $resource->response()
-           ->setStatusCode(JsonResponse::HTTP_CREATED);
+        return $resource->response()
+            ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
      * Отобразить сущность.
      * @param  Setting  $setting
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show(Setting $setting)
+    public function show(Setting $setting): JsonResponse
     {
         $setting->load([
-            //
+
         ]);
 
         $resource = new SettingResource($setting);
@@ -116,9 +135,9 @@ class SettingsController extends ApiController
      * Обновить сущность в хранилище.
      * @param  UpdateSettingRequest  $request
      * @param  Setting  $setting
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
         $setting->update($request->all());
 
@@ -129,12 +148,12 @@ class SettingsController extends ApiController
     }
 
     /**
-     * Обновить список настроек для определенного модуля.
-     * @param  Request $request
+     * Обновить список настроек для указанного модуля.
+     * @param  Request  $request
      * @param  Module  $module
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateModule(Request $request, Module $module)
+    public function updateModule(Request $request, Module $module): JsonResponse
     {
         $settings = Setting::massUpdateByModule($module, $request->all());
 
@@ -145,12 +164,11 @@ class SettingsController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * Удалить указанную сущность из хранилища.
      * @param  Setting  $setting
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy(Setting $setting)
+    public function destroy(Setting $setting): Response
     {
         $setting->delete();
 

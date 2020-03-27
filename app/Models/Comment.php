@@ -6,7 +6,12 @@ namespace App\Models;
 use App\Models\Article;
 use App\Models\User;
 use App\Models\Collections\CommentCollection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * Модель Комментария.
+ */
 class Comment extends BaseModel
 {
     use Mutators\CommentMutators,
@@ -73,6 +78,7 @@ class Comment extends BaseModel
         'email',
         'user_ip',
         'content',
+
     ];
 
     /**
@@ -87,6 +93,7 @@ class Comment extends BaseModel
         'commentable_id',
         'is_approved',
         'created_at',
+
     ];
 
     /**
@@ -96,32 +103,50 @@ class Comment extends BaseModel
     protected $orderableColumns = [
         'id',
         'created_at',
+
     ];
 
     /**
-     * All of the relationships to be touched.
+     * Все отношения, которые должны быть затронуты.
      * Automatically "touch" the updated_at timestamp of the owning Forum.
      *
      * @var array
      */
     // protected $touches = ['forum'];
 
-    public function article()
+    /**
+     * Получить запись, к которой относится комментарий.
+     * @return BelongsTo
+     */
+    public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class, 'commentable_id', 'id', 'commentable_type');
     }
 
-    public function user()
+    /**
+     * Получить пользователя, оставившего комментарий.
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }
 
-    public function commentable()
+    /**
+     * Получить родительскую модель комментария.
+     * @return MorphTo
+     */
+    public function commentable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function newCollection(array $models = [])
+    /**
+     * Создать новый экземпляр коллекции Eloquent.
+     * @param  array  $models
+     * @return CommentCollection
+     */
+    public function newCollection(array $models = []): CommentCollection
     {
         return new CommentCollection($models);
     }

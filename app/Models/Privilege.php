@@ -5,6 +5,9 @@ namespace App\Models;
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Модель Привилегии.
+ */
 class Privilege extends BaseModel
 {
     /**
@@ -29,7 +32,11 @@ class Privilege extends BaseModel
 
     ];
 
-    public function roles()
+    /**
+     * Получить массив групп пользователей.
+     * @return array
+     */
+    public function roles(): array
     {
         return cache()->rememberForever('roles', function () {
             return array_diff(Schema::getColumnListing($this->table), [
@@ -43,7 +50,11 @@ class Privilege extends BaseModel
         });
     }
 
-    public function privileges()
+    /**
+     * Получить массив привилегий пользователей.
+     * @return array
+     */
+    public function privileges(): array
     {
         return cache()->rememberForever('privileges', function () {
             return $this->select([
@@ -66,10 +77,16 @@ class Privilege extends BaseModel
         });
     }
 
-    public function saveTable(array $table)
+    /**
+     * Обновить все привилегии и
+     * сохранить обновленные модели в базу данных.
+     * @return void
+     */
+    public function saveTable(array $table): void
     {
         $roles = array_diff($this->roles(), [
             'owner',
+
         ]);
 
         foreach ($roles as $role) {

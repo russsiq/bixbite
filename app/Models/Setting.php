@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection as BaseCollection;
 
+/**
+ * Модель Настройки.
+ */
 class Setting extends BaseModel
 {
     use Mutators\SettingMutators,

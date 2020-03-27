@@ -6,6 +6,9 @@ namespace App\Models;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * Модель Тега.
+ */
 class Tag extends BaseModel
 {
     /**
@@ -54,12 +57,18 @@ class Tag extends BaseModel
     }
 
     /**
-     * [articles description]
-     * @return MorphToMany [description]
+     * Получить все записи, которым присвоен данный тег.
+     * @return MorphToMany
      */
     public function articles(): MorphToMany
     {
-        return $this->morphedByMany(Article::class, 'taggable');
+        return $this->morphedByMany(
+            /* $related */ Article::class,
+            /* $name */ 'taggable',
+            /* $table */ 'taggables',
+            /* $foreignPivotKey */ 'tag_id',
+            /* $relatedPivotKey */ 'taggable_id'
+        );
     }
 
     /**
@@ -77,6 +86,16 @@ class Tag extends BaseModel
      */
     public function reIndex(): void
     {
+        // $tags = $this->select([
+        //         'tags.id',
+        //         'taggables.tag_id as pivot_tag_id',
+        //     ])
+        //     ->join('taggables', 'tags.id', '=', 'taggables.tag_id')
+        //     ->get()
+        //     ->modelKeys();
+        //
+        // $this->diff($tags)->delete();
+
         $tags = $this->select([
                 'tags.id',
                 'taggables.tag_id as pivot_tag_id',
