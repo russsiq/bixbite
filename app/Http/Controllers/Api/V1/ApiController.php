@@ -2,26 +2,42 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+// Сторонние зависимости.
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+/**
+ * Абстрактный базовый класс для контроллеров API.
+ */
 abstract class ApiController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * Дополнение к карте сопоставления
+     * методов ресурса и методов в классе политик.
+     * @var array
+     */
     protected $advancedAbilityMap = [];
+
+    /**
+     * Массив дополнительных методов, не имеющих
+     * конкретной модели в качестве параметра класса политик.
+     * @var array
+     */
     protected $advancedMethodsWithoutModels = [];
 
     /**
-     * Get the map of resource methods to ability names.
-     * Переписанный метод из трейта:
-     * `Illuminate\Foundation\Auth\Access\AuthorizesRequests
-     *      ->resourceAbilityMap()`
+     * Получить карту сопоставления
+     * методов ресурса и методов в классе политик.
      * @return array
+     *
+     * @NOTE: Переписанный метод `resourceAbilityMap` из трейта
+     * `Illuminate\Foundation\Auth\Access\AuthorizesRequests.
      */
-    protected function resourceAbilityMap()
+    protected function resourceAbilityMap(): array
     {
         return array_merge([
             'index' => 'viewAny',
@@ -35,14 +51,14 @@ abstract class ApiController extends Controller
     }
 
     /**
-     * Get the list of resource methods which do not have model parameters.
-     *
-     * Переписанный метод из трейта:
-     * `Illuminate\Foundation\Auth\Access\AuthorizesRequests
-     *      ->resourceMethodsWithoutModels()`
+     * Получить список методов ресурса, которые не имеют
+     * конкретной модели в качестве параметра класса политик.
      * @return array
+     *
+     * @NOTE: Переписанный метод `resourceMethodsWithoutModels` из трейта
+     * `Illuminate\Foundation\Auth\Access\AuthorizesRequests.
      */
-    protected function resourceMethodsWithoutModels()
+    protected function resourceMethodsWithoutModels(): array
     {
         return array_merge([
             'index',
