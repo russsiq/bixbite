@@ -242,7 +242,10 @@
 
                 <div id="pane-sitemap" class="tab-pane">
                     <div class="card card-default">
-                        <div class="card-header"><i class="fa fa-th-list"></i> Домашняя страница</div>
+                        <div class="card-header">
+                            <i class="fa fa-th-list"></i> Домашняя страница
+                            <sup><a :href="url('sitemap.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
+                        </div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-sm-7">
@@ -268,7 +271,10 @@
                     </div>
 
                     <div class="card card-default">
-                        <div class="card-header"><i class="fa fa-th-list"></i> Страницы категорий</div>
+                        <div class="card-header">
+                            <i class="fa fa-th-list"></i> Страницы категорий
+                            <sup><a :href="url('sitemap-categories.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
+                        </div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-sm-7">
@@ -293,7 +299,10 @@
                     </div>
 
                     <div class="card card-default">
-                        <div class="card-header"><i class="fa fa-th-list"></i> Целевые страницы записей</div>
+                        <div class="card-header">
+                            <i class="fa fa-th-list"></i> Целевые страницы записей
+                            <sup><a :href="url('sitemap-articles.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
+                        </div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-sm-7">
@@ -318,7 +327,10 @@
                     </div>
 
                     <div class="card card-default">
-                        <div class="card-header"><i class="fa fa-th-list"></i> Турбо страницы Яндекс</div>
+                        <div class="card-header">
+                            <i class="fa fa-th-list"></i> Турбо страницы Яндекс
+                            <sup><a :href="url('amp-articles.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
+                        </div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-sm-7">
