@@ -6,13 +6,17 @@ namespace App\Http\Controllers\Rss;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Carbon;
 
 /**
  * Контроллер для генерации XML карты турбо-страниц для Яндекса.
  *
  * @NB: Need chunk to articles.
+ * Возможно, что вместо `chunk` нужна постраничка,
+ * но в этом случае нужно генерировать основную страницу,
+ * на которой будут отображены ссылки на дочерние страницы.
+ * Либо ограничиться взятием из БД определенного количества записей.
  */
 class AmpController extends BaseController
 {
@@ -20,7 +24,7 @@ class AmpController extends BaseController
      * Ключ кэша турбо страниц.
      * @const string
      */
-    const CACHE_KEY = 'amp.articles.xml';
+    const CACHE_KEY = 'amp-articles.xml';
 
     /**
      * Шаблон представления.
@@ -74,9 +78,9 @@ class AmpController extends BaseController
 
     /**
      * Извлечь коллекцию записей из хранилища.
-     * @return Collection
+     * @return EloquentCollection
      */
-    protected function resolveArticles(): Collection
+    protected function resolveArticles(): EloquentCollection
     {
         return Article::select([
                 'articles.id',
