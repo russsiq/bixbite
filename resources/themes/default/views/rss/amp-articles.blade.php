@@ -4,7 +4,7 @@
     version="2.0">
     <channel>
         <link>{{ route('home') }}</link>
-        <title>{{ setting('system.app_name') }}</title>
+        <title>{{ config('app.name') }}</title>
         <description>{{ setting('system.meta_description') }}</description>
         {{-- <turbo:analytics id="88888888" type="Yandex"></turbo:analytics> --}}
         <language>{{ setting('system.app_locale') }}</language>

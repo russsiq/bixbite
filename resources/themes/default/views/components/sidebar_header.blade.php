@@ -12,7 +12,7 @@
         <div class="header_area__inner">
             <div class="header_area__item-left">
                 <a href="{{ route('home') }}" rel="home">
-                    <h1 class="site-title" itemprop="name">{{ setting('system.app_name') }}</h1>
+                    <h1 class="site-title" itemprop="name">{{ config('app.name') }}</h1>
                 </a>
                 <p class="site-description" itemprop="description">От блога до портала</p>
             </div>
