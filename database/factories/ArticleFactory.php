@@ -14,23 +14,35 @@ $factory->define(Article::class, function (Faker $faker) {
     $title = $faker->unique()->sentence(mt_rand(4, 12));
 
     $content = '';
+
     foreach (range(1, mt_rand(8, 20)) as $step) {
         $content .= '<p>'.$faker->paragraph.'</p>';
     }
+
+    $user = User::inRandomOrder()
+        ->select('id')
+        ->first();
+
+    $date = now()
+        ->subDays(mt_rand(1, 720))
+        ->addSeconds(mt_rand(1, 86400))
+        ->format('Y-m-d H:i:s');
 
     return [
         'title' => $title,
         'slug' => Str::slug($title),
         'teaser' => $faker->text(mt_rand(120, 255)),
         'content' => $content,
-        'user_id' => User::inRandomOrder()->first()->id,
+        'user_id' => $user->id,
         // 'img' => $images[Arr::random($images)],
         'state' => $faker->randomElement([
             'published',
             'unpublished',
             'draft',
         ]),
-        'created_at' => now()->subDays(mt_rand(1, 720))->format('Y-m-d'), // Y-m-d H:i:s
+        'created_at' => $date,
+        'updated_at' => $date,
+
     ];
 });
 

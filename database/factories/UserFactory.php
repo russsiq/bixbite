@@ -24,5 +24,6 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => $name.$name,
         'api_token' => null,
         'remember_token' => null,
+
     ];
 });
