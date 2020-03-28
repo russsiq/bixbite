@@ -141,15 +141,19 @@ abstract class BaseController
      */
     protected function isExpired(): bool
     {
+        if (is_null($this->lastmod())) {
+            return false;
+        }
+
         return $this->lastmod() > CacheFile::created($this->cacheKey());
     }
 
     /**
      * Получить дату последнего изменения информации,
      * которая будет представлена в текущей ленте.
-     * @return Carbon
+     * @return Carbon|null
      */
-    abstract protected function lastmod(): Carbon;
+    abstract protected function lastmod(): ?Carbon;
 
     /**
      * Получить компилируемое представление ленты.

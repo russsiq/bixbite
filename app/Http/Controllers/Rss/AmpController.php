@@ -48,9 +48,9 @@ class AmpController extends BaseController
 
     /**
      * Получить дату последнего изменения информации на сайте.
-     * @return Carbon
+     * @return Carbon|null
      */
-    protected function lastmod(): Carbon
+    protected function lastmod(): ?Carbon
     {
         return Article::without('categories')
             ->select('articles.updated_at')

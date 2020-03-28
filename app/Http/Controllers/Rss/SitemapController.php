@@ -134,9 +134,9 @@ class SitemapController extends BaseController
     /**
      * Получить дату последнего изменения информации,
      * которая будет представлена в текущей ленте.
-     * @return Carbon
+     * @return Carbon|null
      */
-    protected function lastmod(): Carbon
+    protected function lastmod(): ?Carbon
     {
         return max([
             $this->latestArticle()->updated_at,
