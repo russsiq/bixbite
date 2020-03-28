@@ -51,7 +51,7 @@ class SitemapController extends BaseController
      */
     public function index(): Response
     {
-        $this->sitemap = 'index';
+        $this->sitemap = __FUNCTION__;
 
         $this->data = [
             'article' => $this->latestArticle(),
@@ -68,7 +68,7 @@ class SitemapController extends BaseController
      */
     public function home(): Response
     {
-        $this->sitemap = 'home';
+        $this->sitemap = __FUNCTION__;
 
         $this->data = [
             'lastmod' => $this->lastmod(),
@@ -84,7 +84,7 @@ class SitemapController extends BaseController
      */
     public function articles(): Response
     {
-        $this->sitemap = 'articles';
+        $this->sitemap = __FUNCTION__;
 
         $this->data = [
             'articles' => $this->resolveArticles(),
@@ -100,7 +100,7 @@ class SitemapController extends BaseController
      */
     public function categories(): Response
     {
-        $this->sitemap = 'categories';
+        $this->sitemap = __FUNCTION__;
 
         $this->data = [
             'categories' => $this->resolveCategories(),
