@@ -6,17 +6,19 @@ namespace App\Http\Controllers\Rss;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 
 /**
  * Контроллер для генерации карт сайта.
- *
- * @NB: Need chunk to articles.
  */
 class SitemapController extends BaseController
 {
+    /**
+     * Префикс шаблонов. По факту пространство имен.
+     * @const string
+     */
     const TEMPLATE_PREFIX = 'rss.sitemap.';
 
     /**
@@ -215,9 +217,9 @@ class SitemapController extends BaseController
 
     /**
      * Извлечь все записи из базы данных.
-     * @return Collection
+     * @return EloquentCollection
      */
-    protected function resolveArticles(): Collection
+    protected function resolveArticles(): EloquentCollection
     {
         return Article::select([
                 'articles.id',
@@ -253,9 +255,9 @@ class SitemapController extends BaseController
 
     /**
      * Извлечь все категории из базы данных.
-     * @return Collection
+     * @return EloquentCollection
      */
-    protected function resolveCategories(): Collection
+    protected function resolveCategories(): EloquentCollection
     {
         return Category::select([
                 'categories.id',
