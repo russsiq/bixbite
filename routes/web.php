@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Данная группа маршрутов не имеет общий префикс:
- * Данная группа маршрутов имеет общие:
+ * Данная группа маршрутов не должен иметь общий префикс в поставщике службы.
+ * Данная группа маршрутов имеет общие в поставщике службы:
  *      - посредники: `web`.
  * Дополнительная информация:
  *      - App\Http\Kernel - middleware.
@@ -47,7 +47,7 @@ Route::match(['get','post'], 'search', 'ArticlesController@search')->name('artic
 Route::get('tags', 'TagsController@index')->name('tags.index');
 Route::get('tags/{tag:title}', 'ArticlesController@tag')->name('tags.tag');
 
-Route::get('download/{id}', 'DownloadsController@download')->name('file.download');
+Route::get('downloads/{file:id}', 'DownloadsController@download')->name('file.download');
 
 Route::get('users', 'UsersController@index')->name('users.index');
 Route::get('follow/{user:id}', 'UsersController@follow')->name('follow');
@@ -56,6 +56,25 @@ Route::get('@{user:id}', 'UsersController@profile')->name('profile');
 Route::get('profile/{user:id}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
 Route::put('profile/{user:id}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
 
-// Данные маршруты всегда должны распологаться последними.
+// Очистка кеша по ключу. Только собственник сайта.
+Route::middleware([
+        'role:owner',
+
+    ])
+    ->get('app_common/clearcache/{key?}', 'Front\SystemCareController@clearCache')
+    ->where('key', '.*')
+    ->name('system_care.clearcache');
+
+// Одностраничная административная панель.
+Route::middleware([
+        'auth',
+        'can:global.panel',
+
+    ])
+    ->get('panel/{any?}', 'Admin\PanelController')
+    ->where('any', '.*')
+    ->name('panel');
+
+// Данные маршруты всегда должны располагаться последними.
 Route::get('{category:slug}', 'ArticlesController@category')->name('articles.category');
 Route::get('{category_slug}/{article_id}-{article_slug}.html', 'ArticlesController@article')->name('articles.article');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Common;
+namespace App\Http\Controllers\Front;
 
 use Artisan;
 use App\Http\Controllers\BaseController;

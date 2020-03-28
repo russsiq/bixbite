@@ -8,12 +8,20 @@ use App\Models\Category;
 
 class ArticlesController extends SiteController
 {
+    /**
+     * [protected description]
+     * @var Article
+     */
     protected $model;
+
+    /**
+     * Пространство имен шаблонов.
+     * @var string
+     */
     protected $template = 'articles';
 
     public function __construct(Article $model)
     {
-        parent::__construct();
         $this->model = $model;
     }
 
@@ -116,7 +124,7 @@ class ArticlesController extends SiteController
         return $this->makeResponse('index', compact('articles', 'query'));
     }
 
-    public function article($category_slug, $article_id, $article_slug = '')
+    public function article(string $category_slug, int $article_id, string $article_slug)
     {
         $article = $this->model->cachedFullArticleWithRelation($article_id);
 

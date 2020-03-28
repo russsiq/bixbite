@@ -33,6 +33,9 @@ class RouteServiceProvider extends ServiceProvider
     protected $routePatterns = [
         'any' => '(.*)',
         'id' => '^[0-9]*$',
+        'slug' => '^[\w\-\_0-9]*$',
+        'alpha_dash' => '^[a-z_]+$',
+        'encoded' => '^[\w\-0-9\+\%\s]+$',
 
     ];
 
@@ -44,21 +47,19 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::pattern('any', $this->routePattern('any'));
         Route::pattern('id', $this->routePattern('id'));
+        Route::pattern('slug', $this->routePattern('slug'));
 
-        // // Route::pattern('article', '^[a-z_]+$');
+        Route::pattern('category_slug', $this->routePattern('slug'));
         Route::pattern('article_id', $this->routePattern('id'));
-        // Route::pattern('article_slug', '^[\w\-0-9]+$');
-        //
-        // Route::pattern('category', '^[\w\-0-9\/]+$');
-        // Route::pattern('category_slug', '^[\w\-0-9\/]+$');
+        Route::pattern('article_slug', $this->routePattern('slug'));
 
         Route::pattern('commentable_id', $this->routePattern('id'));
-        Route::pattern('commentable_type', '^[a-zA-Z_]+$');
+        Route::pattern('commentable_type', $this->routePattern('alpha_dash'));
 
-        Route::pattern('tag', '^[\w\-0-9\+\%\s]+$');
+        Route::pattern('tag', $this->routePattern('encoded'));
 
         // Backend
-        Route::pattern('module', '^[a-z_]+$');
+        Route::pattern('module', $this->routePattern('alpha_dash'));
         Route::pattern('module_id', $this->routePattern('id'));
         Route::pattern('setting_id', $this->routePattern('id'));
 
@@ -92,8 +93,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapRssRoutes();
         $this->mapApiRoutes();
-        $this->mapCommonRoutes();
-        $this->mapAdminRoutes();
         $this->mapWebRoutes();
     }
 
@@ -104,6 +103,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware([
                 // 'web',
+
             ])
             ->namespace($this->namespace.'\Rss')
             ->group(base_path('routes/web/rss.php'));
@@ -114,28 +114,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware([
                 'api',
+
             ])
             ->namespace($this->namespace.'\Api')
             ->group(base_path('routes/api.php'));
-    }
-
-    protected function mapCommonRoutes()
-    {
-        Route::prefix('app_common')
-            ->middleware([
-                'web',
-            ])
-            ->namespace($this->namespace.'\Common')
-            ->group(base_path('routes/web/common.php'));
-    }
-
-    protected function mapAdminRoutes()
-    {
-        Route::middleware([
-                'web',
-            ])
-            ->namespace($this->namespace.'\Admin')
-            ->group(base_path('routes/web/admin.php'));
     }
 
     /**
@@ -147,6 +129,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware([
                 'web',
+
             ])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));

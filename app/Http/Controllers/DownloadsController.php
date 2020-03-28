@@ -11,16 +11,16 @@ class DownloadsController extends BaseController
         $this->model = $model;
     }
 
-    public function download(int $id)
+    public function download(File $file)
     {
-        $file = $this->model->whereId($id)->firstOrFail();
-
         $file->increment('downloads');
 
-        return response()->download(
-            $file->absolute_path,
-            $file->title.'.'.$file->extension, [
-                'Content-Type:'.$file->mime_type,
-            ]);
+        return response()
+            ->download(
+                $file->absolute_path,
+                $file->title.'.'.$file->extension, [
+                    'Content-Type:'.$file->mime_type,
+                ]
+            );
     }
 }

@@ -3,24 +3,20 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- * Данная группа маршрутов имеет общий префикс:
- *      - 'panel'.
- * Данная группа маршрутов имеет общие:
+ * Данная группа маршрутов имеет общие в поставщике службы:
+ *      - префикс: `panel`;
  *      - посредники: `web`.
  */
 
-Route::prefix('panel')
-    ->group(function () {
-        // Одностраничная административная панель.
-        Route::middleware([
-                'auth',
-                'can:global.panel',
+ // Одностраничная административная панель.
+ Route::middleware([
+        'auth',
+        'can:global.panel',
 
-            ])
-            ->get('/{any?}', 'PanelController')
-            ->where('any', '(.*)')
-            ->name('panel');
-    });
+    ])
+    ->get('panel/{any?}', 'PanelController')
+    ->where('any', '.*')
+    ->name('panel');
 
 // Route::get('/', 'DashboardController@index')->name('dashboard');
 // Route::get('tags/reindex', 'DashboardController@tagsReindex')->name('admin.tags.reindex');
