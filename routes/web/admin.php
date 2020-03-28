@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- * Данная группа маршрутов не имеет общий префикс:
+ * Данная группа маршрутов имеет общий префикс:
+ *      - 'panel'.
  * Данная группа маршрутов имеет общие:
  *      - посредники: `web`.
  */
@@ -14,8 +15,10 @@ Route::prefix('panel')
         Route::middleware([
                 'auth',
                 'can:global.panel',
+
             ])
             ->get('/{any?}', 'PanelController')
+            ->where('any', '(.*)')
             ->name('panel');
     });
 
