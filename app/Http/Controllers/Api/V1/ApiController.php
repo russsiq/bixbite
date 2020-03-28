@@ -13,7 +13,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  */
 abstract class ApiController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests,
+        DispatchesJobs,
+        ValidatesRequests;
 
     /**
      * Дополнение к карте сопоставления
