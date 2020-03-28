@@ -24,11 +24,8 @@ class CommentStoreRequest extends BaseFormRequest
         if ($this->user()) {
             $input['user_id'] = $this->user()->id;
         } else {
-            $input = array_merge($input, [
-                'name' => teaser($this->input('name'), 255),
-                'email' => filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL),
-
-            ]);
+            $input['name'] = teaser($this->input('name'), 255);
+            $input['email'] = filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL);
         }
 
         $input['content'] = preg_replace_callback(
