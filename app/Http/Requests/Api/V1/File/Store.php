@@ -44,7 +44,7 @@ class Store extends FileRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         // Перед тем как собрать необходимую информацию о файле,
         // провалидиуем на его физическое присутствие.

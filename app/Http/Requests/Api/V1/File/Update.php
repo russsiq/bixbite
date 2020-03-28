@@ -8,7 +8,7 @@ class Update extends FileRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $input = $this->except([
             '_token',

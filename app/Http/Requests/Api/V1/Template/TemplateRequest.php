@@ -12,7 +12,7 @@ class TemplateRequest extends BaseFormRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $filename = $this->get('filename');
         $content = $this->get('content', null);

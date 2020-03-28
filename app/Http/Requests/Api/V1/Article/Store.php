@@ -8,7 +8,7 @@ class Store extends ArticleRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'date_at' => 'currdate',

@@ -25,7 +25,7 @@ class ArticleRequest extends BaseFormRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         // NB: if isset image_id then attach image.
         $input = $this->except([

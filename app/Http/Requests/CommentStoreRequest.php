@@ -12,7 +12,7 @@ class CommentStoreRequest extends BaseFormRequest
      * Подготовить данные для валидации.
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $input = $this->except(['
             _token',
@@ -51,9 +51,11 @@ class CommentStoreRequest extends BaseFormRequest
                 // Default value.
                 'is_approved' => ($this->user() and $this->user()->hasRole('owner')) or ! setting('comments.moderate'),
                 'parent_id' => $this->input('parent_id', null),
+
                 // Default value from route.
-                'commentable_id' => $this->route('commentable_id'),
+                'commentable_id' => (int) $this->route('commentable_id'),
                 'commentable_type' => string_slug($this->route('commentable_type'), '_'),
+
                 // Aditional default value.
                 'user_ip' => $this->ip(),
 
@@ -120,7 +122,8 @@ class CommentStoreRequest extends BaseFormRequest
 
             // To prevent guests to use the email and name of users.
             'name' => [
-                (auth()->check() ? 'sometimes' : 'required'),
+                'bail',
+                'required_without:user_id',
                 'between:3,255',
                 'string',
                 'unique:users,name',
@@ -128,7 +131,8 @@ class CommentStoreRequest extends BaseFormRequest
             ],
 
             'email' => [
-                (auth()->check() ? 'sometimes' : 'required'),
+                'bail',
+                'required_without:user_id',
                 'between:6,255',
                 'email',
                 'unique:users,email',
