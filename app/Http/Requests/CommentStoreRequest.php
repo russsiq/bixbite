@@ -27,7 +27,6 @@ class CommentStoreRequest extends BaseFormRequest
             $input = array_merge($input, [
                 'name' => teaser($this->input('name'), 255),
                 'email' => filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL),
-                'captcha' => filter_var($this->input('captcha'), FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_EMPTY_STRING_NULL),
 
             ]);
         }
