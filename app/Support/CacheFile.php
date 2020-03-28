@@ -27,7 +27,7 @@ class CacheFile extends FileStore
      * @param  string $key
      * @return Carbon|null
      */
-    public function created(string $key)
+    public function created(string $key): ?Carbon
     {
         $path = $this->path($key);
 
@@ -45,7 +45,7 @@ class CacheFile extends FileStore
      * @param  string $key
      * @return Carbon|null
      */
-    public function expired(string $key)
+    public function expired(string $key): ?Carbon
     {
         $path = $this->path($key);
 
