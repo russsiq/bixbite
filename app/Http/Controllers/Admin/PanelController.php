@@ -2,23 +2,42 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\BaseController;
+// Сторонние зависимости.
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * Контроллер одностраничного приложения (панели управления).
+ */
 class PanelController extends BaseController
 {
-    protected $template = 'panel';
+    use AuthorizesRequests,
+        DispatchesJobs,
+        ValidatesRequests;
 
+    /**
+     * Шаблон одностраничного приложения.
+     * @var string
+     */
+    protected $template = 'panel.app';
+
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
-        //
+
     }
 
     /**
-     * Single page application catch-all route.
-     * @return \Illuminate\View\View
+     * Обработать все маршруты одностраничного приложения.
+     * @return Renderable
      */
-    public function __invoke()
+    public function __invoke(): Renderable
     {
-        return view($this->template.'.app');
+        return view($this->template);
     }
 }
