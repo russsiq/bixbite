@@ -34,10 +34,7 @@ Route::group([
             'users' => 'UsersController',
             'x_fields' => 'XFieldsController',
         ]);
-        // Route::resource('articles', 'ArticlesController')->except(['show'])->names(['destroy' => 'articles.delete']);
 
         Route::put('articles', 'ArticlesController@massUpdate')->name('articles.massUpdate');
         Route::put('comments', 'CommentsController@massUpdate')->name('comments.massUpdate');
     });
-
-// dd(route('api'));
