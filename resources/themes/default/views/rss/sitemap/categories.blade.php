@@ -4,7 +4,9 @@
 @foreach ($categories as $category)
     <url>
         <loc>{{ $category->url }}</loc>
-        <lastmod>{{ ($category->updated_at ?? $category->created_at)->tz('UTC')->toAtomString() }}</lastmod>
+        @if ($category->updated_at)
+            <lastmod>{{ $category->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        @endif
         <changefreq>{{ setting('system.categories_changefreq', 'weekly') }}</changefreq>
         <priority>{{ setting('system.categories_priority', '0.6') }}</priority>
         @if ($category->image)

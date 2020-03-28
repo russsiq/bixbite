@@ -4,7 +4,9 @@
 @foreach ($articles as $article)
     <url>
         <loc>{{ $article->url }}</loc>
-        <lastmod>{{ ($article->updated_at ?? $article->created_at)->tz('UTC')->toAtomString() }}</lastmod>
+        @if ($article->updated_at)
+            <lastmod>{{ $article->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        @endif
         <changefreq>{{ setting('system.articles_changefreq', 'weekly') }}</changefreq>
         <priority>{{ setting('system.articles_priority', '0.4') }}</priority>
         @if ($article->image)
