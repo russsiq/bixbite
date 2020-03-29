@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 // Сторонние зависимости.
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 /**
  * Абстрактный базовый класс для контроллеров API.
  */
-abstract class ApiController extends Controller
+abstract class ApiController extends BaseController
 {
     use AuthorizesRequests,
         DispatchesJobs,
