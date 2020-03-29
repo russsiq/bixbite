@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * Контроллер домашней страницы сайта.
+ */
 class HomeController extends SiteController
 {
+    /**
+     * Макет шаблонов контроллера.
+     * @var string
+     */
     protected $template = 'home';
 
+    /**
+     * Системные настройки.
+     * @var object
+     */
+    protected $settings;
+
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
-        parent::__construct();
+        $this->settings = (object) setting('system');
     }
 
     /**
@@ -17,13 +33,14 @@ class HomeController extends SiteController
     public function index()
     {
         pageinfo([
-            'title' => setting('system.meta_title', 'BixBite'),
-            'description' => setting('system.meta_description', 'BixBite - Content Management System'),
-            'keywords' => setting('system.meta_keywords', 'BixBite CMS, BBCMS, CMS'),
+            'title' => $this->settings->meta_title ?? 'BixBite',
+            'description' => $this->settings->meta_description ?? 'BixBite - Content Management System',
+            'keywords' => $this->settings->meta_keywords ?? 'BixBite CMS, BBCMS, CMS',
             'onHomePage' => true,
+
         ]);
 
-        if (setting('system.homepage_personalized', false)) {
+        if ($this->settings->homepage_personalized) {
             return $this->makeResponse('index');
         }
 

@@ -2,58 +2,106 @@
 
 namespace App\Http\Controllers;
 
+// Сторонние зависимости.
 use App\Models\User;
 use App\Models\XField;
 use App\Http\Requests\Front\UserRequest;
 
+/**
+ * Контроллер, управляющий Пользователями сайта.
+ */
 class UsersController extends SiteController
 {
+    /**
+     * Модель Пользователь.
+     * @var User
+     */
     protected $model;
+
+    /**
+     * Настройки модели Комментарий.
+     * @var object
+     */
+    protected $settings;
+
+    /**
+     * Макет шаблонов контроллера.
+     * @var string
+     */
     protected $template = 'users';
 
+    /**
+     * Создать экземпляр контроллера.
+     * @param  Article  $model
+     */
     public function __construct(User $model)
     {
-        parent::__construct();
         $this->model = $model;
+
+        $this->settings = (object) setting($model->getTable());
     }
 
+    /**
+     * [index description]
+     * @return [type]
+     */
     public function index() {
         $users = $this->model->latest()
-            ->paginate(setting('users.paginate', 15));
+            ->paginate($this->settings->paginate ?? 15);
 
         pageinfo([
-            'title' => setting('users.meta_title', __('users.title')),
-            'description' => setting('users.meta_description', __('users.title')),
-            'keywords' => setting('users.meta_keywords', __('users.title')),
+            'title' => $this->settings->meta_title ?? trans('users.title'),
+            'description' => $this->settings->meta_description ?? trans('users.title'),
+            'keywords' => $this->settings->meta_keywords ?? trans('users.title'),
             'robots' => 'noindex, follow',
             'url' => route('users.index'),
             'is_index' => true,
+
         ]);
 
         return $this->makeResponse('index', compact('users'));
     }
 
+    /**
+     * [edit description]
+     * @param  User  $user
+     * @return [type]
+     */
     public function edit(User $user)
     {
         $x_fields = $user->x_fields;
 
         pageinfo([
-            'title' => __('users.edit_page'),
+            'title' => trans('users.edit_page'),
             'robots' => 'noindex, follow',
+
         ]);
 
         return $this->makeResponse('edit', compact('user', 'x_fields'));
     }
 
+    /**
+     * [update description]
+     * @param  UserRequest  $request
+     * @param  User  $user
+     * @return [type]
+     */
     public function update(UserRequest $request, User $user)
     {
         $user->update($request->all());
 
-        return redirect()->route('profile', $user)->withStatus(
-            __('users.msg.profile_updated')
-        );
+        return redirect()
+            ->route('profile', $user)
+            ->withStatus(
+                trans('users.msg.profile_updated')
+            );
     }
 
+    /**
+     * Показать профиль пользователя.
+     * @param  int  $id
+     * @return [type]
+     */
     public function profile(int $id)
     {
         $user = $this->model
@@ -63,19 +111,18 @@ class UsersController extends SiteController
                 'comments',
                 'posts',
                 'follows',
+
             ])
             ->firstOrFail();
 
-        if ($user->posts_count) {
-            $user->posts = $user->posts()
+        $user->posts = $user->posts_count
+            ? $user->posts()
                 ->with([
                     'user:users.id,users.name,users.email,users.avatar'
                 ])->latest()
                 ->get()
-                ->treated(true);
-        } else {
-            $user->posts = [];
-        }
+                ->treated(true)
+            : [];
 
         $x_fields = $user->x_fields;
 
@@ -85,29 +132,40 @@ class UsersController extends SiteController
             'robots' => $user->robots ?? 'all',
             'url' => $user->profile,
             'section' => [
-                'title' => setting('users.meta_title', __('users.title')),
+                'title' => $this->settings->meta_title ?? trans('users.title'),
             ],
             'is_profile' => true,
             'is_own_profile' => $user->id === user('id'),
             'user' => $user,
+
         ]);
 
         return $this->makeResponse('profile', compact('user', 'x_fields'));
     }
 
+    /**
+     * Добавить пользователя в закладки.
+     * @param  User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function follow(User $user)
     {
         auth()->user()->follow($user);
 
         return redirect()->back()
-            ->withStatus(__('users.msg.followed'));
+            ->withStatus(trans('users.msg.followed'));
     }
 
+    /**
+     * Убрать пользователя из закладок.
+     * @param  User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function unfollow(User $user)
     {
         auth()->user()->unfollow($user);
 
         return redirect()->back()
-            ->withStatus(__('users.msg.unfollowed'));
+            ->withStatus(trans('users.msg.unfollowed'));
     }
 }

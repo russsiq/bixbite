@@ -2,28 +2,59 @@
 
 namespace App\Http\Controllers;
 
+// Сторонние зависимости.
 use App\Models\Comment;
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Response;
 
+/**
+ * Контроллер, управляющий Комментариями сайта.
+ */
 class CommentsController extends SiteController
 {
+    /**
+     * Модель Комментарий.
+     * @var Comment
+     */
     protected $model;
+
+    /**
+     * Настройки модели Комментарий.
+     * @var object
+     */
+    protected $settings;
+
+    /**
+     * Макет шаблонов контроллера.
+     * @var string
+     */
     protected $template = 'comments';
 
+    /**
+     * Создать экземпляр контроллера.
+     * @param  Article  $model
+     */
     public function __construct(Comment $model)
     {
-        parent::__construct();
-
         $this->middleware('throttle:5,1')->only([
             'store',
             'update',
             'delete',
+
         ]);
 
         $this->model = $model;
+
+        $this->settings = (object) setting($model->getTable());
     }
 
+    /**
+     * Сохранить комментарий в хранилище.
+     * @param  CommentStoreRequest  $request
+     * @return [type]
+     */
     public function store(CommentStoreRequest $request)
     {
         $this->authorize('create', Comment::class);
@@ -31,19 +62,22 @@ class CommentsController extends SiteController
         $comment = $this->model->create($request->all());
         $entity = $comment->commentable;
 
-        // Temporarily.
-        if ('articles' == $request->commentable_type and 1 === $entity->comments()->count()) {
+        // Если добавлен первый комментарий к записи.
+        if ('articles' === $request->commentable_type and 1 === $entity->comments()->count()) {
             cache()->forget('articles-single-'.$request->commentable_id);
         }
 
-        // Not save this data in the database because we already
-        // have $user->id. This data is for display only.
+        // Не нужно сохранять эти данные в БД.
+        // Эти данные только для отображения.
         if ($user = user()) {
+            // Но, если комментарий оставлен автором записи.
             if ($comment->user_id === $entity->user_id) {
                 $comment->update([
                     'is_approved' => true,
+
                 ]);
             }
+
             $comment->user = $user;
             $comment->name = $user->name;
             $comment->email = $user->email;
@@ -52,30 +86,34 @@ class CommentsController extends SiteController
         // Temporarily.
         if ($request->expectsJson()) {
             $comment->children = [];
-            $comment->html = view($this->template . '.show', compact('comment', 'entity'))->render();
+            $comment->html = view(
+                    $this->template.'.show',
+                    compact('comment', 'entity')
+                )->render();
 
             return response()->json([
-                'message' => __('comments.msg.add_success'),
-                'comment' => $comment
+                'message' => trans('comments.msg.add_success'),
+                'comment' => $comment,
+
             ], 200);
         }
 
-        return $this->makeRedirect(true, url()->previous().'#comment-'.$comment->id, __('comments.msg.add_success'));
+        return $this->makeRedirect(true, url()->previous().'#comment-'.$comment->id, trans('comments.msg.add_success'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @param  Comment  $comment
+     * @return Renderable
      */
-    public function edit(Comment $comment)
+    public function edit(Comment $comment): Renderable
     {
         $this->authorize('update', $comment);
 
         pageinfo([
-            'title' => __('comments.edit_page'),
+            'title' => trans('comments.edit_page'),
             'robots' => 'noindex,follow',
+
         ]);
 
         return $this->makeResponse('edit', compact('comment'));
@@ -83,24 +121,25 @@ class CommentsController extends SiteController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\CommentUpdateRequest  $request
-     * @param  \App\Models\Comment  $comment
+     * @param  CommentUpdateRequest  $request
+     * @param  Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
         $this->authorize('update', $comment);
 
-        $comment->update($request->only(['content']));
+        $comment->update($request->only([
+            'content',
 
-        return $this->makeRedirect(true, $comment->url, __('comments.msg.update'));
+        ]));
+
+        return $this->makeRedirect(true, $comment->url, trans('comments.msg.update'));
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Comment  $comment
+     * @param  Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)
@@ -115,6 +154,6 @@ class CommentsController extends SiteController
             return response()->json(null, 204);
         }
 
-        return $this->makeRedirect(true, $url, __('comments.msg.destroy'));
+        return $this->makeRedirect(true, $url, trans('comments.msg.destroy'));
     }
 }
