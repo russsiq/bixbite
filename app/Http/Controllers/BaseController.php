@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 // Сторонние зависимости.
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -79,14 +80,14 @@ abstract class BaseController extends Controller
      * Получить HTML-строковое представление ответа.
      * @param  string  $template
      * @param  array  $vars
-     * @return string
+     * @return Renderable
      */
-    protected function renderOutput(string $template, array $vars = []): string
+    protected function renderOutput(string $template, array $vars = []): Renderable
     {
         $tpl = $this->template.'.'.$template;
 
         if (view()->exists($tpl)) {
-            return view($tpl, $vars)->render();
+            return view($tpl, $vars);
         }
 
         abort(404, "View named [$tpl] not exists.");
