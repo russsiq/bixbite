@@ -33,9 +33,9 @@ class TagsCloud extends Component
 
     /**
      * Время кэширования виджета.
-     * @var string
+     * @var int
      */
-    public $cacheTime = 24 * 60 *60;
+    public $cacheTime = 60 * 60 * 24;
 
     /**
      * Создать экземпляр компонента.

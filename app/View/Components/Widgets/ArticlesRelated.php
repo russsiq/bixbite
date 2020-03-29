@@ -32,10 +32,11 @@ class ArticlesRelated extends Component
     public $template = 'components.widgets.articles-related';
 
     /**
-     * Время кэширования виджета.
-     * @var string
+     * Время кэширования виджета в секундах.
+     * По умолчанию раз в сутки.
+     * @var int
      */
-    public $cacheTime = 24 * 60 *60;
+    public $cacheTime = 60 * 60 * 24;
 
     /**
      * Текущая запись.

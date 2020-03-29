@@ -32,10 +32,11 @@ class ArticlesArchives extends Component
     public $template = 'components.widgets.articles-archives';
 
     /**
-     * Время кэширования виджета.
-     * @var string
+     * Время кэширования виджета в секундах.
+     * По умолчанию раз в 30 дней.
+     * @var int
      */
-    public $cacheTime = 24 * 60 *60;
+    public $cacheTime = 60 * 60 * 24 * 30;
 
     /**
      * Создать экземпляр компонента.

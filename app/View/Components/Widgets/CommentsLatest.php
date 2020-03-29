@@ -32,10 +32,11 @@ class CommentsLatest extends Component
     public $template = 'components.widgets.comments-latest';
 
     /**
-     * Время кэширования виджета.
-     * @var string
+     * Время кэширования виджета в секундах.
+     * По умолчанию раз в 15 минут.
+     * @var int
      */
-    public $cacheTime = 24 * 60 *60;
+    public $cacheTime = 60 * 15;
 
     /**
      * Создать экземпляр компонента.
