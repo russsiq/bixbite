@@ -14,16 +14,16 @@ trait FullTextSearch
 {
     /**
      * Диапазон запроса полнотекстового поиска.
-     * @param  Builder  $query
+     * @param  Builder  $builder
      * @param  string  $term
      * @return void
      */
-    public function scopeSearch(Builder $query, string $term): void
+    public function scopeSearch(Builder $builder, string $term): void
     {
         $columns = $this->fullTextColumns();
         $searchTerm = $this->fullTextWildcards($term);
 
-        $query->selectRaw(
+        $builder->selectRaw(
                 "MATCH ({$columns}) AGAINST (? in boolean mode) as REL", [
                 $searchTerm
             ])
