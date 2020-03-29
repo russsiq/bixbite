@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
         'id' => '^[0-9]*$',
         'slug' => '^[\w\-\_0-9]*$',
         'alpha_dash' => '^[a-z_]+$',
-        'encoded' => '^[\w\-0-9\+\%\s]+$',
+        'encoded' => '^[\w\-0-9\+\%]+$',
 
     ];
 
