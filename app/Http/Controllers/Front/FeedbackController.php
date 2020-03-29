@@ -13,7 +13,7 @@ class FeedbackController extends SiteController
 
     public function __construct()
     {
-        parent::__construct();
+
     }
 
     public function create()
