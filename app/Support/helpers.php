@@ -206,19 +206,23 @@ if (! function_exists('html_secure')) {
      * @param  string|array  $text
      * @return string
      */
-    function html_secure($text)
+    function html_secure($text): string
     {
         if (is_array($text)) {
-            $text = array_map('html_secure', $text);
-        } elseif (is_string($text)) {
-            $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8', false);
-            $text = str_replace(['{', '}', '<', '>', '"', "'"], ['&#123;', '&#125;', '&lt;', '&gt;', '&#34;', '&#039;'], $text); // '&' => '&amp;'
-            $text = trim($text) ?: null;
-        } else {
-            $text = null;
+            return array_map('html_secure', $text);
         }
 
-        return $text;
+        if (is_string($text)) {
+            $text = e($text);
+
+            return trim(str_replace(
+                ['{', '}', '<', '>', '"', "'"],
+                ['&#123;', '&#125;', '&lt;', '&gt;', '&#34;', '&#039;'],
+                $text
+            ));
+        }
+
+        return '';
     }
 }
 
