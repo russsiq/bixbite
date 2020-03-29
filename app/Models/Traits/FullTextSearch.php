@@ -21,7 +21,7 @@ trait FullTextSearch
     public function scopeSearch(Builder $builder, string $term): void
     {
         $columns = $this->fullTextColumns();
-        $searchTerm = $this->fullTextWildcards($term);
+        $searchTerm = $this->fullTextWildcards(html_secure($term));
 
         $builder->selectRaw(
                 "MATCH ({$columns}) AGAINST (? in boolean mode) as REL", [
