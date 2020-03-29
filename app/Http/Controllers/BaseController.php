@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+// Сторонние зависимости.
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
-class BaseController extends Controller
+/**
+ * Абстрактный класс базового контроллера.
+ */
+abstract class BaseController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests,
+        DispatchesJobs,
+        ValidatesRequests;
 
     /**
-     * Make response description.
-     *
-     * @param  string $template [description]
-     * @param  array  $vars     [description]
+     * Создать HTTP-ответ.
+     * @param  string  $template
+     * @param  array  $vars
      * @return mixed
      */
     protected function makeResponse(string $template, array $vars = [])
@@ -28,11 +34,10 @@ class BaseController extends Controller
     }
 
     /**
-     * Create a new redirect response to the given path.
-     *
-     * @param  bool         $status  Specifies a redirect with an error or notification.
-     * @param  string|array $route   The name of the route to redirect.
-     * @param  string       $message Error or notification to display.
+     * Выполнить редирект по указанному пути.
+     * @param  bool  $status
+     * @param  string|array  $route
+     * @param  string  $message
      * @return mixed
      */
     protected function makeRedirect(bool $status, $route, string $message)
@@ -56,7 +61,12 @@ class BaseController extends Controller
             : redirect()->to($url ?? $route)->withErrors($message);
     }
 
-    protected function jsonOutput(array $vars = [])
+    /**
+     * Отправить JSON-ответ.
+     * @param  array  $vars
+     * @return JsonResponse
+     */
+    protected function jsonOutput(array $vars = []): JsonResponse
     {
         $vars = array_merge([
             'status' => true,
@@ -66,13 +76,12 @@ class BaseController extends Controller
     }
 
     /**
-     * Render output to html string.
-     *
-     * @param  string $template
+     * Получить HTML-строковое представление ответа.
+     * @param  string  $template
      * @param  array  $vars
-     * @return mixed
+     * @return string
      */
-    protected function renderOutput(string $template, array $vars = [])
+    protected function renderOutput(string $template, array $vars = []): string
     {
         $tpl = $this->template.'.'.$template;
 
