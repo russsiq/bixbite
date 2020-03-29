@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 // Сторонние зависимости.
 use App\Models\Category;
 use App\Models\Collections\CategoryCollection;
-use App\Support\PageInfo;
 
-class SiteController extends BaseController
+/**
+ * Абстрактный класс базового контроллера.
+ */
+abstract class SiteController extends BaseController
 {
+    /**
+     * Макет шаблонов контроллера.
+     * @var string
+     */
     protected $template;
-
-    public function __construct()
-    {
-
-    }
 
     /**
      * Извлечь коллекцию категорий из хранилища.
@@ -31,17 +32,18 @@ class SiteController extends BaseController
     }
 
     /**
-     * Render output to html string.
-     *
+     * Получить HTML-строковое представление ответа.
      * @param  string $template
      * @param  array  $vars
-     * @return mixed
-     * @NB Overwriting the parent method.
+     * @return string
+     *
+     * @NB Переопределяет родительский метод.
      */
-    protected function renderOutput(string $template, array $vars = [])
+    protected function renderOutput(string $template, array $vars = []): string
     {
         pageinfo([
            'categories' => $this->resolveCategories(),
+
        ]);
 
         $tpl = $this->template.'.'.$template;
