@@ -108,7 +108,7 @@ class ArticlesController extends SiteController
         ]);
 
         if ($category->template) {
-            $view = 'custom_views.'.$category->template.'.'.$this->template;
+            $view = self::DIRECTORY_CUSTOM_VIEWS.'.'.$category->template.'.'.$this->template;
 
             $this->template = view()->exists($view.'.index') ? $view : $this->template;
         }
