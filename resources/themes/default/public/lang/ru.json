@@ -28,6 +28,13 @@
     "November": "Ноябрь",
     "December": "Декабрь",
 
+    "Articles Archives": "Архив записей",
+    "Featured Articles": "Рекомендуемые записи",
+    "Neighboring Articles": "Соседние записи",
+    "Related Articles": "Похожие записи",
+    "Latest Comments": "Обсуждения",
+    "Tags Cloud": "Облако меток",
+
     "articles": "Новости",
     "msg.theme_not_found": ""
 }
