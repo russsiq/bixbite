@@ -1,10 +1,11 @@
 <section class="widget">
     <div class="widget__inner">
         <div class="widget__header">
+            {{-- Отобразим ссылку на очистку кеша только собственнику сайта. --}}
             @role('owner')
-                {{-- <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel"><i class="fa fa-recycle"></i></a> --}}
+                <a href="{{ $clearCacheUrl }}" class="moder_panel"><i class="fa fa-recycle"></i></a>
             @endrole
-            <h4 class="widget__title">{{ $title }}</h4>
+            <h4 class="widget__title">{{ trans($title) }}</h4>
         </div>
         <div class="widget__body">
             <ul class="widget__list">
@@ -19,11 +20,11 @@
                             <header class="widget_item__header widget_featured-item__header">
                                 <h5 class="widget_item__title">{{ $article->title }}</h5>
                                 <p class="widget_item__subtitle">
-                                    <span>{{ $article->updated ?? $article->created }}</span>
+                                    <span class="mr-auto">{{ $article->updated ?? $article->created }}</span>
                                     @if ($article->views)
-                                        <span><i class="fa fa-eye"></i> {{ $article->views }}</span>
+                                        <span><i class="fa fa-eye"></i> {{ $article->views }} •&nbsp;</span>
                                     @endif
-                                    {{-- <span class="pull-right"><i class="fa fa-comment"></i> {{ $article->comments_count }} •&nbsp;</span> --}}
+                                    <span><i class="fa fa-comment"></i> {{ $article->comments_count }}</span>
                                 </p>
                             </header>
                             {{-- <p class="widget_item__content">{{ $article->teaser }}</p> --}}
