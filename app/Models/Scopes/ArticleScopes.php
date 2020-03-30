@@ -78,6 +78,16 @@ trait ArticleScopes
     }
 
     /**
+     * Диапазон записей только отображаемых на главной странице.
+     * @param  Builder  $builder
+     * @return void
+     */
+    public function scopeOnMainpage(Builder $builder): void
+    {
+        $builder->where('articles.on_mainpage', true);
+    }
+
+    /**
      * Диапазон только опубикованных записей.
      * @param  Builder  $builder
      * @return void
