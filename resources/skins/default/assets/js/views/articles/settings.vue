@@ -112,7 +112,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Количество символов в аннотации к записи</label>
-                                    <small class="form-text text-muted">Если аннотация не указана, то будет сформирована путем обрезки начальной части текста записи.</small>
+                                    <small class="form-text text-muted">Если предисловие записи не указано, то оно будет сформировано путем обрезки начальной части текста записи.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="number" v-model.number="form.teaser_length" min="20" max="255" class="form-control" />
