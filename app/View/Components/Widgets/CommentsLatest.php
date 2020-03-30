@@ -144,7 +144,7 @@ class CommentsLatest extends WidgetAbstract
             ->where('commentable_type', $this->parameter('relation'))
             ->where('is_approved', true)
             ->latest()
-            ->limit(8)
+            ->limit($this->parameter('limit'))
             ->get()
             ->treated(false);
     }
