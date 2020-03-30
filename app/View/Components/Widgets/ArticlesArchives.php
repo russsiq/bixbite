@@ -4,81 +4,140 @@ namespace App\View\Components\Widgets;
 
 // Сторонние зависимости.
 use App\Models\Article;
-use Illuminate\Contracts\Support\Renderable;
+use App\Support\WidgetAbstract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\View\Component;
 
 /**
  * Компонент виджета архива записей.
  */
-class ArticlesArchives extends Component
+class ArticlesArchives extends WidgetAbstract
 {
     /**
-     * Заголовок виджета.
-     * @var string
+     * Входящие параметры виджета.
+     * @var array
      */
-    public $title;
+    protected $parameters = [
+        // Заголовок виджета.
+        'title' => 'Articles Archives',
+
+        // Активность виджета.
+        'is_active' => true,
+
+        // Шаблон виджета.
+        'template' => 'components.widgets.articles-archives',
+
+        // Время кэширования виджета в секундах.
+        // По умолчанию раз в 30 дней.
+        'cache_time' => 60 * 60 * 24 * 30,
+
+        // Количество отображаемых месяцев.
+        'limit' => 12,
+
+        // Подсчет количества записей за месяц.
+        'has_count' => true,
+
+    ];
 
     /**
-     * Активность виджета.
-     * @var boolean
+     * Получить массив правил валидации,
+     * которые будут применены к входящим параметрам.
+     * @return array
      */
-    public $isActive = false;
-
-    /**
-     * Шаблон виджета.
-     * @var string
-     */
-    public $template = 'components.widgets.articles-archives';
-
-    /**
-     * Время кэширования виджета в секундах.
-     * По умолчанию раз в 30 дней.
-     * @var int
-     */
-    public $cacheTime = 60 * 60 * 24 * 30;
-
-    /**
-     * Создать экземпляр компонента.
-     */
-    public function __construct(
-        array $parameters = []
-    ) {
-        $this->configure($parameters);
-    }
-
-    /**
-     * Конфигурирование компонента.
-     * @param  array  $parameters
-     * @return void
-     */
-    protected function configure(array $parameters): void
+    protected function rules(): array
     {
+        return [
+            // Заголовок виджета.
+            'title' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^[\w\s\.-_]+$/u',
 
+            ],
+
+            // Активность виджета.
+            'is_active' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
+            // Шаблон виджета.
+            'template' => [
+                'sometimes',
+                'required',
+                'string',
+
+            ],
+
+            // Время кэширования виджета в секундах.
+            'cache_time' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Количество отображаемых месяцев.
+            'limit' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Подсчет количества записей за месяц.
+            'has_count' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
+        ];
     }
 
     /**
-     * Получить шаблон / содержимое, представляющее компонент.
-     * @return Renderable
+     * Получить коллекцию месяцев из хранилища.
+     * @return Collection
      */
-    public function render(): Renderable
-    {
-        return view($this->template);
-    }
-
     public function months(): Collection
+    {
+        // if (empty($this->cacheTime())) {
+            return $this->resolveMonths();
+        // }
+
+        return $this->cache->remember(
+            $this->cacheKey(),
+            $this->cacheTime(),
+            function () {
+                return $this->resolveMonths();
+            }
+        );
+    }
+
+    /**
+     * Извлечь коллекцию месяцев из хранилища.
+     * @return Collection
+     */
+    protected function resolveMonths(): Collection
     {
         return Article::without('categories')
             ->selectRaw('
                 YEAR(created_at) AS year,
-                MONTHNAME(created_at) AS month,
-                count(*) AS count
+                MONTHNAME(created_at) AS month
             ')
             ->distinct()
+            ->when($this->parameter('has_count'), function (Builder $builder) {
+                $builder->selectRaw('count(*) AS count');
+            })
             ->published()
+            ->onMainpage()
             ->groupBy('year', 'month')
             ->latest()
-            ->limit($this->parameters['limit'] ?? 12)
+            ->limit($this->parameter('limit'))
             ->get();
     }
 }

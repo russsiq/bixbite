@@ -21,5 +21,13 @@
     @endif
 
     <x-widgets.tags-cloud />
-    <x-widgets.articles-archives />
+
+    <x-widgets.articles-archives :parameters="[
+        'title' => 'Архив записей',
+        {{-- 'is_active' => false, --}}
+        {{-- 'cache_time' => 0, --}}
+        {{-- 'limit' => 12, --}}
+        {{-- 'has_count' => true,  --}}
+
+    ]" />
 </aside>
