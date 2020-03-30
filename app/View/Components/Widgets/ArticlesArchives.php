@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Компонент виджета архива записей.
+ * Компонент виджета `Архив записей`.
  */
 class ArticlesArchives extends WidgetAbstract
 {
@@ -105,9 +105,9 @@ class ArticlesArchives extends WidgetAbstract
      */
     public function months(): Collection
     {
-        // if (empty($this->cacheTime())) {
+        if (empty($this->cacheTime())) {
             return $this->resolveMonths();
-        // }
+        }
 
         return $this->cache->remember(
             $this->cacheKey(),

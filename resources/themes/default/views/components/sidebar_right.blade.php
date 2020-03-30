@@ -33,8 +33,9 @@
     ]" />
 
     <x-widgets.articles-archives :parameters="[
-        'title' => 'Архив записей',
+        {{-- 'title' => 'Архив записей', --}}
         {{-- 'is_active' => false, --}}
+        {{-- 'template' => 'components.widgets.articles-archives', --}}
         {{-- 'cache_time' => 0, --}}
         {{-- 'limit' => 12, --}}
         {{-- 'has_count' => true,  --}}
