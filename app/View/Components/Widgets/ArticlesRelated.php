@@ -80,7 +80,7 @@ class ArticlesRelated extends WidgetAbstract
 
             ],
 
-            // Количество отображаемых месяцев.
+            // Количество отображаемых записей.
             'limit' => [
                 'sometimes',
                 'required',
