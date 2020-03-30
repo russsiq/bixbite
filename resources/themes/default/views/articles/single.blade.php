@@ -52,11 +52,13 @@
 <x-widgets.articles-neighboring />
 
 <x-widgets.articles-related :parameters="[
-    'active' => true,
-    // 'cache_time' => 0,
-    // 'title' => 'Related',
-    // 'limit' => 3,
-    // 'template' => 'widgets.articles_related',
-]"></x-comments-latest-widget>
+    {{-- 'title' => 'Похожие записи', --}}
+    {{-- 'is_active' => false, --}}
+    {{-- 'template' => 'components.widgets.articles-related', --}}
+    {{-- 'cache_time' => 0, --}}
+    {{-- 'limit' => 3, --}}
+    'current_article' => $article,
+
+]" />
 
 @include('comments.area', ['entity' => $article])

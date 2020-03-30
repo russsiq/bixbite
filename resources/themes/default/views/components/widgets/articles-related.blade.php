@@ -2,10 +2,11 @@
 <section class="widget widget_related">
     <div class="widget__inner">
         <div class="widget__header">
+            {{-- Отобразим ссылку на очистку кеша только собственнику сайта. --}}
             @role('owner')
-                {{-- <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel"><i class="fa fa-recycle"></i></a> --}}
+                <a href="{{ $clearCacheUrl }}" class="moder_panel"><i class="fa fa-recycle"></i></a>
             @endrole
-            <h4 class="widget__title">{{ $title }}</h4>
+            <h4 class="widget__title">{{ trans($title) }}</h4>
         </div>
         <div class="widget__body">
             <ul class="widget_related__list">
