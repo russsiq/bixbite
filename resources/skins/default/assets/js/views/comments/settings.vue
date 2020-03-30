@@ -2,7 +2,6 @@
 <form v-if="showedForm" method="post" @submit.prevent="onSubmit" novalidate>
     <ul class="nav nav-tabs">
         <li class="nav-item active"><a href="#pane-main" class="nav-link active" data-toggle="tab">Основные настройки</a></li>
-        <li class="nav-item active"><a href="#pane-widget" class="nav-link" data-toggle="tab">Настройки виджета</a></li>
     </ul>
 
     <br>
@@ -44,50 +43,6 @@
                         </div>
                         <div class="col-sm-5">
                             <input type="checkbox" v-model="form.nested" class="form-control" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="pane-widget" class="tab-pane">
-            <div class="card card-default">
-                <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
-                <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-7">
-                            <label class="control-label">Использовать виджет</label>
-                            <small class="form-text text-muted">Данный виджет выводит несколько последних комментариев.</small>
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="checkbox" v-model="form.widget_used" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-7">
-                            <label class="control-label">Заголовок виджета</label>
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="text" v-model="form.widget_title" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-7">
-                            <label class="control-label">Количество комментариев в виджете</label>
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="number" v-model.number="form.widget_count" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-7">
-                            <label class="control-label">Количество символов в аннотации комментария</label>
-                        </div>
-                        <div class="col-sm-5">
-                            <input type="number" v-model.number="form.widget_content_length" class="form-control" />
                         </div>
                     </div>
                 </div>

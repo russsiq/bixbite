@@ -68,12 +68,6 @@ class SettingsTableSeeder extends Seeder
         // display
         array_push($out, array_merge($def, ['name' => 'nested', 'value' => true, 'type' => 'boolean', ]));
 
-        // widget
-        array_push($out, array_merge($def, ['name' => 'widget_used', 'value' => true, 'type' => 'boolean', ]));
-        array_push($out, array_merge($def, ['name' => 'widget_title', 'value' => trans('comments.widget_title'), ]));
-        array_push($out, array_merge($def, ['name' => 'widget_count', 'value' => 8, 'type' => 'integer', ]));
-        array_push($out, array_merge($def, ['name' => 'widget_content_length', 'value' => 150, 'type' => 'integer', ]));
-
         return $out;
     }
 
