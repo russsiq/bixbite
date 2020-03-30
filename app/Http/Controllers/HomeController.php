@@ -40,7 +40,7 @@ class HomeController extends SiteController
 
         ]);
 
-        if ($this->settings->homepage_personalized) {
+        if ($this->settings->homepage_personalized ?? true) {
             return $this->makeResponse('index');
         }
 
