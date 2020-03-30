@@ -186,7 +186,7 @@ abstract class WidgetAbstract extends Component
      */
     protected function setParameter(string $key, $value)
     {
-        $this->parameters[$key] = $value;
+        $this->parameters[$key] = value($value);
 
         return $this;
     }
