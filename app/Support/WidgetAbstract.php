@@ -122,9 +122,11 @@ abstract class WidgetAbstract extends Component
 
     /**
      * Получить ключ кеша.
+     * Дополнительные параметры используются в виджете `Соседние записи`.
+     * @param  array  $advanced  Дополнительные параметры для кеширования ключа.
      * @return string
      */
-    protected function cacheKey(): string
+    protected function cacheKey(array $advanced = []): string
     {
         return md5(serialize(array_merge([
             'widget' => get_class($this),
@@ -132,7 +134,7 @@ abstract class WidgetAbstract extends Component
             // 'app_locale' => app_locale(),
             // 'role' => $role,
 
-        ], $this->parameters)));
+        ], $this->parameters, $advanced)));
     }
 
     /**
