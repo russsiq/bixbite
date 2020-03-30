@@ -36,7 +36,7 @@ class XFieldObserver extends BaseObserver
             $column = $xField->name
         );
 
-        Schema::table($table, function (Blueprint $table) use ($xField) {
+        Schema::table($table, function (Blueprint $table) use ($xField, $column) {
             if ('array' === $xField->type) {
                 $table->string($column)->after('id')->nullable();
             } else {
