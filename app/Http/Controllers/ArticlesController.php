@@ -64,6 +64,7 @@ class ArticlesController extends SiteController
         ]);
 
         $articles = $this->model->shortArticle()
+            ->published()
             ->when($filters, function(Builder $query, $filters) {
                 $query->filter($filters);
             })
@@ -93,6 +94,7 @@ class ArticlesController extends SiteController
     public function category(Category $category): Renderable
     {
         $articles = $category->articles()->shortArticle()
+            ->published()
             ->orderBy('is_catpinned', 'desc')
             ->orderBy($category->order_by ?? $this->settings->order_by ?? 'id', $category->direction)
             ->paginate($category->paginate ?? $this->settings->paginate ?? 8);
@@ -124,6 +126,7 @@ class ArticlesController extends SiteController
     public function tag(Tag $tag): Renderable
     {
         $articles = $tag->articles()->shortArticle()
+            ->published()
             ->orderBy($this->settings->order_by ?? 'id', $this->settings->direction ?? 'desc')
             ->paginate($this->settings->paginate ?? 8);
 
@@ -154,6 +157,7 @@ class ArticlesController extends SiteController
 
         $articles = $query
             ? $this->model->shortArticle()
+                ->published()
                 ->search($query)
                 ->paginate($this->settings->paginate ?? 8)
                 ->appends(compact('query'))

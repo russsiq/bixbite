@@ -130,6 +130,7 @@ class ArticlesRelated extends WidgetAbstract
         $article = $this->parameter('current_article');
 
         return Article::shortArticle()
+            ->published()
             ->where('articles.id', '<>', $article->id)
             ->search(teaser($article->title . ' ' . $article->content, 255, ''))
             ->limit($this->parameter('limit'))

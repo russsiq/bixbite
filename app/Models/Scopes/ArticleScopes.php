@@ -157,7 +157,6 @@ trait ArticleScopes
             ->withCount([
                 'comments',
 
-            ])
-            ->published();
+            ]);
     }
 }
