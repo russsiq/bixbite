@@ -1,6 +1,6 @@
 <aside class="sidebar sidebar-right" itemscope itemtype="http://schema.org/WPSideBar">
     <x-widgets.articles-featured :parameters="[
-        'active' => true,
+        'is_active' => true,
         'limit' => 5,
         // 'cache_time' => 0,
         // 'sub_day' => 1,
