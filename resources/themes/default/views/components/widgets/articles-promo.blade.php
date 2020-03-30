@@ -1,5 +1,6 @@
+{{-- Отобразим ссылку на очистку кеша только собственнику сайта. --}}
 @role('owner')
-    {{-- <a href="{{ route('system_care.clearcache', ['key' => $widget->cache_key]) }}" class="moder_panel"><i class="fa fa-recycle"></i></a> --}}
+    <a href="{{ $clearCacheUrl }}" class="moder_panel"><i class="fa fa-recycle"></i></a>
 @endrole
 
 <div class="col-lg-6">
