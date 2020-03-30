@@ -4,66 +4,111 @@ namespace App\View\Components\Widgets;
 
 // Сторонние зависимости.
 use App\Models\Comment;
-use Illuminate\Contracts\Support\Renderable;
+use App\Support\WidgetAbstract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\View\Component;
 
 /**
- * Компонент виджета последних комментариев.
+ * Компонент виджета `Обсуждения`.
  */
-class CommentsLatest extends Component
+class CommentsLatest extends WidgetAbstract
 {
     /**
-     * Заголовок виджета.
-     * @var string
+     * Входящие параметры виджета.
+     * @var array
      */
-    public $title;
+    protected $parameters = [
+        // Заголовок виджета.
+        'title' => 'Latest Comments',
+
+        // Активность виджета.
+        'is_active' => true,
+
+        // Шаблон виджета.
+        'template' => 'components.widgets.comments-latest',
+
+        // Время кэширования виджета в секундах.
+        // По умолчанию раз в 15 минут.
+        'cache_time' => 60 * 15,
+
+        // Количество отображаемых месяцев.
+        'limit' => 8,
+
+        // Длина комментария.
+        'content_length' => 150,
+
+        // Извлекать комментарии только с указанным отношением.
+        'relation' => 'articles',
+
+    ];
 
     /**
-     * Активность виджета.
-     * @var boolean
+     * Получить массив правил валидации,
+     * которые будут применены к входящим параметрам.
+     * @return array
      */
-    public $isActive = false;
-
-    /**
-     * Шаблон виджета.
-     * @var string
-     */
-    public $template = 'components.widgets.comments-latest';
-
-    /**
-     * Время кэширования виджета в секундах.
-     * По умолчанию раз в 15 минут.
-     * @var int
-     */
-    public $cacheTime = 60 * 15;
-
-    /**
-     * Создать экземпляр компонента.
-     */
-    public function __construct(
-        array $parameters = []
-    ) {
-        $this->configure($parameters);
-    }
-
-    /**
-     * Конфигурирование компонента.
-     * @param  array  $parameters
-     * @return void
-     */
-    protected function configure(array $parameters): void
+    protected function rules(): array
     {
+        return [
+            // Заголовок виджета.
+            'title' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^[\w\s\.-_]+$/u',
 
-    }
+            ],
 
-    /**
-     * Получить шаблон / содержимое, представляющее компонент.
-     * @return Renderable
-     */
-    public function render(): Renderable
-    {
-        return view($this->template);
+            // Активность виджета.
+            'is_active' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
+            // Шаблон виджета.
+            'template' => [
+                'sometimes',
+                'required',
+                'string',
+
+            ],
+
+            // Время кэширования виджета в секундах.
+            'cache_time' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Количество отображаемых месяцев.
+            'limit' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Длина комментария.
+            'content_length' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Извлекать комментарии только с указанным отношением.
+            'relation' => [
+                'sometimes',
+                'required',
+                'string',
+                'in:articles,profiles',
+
+            ],
+
+        ];
     }
 
     /**
@@ -72,11 +117,31 @@ class CommentsLatest extends Component
      */
     public function comments(): Collection
     {
+        if (empty($this->cacheTime())) {
+            return $this->resolveComments();
+        }
+
+        return $this->cache->remember(
+            $this->cacheKey(),
+            $this->cacheTime(),
+            function () {
+                return $this->resolveComments();
+            }
+        );
+    }
+
+    /**
+     * Извлечь коллекцию комментариев из хранилища.
+     * @return Collection
+     */
+    protected function resolveComments(): Collection
+    {
         return Comment::with([
                 'user:users.id,users.name,users.email,users.avatar',
                 'article:articles.id,articles.title,articles.slug,articles.state',
+
             ])
-            ->where('commentable_type', 'articles')
+            ->where('commentable_type', $this->parameter('relation'))
             ->where('is_approved', true)
             ->latest()
             ->limit(8)

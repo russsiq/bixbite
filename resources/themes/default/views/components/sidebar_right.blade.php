@@ -13,12 +13,16 @@
 
     ]" />
 
-    @if (setting('comments.widget_used', true))
-        <x-widgets.comments-latest :parameters="[
-            {{-- 'cache_time' => 0, --}}
+    <x-widgets.comments-latest :parameters="[
+        {{-- 'title' => 'Обсуждения', --}}
+        {{-- 'is_active' => false, --}}
+        {{-- 'template' => 'components.widgets.comments-latest', --}}
+        {{-- 'cache_time' => 0, --}}
+        {{-- 'limit' => 8, --}}
+        {{-- 'content_length' => 150, --}}
+        {{-- 'relation' => 'articles', --}}
 
-        ]" />
-    @endif
+    ]" />
 
     <x-widgets.tags-cloud :parameters="[
         {{-- 'title' => 'Облако меток', --}}
