@@ -88,7 +88,7 @@ trait ArticleScopes
     }
 
     /**
-     * Диапазон только опубикованных записей.
+     * Диапазон записей только опубликованных.
      * @param  Builder  $builder
      * @return void
      */
