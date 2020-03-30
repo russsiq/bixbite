@@ -10,11 +10,13 @@
         // 'user_id' => [1,2],
         // 'categories' => [1,3,4],
         // 'tags' => ['бизнес','политика'],
+
     ]" />
 
     @if (setting('comments.widget_used', true))
         <x-widgets.comments-latest :parameters="[
             // 'cache_time' => 0,
+
         ]" />
     @endif
 
