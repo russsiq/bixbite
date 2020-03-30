@@ -20,7 +20,17 @@
         ]" />
     @endif
 
-    <x-widgets.tags-cloud />
+    <x-widgets.tags-cloud :parameters="[
+        {{-- 'title' => 'Облако меток', --}}
+        {{-- 'is_active' => false, --}}
+        {{-- 'template' => 'components.widgets.tags-cloud', --}}
+        {{-- 'cache_time' => 0, --}}
+        {{-- 'limit' => 8, --}}
+        {{-- 'relation' => 'articles', --}}
+        {{-- 'order_by' => 'articles_count', --}}
+        {{-- 'direction' => 'desc', --}}
+
+    ]" />
 
     <x-widgets.articles-archives :parameters="[
         'title' => 'Архив записей',

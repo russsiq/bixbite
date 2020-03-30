@@ -4,65 +4,124 @@ namespace App\View\Components\Widgets;
 
 // Сторонние зависимости.
 use App\Models\Tag;
-use Illuminate\Contracts\Support\Renderable;
+use App\Support\WidgetAbstract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\View\Component;
 
 /**
- * Компонент виджета облака тегов.
+ * Компонент виджета `Облако тегов`.
  */
-class TagsCloud extends Component
+class TagsCloud extends WidgetAbstract
 {
     /**
-     * Заголовок виджета.
-     * @var string
+     * Входящие параметры виджета.
+     * @var array
      */
-    public $title;
+    protected $parameters = [
+        // Заголовок виджета.
+        'title' => 'Tags Cloud',
+
+        // Активность виджета.
+        'is_active' => true,
+
+        // Шаблон виджета.
+        'template' => 'components.widgets.tags-cloud',
+
+        // Время кэширования виджета в секундах.
+        // По умолчанию раз в неделю.
+        'cache_time' => 60 * 60 * 24 * 7,
+
+        // Количество отображаемых месяцев.
+        'limit' => 8,
+
+        // Извлекать теги только с указанным отношением.
+        'relation' => 'articles',
+
+        // Сортировка тегов.
+        'order_by' => 'articles_count',
+
+        // Порядок сортировки.
+        'direction' => 'desc',
+
+    ];
 
     /**
-     * Активность виджета.
-     * @var boolean
+     * Получить массив правил валидации,
+     * которые будут применены к входящим параметрам.
+     * @return array
      */
-    public $isActive = false;
-
-    /**
-     * Шаблон виджета.
-     * @var string
-     */
-    public $template = 'components.widgets.tags-cloud';
-
-    /**
-     * Время кэширования виджета.
-     * @var int
-     */
-    public $cacheTime = 60 * 60 * 24;
-
-    /**
-     * Создать экземпляр компонента.
-     */
-    public function __construct(
-        array $parameters = []
-    ) {
-        $this->configure($parameters);
-    }
-
-    /**
-     * Конфигурирование компонента.
-     * @param  array  $parameters
-     * @return void
-     */
-    protected function configure(array $parameters): void
+    protected function rules(): array
     {
+        return [
+            // Заголовок виджета.
+            'title' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^[\w\s\.-_]+$/u',
 
-    }
+            ],
 
-    /**
-     * Получить шаблон / содержимое, представляющее компонент.
-     * @return Renderable
-     */
-    public function render(): Renderable
-    {
-        return view($this->template);
+            // Активность виджета.
+            'is_active' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
+            // Шаблон виджета.
+            'template' => [
+                'sometimes',
+                'required',
+                'string',
+
+            ],
+
+            // Время кэширования виджета в секундах.
+            'cache_time' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Количество отображаемых месяцев.
+            'limit' => [
+                'sometimes',
+                'required',
+                'integer',
+
+            ],
+
+            // Извлекать теги только с указанным отношением.
+            'relation' => [
+                'sometimes',
+                'required',
+                'string',
+                'in:articles,profiles',
+
+            ],
+
+            // Сортировка тегов.
+            'order_by' => [
+                'sometimes',
+                'required',
+                'string',
+                'in:id,title,created_at,updated_at,articles_count,profiles_count',
+
+            ],
+
+            // Порядок сортировки.
+            'direction' => [
+                'sometimes',
+                'required',
+                'string',
+                'in:desc,asc',
+
+            ],
+
+        ];
     }
 
     /**
@@ -71,14 +130,36 @@ class TagsCloud extends Component
      */
     public function tags(): Collection
     {
+        if (empty($this->cacheTime())) {
+            return $this->resolveTags();
+        }
+
+        return $this->cache->remember(
+            $this->cacheKey(),
+            $this->cacheTime(),
+            function () {
+                return $this->resolveTags();
+            }
+        );
+    }
+
+    /**
+     * Извлечь коллекцию тегов из хранилища.
+     * @return Collection
+     */
+    protected function resolveTags(): Collection
+    {
+        $relation = $this->parameter('relation');
+
         return Tag::select([
                 'tags.id',
                 'tags.title',
+
             ])
-            ->withCount('articles')
-            ->whereHas('articles')
-            ->orderBy('articles_count', 'desc')
-            ->limit(8)
+            ->withCount($relation)
+            ->whereHas($relation)
+            ->orderBy($this->parameter('order_by'), $this->parameter('direction'))
+            ->limit($this->parameter('limit'))
             ->get();
     }
 }
