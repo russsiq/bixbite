@@ -97,7 +97,7 @@ abstract class WidgetAbstract extends Component
      */
     public function render(): ?Renderable
     {
-        if (! $this->parameter('isActive')) {
+        if (! $this->parameter('is_active')) {
             return null;
         }
 
@@ -135,7 +135,7 @@ abstract class WidgetAbstract extends Component
      */
     protected function cacheTime(): int
     {
-        return $this->parameter('cacheTime');
+        return $this->parameter('cache_time');
     }
 
     /**
