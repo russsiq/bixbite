@@ -15,6 +15,6 @@ class Store extends ArticleRequest
 
         ]);
 
-        return parent::prepareForValidation();
+        parent::prepareForValidation();
     }
 }
