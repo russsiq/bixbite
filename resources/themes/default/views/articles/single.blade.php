@@ -49,7 +49,14 @@
     </div>
 </article>
 
-<x-widgets.articles-neighboring />
+<x-widgets.articles-neighboring :parameters="[
+    {{-- 'title' => 'Соседние записи', --}}
+    {{-- 'is_active' => false, --}}
+    {{-- 'template' => 'components.widgets.articles-related', --}}
+    {{-- 'cache_time' => 0, --}}
+    'current_article' => $article,
+
+]" />
 
 <x-widgets.articles-related :parameters="[
     {{-- 'title' => 'Похожие записи', --}}
