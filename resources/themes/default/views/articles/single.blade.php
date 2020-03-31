@@ -64,6 +64,7 @@
     {{-- 'template' => 'components.widgets.articles-related', --}}
     {{-- 'cache_time' => 0, --}}
     {{-- 'limit' => 3, --}}
+    {{-- 'is_same_categories' => false, --}}
     'current_article' => $article,
 
 ]" />

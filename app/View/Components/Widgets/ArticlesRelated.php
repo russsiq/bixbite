@@ -37,6 +37,9 @@ class ArticlesRelated extends WidgetAbstract
         // Текущая запись.
         'current_article' => null,
 
+        // Учитывать категории текущей записи.
+        'is_same_categories' => false,
+
     ];
 
     /**
@@ -99,6 +102,14 @@ class ArticlesRelated extends WidgetAbstract
 
             ],
 
+            // Учитывать категории текущей записи.
+            'is_same_categories' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
         ];
     }
 
@@ -131,6 +142,11 @@ class ArticlesRelated extends WidgetAbstract
 
         return Article::shortArticle()
             ->published()
+            ->when($this->parameter('is_same_categories'), function (Builder $builder) use ($article) {
+                $builder->whereHas('categories', function (Builder $builder) use ($article) {
+                    $builder->whereIn('categories.id', $article->categories->pluck('id')->toArray());
+                });
+            })
             ->where('articles.id', '<>', $article->id)
             ->search(teaser($article->title . ' ' . $article->teaser, 255, ''))
             ->limit($this->parameter('limit'))
