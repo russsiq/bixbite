@@ -128,13 +128,15 @@ abstract class WidgetAbstract extends Component
      */
     protected function cacheKey(array $advanced = []): string
     {
-        return md5(serialize(array_merge([
-            'widget' => get_class($this),
-            // 'app_theme' => app_theme(),
-            // 'app_locale' => app_locale(),
-            // 'role' => $role,
+        return md5(serialize(array_merge(
+            $this->parameters, [
+                'widget' => get_class($this),
+                // 'app_theme' => app_theme(),
+                // 'app_locale' => app_locale(),
+                // 'role' => $role,
 
-        ], $this->parameters, $advanced)));
+            ], $advanced
+        )));
     }
 
     /**
