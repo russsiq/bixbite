@@ -34,6 +34,9 @@ class ArticlesNeighboring extends WidgetAbstract
         // Текущая запись.
         'current_article' => null,
 
+        // Учитывать категории текущей записи.
+        'is_same_categories' => false,
+
     ];
 
     /**
@@ -88,6 +91,14 @@ class ArticlesNeighboring extends WidgetAbstract
 
             ],
 
+            // Учитывать категории текущей записи.
+            'is_same_categories' => [
+                'sometimes',
+                'required',
+                'boolean',
+
+            ],
+
         ];
     }
 
@@ -130,6 +141,11 @@ class ArticlesNeighboring extends WidgetAbstract
 
             ])
             ->published()
+            ->when($this->parameter('is_same_categories'), function (Builder $builder) use ($article) {
+                $builder->whereHas('categories', function (Builder $builder) use ($article) {
+                    $builder->whereIn('categories.id', $article->categories->pluck('id')->toArray());
+                });
+            })
             ->where('articles.id', '<', $article->id)
             ->orderBy('articles.id', 'desc')
             ->limit(1)
@@ -176,6 +192,11 @@ class ArticlesNeighboring extends WidgetAbstract
 
             ])
             ->published()
+            ->when($this->parameter('is_same_categories'), function (Builder $builder) use ($article) {
+                $builder->whereHas('categories', function (Builder $builder) use ($article) {
+                    $builder->whereIn('categories.id', $article->categories->pluck('id')->toArray());
+                });
+            })
             ->where('articles.id', '>', $article->id)
             ->orderBy('articles.id', 'asc')
             ->limit(1)
