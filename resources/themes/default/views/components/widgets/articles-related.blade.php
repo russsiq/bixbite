@@ -1,4 +1,4 @@
-@isset($articles)
+@if($articles->isNotEmpty())
 <section class="widget widget_related">
     <div class="widget__inner">
         <div class="widget__header">
