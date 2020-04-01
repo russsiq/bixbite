@@ -7,8 +7,7 @@ use Illuminate\Database\Seeder;
 class CommentsTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
+     * Запустить наполнение базы данных.
      * @return void
      */
     public function run()

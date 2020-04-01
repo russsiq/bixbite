@@ -9,8 +9,7 @@ use Illuminate\Support\Arr;
 class CategoryablesTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
+     * Запустить наполнение базы данных.
      * @return void
      */
     public function run()

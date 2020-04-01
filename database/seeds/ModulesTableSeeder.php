@@ -5,8 +5,7 @@ use Illuminate\Database\Seeder;
 class ModulesTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
+     * Запустить наполнение базы данных.
      * @return void
      */
     public function run()
