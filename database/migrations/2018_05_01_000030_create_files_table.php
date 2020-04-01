@@ -7,8 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateFilesTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Запустить миграции.
      * @return void
      */
     public function up()
@@ -84,8 +83,7 @@ class CreateFilesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
+     * Обратить миграции.
      * @return void
      */
     public function down()

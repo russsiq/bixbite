@@ -10,8 +10,7 @@ class CreateArticlesTable extends Migration
     // Schema::disableForeignKeyConstraints();
 
     /**
-     * Run the migrations.
-     *
+     * Запустить миграции.
      * @return void
      */
     public function up()
@@ -67,8 +66,7 @@ class CreateArticlesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
+     * Обратить миграции.
      * @return void
      */
     public function down()

@@ -7,14 +7,13 @@ use Illuminate\Database\Migrations\Migration;
 class CreatePasswordResetsTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Запустить миграции.
      * @return void
      */
     public function up()
     {
         Schema::create('password_resets', function (Blueprint $table) {
-            
+
             $table->string('email', 100)->index();
             $table->string('token');
 
@@ -23,8 +22,7 @@ class CreatePasswordResetsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
+     * Обратить миграции.
      * @return void
      */
     public function down()

@@ -7,8 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateNotesTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Запустить миграции.
      * @return void
      */
     public function up()
@@ -32,8 +31,7 @@ class CreateNotesTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
+     * Обратить миграции.
      * @return void
      */
     public function down()

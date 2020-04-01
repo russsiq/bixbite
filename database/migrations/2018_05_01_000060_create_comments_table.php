@@ -7,8 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateCommentsTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Запустить миграции.
      * @return void
      */
     public function up()
@@ -45,8 +44,7 @@ class CreateCommentsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
+     * Обратить миграции.
      * @return void
      */
     public function down()
