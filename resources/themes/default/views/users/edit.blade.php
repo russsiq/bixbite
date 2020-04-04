@@ -50,7 +50,7 @@
     		<div class="form-group row{{ $errors->has('avatar') ? ' has-error' : '' }}">
     			<label for="avatar" class="col-sm-4">@lang('users.avatar')</label>
     			<div class="col-sm-6">
-    				@if (optional($user)->getOriginal('avatar'))
+    				@if (optional($user)->getRawOriginal('avatar'))
     					<br><img src="{{ $user->avatar }}" alt="avatar_{{ $user->id }}" />
     					<label class="form-text text-muted"><input type="checkbox" name="delete_avatar" value="1" /> @lang('users.delete_avatar')</label>
     				@endif
