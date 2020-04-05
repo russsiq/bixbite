@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -177,10 +178,12 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить целевую страницу сайта.
-     * @param  Request  $request
-     * @return Renderable
+     * @param  string  $category_slug
+     * @param  int  $article_id
+     * @param  string  $article_slug
+     * @return RedirectResponse|Renderable
      */
-    public function article(string $category_slug, int $article_id, string $article_slug): Renderable
+    public function article(string $category_slug, int $article_id, string $article_slug)
     {
         $article = $this->model->cachedFullArticleWithRelation($article_id);
 
