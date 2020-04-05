@@ -54,4 +54,17 @@ class ResetPasswordController extends SiteController
 
         ]);
     }
+
+    /**
+     * Set the user's password.
+     *
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  string  $password
+     * @return void
+     */
+    protected function setUserPassword($user, $password)
+    {
+        // В модели уже определен мутатор для данного атрибута.
+        $user->password = $password;
+    }
 }
