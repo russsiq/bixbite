@@ -67,6 +67,12 @@ abstract class BaseController
     ];
 
     /**
+     * Массив дат с информацией о последних измененных данных сайта.
+     * @var array
+     */
+    protected static $lastmods = [];
+
+    /**
      * Создать новый экземпляр генератора ленты.
      * @param  CacheFactoryContract  $cache
      */
