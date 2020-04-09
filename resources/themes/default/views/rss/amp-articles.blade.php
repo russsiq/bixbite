@@ -30,7 +30,7 @@
                             <a href="http://example.com/page2.html">Пункт меню 2</a>
                         </menu> --}}
                     </header>
-                    {!! $article->content !!}
+                    {!! strip_tags($article->content, '<p><br><figure><img><iframe><ul><ol><li><abbr><a><b><i><u><sup><sub><small><pre></pre>') !!}
                 ]]>
             </turbo:content>
         </item>
