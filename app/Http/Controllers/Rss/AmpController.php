@@ -52,11 +52,19 @@ class AmpController extends BaseController
      */
     protected function lastmod(): ?Carbon
     {
-        return Article::without('categories')
-            ->select('articles.updated_at')
+        $key = $this->cacheKey();
+
+        if (array_key_exists($key, self::$lastmods)) {
+            return self::$lastmods[$key];
+        }
+
+        $date = Article::without('categories')
+            ->selectRaw('GREATEST(created_at, updated_at) as lastmod')
             ->published()
-            ->latest('articles.updated_at')
-            ->value('updated_at');
+            ->latest('lastmod')
+            ->value('lastmod');
+
+        return self::$lastmods[$key] = $date ? Carbon::parse($date) : null;
     }
 
     /**

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Rss;
 
+// Базовые расширения PHP.
+use Closure;
+
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Category;
@@ -34,16 +37,16 @@ class SitemapController extends BaseController
     protected $data = [];
 
     /**
-     * Последняя добавленная / измененная запись сайта.
-     * @var Article|null
+     * Дата последнего изменения записей на сайте.
+     * @var Carbon
      */
-    protected $latestArticle;
+    protected static $articlesLastmod;
 
     /**
-     * Последняя добавленная / измененная категория сайта.
-     * @var Category|null
+     * Дата последнего изменения категорий на сайте.
+     * @var Carbon
      */
-    protected $latestCategory;
+    protected static $categoriesLastmod;
 
     /**
      * Основная карта сайта, содержащая ссылки на остальные карты.
@@ -54,8 +57,8 @@ class SitemapController extends BaseController
         $this->sitemap = __FUNCTION__;
 
         $this->data = [
-            'article' => $this->latestArticle(),
-            'category' => $this->latestCategory(),
+            'articlesLastmod' => $this->articlesLastmod(),
+            'categoriesLastmod' => $this->categoriesLastmod(),
 
         ];
 
@@ -138,9 +141,15 @@ class SitemapController extends BaseController
      */
     protected function lastmod(): ?Carbon
     {
-        return max([
-            $this->latestArticle()->updated_at,
-            $this->latestCategory()->updated_at
+        $key = $this->cacheKey();
+
+        if (isset(self::$lastmods[$key])) {
+            return self::$lastmods[$key];
+        }
+
+        return self::$lastmods[$key] = max([
+            $this->articlesLastmod(),
+            $this->categoriesLastmod()
         ]);
     }
 
@@ -150,7 +159,13 @@ class SitemapController extends BaseController
      */
     protected function view(): Renderable
     {
-        return view($this->template(), $this->data());
+        $data = $this->data();
+
+        foreach ($data as $key => $value) {
+            $data[$key] = value($value);
+        }
+
+        return view($this->template(), $data);
     }
 
     /**
@@ -172,55 +187,54 @@ class SitemapController extends BaseController
     }
 
     /**
-     * Получить последнюю запись сайта или создать новую.
-     * @return Article
+     * Получить дату последнего изменения записей на сайте.
+     * @return Carbon|null
      */
-    protected function latestArticle(): Article
+    protected function articlesLastmod(): ?Carbon
     {
-        return $this->latestArticle
-            ?? $this->latestArticle = Article::without('categories')
-                ->select([
-                    'articles.id',
-                    'articles.created_at',
-                    'articles.updated_at',
+        $key = 'articles';
 
-                ])
-                ->published()
-                ->latest('updated_at')
-                ->firstOrNew([], [
-                    'updated_at' => now(),
+        if (array_key_exists($key, self::$lastmods)) {
+            return self::$lastmods[$key];
+        }
 
-                ]);
+        $date = Article::without('categories')
+            ->selectRaw('GREATEST(created_at, updated_at) as lastmod')
+            ->published()
+            ->latest('lastmod')
+            ->value('lastmod');
+
+        return self::$lastmods[$key] = $date ? Carbon::parse($date) : null;
     }
 
     /**
-     * Получить последнюю категорию сайта или создать новую.
-     * @return Category
+     * Получить дату последнего изменения категорий на сайте.
+     * @return Carbon|null
      */
-    protected function latestCategory(): Category
+    protected function categoriesLastmod(): ?Carbon
     {
-        return $this->latestCategory
-            ?? $this->latestCategory = Category::select([
-                'categories.id',
-                'categories.created_at',
-                'categories.updated_at',
+        $key = 'categories';
 
-            ])
+        if (array_key_exists($key, self::$lastmods)) {
+            return self::$lastmods[$key];
+        }
+
+        $date = Category::query()
+            ->selectRaw('GREATEST(created_at, updated_at) as lastmod')
             ->excludeExternal()
-            ->latest('updated_at')
-            ->first()
-            ->firstOrNew([], [
-                'updated_at' => now(),
+            ->latest('lastmod')
+            ->value('lastmod');
 
-            ]);
+        return self::$lastmods[$key] = $date ? Carbon::parse($date) : null;
     }
 
     /**
      * Извлечь все записи из базы данных.
-     * @return EloquentCollection
+     * @return Closure
      */
-    protected function resolveArticles(): EloquentCollection
+    protected function resolveArticles(): Closure
     {
+        return function() {
         return Article::select([
                 'articles.id',
                 'articles.image_id',
@@ -251,14 +265,16 @@ class SitemapController extends BaseController
             ->published()
             ->latest('updated_at')
             ->get();
+        };
     }
 
     /**
      * Извлечь все категории из базы данных.
-     * @return EloquentCollection
+     * @return Closure
      */
-    protected function resolveCategories(): EloquentCollection
+    protected function resolveCategories(): Closure
     {
+        return function() {
         return Category::select([
                 'categories.id',
                 'categories.slug',
@@ -288,5 +304,6 @@ class SitemapController extends BaseController
             ])
             ->excludeExternal()
             ->get();
+        };
     }
 }
