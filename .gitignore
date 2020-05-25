@@ -12,6 +12,7 @@ npm-debug.log
 package-lock.json
 yarn-error.log
 .env
+.phpunit.result.cache
 
 !/vendor/.htaccess
 !/storage/app/uploads/avatars/noavatar.png
