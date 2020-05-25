@@ -59,6 +59,8 @@
         }
     },
     "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-win7": "vendor\\bin\\phpunit",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --no-ansi"
