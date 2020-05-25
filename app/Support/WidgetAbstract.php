@@ -76,7 +76,7 @@ abstract class WidgetAbstract extends Component
      */
     public function title(): string
     {
-        return $this->parameter('title');
+        return trans($this->parameter('title'));
     }
 
     /**

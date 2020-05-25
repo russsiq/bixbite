@@ -5,7 +5,7 @@
             @role('owner')
                 <a href="{{ $clearCacheUrl }}" class="moder_panel"><i class="fa fa-recycle"></i></a>
             @endrole
-            <h4 class="widget__title">{{ trans($title) }}</h4>
+            <h4 class="widget__title">{{ $title }}</h4>
         </div>
         <div class="widget__body">
             <ul class="widget__list">

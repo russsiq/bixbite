@@ -8,14 +8,14 @@
             {{-- <h4 class="widget__title">{{ trans($title) }}</h4> --}}
             <ul class="widget__list widget_neighboring__list">
                 <li class="widget_neighboring__item">
-                    @isset($previous)
+                    @if($previous = $previous())
                         <a href="{{ $previous->url }}" class="widget_neighboring__item-prev" rel="prev">←&nbsp;{{ $previous->title }}</a>
-                    @endisset
+                    @endif
                 </li>
                 <li class="widget_neighboring__item">
-                    @isset($next)
+                    @if($next = $next())
                         <a href="{{ $next->url }}" class="widget_neighboring__item-next" rel="next">{{ $next->title }}&nbsp;→</a>
-                    @endisset
+                    @endif
                 </li>
             </ul>
         </div>
