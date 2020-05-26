@@ -37,7 +37,7 @@ class CreateModulesTable extends Migration
     public function down()
     {
         Schema::table('modules', function(Blueprint $table) {
-            $table->dropIndex(['name']);
+            $table->dropUnique(['name']);
         });
         Schema::dropIfExists('modules');
     }
