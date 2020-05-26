@@ -2,6 +2,8 @@
 
 namespace App\Models\Mutators;
 
+use Illuminate\Support\Facades\App;
+
 trait UserMutators
 {
     public function getProfileAttribute()
@@ -30,9 +32,19 @@ trait UserMutators
     }
 
     // Role is guarded, but F12 and final. Remember about safety.
-    public function setRoleAttribute($value)
+    public function setRoleAttribute($role)
     {
-        $this->attributes['role'] = ('owner' == user('role')) ? $value : 'user';
+        // Если сайт на эксплуатации.
+        if (App::environment('production')) {
+            // И кто-то кроме собственника сайта
+            // пытается изменить группу пользователя.
+            if ('owner' !== user('role')) {
+                // Сбрасываем ему группу до рядового пользователя.
+                $role = 'user';
+            }
+        }
+
+        $this->attributes['role'] = $role;
     }
 
     public function setPasswordAttribute($value)
