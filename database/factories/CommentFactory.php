@@ -26,7 +26,8 @@ $factory->define(Comment::class, function (Faker $faker) {
         ->format('Y-m-d H:i:s');
 
     return [
-        'user_id' => $user->id,
+        // Если нет пользователей, то создадим нового.
+        'user_id' => $user->id ?? factory(User::class),
         'commentable_type' => 'articles',
         'commentable_id' => $article->id,
         'content' => $faker->paragraph(mt_rand(1, 4)),

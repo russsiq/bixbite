@@ -27,3 +27,19 @@ $factory->define(User::class, function (Faker $faker) {
 
     ];
 });
+
+$factory->state(User::class, 'owner', [
+    'role' => 'owner',
+]);
+
+$factory->state(User::class, 'admin', [
+    'role' => 'admin',
+]);
+
+$factory->state(User::class, 'moder', [
+    'role' => 'moder',
+]);
+
+$factory->state(User::class, 'user', [
+    'role' => 'user',
+]);

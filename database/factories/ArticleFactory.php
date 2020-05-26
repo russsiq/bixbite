@@ -33,7 +33,8 @@ $factory->define(Article::class, function (Faker $faker) {
         'slug' => Str::slug($title),
         'teaser' => $faker->text(mt_rand(120, 255)),
         'content' => $content,
-        'user_id' => $user->id,
+        // Если нет пользователей, то создадим нового.
+        'user_id' => $user->id ?? factory(User::class),
         // 'img' => $images[Arr::random($images)],
         'state' => $faker->randomElement([
             'published',
