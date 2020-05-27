@@ -116,6 +116,19 @@ abstract class WidgetAbstract extends Component
     }
 
     /**
+     * Отключить кэш виджета.
+     * @return self
+     */
+    public function disableCache(): self
+    {
+        array_push($this->except, [
+            __METHOD__,
+        ]);
+
+        return $this->setParameter('cache_time', 0);
+    }
+
+    /**
      * Получить экземпляр репозитория кеша.
      * @param  CacheFactoryContract  $factory
      * @return Repository
