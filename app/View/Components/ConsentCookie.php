@@ -50,14 +50,10 @@ class ConsentCookie extends Component
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return Renderable|null
+     * @return Renderable
      */
-    public function render(): ?Renderable
+    public function render(): Renderable
     {
-        if ($this->isAlreadyAccepted()) {
-            return null;
-        }
-
         return view($this->template);
     }
 
@@ -68,5 +64,15 @@ class ConsentCookie extends Component
     protected function isAlreadyAccepted(): bool
     {
         return self::ACCEPTED_VALUE === $this->cookies->get(self::ACCEPTED_NAME);
+    }
+
+    /**
+     * Переопределяемый родительский метод,
+     * указывающий, что компонент должен быть скомпилирован.
+     * @return bool
+     */
+    public function shouldRender(): bool
+    {
+        return ! $this->isAlreadyAccepted();
     }
 }
