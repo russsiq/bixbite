@@ -93,20 +93,26 @@ abstract class WidgetAbstract extends Component
 
     /**
      * Получить шаблон / содержимое, представляющее компонент.
-     * @return Renderable|null
+     * @return Renderable
      */
-    public function render(): ?Renderable
+    public function render(): Renderable
     {
-        if (! $this->parameter('is_active')) {
-            return null;
-        }
-
         if ($this->validator->fails()) {
             return view(self::ERROR_TEMPLATE)
                 ->withErrors($this->validator);
         }
 
         return view($this->parameter('template'));
+    }
+
+    /**
+     * Переопределяемый родительский метод,
+     * указывающий, что компонент должен быть скомпилирован.
+     * @return bool
+     */
+    public function shouldRender(): bool
+    {
+        return $this->parameter('is_active');
     }
 
     /**
