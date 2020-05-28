@@ -141,6 +141,88 @@ class ArticlesControllerTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers ::store
+     *
+     * Ошибка аутентификации при создании записи гостем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileGuestCreateArticle(): void
+    {
+        $this->postJson(route('api.articles.store'))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::store
+     *
+     * Ошибка аутентификации при создании записи пользователем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileUserCreateArticle(): void
+    {
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->postJson(route('api.articles.store'))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::store
+     *
+     * Доступ запрещен при просмотре списка записей пользователем.
+     * @return void
+     */
+    public function testForbiddenWhileUserCreateArticle(): void
+    {
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->postJson(route('api.articles.store'))
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::store
+     *
+     * Собственник сайта мог бы создать запись,
+     * но он не передал никаких данных по ней.
+     * @return void
+     */
+    public function testOwnerCanCreateArticle(): void
+    {
+        $this->actingAs($user = $this->createImprovisedUser('owner'))
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->postJson(route('api.articles.store'))
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    /**
+     * @test
+     * @covers ::store
+     *
+     * Собственник сайта создает запись с минимальным набором данных.
+     * @return void
+     */
+    public function testOwnerCanCreateArticleWithMinimalDataProvided(): void
+    {
+        $this->actingAs($user = $this->createImprovisedUser('owner'))
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->postJson(route('api.articles.store'), [
+                'title' => 'Draft'
+            ])
+            ->assertStatus(JsonResponse::HTTP_CREATED)
+            ->assertJsonPath('data.title', 'Draft');
+    }
+
+    /**
      * Создать импровизированного пользователя.
      * @param  string  $role
      * @return User
