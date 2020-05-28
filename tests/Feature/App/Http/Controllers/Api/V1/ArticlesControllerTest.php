@@ -83,10 +83,10 @@ class ArticlesControllerTest extends TestCase
      * @param  string  $role
      * @return User
      */
-    protected function createImprovisedUser(string $role = 'user'): User
+    protected function createImprovisedUser(string $role = 'user', array $attributes = []): User
     {
         return factory(User::class)
             ->states($role)
-            ->create();
+            ->create($attributes);
     }
 }
