@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 /**
@@ -77,6 +78,65 @@ class ArticlesControllerTest extends TestCase
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
+    }
+
+    /**
+     * @test
+     * @covers ::index
+     *
+     * Собственник сайта получает список записей
+     * согласно количеству в ответе.
+     * @return TestResponse
+     */
+    public function testOwnerRecivesArticlesByCount(): TestResponse
+    {
+        $articles = factory(Article::class, $articlesCount = mt_rand(4, 12))
+            ->create();
+
+        return $this->actingAs($user = $this->createImprovisedUser('owner'))
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken()
+            ])
+            ->getJson(route('api.articles.index', [
+                'limit' => $articlesCount
+            ]))
+            ->assertJsonCount($articlesCount, 'data');
+    }
+
+    /**
+     * @test
+     * @covers ::index
+     * @depends testOwnerRecivesArticlesByCount
+     *
+     * Собственник сайта получает список записей
+     * согласно статусу ответа.
+     * @return void
+     */
+    public function testOwnerRecivesArticlesByStatus(TestResponse $response): void
+    {
+        $response->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
+    }
+
+    /**
+     * @test
+     * @covers ::index
+     * @depends testOwnerRecivesArticlesByCount
+     *
+     * Собственник сайта получает список записей
+     * согласно JSON-структуре ответа.
+     * @return void
+     */
+    public function testOwnerRecivesArticlesByJsonStructure(TestResponse $response): void
+    {
+        $response->assertJsonStructure([
+            'data' => [
+                [
+                    'id',
+                    'title',
+                    'content',
+                ]
+            ]
+        ]);
     }
 
     /**
