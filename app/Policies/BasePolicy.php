@@ -13,7 +13,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
  * Базовый класс политик,
  * описывающий привилегии пользователей сайта.
  */
-class BasePolicy
+abstract class BasePolicy
 {
     use HandlesAuthorization;
 
