@@ -73,9 +73,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerRecivesEmptyArticlesList(): void
     {
-        $this->actingAs($user = $this->createImprovisedUser('owner'))
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
@@ -94,9 +94,9 @@ class ArticlesControllerTest extends TestCase
         $articles = factory(Article::class, $articlesCount = mt_rand(4, 12))
             ->create();
 
-        return $this->actingAs($user = $this->createImprovisedUser('owner'))
+        return $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken()
+                'Authorization' => 'Bearer '.$owner->generateApiToken()
             ])
             ->getJson(route('api.articles.index', [
                 'limit' => $articlesCount
@@ -194,9 +194,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanCreateArticle(): void
     {
-        $this->actingAs($user = $this->createImprovisedUser('owner'))
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
             ->postJson(route('api.articles.store'))
             ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
@@ -211,9 +211,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanCreateArticleWithMinimalDataProvided(): void
     {
-        $this->actingAs($user = $this->createImprovisedUser('owner'))
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
             ->postJson(route('api.articles.store'), [
                 'title' => 'Draft'
