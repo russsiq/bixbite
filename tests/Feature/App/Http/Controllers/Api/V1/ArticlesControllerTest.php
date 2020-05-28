@@ -66,10 +66,10 @@ class ArticlesControllerTest extends TestCase
      * @test
      * @covers ::index
      *
-     * Собственник сайта может просмотреть пустой список записей.
+     * Собственник сайта получает пустой список записей.
      * @return void
      */
-    public function testOwnerCanListingArticlesWithoutArticles(): void
+    public function testOwnerRecivesEmptyArticlesList(): void
     {
         $this->actingAs($user = $this->createImprovisedUser('owner'))
             ->getJson(route('api.articles.index'), [
