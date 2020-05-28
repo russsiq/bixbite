@@ -69,7 +69,7 @@ class ArticlesControllerTest extends TestCase
      * Собственник сайта может просмотреть пустой список записей.
      * @return void
      */
-    public function testOwnerCanListingArticles(): void
+    public function testOwnerCanListingArticlesWithoutArticles(): void
     {
         $this->actingAs($user = $this->createImprovisedUser('owner'))
             ->getJson(route('api.articles.index'), [
