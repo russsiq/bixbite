@@ -171,7 +171,7 @@ class ArticlesControllerTest extends TestCase
      * @test
      * @covers ::store
      *
-     * Доступ запрещен при просмотре списка записей пользователем.
+     * Доступ запрещен при создании записи пользователем.
      * @return void
      */
     public function testForbiddenWhileUserCreateArticle(): void
