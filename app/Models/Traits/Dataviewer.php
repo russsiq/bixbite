@@ -23,7 +23,7 @@ trait Dataviewer
     {
         $request['order_column'] = $request['order_column'] ?? 'id';
         $request['order_direction'] = $request['order_direction'] ?? 'desc';
-        $request['limit'] = $request['limit'] ?? 15;
+        $request['limit'] = $request['limit'] ?? $this->getPerPage();
 
         // // Debug.
         // dd($request);
