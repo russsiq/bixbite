@@ -57,9 +57,10 @@ class ArticlesControllerTest extends TestCase
     public function testForbiddenWhileUserListingArticles(): void
     {
         $this->actingAs($user = $this->createImprovisedUser())
-            ->getJson(route('api.articles.index'), [
+            ->withHeaders([
                 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
+            ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
