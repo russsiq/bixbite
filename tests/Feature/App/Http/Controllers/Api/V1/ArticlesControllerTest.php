@@ -66,7 +66,7 @@ class ArticlesControllerTest extends TestCase
      * @test
      * @covers ::index
      *
-     * Собственник сайта может просмотреть список записей.
+     * Собственник сайта может просмотреть пустой список записей.
      * @return void
      */
     public function testOwnerCanListingArticles(): void
