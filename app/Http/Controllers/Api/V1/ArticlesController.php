@@ -32,7 +32,7 @@ class ArticlesController extends ApiController
      * Отобразить список сущностей с дополнительной фильтрацией.
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $articles = Article::with([
                 'categories:categories.id,categories.title,categories.slug',
@@ -55,7 +55,7 @@ class ArticlesController extends ApiController
      * @param  StoreArticleRequest  $request
      * @return JsonResponse
      */
-    public function store(StoreArticleRequest $request)
+    public function store(StoreArticleRequest $request): JsonResponse
     {
         $article = Article::create($request->all());
 
@@ -70,7 +70,7 @@ class ArticlesController extends ApiController
      * @param  Article  $article
      * @return JsonResponse
      */
-    public function show(Article $article)
+    public function show(Article $article): JsonResponse
     {
         $article->load([
             'categories',
@@ -91,7 +91,7 @@ class ArticlesController extends ApiController
      * @param  Article  $article
      * @return JsonResponse
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article): JsonResponse
     {
         $article->update($request->all());
 
@@ -113,7 +113,7 @@ class ArticlesController extends ApiController
      * @param  MassUpdateArticleRequest  $request
      * @return JsonResponse
      */
-    public function massUpdate(MassUpdateArticleRequest $request)
+    public function massUpdate(MassUpdateArticleRequest $request): JsonResponse
     {
         $ids = $request->articles;
         $attribute = $request->mass_action;
@@ -166,7 +166,7 @@ class ArticlesController extends ApiController
      * @param  Article $article
      * @return JsonResponse
      */
-    public function destroy(Article $article)
+    public function destroy(Article $article): JsonResponse
     {
         $article->delete();
 
