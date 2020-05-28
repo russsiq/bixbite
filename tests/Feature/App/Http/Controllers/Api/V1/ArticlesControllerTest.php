@@ -72,9 +72,10 @@ class ArticlesControllerTest extends TestCase
     public function testOwnerRecivesEmptyArticlesList(): void
     {
         $this->actingAs($user = $this->createImprovisedUser('owner'))
-            ->getJson(route('api.articles.index'), [
+            ->withHeaders([
                 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
+            ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
