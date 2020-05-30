@@ -217,6 +217,81 @@ class ArticlesControllerTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers ::update
+     *
+     * Ошибка аутентификации при редактировании записи гостем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileGuestUpdateArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->putJson(route('api.articles.update', $article->id), [
+                'title' => 'New title'
+            ])
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::update
+     *
+     * Доступ запрещен при редактировании записи пользователем.
+     * @return void
+     */
+    public function testForbiddenWhileUserUpdateArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->putJson(route('api.articles.update', $article->id), [
+                'title' => 'New title'
+            ])
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::update
+     *
+     * Собственник сайта отредактировал запись, даже если
+     * не предоставил данных для обновления.
+     * Ситуация: автосохранения записи.
+     * @return void
+     */
+    public function testOwnerCanUpdateArticleWithoutDataProvided(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.update', $article->id))
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED);
+    }
+
+    /**
+     * @test
+     * @covers ::update
+     *
+     * Собственник сайта редактирует запись с минимальным набором данных.
+     * @return void
+     */
+    public function testOwnerCanUpdateArticleWithMinimalDataProvided(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.update', $article->id), [
+                'title' => 'New title'
+            ])
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonPath('data.title', 'New title');
+    }
+
+    /**
      * Создать импровизированного пользователя.
      * @param  string  $role
      * @return User
