@@ -194,10 +194,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanCreateArticle(): void
     {
-        $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken(),
-            ])
+        $this->actingAsOwner()
             ->postJson(route('api.articles.store'))
             ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -211,10 +208,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanCreateArticleWithMinimalDataProvided(): void
     {
-        $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken(),
-            ])
+        $this->actingAsOwner()
             ->postJson(route('api.articles.store'), [
                 'title' => 'Draft'
             ])
@@ -232,5 +226,13 @@ class ArticlesControllerTest extends TestCase
         return factory(User::class)
             ->states($role)
             ->create($attributes);
+    }
+
+    protected function actingAsOwner()
+    {
+        return $this->actingAs($owner = $this->createImprovisedUser('owner'))
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
+            ]);
     }
 }
