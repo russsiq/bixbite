@@ -192,7 +192,7 @@ class ArticlesControllerTest extends TestCase
      * но он не передал никаких данных по ней.
      * @return void
      */
-    public function testOwnerCanCreateArticle(): void
+    public function testOwnerCanNotCreateArticle(): void
     {
         $this->actingAsOwner()
             ->postJson(route('api.articles.store'))
