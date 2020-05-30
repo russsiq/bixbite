@@ -292,6 +292,107 @@ class ArticlesControllerTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers ::massUpdate
+     *
+     * Ошибка аутентификации при массовом редактировании записей гостем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileGuestMassUpdateArticle(): void
+    {
+        $articles = factory(Article::class, 3)->create();
+
+        $this->putJson(route('api.articles.massUpdate'), [
+                'articles' => $articles->modelKeys()
+            ])
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::massUpdate
+     *
+     * Доступ запрещен при массовом редактировании записей пользователем.
+     * @return void
+     */
+    public function testForbiddenWhileUserMassUpdateArticle(): void
+    {
+        $articles = factory(Article::class, 3)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->putJson(route('api.articles.massUpdate'), [
+                'articles' => $articles->modelKeys()
+            ])
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::massUpdate
+     *
+     * Собственник сайта мог бы массово отредактировать записи,
+     * но он не передал никаких данных по ним.
+     * @return void
+     */
+    public function testOwnerCanNotMassUpdateArticleWithoutDataProvided(): void
+    {
+        $articles = factory(Article::class, 3)->create();
+
+        // Собственник сайта не указал никаких данных.
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.massUpdate'))
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+
+        // Собственник сайта не указал, что изменять в записях.
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.massUpdate'), [
+                'articles' => $articles->modelKeys()
+            ])
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors('mass_action');
+
+        // Собственник сайта не указал какие записи необходимо обновить.
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.massUpdate'), [
+                'mass_action' => 'published'
+            ])
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors('articles');
+    }
+
+    /**
+     * @test
+     * @covers ::massUpdate
+     *
+     * Собственник сайта массово отредактировал записи.
+     * @return void
+     */
+    public function testOwnerMassCanUpdateArticleWithMinimalDataProvided(): void
+    {
+        $articles = factory(Article::class, $articlesCount = mt_rand(4, 8))->create();
+
+        $this->actingAsOwner()
+            ->putJson(route('api.articles.massUpdate'), [
+                'articles' => $articles->modelKeys(),
+                'mass_action' => 'published'
+            ])
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonCount($articlesCount, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        'id',
+                        'title',
+                        'content',
+                    ]
+                ]
+            ]);;
+    }
+
+    /**
      * Создать импровизированного пользователя.
      * @param  string  $role
      * @return User
