@@ -298,6 +298,11 @@ class ArticlesControllerTest extends TestCase
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
             ->assertJsonPath('data.title', 'New title');
+
+        $this->assertDatabaseHas('articles', [
+                'title' => 'New title',
+
+            ]);
     }
 
     /**
