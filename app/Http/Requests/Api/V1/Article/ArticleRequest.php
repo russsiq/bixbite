@@ -35,7 +35,7 @@ class ArticleRequest extends BaseFormRequest
 
         ]);
 
-        $input['user_id'] = $this->route('article')->user_id ?? user('id') ?? 1;
+        $input['user_id'] = $this->route('article')->user_id ?? user('id');
 
         $input['title'] = filter_var(
             $this->input('title', $this->route('article')->title ?? null),
