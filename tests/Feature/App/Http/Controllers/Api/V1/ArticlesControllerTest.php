@@ -352,15 +352,15 @@ class ArticlesControllerTest extends TestCase
     /**
      * Выполнять дальнейшие действия от имени зарегистрированного пользователя.
      * @param  UserContract  $user
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return self
      *
      * @NB Перепишем родительский метод, так как
      * тестируем только api-драйвер аутентификации.
      */
-    public function actingAs(UserContract $user, string $driver = 'api'): self
+    public function actingAs(UserContract $user, $driver = null): self
     {
-        return parent::actingAs($user, $driver);
+        return parent::actingAs($user, 'api');
     }
 
     protected function actingAsOwner()
