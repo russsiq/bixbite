@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Данная группа маршрутов имеет общие:
  *      - префикс: `api`;
- *      - посредники: `web`.
+ *      - посредники: `api`.
  */
 
 Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
