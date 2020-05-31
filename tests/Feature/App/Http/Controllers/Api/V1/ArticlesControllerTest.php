@@ -202,12 +202,21 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanCreateArticleWithMinimalDataProvided(): void
     {
-        $this->actingAsOwner()
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
+            ])
             ->postJson(route('api.articles.store'), [
                 'title' => 'Draft'
             ])
             ->assertStatus(JsonResponse::HTTP_CREATED)
             ->assertJsonPath('data.title', 'Draft');
+
+        $this->assertDatabaseHas('articles', [
+                'title' => 'Draft',
+                'user_id' => $owner->id,
+
+            ]);
     }
 
     /**
