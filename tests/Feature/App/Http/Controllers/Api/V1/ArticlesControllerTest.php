@@ -24,120 +24,57 @@ class ArticlesControllerTest extends TestCase
      * @test
      * @covers ::index
      *
-     * Ошибка аутентификации при просмотре списка записей гостем.
+     * Функциональное покрытие метода `index` api-контроллера Записей.
      * @return void
      */
-    public function testAuthenticationFailedWhileGuestListingArticles(): void
+    public function testArticlesIndex(): void
     {
+        // Ошибка аутентификации при просмотре списка записей гостем.
         $this->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
-    }
 
-    /**
-     * @test
-     * @covers ::index
-     *
-     * Ошибка аутентификации при просмотре списка записей пользователем.
-     * @return void
-     */
-    public function testAuthenticationFailedWhileUserListingArticles(): void
-    {
+        // Ошибка аутентификации при просмотре списка записей пользователем.
         $this->actingAs($user = $this->createImprovisedUser())
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
-    }
 
-    /**
-     * @test
-     * @covers ::index
-     *
-     * Доступ запрещен при просмотре списка записей пользователем.
-     * @return void
-     */
-    public function testForbiddenWhileUserListingArticles(): void
-    {
+        // Доступ запрещен при просмотре списка записей пользователем.
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
                 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
-    }
 
-    /**
-     * @test
-     * @covers ::index
-     *
-     * Собственник сайта получает пустой список записей.
-     * @return void
-     */
-    public function testOwnerRecivesEmptyArticlesList(): void
-    {
+        // Собственник сайта получает пустой список записей.
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
                 'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
-    }
 
-    /**
-     * @test
-     * @covers ::index
-     *
-     * Собственник сайта получает список записей
-     * согласно количеству в ответе.
-     * @return TestResponse
-     */
-    public function testOwnerRecivesArticlesByCount(): TestResponse
-    {
         $articles = factory(Article::class, $articlesCount = mt_rand(4, 12))
             ->create();
 
-        return $this->actingAs($owner = $this->createImprovisedUser('owner'))
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
                 'Authorization' => 'Bearer '.$owner->generateApiToken()
             ])
             ->getJson(route('api.articles.index', [
                 'limit' => $articlesCount
             ]))
-            ->assertJsonCount($articlesCount, 'data');
-    }
-
-    /**
-     * @test
-     * @covers ::index
-     * @depends testOwnerRecivesArticlesByCount
-     *
-     * Собственник сайта получает список записей
-     * согласно статусу ответа.
-     * @return void
-     */
-    public function testOwnerRecivesArticlesByStatus(TestResponse $response): void
-    {
-        $response->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
-    }
-
-    /**
-     * @test
-     * @covers ::index
-     * @depends testOwnerRecivesArticlesByCount
-     *
-     * Собственник сайта получает список записей
-     * согласно JSON-структуре ответа.
-     * @return void
-     */
-    public function testOwnerRecivesArticlesByJsonStructure(TestResponse $response): void
-    {
-        $response->assertJsonStructure([
-            'data' => [
-                [
-                    'id',
-                    'title',
-                    'content',
+            ->assertJsonCount($articlesCount, 'data')
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        'id',
+                        'title',
+                        'content',
+                    ]
                 ]
-            ]
-        ]);
+            ]);
     }
 
     /**
