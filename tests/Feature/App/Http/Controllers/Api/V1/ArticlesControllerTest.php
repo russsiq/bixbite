@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ArticlesController;
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Testing\TestResponse;
@@ -346,6 +347,20 @@ class ArticlesControllerTest extends TestCase
         return factory(User::class)
             ->states($role)
             ->create($attributes);
+    }
+
+    /**
+     * Выполнять дальнейшие действия от имени зарегистрированного пользователя.
+     * @param  UserContract  $user
+     * @param  string  $driver
+     * @return self
+     *
+     * @NB Перепишем родительский метод, так как
+     * тестируем только api-драйвер аутентификации.
+     */
+    public function actingAs(UserContract $user, string $driver = 'api'): self
+    {
+        return parent::actingAs($user, $driver);
     }
 
     protected function actingAsOwner()
