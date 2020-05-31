@@ -13,7 +13,10 @@ Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
 Route::group([
         'prefix' => 'v1',
         'namespace' => 'V1',
-        'middleware' => 'auth:api',
+        'middleware' => [
+            'auth:api',
+
+        ],
         'as' => 'api.'
     ], function () {
         Route::post('auth/logout', 'AuthController@logout')->name('auth.logout');
