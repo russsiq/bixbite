@@ -105,9 +105,7 @@ return [
         'paths' => [
             resource_path('views/vendor/mail'),
             theme_path('views/emails'),
-
         ],
-
     ],
 
 ];
