@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
+
 /**
  * Данная группа маршрутов имеет общие:
  *      - префикс: `api`;
  *      - посредники: `api`.
  */
-
-Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
 
 Route::group([
         'prefix' => 'v1',
