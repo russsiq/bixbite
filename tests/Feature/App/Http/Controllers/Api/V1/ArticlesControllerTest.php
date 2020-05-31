@@ -39,9 +39,9 @@ class ArticlesControllerTest extends TestCase
 
         // Ошибка аутентификации при просмотре списка записей пользователем.
         $this->actingAs($user = $this->createImprovisedUser())
-            ->assertAuthenticated()
+            ->assertAuthenticated('api')
             ->getJson(route($routeName))
-            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
 
         // Доступ запрещен при просмотре списка записей пользователем.
         $this->withHeaders([
@@ -58,7 +58,7 @@ class ArticlesControllerTest extends TestCase
 
         // Собственник сайта получает пустой список записей.
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->assertAuthenticated()
+            ->assertAuthenticated('api')
             ->getJson(route($routeName))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
 
@@ -109,7 +109,7 @@ class ArticlesControllerTest extends TestCase
     {
         $this->actingAs($user = $this->createImprovisedUser())
             ->postJson(route('api.articles.store'))
-            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
     /**
