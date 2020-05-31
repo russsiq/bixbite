@@ -29,39 +29,46 @@ class ArticlesControllerTest extends TestCase
      */
     public function testArticlesIndex(): void
     {
+        $routeName = 'api.articles.index';
+
         // Ошибка аутентификации при просмотре списка записей гостем.
-        $this->getJson(route('api.articles.index'))
+        $this->assertGuest()
+            ->getJson(route($routeName))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
 
         // Ошибка аутентификации при просмотре списка записей пользователем.
         $this->actingAs($user = $this->createImprovisedUser())
-            ->getJson(route('api.articles.index'))
+            ->assertAuthenticated()
+            ->getJson(route($routeName))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
 
         // Доступ запрещен при просмотре списка записей пользователем.
-        $this->actingAs($user = $this->createImprovisedUser())
-            ->withHeaders([
+        $this->withHeaders([
                 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
-            ->getJson(route('api.articles.index'))
+            ->getJson(route($routeName))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
 
-        // Собственник сайта получает пустой список записей.
-        $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken(),
-            ])
-            ->getJson(route('api.articles.index'))
-            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
-
+        /**
+         * Прорабатываем варианты доступа собственника сайта к списку записей.
+         */
         $articles = factory(Article::class, $articlesCount = mt_rand(4, 12))
             ->create();
 
+        // Собственник сайта получает пустой список записей.
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken()
+            ->assertAuthenticated()
+            ->getJson(route($routeName))
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
+
+        // Собственник сайта получает пустой список записей.
+        $this->withHeaders([
+                'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
-            ->getJson(route('api.articles.index', [
+            ->getJson(route($routeName))
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
+
+        $this->getJson(route($routeName, [
                 'limit' => $articlesCount
             ]))
             ->assertJsonCount($articlesCount, 'data')
