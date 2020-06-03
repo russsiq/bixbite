@@ -92,6 +92,24 @@ class UpdateTest extends TestCase
 
     /**
      * @test
+     *
+     * Исключение идентификатора пользователя из списка полей ввода.
+     * Таким обраом, не меняем владельца записи.
+     * @return void
+     */
+    public function testExceptedUserId(): void
+    {
+        $request = $this->resolveRequestForTesting([
+            'title' => 'Some title',
+            'user_id' => $this->ownerUser->id,
+
+        ]);
+
+        $this->assertArrayNotHasKey('user_id', $request->all());
+    }
+
+    /**
+     * @test
      * @dataProvider additionFailsDataProvider
      * @dataProvider additionPassesDataProvider
      *

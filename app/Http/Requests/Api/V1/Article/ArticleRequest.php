@@ -35,8 +35,6 @@ class ArticleRequest extends BaseFormRequest
 
         ]);
 
-        $input['user_id'] = $this->route('article')->user_id ?? user('id');
-
         $input['title'] = filter_var(
             $this->input('title', $this->route('article')->title ?? null),
             FILTER_SANITIZE_STRING,
@@ -131,6 +129,7 @@ class ArticleRequest extends BaseFormRequest
         return [
             'user_id' => [
                 'bail',
+                'sometimes',
                 'required',
                 'integer',
                 'exists:users,id',
