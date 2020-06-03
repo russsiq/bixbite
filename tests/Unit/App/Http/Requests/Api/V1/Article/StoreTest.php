@@ -6,6 +6,7 @@ namespace Tests\Unit\App\Http\Requests\Api\V1\Article;
 use App\Http\Requests\Api\V1\Article\Store;
 
 // Сторонние зависимости.
+use App\Http\Requests\Api\V1\Article\ArticleRequest;
 use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Foundation\Http\FormRequest;
@@ -61,6 +62,19 @@ class StoreTest extends TestCase
         $this->app->resolving(Store::class, function (Store $resolved) {
             $resolved->replace($this->requestingInputs);
         });
+    }
+
+    /**
+     * @test
+     *
+     * Прямая зависимость от родительского класса.
+     * @return void
+     */
+    public function testSuccessfullyInitiated(): void
+    {
+        $this->expectException(ValidationException::class);
+        $request = $this->resolveRequestForTesting([]);
+        $this->assertInstanceOf(ArticleRequest::class, $request);
     }
 
     /**
