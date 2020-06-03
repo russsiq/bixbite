@@ -23,6 +23,9 @@ use Tests\TestCase;
 /**
  * @coversDefaultClass \App\Http\Requests\Api\V1\Article\Update
  *
+ * В данном классе по-минимуму будет использован `Faker`.
+ * Дабы избежать дублирования кода с `StoreTest`,
+ * так как у них один родительский класс.
  * @cmd phpunit tests/Unit/App/Http/Requests/Api/V1/Article
  */
 class UpdateTest extends TestCase
@@ -109,29 +112,6 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider additionFailsDataProvider
-     * @dataProvider additionPassesDataProvider
-     *
-     * Описание теста.
-     * @param  bool  $shouldPass
-     * @param  callable  $generator
-     * @return void
-     */
-    public function testExample(bool $shouldPass, callable $generator): void
-    {
-        try {
-            $request = $this->resolveRequestForTesting(
-                $generator($this->faker)
-            );
-
-            $this->assertTrue($shouldPass);
-        } catch (ValidationException $e) {
-            $this->assertFalse($shouldPass);
-        }
-    }
-
-    /**
      * [resolveRequestForTesting description]
      * @param  array  $inputs
      * @return Update
@@ -144,50 +124,5 @@ class UpdateTest extends TestCase
         $this->requestingInputs = $inputs;
 
         return $this->app->make(Update::class);
-    }
-
-    /**
-     * [additionFailsDataProvider description]
-     * @return array
-     */
-    public function additionFailsDataProvider(): array
-    {
-        return [
-            'отклонить запрос из-за отсутствия данных' => [
-                false,
-                function (Faker $faker) {
-                    return [];
-                }
-            ],
-
-            'отклонить запрос из-за превышения длины заголовка' => [
-                false,
-                function (Faker $faker) {
-                    return [
-                        'title' => Str::random(256),
-                    ];
-                }
-            ],
-
-        ];
-    }
-
-    /**
-     * [additionPassesDataProvider description]
-     * @return array
-     */
-    public function additionPassesDataProvider(): array
-    {
-        return [
-            'пропустить запрос с минимальным набором данных' => [
-                true,
-                function (Faker $faker) {
-                    return [
-                        'title' => $faker->sentence(mt_rand(4, 12))
-                    ];
-                }
-            ],
-
-        ];
     }
 }
