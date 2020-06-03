@@ -14,6 +14,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -74,6 +75,13 @@ class StoreTest extends TestCase
      */
     public function testExample(bool $shouldPass, callable $generator): void
     {
+        // Не доверяя пользователю,
+        // выбираем его идентификатор
+        // из фасада аутентификации.
+        Auth::shouldReceive('id')
+            ->once()
+            ->andReturn($this->ownerUser->id);
+
         try {
             $request = $this->resolveRequestForTesting(
                 $generator($this->faker)
