@@ -63,8 +63,8 @@ class StoreTest extends TestCase
 
     /**
      * @test
-     * @dataProvider additionWithFailsDataProvider
-     * @dataProvider additionWithPassesDataProvider
+     * @dataProvider additionFailsDataProvider
+     * @dataProvider additionPassesDataProvider
      *
      * Описание теста.
      * @param  bool  $shouldPass
@@ -73,29 +73,26 @@ class StoreTest extends TestCase
      */
     public function testExample(bool $shouldPass, callable $generator): void
     {
-        $this->requestingInputs = $generator($this->faker);
-        // dump($this->requestingInputs);
-
         try {
-            $request = $this->resolveRequestForTesting();
+            $request = $this->resolveRequestForTesting(
+                $generator($this->faker)
+            );
 
             $this->assertTrue($shouldPass);
-
-            // dump($request->validated());
         } catch (ValidationException $e) {
             $this->assertFalse($shouldPass);
-
-            // dump($e->validator->errors());
-            // dump($e->validator->failed());
         }
     }
 
     /**
      * [resolveRequestForTesting description]
+     * @param  array  $inputs
      * @return Store
      */
-    protected function resolveRequestForTesting(): Store
+    protected function resolveRequestForTesting(array $inputs): Store
     {
+        $this->requestingInputs = $inputs;
+
         return $this->app->make(Store::class);
     }
 
@@ -103,7 +100,7 @@ class StoreTest extends TestCase
      * [additionWithFailsDataProvider description]
      * @return array
      */
-    public function additionWithFailsDataProvider(): array
+    public function additionFailsDataProvider(): array
     {
         return [
             'отклонить запрос из-за отсутствия данных' => [
@@ -125,7 +122,7 @@ class StoreTest extends TestCase
         ];
     }
 
-    public function additionWithPassesDataProvider()
+    public function additionPassesDataProvider()
     {
         return [
             'пропустить запрос с минимальным набором данных' => [
@@ -134,7 +131,7 @@ class StoreTest extends TestCase
                     return [
                         'title' => $faker->sentence(mt_rand(4, 12))
                     ];
-                }
+                },
             ],
 
         ];
