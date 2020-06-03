@@ -112,6 +112,24 @@ class UpdateTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * Сброс статуса Записи, если не указаны категории.
+     * @return void
+     */
+    public function testResetStateArticleWithoutCategoriesToUnpublished()
+    {
+        $request = $this->resolveRequestForTesting([
+            'title' => 'Some title',
+            'categories' => [],
+            'state' => 'published'
+
+        ]);
+
+        $this->assertSame('unpublished', $request->get('state'));
+    }
+
+    /**
      * [resolveRequestForTesting description]
      * @param  array  $inputs
      * @return Update
