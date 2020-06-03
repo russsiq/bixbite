@@ -6,6 +6,13 @@ namespace App\Http\Requests\Api\V1\Article;
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * @NB В связи с тем, что Записи идентифицируются по ID,
+ * то нет необходимости в уникальности атрибутов `title` и `slug`.
+ *
+ * @NB Нежелательным является использование метода `route`,
+ * так как пока непонятно, как это тестировать. И надо ли?
+ */
 class ArticleRequest extends BaseFormRequest
 {
     /**
@@ -36,7 +43,7 @@ class ArticleRequest extends BaseFormRequest
         ]);
 
         $input['title'] = filter_var(
-            $this->input('title', $this->route('article')->title ?? null),
+            $this->input('title'),
             FILTER_SANITIZE_STRING,
             FILTER_FLAG_EMPTY_STRING_NULL
         );
@@ -113,8 +120,6 @@ class ArticleRequest extends BaseFormRequest
     public function messages(): array
     {
         return [
-            'title.unique' => 'Запись с таким заголовком уже существует.',
-            'slug.unique' => 'Возможно запись с таким заголовком уже существует.',
 
         ];
     }
@@ -142,7 +147,6 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
-                // Rule::unique('articles')->ignore($this->route('article')),
 
             ],
 
@@ -151,7 +155,6 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
-                // Rule::unique('articles')->ignore($this->route('article')),
 
             ],
 
