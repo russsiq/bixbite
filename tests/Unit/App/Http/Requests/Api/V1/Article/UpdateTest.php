@@ -89,4 +89,19 @@ class UpdateTest extends TestCase
         $request = $this->resolveRequestForTesting([]);
         $this->assertInstanceOf(ArticleRequest::class, $request);
     }
+
+    /**
+     * [resolveRequestForTesting description]
+     * @param  array  $inputs
+     * @return Update
+     */
+    protected function resolveRequestForTesting(array $inputs): Update
+    {
+        // При использовании API-запроса, всегда передаётся идентификатор.
+        $inputs['id'] = $this->article->id;
+
+        $this->requestingInputs = $inputs;
+
+        return $this->app->make(Update::class);
+    }
 }
