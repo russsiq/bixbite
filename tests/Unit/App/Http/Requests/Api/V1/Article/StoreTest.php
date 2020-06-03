@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -114,7 +115,7 @@ class StoreTest extends TestCase
                 false,
                 function (Faker $faker) {
                     return [
-                        'title' => $faker->text(500)
+                        'title' => Str::random(256),
                     ];
                 }
             ],
