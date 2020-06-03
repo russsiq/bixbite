@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\Article\Update;
 // Сторонние зависимости.
 use App\Http\Requests\Api\V1\Article\ArticleRequest;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Foundation\Http\FormRequest;
@@ -143,6 +144,28 @@ class UpdateTest extends TestCase
         ]);
 
         $this->assertSame('unpublished', $request->get('state'));
+    }
+
+    /**
+     * @test
+     *
+     * Статус Записи не изменен, если указаны необходимые данные.
+     * @return void
+     */
+    public function testNotChangedArticleStateWithNecessaryData(): void
+    {
+        $categories = factory(Category::class, 3)
+            ->create()
+            ->modelKeys();
+
+        $request = $this->resolveRequestForTesting([
+            'title' => 'Some title',
+            'categories' => $categories,
+            'state' => 'published',
+
+        ]);
+
+        $this->assertSame('published', $request->get('state'));
     }
 
     /**
