@@ -130,6 +130,22 @@ class UpdateTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * Сброс статуса Записи, если статус не указан.
+     * @return void
+     */
+    public function testResetStateArticleWithoutStateToUnpublished()
+    {
+        $request = $this->resolveRequestForTesting([
+            'title' => 'Some title',
+
+        ]);
+
+        $this->assertSame('unpublished', $request->get('state'));
+    }
+
+    /**
      * [resolveRequestForTesting description]
      * @param  array  $inputs
      * @return Update
