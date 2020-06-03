@@ -267,18 +267,18 @@ class ArticlesControllerTest extends TestCase
      * @test
      * @covers ::update
      *
-     * Собственник сайта отредактировал запись, даже если
+     * Собственник сайта не отредактировал запись, так как
      * не предоставил данных для обновления.
-     * Ситуация: автосохранения записи.
+     * Ничего общего с ситуацией автосохранения – **нет**.
      * @return void
      */
-    public function testOwnerCanUpdateArticleWithoutDataProvided(): void
+    public function testOwnerCanNotUpdateArticleWithoutDataProvided(): void
     {
         $article = factory(Article::class)->create();
 
         $this->actingAsOwner()
             ->putJson(route('api.articles.update', $article->id))
-            ->assertStatus(JsonResponse::HTTP_ACCEPTED);
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
