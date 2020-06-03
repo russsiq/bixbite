@@ -42,11 +42,7 @@ class ArticleRequest extends BaseFormRequest
 
         ]);
 
-        $input['title'] = filter_var(
-            $this->input('title'),
-            FILTER_SANITIZE_STRING,
-            FILTER_FLAG_EMPTY_STRING_NULL
-        );
+        $input['title'] = filter_var($this->input('title'), FILTER_SANITIZE_STRING);
         $input['slug'] = string_slug($input['slug'] ?? $input['title']);
         $input['teaser'] = html_clean($input['teaser'] ?? null);
 
