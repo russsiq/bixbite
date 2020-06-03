@@ -117,12 +117,12 @@ class UpdateTest extends TestCase
      * Сброс статуса Записи, если не указаны категории.
      * @return void
      */
-    public function testResetStateArticleWithoutCategoriesToUnpublished()
+    public function testResetStateArticleWithoutCategoriesToUnpublished(): void
     {
         $request = $this->resolveRequestForTesting([
             'title' => 'Some title',
             'categories' => [],
-            'state' => 'published'
+            'state' => 'published',
 
         ]);
 
@@ -135,7 +135,7 @@ class UpdateTest extends TestCase
      * Сброс статуса Записи, если статус не указан.
      * @return void
      */
-    public function testResetStateArticleWithoutStateToUnpublished()
+    public function testResetStateArticleWithoutStateToUnpublished(): void
     {
         $request = $this->resolveRequestForTesting([
             'title' => 'Some title',
