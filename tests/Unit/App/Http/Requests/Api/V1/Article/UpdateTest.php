@@ -94,7 +94,7 @@ class UpdateTest extends TestCase
      * @test
      *
      * Исключение идентификатора пользователя из списка полей ввода.
-     * Таким обраом, не меняем владельца записи.
+     * Таким образом, не меняем владельца записи.
      * @return void
      */
     public function testExceptedUserId(): void
