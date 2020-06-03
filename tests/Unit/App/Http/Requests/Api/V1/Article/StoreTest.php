@@ -126,7 +126,7 @@ class StoreTest extends TestCase
     }
 
     /**
-     * [resolveRequestForTesting description]
+     * Извлечь экземпляр Запроса для тестирования.
      * @param  array  $inputs
      * @return Store
      */

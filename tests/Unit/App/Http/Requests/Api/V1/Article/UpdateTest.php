@@ -169,7 +169,7 @@ class UpdateTest extends TestCase
     }
 
     /**
-     * [resolveRequestForTesting description]
+     * Извлечь экземпляр Запроса для тестирования.
      * @param  array  $inputs
      * @return Update
      */
