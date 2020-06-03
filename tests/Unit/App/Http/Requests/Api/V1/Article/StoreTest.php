@@ -120,7 +120,7 @@ class StoreTest extends TestCase
     }
 
     /**
-     * [additionWithFailsDataProvider description]
+     * [additionFailsDataProvider description]
      * @return array
      */
     public function additionFailsDataProvider(): array
@@ -145,7 +145,11 @@ class StoreTest extends TestCase
         ];
     }
 
-    public function additionPassesDataProvider()
+    /**
+     * [additionPassesDataProvider description]
+     * @return array
+     */
+    public function additionPassesDataProvider(): array
     {
         return [
             'пропустить запрос с минимальным набором данных' => [
