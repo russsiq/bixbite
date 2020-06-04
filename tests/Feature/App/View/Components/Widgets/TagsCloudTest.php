@@ -36,7 +36,7 @@ class TagsCloudTest extends TestCase
      */
     public function testUserCanViewEmptyTagsCloud(): void
     {
-        $component = $this->app->make(TagsCloud::class);
+        $component = $this->resolveComponentForTesting();
 
         $component->disableCache()
             ->resolveView()
@@ -48,5 +48,14 @@ class TagsCloudTest extends TestCase
                 $tags = $variables['tags'];
                 $this->assertTrue($tags()->isEmpty());
             });
+    }
+
+    /**
+     * Извлечь экземпляр Компонента для тестирования.
+     * @return TagsCloud
+     */
+    protected function resolveComponentForTesting(): TagsCloud
+    {
+        return $this->app->make(TagsCloud::class);
     }
 }
