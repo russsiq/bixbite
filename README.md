@@ -264,6 +264,12 @@ composer run-script test
 composer run-script test-win7
 ```
 
+Для формирования agile-документации, генерируемую в HTML-формате и записываемую в файл [tests/testdox.html](tests/testdox.html), используйте команду:
+
+```console
+composer run-script testdox
+```
+
 ## Несколько англоязычных абзацев о фреймворке Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects.
