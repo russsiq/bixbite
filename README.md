@@ -280,4 +280,4 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 
 ## Лицензия
 
-`BixBite` - программное обеспечение с открытым исходным кодом, распространяющееся по лицензии [MIT](https://choosealicense.com/licenses/mit/).
+`BixBite` - программное обеспечение с открытым исходным кодом, распространяющееся по лицензии [MIT](LICENSE).
