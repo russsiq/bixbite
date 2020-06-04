@@ -61,6 +61,7 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-win7": "vendor\\bin\\phpunit",
+        "testdox": "vendor\\bin\\phpunit --testdox-html tests/testdox.html",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --no-ansi"
