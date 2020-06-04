@@ -536,8 +536,9 @@ if (! function_exists('teaser')) {
         }
 
         $text = html_clean($text);
+        $length -= mb_strlen($finisher);
 
-        if ((mb_strlen($text) <= $length) or (0 == $length)) {
+        if ((mb_strlen($text.$finisher) <= $length) or (0 == $length)) {
             return $text;
         }
 
