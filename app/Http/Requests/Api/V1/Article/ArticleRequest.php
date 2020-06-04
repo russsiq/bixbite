@@ -56,7 +56,7 @@ class ArticleRequest extends BaseFormRequest
         $input['content'] = $this->removeEmoji($input['content']);
 
         $input['description'] = teaser($input['description'] ?? null, 255);
-        $input['keywords'] = teaser($input['keywords'] ?? null, 255);
+        $input['keywords'] = teaser($input['keywords'] ?? null, 255, '');
         $input['tags'] = isset($input['tags'])
             ? array_map(
                 function (string $tag) {
