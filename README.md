@@ -264,7 +264,7 @@ composer run-script test
 composer run-script test-win7
 ```
 
-Для формирования agile-документации, генерируемую в HTML-формате и записываемую в файл [tests/testdox.html](tests/testdox.html), используйте команду:
+Для формирования agile-документации, генерируемой в HTML-формате и записываемой в файл [tests/testdox.html](tests/testdox.html), используйте команду:
 
 ```console
 composer run-script testdox
