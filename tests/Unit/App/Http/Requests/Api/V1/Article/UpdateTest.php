@@ -169,6 +169,40 @@ class UpdateTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * SEO-поля Записи с типом `string` обрезаются до 255 символов.
+     * Тип в БД `varchar(255)`.
+     * @return void
+     */
+    public function testSeoFieldsWithStringTypeTrimmedTo255Characters(): void
+    {
+        // Массив тестируемых полей. Прописываем вручную,
+        // так как ожидаем определенного поведения от системы,
+        // а не тестируем уже сформированное поведение,
+        // описанное в методе `rules`.
+        $fields = [
+            'slug',
+            // 'teaser',
+            'description',
+            'keywords',
+            // 'tags.*',
+
+        ];
+
+        $filledFields = array_fill_keys($fields, Str::random(256));
+
+        $request = $this->resolveRequestForTesting(array_merge($filledFields, [
+            'title' => 'Some title',
+
+        ]));
+
+        foreach ($request->only($fields) as $field => $value) {
+            $this->assertLessThanOrEqual(255, $value);
+        }
+    }
+
+    /**
      * Извлечь экземпляр Запроса для тестирования.
      * @param  array  $inputs
      * @return Update
