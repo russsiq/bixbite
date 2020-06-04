@@ -24,7 +24,7 @@ class ConsentCookieTest extends TestCase
     {
         $this->get(route('home'));
 
-        $component = app(ConsentCookie::class);
+        $component = $this->resolveComponentForTesting();
 
         $this->assertTrue($component->shouldRender());
     }
@@ -46,8 +46,17 @@ class ConsentCookieTest extends TestCase
             )
             ->get(route('home'));
 
-        $component = app(ConsentCookie::class);
+        $component = $this->resolveComponentForTesting();
 
         $this->assertFalse($component->shouldRender());
+    }
+
+    /**
+     * Извлечь экземпляр Компонента для тестирования.
+     * @return ConsentCookie
+     */
+    protected function resolveComponentForTesting(): ConsentCookie
+    {
+        return $this->app->make(ConsentCookie::class);
     }
 }
