@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\TransformApiData;
 use Illuminate\Support\Facades\Route;
 
 Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
@@ -36,6 +37,10 @@ Route::group([
             'templates' => 'TemplatesController',
             'users' => 'UsersController',
             'x_fields' => 'XFieldsController',
+
+        ], [
+            // 'middleware' => TransformApiData::class,
+
         ]);
 
         Route::put('articles', 'ArticlesController@massUpdate')->name('articles.massUpdate');
