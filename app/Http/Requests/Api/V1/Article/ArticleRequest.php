@@ -103,6 +103,7 @@ class ArticleRequest extends BaseFormRequest
             'title' => trans('Title'),
             'slug' => trans('Slug'),
             'teaser' => trans('Teaser'),
+            'categories.*' => trans('Category'),
 
         ];
     }
