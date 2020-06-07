@@ -4,7 +4,6 @@ namespace App\Http\Requests\Api\V1\Article;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
-use Illuminate\Validation\Rule;
 
 /**
  * @NB В связи с тем, что Записи идентифицируются по ID,
