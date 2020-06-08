@@ -28,7 +28,7 @@ class ArticlesTransformerTest extends TestCase
      * Таким образом, система сама задаёт владельца записи.
      * @return void
      */
-    public function testIncludedUserId(): void
+    public function testIncludedUserIdWhenStoreArticle(): void
     {
         // Не доверяя пользователю,
         // выбираем его идентификатор
@@ -56,7 +56,7 @@ class ArticlesTransformerTest extends TestCase
      * Таким образом, не меняем владельца записи.
      * @return void
      */
-    public function testExceptedUserId(): void
+    public function testExceptedUserIdWhenUpdateArticle(): void
     {
         $request = $this->createRequestWithCustomData([
             'title' => 'Some title',
