@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Http\Requests\Api\V1\Article;
+namespace Tests\Feature\App\Http\Requests\Api\V1\Article;
 
 // Тестируемый класс.
 use App\Http\Requests\Api\V1\Article\Store;
@@ -22,7 +22,7 @@ use Tests\TestCase;
 /**
  * @coversDefaultClass \App\Http\Requests\Api\V1\Article\Store
  *
- * @cmd phpunit tests/Unit/App/Http/Requests/Api/V1/Article
+ * @cmd phpunit tests/Feature/App/Http/Requests/Api/V1/Article
  */
 class StoreTest extends TestCase
 {
