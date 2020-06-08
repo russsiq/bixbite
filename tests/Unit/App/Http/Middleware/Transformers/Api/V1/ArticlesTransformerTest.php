@@ -20,6 +20,34 @@ use PHPUnit\Framework\TestCase;
  */
 class ArticlesTransformerTest extends TestCase
 {
+    /**
+     * @test
+     * @covers ::store
+     *
+     * Обязательное присутствие идентификатора пользователя в списке полей ввода.
+     * Таким образом, система сама задаёт владельца записи.
+     * @return void
+     */
+    public function testIncludedUserId(): void
+    {
+        // Не доверяя пользователю,
+        // выбираем его идентификатор
+        // из фасада аутентификации.
+        Auth::shouldReceive('id')
+            ->once()
+            ->andReturn($user_id = mt_rand(1, 512));
+
+        $request = $this->createRequestWithCustomData([
+            'title' => 'Some title',
+
+        ]);
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->store();
+
+        $this->assertEquals($user_id, $transformed['user_id']);
+    }
+
     protected function createTransformer(Request $request)
     {
         return new ArticlesTransformer($request);

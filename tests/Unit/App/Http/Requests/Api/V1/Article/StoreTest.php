@@ -79,24 +79,6 @@ class StoreTest extends TestCase
 
     /**
      * @test
-     *
-     * Обязательное присутствие идентификатора пользователя в списке полей ввода.
-     * Таким образом, система сама задаёт владельца записи.
-     * По факту данный тест является дубликатом проверки через фасад.
-     * @return void
-     */
-    public function testIncludedUserId(): void
-    {
-        $request = $this->resolveRequestForTesting([
-            'title' => 'Some title',
-
-        ]);
-
-        $this->assertEquals($request->input('user_id'), $this->ownerUser->id);
-    }
-
-    /**
-     * @test
      * @dataProvider additionFailsDataProvider
      * @dataProvider additionPassesDataProvider
      *
@@ -107,13 +89,6 @@ class StoreTest extends TestCase
      */
     public function testExample(bool $shouldPass, callable $generator): void
     {
-        // Не доверяя пользователю,
-        // выбираем его идентификатор
-        // из фасада аутентификации.
-        Auth::shouldReceive('id')
-            ->once()
-            ->andReturn($this->ownerUser->id);
-
         try {
             $request = $this->resolveRequestForTesting(
                 $generator($this->faker)
