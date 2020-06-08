@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 // Исключения.
-use InvalidArgumentException;
+use App\Exceptions\UnsupportedMiddlewareForRouteException;
 
 // Базовые расширения PHP.
 use Closure;
@@ -175,12 +175,15 @@ class TransformApiData
      * @param  string  $group
      * @return void
      *
-     * @throws InvalidArgumentException
+     * @throws UnsupportedMiddlewareForRouteException
      */
     protected function ensureIsApiGroupRoute(string $group): void
     {
         if ('api' !== $group) {
-            throw new InvalidArgumentException;
+            throw UnsupportedMiddlewareForRouteException::make(
+                get_class($this),
+                $group
+            );
         }
     }
 }
