@@ -39,11 +39,7 @@ class TransformApiDataTest extends TestCase
      */
     public function testSuccessfullyInitiated(): void
     {
-        Route::shouldReceive('currentRouteName')
-            ->once()
-            ->andReturn('api.someResource.someMethod');
-
-        $middleware = $this->createMiddleware();
+        $middleware = $this->createMiddleware('api.someResource.someMethod');
 
         $this->assertSame('api.someResource.someMethod', $middleware->currentRouteName());
         $this->assertSame('api', $middleware->group());
@@ -62,11 +58,7 @@ class TransformApiDataTest extends TestCase
      */
     public function testExample(string $currentRouteName, array $requestingInputs, $expected): void
     {
-        Route::shouldReceive('currentRouteName')
-            ->once()
-            ->andReturn($currentRouteName);
-
-        $this->createMiddleware()
+        $this->createMiddleware($currentRouteName)
             ->handle(
                 $this->createRequestWithCustomData($requestingInputs),
                 function (Request $transformed) use ($expected) {
@@ -113,8 +105,12 @@ class TransformApiDataTest extends TestCase
      * [createMiddleware description]
      * @return TransformApiData
      */
-    protected function createMiddleware(): TransformApiData
+    protected function createMiddleware(string $routeName): TransformApiData
     {
+        Route::shouldReceive('currentRouteName')
+            ->once()
+            ->andReturn($routeName);
+
         return new TransformApiData;
     }
 }
