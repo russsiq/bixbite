@@ -82,6 +82,42 @@ class TransformApiData
     }
 
     /**
+     * Получить Имя текущего маршрута.
+     * @return string
+     */
+    public function currentRouteName(): string
+    {
+        return $this->currentRouteName;
+    }
+
+    /**
+     * Получить Имя текущей группы маршрута.
+     * @return string
+     */
+    public function group(): string
+    {
+        return $this->group;
+    }
+
+    /**
+     * Получить Имя текущего ресурса маршрута.
+     * @return string
+     */
+    public function resource(): string
+    {
+        return $this->resource;
+    }
+
+    /**
+     * Получить Имя текущего действия для ресурса маршрута.
+     * @return string
+     */
+    public function action(): string
+    {
+        return $this->action;
+    }
+
+    /**
      * Обработка входящего запроса.
      * @param  Request  $request
      * @param  Closure  $next
