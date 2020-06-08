@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\App\Http\Middleware;
 
+// Исключения.
+use App\Exceptions\UnsupportedMiddlewareForRouteException;
+
 // Тестируемый класс.
 use App\Http\Middleware\TransformApiData;
 
@@ -45,6 +48,19 @@ class TransformApiDataTest extends TestCase
         $this->assertSame('api', $middleware->group());
         $this->assertSame('someResource', $middleware->resource());
         $this->assertSame('someMethod', $middleware->action());
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     *
+     * Посредник применяется только для группы `api`.
+     * @return void
+     */
+    public function testMiddlewareAppliesOnlyForApiGroup(): void
+    {
+        $this->expectException(UnsupportedMiddlewareForRouteException::class);
+        $middleware = $this->createMiddleware('some-route');
     }
 
     /**
