@@ -72,6 +72,8 @@ class TransformApiDataTest extends TestCase
      */
     public function testRequestForCurrentRouteHasDataTransformer(): void
     {
+        $group = 'api';
+
         $transformers = TransformApiData::AVAILABLE_TRANSFORMERS;
         $resources = array_keys($transformers);
         $resource = array_pop($resources);
@@ -79,9 +81,12 @@ class TransformApiDataTest extends TestCase
         $actions = TransformApiData::ALLOWED_ACTIONS;
         $action = array_pop($actions);
 
-        $middleware = $this->createMiddleware("api.{$resource}.{$action}");
+        $middleware = $this->createMiddleware("{$group}.{$resource}.{$action}");
 
         $this->assertTrue($middleware->hasTransformerForCurrentRoute());
+        $this->assertSame($group, $middleware->group());
+        $this->assertSame($resource, $middleware->resource());
+        $this->assertSame($action, $middleware->action());
     }
 
     /**
