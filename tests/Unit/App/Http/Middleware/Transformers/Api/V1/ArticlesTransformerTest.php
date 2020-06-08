@@ -48,6 +48,28 @@ class ArticlesTransformerTest extends TestCase
         $this->assertEquals($user_id, $transformed['user_id']);
     }
 
+    /**
+     * @test
+     * @covers ::update
+     *
+     * Исключение идентификатора пользователя из списка полей ввода.
+     * Таким образом, не меняем владельца записи.
+     * @return void
+     */
+    public function testExceptedUserId(): void
+    {
+        $request = $this->createRequestWithCustomData([
+            'title' => 'Some title',
+            'user_id' => mt_rand(1, 512),
+
+        ]);
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->update();
+
+        $this->assertArrayNotHasKey('user_id', $transformed);
+    }
+
     protected function createTransformer(Request $request)
     {
         return new ArticlesTransformer($request);
