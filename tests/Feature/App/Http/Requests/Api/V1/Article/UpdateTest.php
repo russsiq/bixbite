@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Http\Requests\Api\V1\Article;
+namespace Tests\Feature\App\Http\Requests\Api\V1\Article;
 
 // Тестируемый класс.
 use App\Http\Requests\Api\V1\Article\Update;
@@ -27,7 +27,7 @@ use Tests\TestCase;
  * В данном классе по-минимуму будет использован `Faker`.
  * Дабы избежать дублирования кода с `StoreTest`,
  * так как у них один родительский класс.
- * @cmd phpunit tests/Unit/App/Http/Requests/Api/V1/Article
+ * @cmd phpunit tests/Feature/App/Http/Requests/Api/V1/Article
  */
 class UpdateTest extends TestCase
 {
