@@ -68,6 +68,10 @@ class ArticlesTransformer implements ResourceRequestTransformer
     {
         $inputs = $this->default();
 
+        // Исключение идентификатора пользователя из списка полей ввода.
+        // Таким образом, не меняем владельца записи.
+        unset($inputs['user_id']);
+
         return $inputs;
     }
 
