@@ -139,7 +139,7 @@ class TransformApiData
      */
     protected function ensureIsApiGroupRoute(string $group): void
     {
-        if ('api' !== $this->group) {
+        if ('api' !== $group) {
             throw new InvalidArgumentException;
         }
     }
