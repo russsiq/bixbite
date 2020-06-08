@@ -32,7 +32,13 @@ class ArticlesTransformer implements ResourceRequestTransformer
      */
     public function default(): array
     {
-        return $this->request->all();
+        return $this->request
+            ->except([
+                '_token',
+                '_method',
+                'submit',
+
+            ]);
     }
 
     /**
@@ -41,7 +47,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
      */
     public function store(): array
     {
-        $inputs = [];
+        $inputs = $this->default();
 
         return $inputs;
     }
@@ -52,9 +58,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
      */
     public function update(): array
     {
-        $inputs = [];
-
-        $inputs['title'] = strtoupper($this->request->input('title'));
+        $inputs = $this->default();
 
         return $inputs;
     }
@@ -65,7 +69,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
      */
     public function massUpdate(): array
     {
-        $inputs = [];
+        $inputs = $this->default();
 
         return $inputs;
     }
