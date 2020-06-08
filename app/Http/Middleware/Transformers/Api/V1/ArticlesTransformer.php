@@ -6,16 +6,19 @@ namespace App\Http\Middleware\Transformers\Api\V1;
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
 
+/**
+ * Преобразователь данных Запроса для Записей.
+ */
 class ArticlesTransformer implements ResourceRequestTransformer
 {
     /**
-     * [protected description]
+     * Запрос для текущего ресурса.
      * @var Request
      */
     protected $request;
 
     /**
-     * [__construct description]
+     * Создать новый экземпляр Преобразователя данных.
      * @param  Request  $request
      */
     public function __construct(Request $request)
@@ -24,7 +27,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
     }
 
     /**
-     * [default description]
+     * Получить массив данных, используемых по умолчанию.
      * @return array
      */
     public function default(): array
@@ -33,7 +36,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
     }
 
     /**
-     * [store description]
+     * Получить массив данных для сохранения сущности.
      * @return array
      */
     public function store(): array
@@ -44,7 +47,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
     }
 
     /**
-     * [update description]
+     * Получить массив данных для обновления сущности.
      * @return array
      */
     public function update(): array
@@ -57,7 +60,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
     }
 
     /**
-     * [massUpdate description]
+     * Получить массив данных для массовго обновления сущностей.
      * @return array
      */
     public function massUpdate(): array
