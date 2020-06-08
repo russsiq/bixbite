@@ -49,6 +49,41 @@ class TransformApiDataTest extends TestCase
 
     /**
      * @test
+     * @covers ::hasTransformerForCurrentRoute
+     *
+     * Запрос текущего маршрута имеет преобразователь данных.
+     * @return void
+     */
+    public function testRequestForCurrentRouteHasDataTransformer(): void
+    {
+        $transformers = TransformApiData::AVAILABLE_TRANSFORMERS;
+        $resources = array_keys($transformers);
+        $resource = array_pop($resources);
+
+        $actions = TransformApiData::ALLOWED_ACTIONS;
+        $action = array_pop($actions);
+
+        $middleware = $this->createMiddleware("api.{$resource}.{$action}");
+
+        $this->assertTrue($middleware->hasTransformerForCurrentRoute());
+    }
+
+    /**
+     * @test
+     * @covers ::hasTransformerForCurrentRoute
+     *
+     * Запрос текущего маршрута не имеет преобразователя данных.
+     * @return void
+     */
+    public function testRequestForCurrentRouteDoesNotHaveDataTransformer(): void
+    {
+        $middleware = $this->createMiddleware('api.someResource.someMethod');
+
+        $this->assertFalse($middleware->hasTransformerForCurrentRoute());
+    }
+
+    /**
+     * @test
      * @dataProvider additionProvider
      *
      * [testExample description]
