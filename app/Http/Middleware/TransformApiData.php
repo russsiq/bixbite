@@ -128,8 +128,8 @@ class TransformApiData
         if ($this->hasTransformerForCurrentRoute()) {
             $transformer = $this->createTransformer($request);
 
-            if (method_exists($transformer, $this->action)) {
-                $request->merge($transformer->{$this->action}());
+            if (method_exists($transformer, $this->action())) {
+                $request->merge($transformer->{$this->action()}());
             }
         }
 
@@ -142,8 +142,8 @@ class TransformApiData
      */
     public function hasTransformerForCurrentRoute(): bool
     {
-        return array_key_exists($this->resource, self::AVAILABLE_TRANSFORMERS)
-            && in_array($this->action, self::ALLOWED_ACTIONS);
+        return array_key_exists($this->resource(), self::AVAILABLE_TRANSFORMERS)
+            && in_array($this->action(), self::ALLOWED_ACTIONS);
     }
 
     /**
@@ -153,9 +153,9 @@ class TransformApiData
      */
     protected function createTransformer(Request $request): ResourceRequestTransformer
     {
-        $transformer = self::AVAILABLE_TRANSFORMERS[$this->resource];
+        $class = self::AVAILABLE_TRANSFORMERS[$this->resource()];
 
-        return new $transformer($request);
+        return new $class($request);
     }
 
     /**
