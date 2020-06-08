@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Closure;
 
 // Сторонние зависимости.
+use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,31 +21,31 @@ use Illuminate\Support\Facades\Route;
 class TransformApiData
 {
     /**
-     * [$currentRouteName description]
+     * Имя текущего маршрута.
      * @var string
      */
     protected $currentRouteName;
 
     /**
-     * [$group description]
+     * Имя текущей группы маршрута.
      * @var string
      */
     protected $group;
 
     /**
-     * [$resource description]
+     * Имя текущего ресурса маршрута.
      * @var string
      */
     protected $resource;
 
     /**
-     * [$action description]
+     * Имя текущего действия для ресурса маршрута.
      * @var string
      */
     protected $action;
 
     /**
-     * [$allowedActions description]
+     * Разрешенные действия для ресурсов маршрута.
      * @var array
      */
     protected $allowedActions = [
@@ -55,22 +56,23 @@ class TransformApiData
     ];
 
     /**
-     * [$transformers description]
+     * Карта преобразователей данных для ресурсов.
      * @var array
      */
     protected $transformers = [
-        'articles' => \App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer::class,
+        'articles' => ArticlesTransformer::class,
 
     ];
 
     /**
-     * [$namespace description]
+     * Пространство имен для преобразователей данных.
+     * `В настоящее время не используется`.
      * @var string
      */
     protected $namespace = 'App\Http\Middleware\Transformers\Api\V1';
 
     /**
-     * [__construct description]
+     * Создать новый экземпляр Посредника.
      */
     public function __construct()
     {
@@ -99,7 +101,7 @@ class TransformApiData
     }
 
     /**
-     * [hasTransformerForCurrentRoute description]
+     * Имеется ли Преобразователь для текущего маршрута.
      * @return bool
      */
     public function hasTransformerForCurrentRoute(): bool
@@ -109,7 +111,7 @@ class TransformApiData
     }
 
     /**
-     * [createTransformer description]
+     * Создать новый экземпляр Преобразователя входящих данных.
      * @param  Request  $request
      * @return ResourceRequestTransformer
      */
@@ -119,7 +121,7 @@ class TransformApiData
     }
 
     /**
-     * [detectSegments description]
+     * Определить сегменты для текущего маршрута.
      * @param  string  $name
      * @return void
      */
@@ -131,7 +133,7 @@ class TransformApiData
     }
 
     /**
-     * [ensureIsApiGroupRoute description]
+     * Убедиться, что группа маршрутов принадлежит к группе `api`.
      * @param  string  $group
      * @return void
      *
