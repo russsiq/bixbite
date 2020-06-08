@@ -5,6 +5,7 @@ namespace App\Http\Middleware\Transformers\Api\V1;
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Преобразователь данных Запроса для Записей.
@@ -48,6 +49,13 @@ class ArticlesTransformer implements ResourceRequestTransformer
     public function store(): array
     {
         $inputs = $this->default();
+
+        $inputs['date_at'] = 'currdate';
+
+        // Не доверяя пользователю,
+        // выбираем его идентификатор
+        // из фасада аутентификации.
+        $inputs['user_id'] = Auth::id();
 
         return $inputs;
     }
