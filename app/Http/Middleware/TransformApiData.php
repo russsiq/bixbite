@@ -120,7 +120,7 @@ class TransformApiData
 
     /**
      * [detectSegments description]
-     * @param  string  $name [description]
+     * @param  string  $name
      * @return void
      */
     protected function detectSegments(string $name): void
@@ -134,6 +134,8 @@ class TransformApiData
      * [ensureIsApiGroupRoute description]
      * @param  string  $group
      * @return void
+     *
+     * @throws InvalidArgumentException
      */
     protected function ensureIsApiGroupRoute(string $group): void
     {
