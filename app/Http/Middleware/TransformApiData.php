@@ -125,7 +125,7 @@ class TransformApiData
      */
     protected function detectSegments(string $name): void
     {
-        [$this->group, $this->resource, $this->action] = explode('.', $name, 3);
+        [$this->group, $this->resource, $this->action] = array_pad(explode('.', $name, 3), 3, '');
 
         $this->ensureIsApiGroupRoute($this->group);
     }
