@@ -99,46 +99,6 @@ class TransformApiDataTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider additionProvider
-     *
-     * [testExample description]
-     * @param string $currentRouteName
-     * @param array  $requestingInputs
-     * @param [type] $expected
-     */
-    public function testExample(string $currentRouteName, array $requestingInputs, $expected): void
-    {
-        $this->createMiddleware($currentRouteName)
-            ->handle(
-                $this->createRequestWithCustomData($requestingInputs),
-                function (Request $transformed) use ($expected) {
-                    $this->assertEquals($expected, $transformed->title);
-                }
-            );
-
-        // // Остановиться тут и отметить, что тест неполный.
-        // $this->markTestIncomplete(
-        //     'Этот тест ещё не реализован.'
-        // );
-    }
-
-    /**
-     * [additionProvider description]
-     * @return array
-     */
-    public function additionProvider()
-    {
-        return [
-            'верхний регистр заголовка' => [
-                'api.articles.update', [
-                    'title' => 'Article title',
-                ], 'ARTICLE TITLE'],
-
-        ];
-    }
-
-    /**
      * [createRequestWithCustomData description]
      * @param  array  $requestingInputs
      * @return Request
