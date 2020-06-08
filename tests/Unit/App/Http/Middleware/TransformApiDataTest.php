@@ -138,6 +138,7 @@ class TransformApiDataTest extends TestCase
 
     /**
      * [createMiddleware description]
+     * @param  string  $routeName
      * @return TransformApiData
      */
     protected function createMiddleware(string $routeName): TransformApiData
