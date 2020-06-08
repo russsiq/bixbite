@@ -21,6 +21,15 @@ use Illuminate\Support\Facades\Route;
 class TransformApiData
 {
     /**
+     * Карта преобразователей данных для ресурсов.
+     * @const string[]
+     */
+    const AVAILABLE_TRANSFORMERS = [
+        'articles' => ArticlesTransformer::class,
+
+    ];
+
+    /**
      * Разрешенные действия для ресурсов маршрута.
      * @const string[]
      */
@@ -54,15 +63,6 @@ class TransformApiData
      * @var string
      */
     protected $action;
-
-    /**
-     * Карта преобразователей данных для ресурсов.
-     * @var array
-     */
-    protected $transformers = [
-        'articles' => ArticlesTransformer::class,
-
-    ];
 
     /**
      * Пространство имен для преобразователей данных.
@@ -142,7 +142,7 @@ class TransformApiData
      */
     public function hasTransformerForCurrentRoute(): bool
     {
-        return array_key_exists($this->resource, $this->transformers)
+        return array_key_exists($this->resource, self::AVAILABLE_TRANSFORMERS)
             && in_array($this->action, self::ALLOWED_ACTIONS);
     }
 
@@ -153,7 +153,9 @@ class TransformApiData
      */
     protected function createTransformer(Request $request): ResourceRequestTransformer
     {
-        return new $this->transformers[$this->resource]($request);
+        $transformer = self::AVAILABLE_TRANSFORMERS[$this->resource];
+
+        return new $transformer($request);
     }
 
     /**
