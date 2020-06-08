@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Http\Middleware\Transformers;
+namespace Tests\Unit\App\Http\Middleware\Transformers\Api\V1;
 
 use PHPUnit\Framework\TestCase;
 

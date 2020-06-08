@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Services;
+namespace Tests\Unit\App\Http\Middleware;
 
 // Тестируемый класс.
 use App\Http\Middleware\TransformApiData;
@@ -53,10 +53,10 @@ class TransformApiDataTest extends TestCase
                 }
             );
 
-        // Остановиться тут и отметить, что тест неполный.
-        $this->markTestIncomplete(
-            'Этот тест ещё не реализован.'
-        );
+        // // Остановиться тут и отметить, что тест неполный.
+        // $this->markTestIncomplete(
+        //     'Этот тест ещё не реализован.'
+        // );
     }
 
     /**
