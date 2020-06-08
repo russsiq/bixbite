@@ -32,6 +32,27 @@ class TransformApiDataTest extends TestCase
 
     /**
      * @test
+     * @covers ::__construct
+     *
+     * Успешная инициализация посредника.
+     * @return void
+     */
+    public function testSuccessfullyInitiated(): void
+    {
+        Route::shouldReceive('currentRouteName')
+            ->once()
+            ->andReturn('api.someResource.someMethod');
+
+        $middleware = $this->createMiddleware();
+
+        $this->assertSame('api.someResource.someMethod', $middleware->currentRouteName());
+        $this->assertSame('api', $middleware->group());
+        $this->assertSame('someResource', $middleware->resource());
+        $this->assertSame('someMethod', $middleware->action());
+    }
+
+    /**
+     * @test
      * @dataProvider additionProvider
      *
      * [testExample description]
