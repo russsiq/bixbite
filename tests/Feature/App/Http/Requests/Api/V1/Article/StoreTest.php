@@ -96,7 +96,7 @@ class StoreTest extends TestCase
 
             $this->assertTrue($shouldPass);
         } catch (ValidationException $e) {
-            $this->assertFalse($shouldPass);
+            $this->assertFalse($shouldPass, implode(',', array_keys($e->errors())));
         }
     }
 
