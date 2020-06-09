@@ -39,7 +39,7 @@ Route::group([
             'x_fields' => 'XFieldsController',
 
         ], [
-            // 'middleware' => TransformApiData::class,
+            'middleware' => TransformApiData::class,
 
         ]);
 
