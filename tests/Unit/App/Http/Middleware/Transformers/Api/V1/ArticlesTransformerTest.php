@@ -8,6 +8,7 @@ use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 // Библиотеки тестирования.
@@ -70,7 +71,109 @@ class ArticlesTransformerTest extends TestCase
         $this->assertArrayNotHasKey('user_id', $transformed);
     }
 
-    protected function createTransformer(Request $request)
+    /**
+     * @test
+     * @covers ::default
+     *
+     * Сброс статуса Записи, если не указаны категории.
+     * @return void
+     */
+    public function testResetStateArticleWithoutCategoriesToUnpublished(): void
+    {
+        $request = $this->createRequestWithCustomData([
+            'title' => 'Some title',
+            'categories' => [],
+            'state' => 'published',
+
+        ]);
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->default();
+
+        $this->assertSame('unpublished', $transformed['state']);
+    }
+
+    /**
+     * @test
+     * @covers ::default
+     *
+     * Сброс статуса Записи, если статус не указан.
+     * @return void
+     */
+    public function testResetStateArticleWithoutStateToUnpublished(): void
+    {
+        $request = $this->createRequestWithCustomData([
+            'title' => 'Some title',
+
+        ]);
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->default();
+
+        $this->assertSame('unpublished', $transformed['state']);
+    }
+
+    /**
+     * @test
+     * @covers ::default
+     *
+     * Статус Записи не изменен, если указаны необходимые данные.
+     * @return void
+     */
+    public function testNotChangedArticleStateWithNecessaryData(): void
+    {
+        $request = $this->createRequestWithCustomData([
+            'title' => 'Some title',
+            'categories' => [1, 2, 3],
+            'state' => 'published',
+
+        ]);
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->default();
+
+        $this->assertSame('published', $transformed['state']);
+    }
+
+    /**
+     * @test
+     * @covers ::default
+     *
+     * SEO-поля Записи с типом `string` обрезаются до 255 символов.
+     * Тип в БД `varchar(255)`.
+     * @return void
+     */
+    public function testSeoFieldsWithStringTypeTrimmedTo255Characters(): void
+    {
+        // Массив тестируемых полей. Прописываем вручную,
+        // так как ожидаем определенного поведения от системы,
+        // а не тестируем уже сформированное поведение,
+        // описанное в методе `rules`.
+        $fields = [
+            'slug',
+            // 'teaser',
+            'description',
+            'keywords',
+            // 'tags.*',
+
+        ];
+
+        $filledFields = array_fill_keys($fields, Str::random(256));
+
+        $request = $this->createRequestWithCustomData(array_merge($filledFields, [
+            'title' => 'Some title',
+
+        ]));
+
+        $transformer = $this->createTransformer($request);
+        $transformed = $transformer->default();
+
+        foreach ($fields as $field) {
+            $this->assertLessThanOrEqual(255, $transformed[$field]);
+        }
+    }
+
+    protected function createTransformer(Request $request): ResourceRequestTransformer
     {
         return new ArticlesTransformer($request);
     }
