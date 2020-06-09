@@ -17,6 +17,8 @@ use Tests\TestCase;
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\ArticlesController
  *
+ * @cmd phpunit tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest.php
+ *
  * @NB Приложение использует двойную аутентификацию
  * для доступа к API-ресурсам.
  * Тестируя только api-драйвер аутентификации,
