@@ -19,6 +19,7 @@ class ArticleResource extends JsonResource
         // ->getDirty неизвесто
         // >getOriginal проходит проверку cast, hidden.
         return array_merge($this->resource->getOriginal(), [
+            'content' => $this->resource->getRawOriginal('content'),
             'url' => $this->url,
             'categories' => new CategoryResource($this->whenLoaded('categories')),
             'comments' => new CommentResource($this->whenLoaded('comments')),
