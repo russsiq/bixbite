@@ -16,7 +16,7 @@ class ArticleResource extends JsonResource
     public function toArray($request): array
     {
         // ->getRawOriginal не проходит проверку cast, hidden.
-        // >getDirty неизвесто
+        // ->getDirty неизвесто
         // >getOriginal проходит проверку cast, hidden.
         return array_merge($this->resource->getOriginal(), [
             'url' => $this->url,
