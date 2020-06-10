@@ -93,7 +93,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
             function (string $tag) {
                 return string_slug($tag, setting('tags.delimiter', '-'), false, false);
             },
-            preg_split('/,/', $input['tags'], -1, PREG_SPLIT_NO_EMPTY)
+            preg_split('/,/', $this->request->input('tags'), -1, PREG_SPLIT_NO_EMPTY)
         );
 
         if (empty($input['date_at'])) {
