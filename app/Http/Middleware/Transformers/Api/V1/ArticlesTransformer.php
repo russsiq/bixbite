@@ -2,6 +2,14 @@
 
 namespace App\Http\Middleware\Transformers\Api\V1;
 
+// Исключения.
+use Illuminate\Validation\ValidationException;
+
+// Базовые расширения PHP.
+use DOMDocument;
+use DOMNode;
+use LibXMLError;
+
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
@@ -12,6 +20,37 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticlesTransformer implements ResourceRequestTransformer
 {
+    /**
+     * [ERROR_HTML_UNKNOWN_TAG description]
+     * @const integer
+     */
+    const ERROR_HTML_UNKNOWN_TAG = 801;
+
+    /**
+     * [PRE_TRUSTED_CLASS description]
+     * @const string
+     */
+    const PRE_TRUSTED_CLASS = 'ql-syntax';
+
+    /**
+     * [HTML_TRUSTED_TAGS description]
+     * @const string[]
+     */
+    const HTML_TRUSTED_TAGS = [
+        'audio',
+        'canvas',
+        'details',
+        'figcaption',
+        'figure',
+        'mark',
+        'picture',
+        'section',
+        'source',
+        'summary',
+        'video',
+
+    ];
+
     /**
      * Запрос для текущего ресурса.
      * @var Request
@@ -42,28 +81,20 @@ class ArticlesTransformer implements ResourceRequestTransformer
         ]);
 
         $input['title'] = filter_var($this->request->input('title'), FILTER_SANITIZE_STRING);
-        $input['slug'] = string_slug($input['slug'] ?? $input['title']);
-        $input['teaser'] = html_clean($input['teaser'] ?? null);
+        $input['slug'] = string_slug($this->request->input('slug', $this->request->input('title')));
 
-        $input['content'] = preg_replace_callback(
-            "/<pre[^>]*?>(.+?)<\/pre>/is",
-            function ($match) {
-                return '<pre class="ql-syntax" spellcheck="false">' . html_secure($match[1]) . '</pre>';
+        $input['teaser'] = filter_var($this->request->input('teaser'), FILTER_SANITIZE_STRING);
+        $input['content'] = $this->parseContent($this->request->input('content', null));
+
+        $input['description'] = teaser($this->request->input('description') ?? null, 255);
+        $input['keywords'] = teaser($this->request->input('keywords') ?? null, 255, '');
+
+        $input['tags'] = array_map(
+            function (string $tag) {
+                return string_slug($tag, setting('tags.delimiter', '-'), false, false);
             },
-            $this->request->input('content', null)
+            preg_split('/,/', $input['tags'], -1, PREG_SPLIT_NO_EMPTY)
         );
-        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
-        $input['content'] = $this->removeEmoji($input['content']);
-
-        $input['description'] = teaser($input['description'] ?? null, 255);
-        $input['keywords'] = teaser($input['keywords'] ?? null, 255, '');
-        $input['tags'] = isset($input['tags'])
-            ? array_map(
-                function (string $tag) {
-                    return string_slug($tag, setting('tags.delimiter', '-'), false, false);
-                },
-                preg_split('/,/', $input['tags'], -1, PREG_SPLIT_NO_EMPTY)
-            ) : [];
 
         if (empty($input['date_at'])) {
             $input['updated_at'] =  date('Y-m-d H:i:s');
@@ -136,14 +167,99 @@ class ArticlesTransformer implements ResourceRequestTransformer
         return $inputs;
     }
 
+    protected function parseContent(string $content = null)
+    {
+        if (is_null($content)) {
+            return '';
+        }
+
+        $content = $this->removeEmoji($content);
+
+        $document = new DOMDocument('1.0', 'UTF-8');
+
+        // Кодировка документа, как указано в объявлении XML.
+        $document->encoding = 'UTF-8';
+
+        // Форматирует вывод, добавляя отступы и дополнительные пробелы.
+        $document->formatOutput = false;
+
+        // Указание не убирать лишние пробелы и отступы. По умолчанию TRUE.
+        $document->preserveWhiteSpace = true;
+
+        libxml_use_internal_errors(true);
+
+        $document->loadHTML(
+            '<!DOCTYPE html>'
+            .'<html>'
+                .'<head>'
+                    // .'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
+                    .'<meta charset="utf-8">'
+                .'</head>'
+                .'<body>'
+                    .$content
+                .'</body>'
+            .'</html>');
+
+        $xmlErrors = [];
+
+        foreach (libxml_get_errors() as $error) {
+            $message = $error->message;
+
+            if (self::ERROR_HTML_UNKNOWN_TAG === $error->code) {
+
+                preg_match('/Tag (?<tag>\w+) invalid/i', $message, $matches);
+
+                if (isset($matches['tag']) && in_array($matches['tag'], self::HTML_TRUSTED_TAGS)) {
+                    continue;
+                }
+            }
+
+            $xmlErrors[] = [
+                'content' => $message,
+            ];
+        }
+
+        if ($xmlErrors) {
+            throw ValidationException::withMessages($xmlErrors);
+        }
+
+        libxml_clear_errors();
+
+        array_map(function (DOMNode $pre) {
+            $pre->setAttribute('class', self::PRE_TRUSTED_CLASS);
+            $pre->setAttribute('spellcheck', 'false');
+
+            $html = $pre->ownerDocument->saveHTML($pre);
+            $html = preg_replace("/<pre[^>]*?>(.+?)<\/pre>/is", '$1', $html);
+
+            $pre->nodeValue = e($html, false);
+        }, iterator_to_array($document->getElementsByTagName('pre')));
+
+        array_map(function (DOMNode $script) {
+            $script->parentNode->removeChild($script);
+        }, iterator_to_array($document->getElementsByTagName('script')));
+
+        $content = $document->saveHTML(
+            $document->documentElement->lastChild
+        );
+
+        $content = preg_replace("/<body>(.+?)<\/body>/is", '$1', $content);
+
+        return $content;
+    }
+
     /**
      * Remove Emoji Characters in PHP by Himphen Hui.
      * @source https://medium.com/coding-cheatsheet/remove-emoji-characters-in-php-236034946f51
      * @param  string  $string
      * @return string
      */
-    protected function removeEmoji(string $string)
+    protected function removeEmoji(string $string = null)
     {
+        if (is_null($string)) {
+            return '';
+        }
+
         // Match Emoticons.
         $regex_emoticons = '/[\x{1F600}-\x{1F64F}]/u';
         $clear_string = preg_replace($regex_emoticons, '', $string);
