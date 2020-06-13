@@ -27,6 +27,8 @@ class FeedbackRequest extends BaseFormRequest
                 'content' => nl2br(html_secure($this->input('content'))),
                 'politics' => $this->input('politics', false),
 
+                // 'from_address' => config('mail.from.address')
+
             ]);
     }
 
