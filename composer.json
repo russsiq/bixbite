@@ -26,7 +26,7 @@
         "russsiq/laravel-assistant": "dev-master",
         "russsiq/laravel-env-manager": "^0.2",
         "russsiq/laravel-grecaptcha": "^0.1",
-        "russsiq/laravel-zipper": "dev-master"
+        "russsiq/laravel-zipper": "^0.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
