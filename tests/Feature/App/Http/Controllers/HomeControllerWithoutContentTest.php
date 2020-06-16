@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 /**
  * @coversDefaultClass \App\Http\Controllers\HomeController
+ *
+ * @cmd phpunit tests\Feature\App\Http\Controllers\HomeControllerWithoutContentTest.php
  */
 class HomeControllerWithoutContentTest extends TestCase
 {
