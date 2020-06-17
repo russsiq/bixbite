@@ -529,7 +529,7 @@ if (! function_exists('teaser')) {
      * @param  string $finisher
      * @return string|null \Illuminate\Support\HtmlString
      */
-    function teaser($text, int $length = 50, string $finisher = ' ...')
+    function teaser($text, int $length = 255, string $finisher = ' ...')
     {
         if (! is_string($text) or empty($text)) {
             return null;
