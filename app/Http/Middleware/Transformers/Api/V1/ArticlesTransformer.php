@@ -14,6 +14,7 @@ use LibXMLError;
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Преобразователь данных Запроса для Записей.
@@ -33,10 +34,10 @@ class ArticlesTransformer implements ResourceRequestTransformer
     const PRE_TRUSTED_CLASS = 'ql-syntax';
 
     /**
-     * [HTML_TRUSTED_TAGS description]
+     * [HTML5_TRUSTED_TAGS description]
      * @const string[]
      */
-    const HTML_TRUSTED_TAGS = [
+    const HTML5_TRUSTED_TAGS = [
         'audio',
         'canvas',
         'details',
@@ -84,10 +85,10 @@ class ArticlesTransformer implements ResourceRequestTransformer
         $input['slug'] = string_slug($this->request->input('slug', $this->request->input('title')));
 
         $input['teaser'] = filter_var($this->request->input('teaser'), FILTER_SANITIZE_STRING);
-        $input['content'] = $this->parseContent($this->request->input('content', null));
+        $input['content'] = $this->parseContent($this->request->input('content'));
 
-        $input['description'] = teaser($this->request->input('description') ?? null, 255);
-        $input['keywords'] = teaser($this->request->input('keywords') ?? null, 255, '');
+        $input['description'] = teaser($this->request->input('description'));
+        $input['keywords'] = teaser($this->request->input('keywords'), 255, '');
 
         $input['tags'] = array_map(
             function (string $tag) {
@@ -175,10 +176,52 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
         $content = $this->removeEmoji($content);
 
-        $document = new DOMDocument('1.0', 'UTF-8');
+        // $crawler = new Crawler(null, url('/'));
+        // $crawler->addHtmlContent(
+        //     '<!DOCTYPE html>'.$content.'<script>alert("Привет");</script>',
+        //     'UTF-8'
+        // );
+        //
+        // // Sanitize `pre` tag.
+        // $crawler->filter('pre')
+        //     ->each(function (Crawler $node, $index) {
+        //         $pre = $node->getNode(0);
+        //
+        //         $pre->setAttribute('class', self::PRE_TRUSTED_CLASS);
+        //         $pre->setAttribute('spellcheck', 'false');
+        //
+        //         $pre->nodeValue = e($node->html(), false);
+        //
+        //         return $pre;
+        //     });
+        //
+        // // Sanitize `script` tag.
+        // $crawler->filter('script')
+        //     ->each(function (Crawler $node, $index) {
+        //         $script = $node->getNode(0);
+        //
+        //         $script->nodeValue = null;
+        //
+        //         $script->parentNode->removeChild($script);
+        //
+        //         return $script;
+        //     });
+        //
+        // // Get body text.
+        // [$content, ] = $crawler->filter('body')
+        //     ->each(function (Crawler $node, $i) {
+        //         return $node->html();
+        //     });
+
+        // dd($bodies);
+        // $content = $bodies[0];
+
+        $charset = preg_match('//u', $content) ? 'UTF-8' : 'ISO-8859-1';
+
+        $document = new DOMDocument('1.0', $charset);
 
         // Кодировка документа, как указано в объявлении XML.
-        $document->encoding = 'UTF-8';
+        $document->encoding = $charset;
 
         // Форматирует вывод, добавляя отступы и дополнительные пробелы.
         $document->formatOutput = false;
@@ -186,14 +229,20 @@ class ArticlesTransformer implements ResourceRequestTransformer
         // Указание не убирать лишние пробелы и отступы. По умолчанию TRUE.
         $document->preserveWhiteSpace = true;
 
+        // Загружает DTD и проверяет документ на соответствие. По умолчанию FALSE.
+        $document->validateOnParse = true;
+
         libxml_use_internal_errors(true);
 
         $document->loadHTML(
             '<!DOCTYPE html>'
             .'<html>'
                 .'<head>'
-                    // .'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
-                    .'<meta charset="utf-8">'
+                    .sprintf(
+                        // '<meta http-equiv="Content-Type" content="text/html; charset=%s">'
+                        '<meta charset="%s">'
+                        , $charset
+                    )
                 .'</head>'
                 .'<body>'
                     .$content
@@ -207,9 +256,9 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
             if (self::ERROR_HTML_UNKNOWN_TAG === $error->code) {
 
-                preg_match('/Tag (?<tag>\w+) invalid/i', $message, $matches);
+                preg_match('/Tag (?P<tag>\w+) invalid/i', $message, $matches);
 
-                if (isset($matches['tag']) && in_array($matches['tag'], self::HTML_TRUSTED_TAGS)) {
+                if (isset($matches['tag']) && in_array($matches['tag'], self::HTML5_TRUSTED_TAGS)) {
                     continue;
                 }
             }
@@ -239,11 +288,22 @@ class ArticlesTransformer implements ResourceRequestTransformer
             $script->parentNode->removeChild($script);
         }, iterator_to_array($document->getElementsByTagName('script')));
 
-        $content = $document->saveHTML(
-            $document->documentElement->lastChild
-        );
+        // // Get body content.
+        // $content = $document->saveHTML(
+        //     $document->documentElement->lastChild
+        // );
+        //
+        // $content = preg_replace("/<body>(.+?)<\/body>/is", '$1', $content);
 
-        $content = preg_replace("/<body>(.+?)<\/body>/is", '$1', $content);
+        [$body, ] = $document->getElementsByTagName('body');
+
+        $owner = $body->ownerDocument;
+
+        $content = '';
+
+        foreach ($body->childNodes as $child) {
+            $content .= $owner->saveHTML($child);
+        }
 
         return $content;
     }

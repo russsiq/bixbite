@@ -7,6 +7,7 @@ use App\Exceptions\UnsupportedMiddlewareForRouteException;
 
 // Базовые расширения PHP.
 use Closure;
+use ReflectionClass;
 
 // Сторонние зависимости.
 use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 /**
  * Преобразование данных, полученных из API-запросов
  * на создание и сохранение сущностей.
+ *
+ * @TODO Рассмотреть варианты с биндингом преобразователя в контейнер,
+ *       либо использования рефлексии (ReflectionClass),
+ *       чтобы избежать создания ненужных классов.
  */
 class TransformApiData
 {
