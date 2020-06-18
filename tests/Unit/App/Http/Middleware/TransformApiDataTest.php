@@ -10,11 +10,12 @@ use App\Http\Middleware\TransformApiData;
 
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Библиотеки тестирования.
-use Mockery as m;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +29,7 @@ class TransformApiDataTest extends TestCase
 
     protected function tearDown(): void
     {
-        m::close();
+        Mockery::close();
 
         $this->mocks = [];
     }
@@ -76,17 +77,35 @@ class TransformApiDataTest extends TestCase
 
         $transformers = TransformApiData::AVAILABLE_TRANSFORMERS;
         $resources = array_keys($transformers);
-        $resource = array_pop($resources);
+        $resource = current($resources);
+        $transformer = TransformApiData::AVAILABLE_TRANSFORMERS[$resource];
 
         $actions = TransformApiData::ALLOWED_ACTIONS;
-        $action = array_pop($actions);
+        $action = current($actions);
 
-        $middleware = $this->createMiddleware("{$group}.{$resource}.{$action}");
+        $container = Mockery::mock(new Container);
+        $container->shouldReceive('make')
+            ->zeroOrMoreTimes()
+            ->andReturnUsing(function($transformer) use ($action) {
+                $transformer = Mockery::mock($transformer);
+                $transformer->shouldReceive($action)
+                    ->once();
+
+                return $transformer;
+            });
+
+        $request = Mockery::mock(new Request);
+
+        $middleware = $this->createMiddleware("{$group}.{$resource}.{$action}", $container);
 
         $this->assertTrue($middleware->hasTransformerForCurrentRoute());
         $this->assertSame($group, $middleware->group());
         $this->assertSame($resource, $middleware->resource());
         $this->assertSame($action, $middleware->action());
+
+        $middleware->handle($request, function ($request) {
+            // 
+        });
     }
 
     /**
@@ -120,14 +139,19 @@ class TransformApiDataTest extends TestCase
     /**
      * [createMiddleware description]
      * @param  string  $routeName
+     * @param  Container  $container
      * @return TransformApiData
      */
-    protected function createMiddleware(string $routeName): TransformApiData
+    protected function createMiddleware(string $routeName, Container $container = null): TransformApiData
     {
         Route::shouldReceive('currentRouteName')
             ->once()
             ->andReturn($routeName);
 
-        return new TransformApiData;
+        if (is_null($container)) {
+            $container = Mockery::mock(new Container);
+        }
+
+        return new TransformApiData($container);
     }
 }

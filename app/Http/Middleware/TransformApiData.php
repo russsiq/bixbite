@@ -12,6 +12,7 @@ use ReflectionClass;
 // Сторонние зависимости.
 use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
 use App\Support\Contracts\ResourceRequestTransformer;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,12 @@ class TransformApiData
     ];
 
     /**
+     * Экземпляр Контейнера служб.
+     * @var Container
+     */
+    protected $container;
+
+    /**
      * Имя текущего маршрута.
      * @var string
      */
@@ -78,9 +85,12 @@ class TransformApiData
 
     /**
      * Создать новый экземпляр Посредника.
+     * @param  Container  $container
      */
-    public function __construct()
+    public function __construct(Container $container)
     {
+        $this->container = $container;
+
         $this->detectSegments(
             $this->currentRouteName = Route::currentRouteName()
         );
@@ -160,7 +170,7 @@ class TransformApiData
     {
         $class = self::AVAILABLE_TRANSFORMERS[$this->resource()];
 
-        return new $class($request);
+        return $this->container->make($class);
     }
 
     /**
