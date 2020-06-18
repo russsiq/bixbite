@@ -19,16 +19,12 @@ use Illuminate\Support\Facades\Route;
 /**
  * Преобразование данных, полученных из API-запросов
  * на создание и сохранение сущностей.
- *
- * @TODO Рассмотреть варианты с биндингом преобразователя в контейнер,
- *       либо использования рефлексии (ReflectionClass),
- *       чтобы избежать создания ненужных классов.
  */
 class TransformApiData
 {
     /**
      * Карта преобразователей данных для ресурсов.
-     * @const string[]
+     * @const array
      */
     const AVAILABLE_TRANSFORMERS = [
         'articles' => ArticlesTransformer::class,
@@ -141,11 +137,9 @@ class TransformApiData
     public function handle($request, Closure $next)
     {
         if ($this->hasTransformerForCurrentRoute()) {
-            $transformer = $this->createTransformer($request);
-
-            if (method_exists($transformer, $this->action())) {
-                $request->merge($transformer->{$this->action()}());
-            }
+            $request->merge(
+                $this->createTransformer()->{$this->action()}()
+            );
         }
 
         return $next($request);
@@ -157,20 +151,22 @@ class TransformApiData
      */
     public function hasTransformerForCurrentRoute(): bool
     {
-        return array_key_exists($this->resource(), self::AVAILABLE_TRANSFORMERS)
-            && in_array($this->action(), self::ALLOWED_ACTIONS);
+        if ($this->isAvailableTransformer() && $this->isAllowedAction()) {
+            $reflection = new ReflectionClass($this->getTransformerClassName());
+
+            return $reflection->hasMethod($this->action());
+        }
+
+        return false;
     }
 
     /**
      * Создать новый экземпляр Преобразователя входящих данных.
-     * @param  Request  $request
      * @return ResourceRequestTransformer
      */
-    protected function createTransformer(Request $request): ResourceRequestTransformer
+    protected function createTransformer(): ResourceRequestTransformer
     {
-        $class = self::AVAILABLE_TRANSFORMERS[$this->resource()];
-
-        return $this->container->make($class);
+        return $this->container->make($this->getTransformerClassName());
     }
 
     /**
@@ -200,5 +196,20 @@ class TransformApiData
                 $group
             );
         }
+    }
+
+    protected function isAvailableTransformer(): bool
+    {
+        return array_key_exists($this->resource(), self::AVAILABLE_TRANSFORMERS);
+    }
+
+    protected function isAllowedAction(): bool
+    {
+        return in_array($this->action(), self::ALLOWED_ACTIONS);
+    }
+
+    protected function getTransformerClassName(): string
+    {
+        return self::AVAILABLE_TRANSFORMERS[$this->resource()];
     }
 }
