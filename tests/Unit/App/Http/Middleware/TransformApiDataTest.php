@@ -85,7 +85,7 @@ class TransformApiDataTest extends TestCase
 
         $container = Mockery::mock(new Container);
         $container->shouldReceive('make')
-            ->zeroOrMoreTimes()
+            ->once()
             ->andReturnUsing(function($transformer) use ($action) {
                 $transformer = Mockery::mock($transformer);
                 $transformer->shouldReceive($action)
@@ -104,7 +104,7 @@ class TransformApiDataTest extends TestCase
         $this->assertSame($action, $middleware->action());
 
         $middleware->handle($request, function ($request) {
-            // 
+            //
         });
     }
 
