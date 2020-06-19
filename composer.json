@@ -85,6 +85,11 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
+        "prestissimo": {
+            "maxConnections": 10,
+            "minConnections": 3,
+			"pipeline": true
+        },
         "sort-packages": true
     },
     "minimum-stability": "dev",
