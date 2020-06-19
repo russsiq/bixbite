@@ -24,10 +24,10 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "russsiq/laravel-assistant": "dev-master",
+        "russsiq/laravel-dom-manipulator": "dev-master",
         "russsiq/laravel-env-manager": "^0.2",
         "russsiq/laravel-grecaptcha": "^0.1",
-        "russsiq/laravel-zipper": "^0.1",
-        "symfony/dom-crawler": "^5.1"
+        "russsiq/laravel-zipper": "^0.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",

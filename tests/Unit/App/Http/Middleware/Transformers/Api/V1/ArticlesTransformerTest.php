@@ -10,8 +10,11 @@ use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Russsiq\DomManipulator\Contracts\DOMFactoryContract;
+use Russsiq\DomManipulator\Contracts\DOMRepositoryContract;
 
 // Библиотеки тестирования.
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,6 +24,15 @@ use PHPUnit\Framework\TestCase;
  */
 class ArticlesTransformerTest extends TestCase
 {
+    protected $mocks = [];
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+
+        $this->mocks = [];
+    }
+
     /**
      * @test
      * @covers ::store
@@ -173,9 +185,22 @@ class ArticlesTransformerTest extends TestCase
         }
     }
 
-    protected function createTransformer(Request $request): ResourceRequestTransformer
+    /**
+     * [createTransformer description]
+     * @param  Request  $request
+     * @param  DOMFactoryContract  $domManipulator
+     * @return ResourceRequestTransformer
+     */
+    protected function createTransformer(Request $request, DOMFactoryContract $domManipulator = null): ResourceRequestTransformer
     {
-        return new ArticlesTransformer($request);
+        if (is_null($domManipulator)) {
+            // $domManipulator = $this->getMockBuilder(DOMFactoryContract::class)
+            //     ->disableOriginalConstructor()
+            //     ->getMock();
+            $domManipulator = Mockery::mock(DOMFactoryContract::class);
+        }
+
+        return new ArticlesTransformer($request, $domManipulator);
     }
 
     /**
