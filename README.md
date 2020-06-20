@@ -128,6 +128,8 @@ composer create-project russsiq/bixbite blog -s dev
 
 Небольшой список рекомендуемых пакетов для редактора Atom: *atom-beautify*, *atom-ide-ui*, *docblockr*, *emmet*, *file-icons*, *highlight-selected*, *ide-php*, *language-blade*, *html-to-css*, *language-vue*.
 
+Словари русского языка, необходимые для пакета [spell-check](https://atom.io/packages/spell-check) редактора Atom, доступны в архиве формата `*.oxt` по [ссылке](https://extensions.openoffice.org/en/project/slovari-dlya-russkogo-yazyka-dictionaries-russian). После скачивания расширения, которое предназначено для OpenOffice, откройте его архиватором и извлеките необходимые файлы: **ru_RU.aff**, **ru_RU.dic**. В настройках `Packages` `->` `Spell Check` укажите директорию, содержащую извлеченные файлы словарей в пункте `Locale paths`. Там же укажите значение `en-US, ru-RU` в пункте `Locales`.
+
 ### Настройка виртуального хостинга XAMPP
 
 Нам нужно настроить виртуальный хост XAMPP, чтобы корректно задать корневую директорию проекта Laravel, а также назначить имя проекту, по которому мы будем обращаться через браузер.
