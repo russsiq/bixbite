@@ -6,7 +6,6 @@ define('DS', DIRECTORY_SEPARATOR);
  * app_locale - Get current lang.
  * app_theme - Get current theme name.
  * cluster - Remove empty array values and joined with delimiter.
- * extract_images - Extract existing images paths array from given html string.
  * formatBytes - Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
  * get_captcha - Generate captcha html-block.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
