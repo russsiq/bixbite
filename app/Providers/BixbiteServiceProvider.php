@@ -5,15 +5,19 @@ namespace App\Providers;
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 
 // Сторонние зависимости.
+use App\Mixins\ArrMixin;
+use App\Mixins\FileMixin;
+use App\Mixins\LangMixin;
+use App\Mixins\StrMixin;
 use App\Support\PageInfo;
 use App\Support\CacheFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class BixbiteServiceProvider extends ServiceProvider
@@ -43,6 +47,11 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Arr::mixin(new ArrMixin);
+        File::mixin(new FileMixin);
+        Lang::mixin(new LangMixin);
+        Str::mixin(new StrMixin);
+
         \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
         \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
         \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
@@ -69,50 +78,6 @@ class BixbiteServiceProvider extends ServiceProvider
 
         Blade::if('role', function (string $environment) {
             return $environment === user('role');
-        });
-
-        // Удалить пустые значения массива и объединить их разделителем.
-        Arr::macro('cluster', function (array $array = null, string $delimiter = ' – '): string {
-            if (is_null($array)) {
-                return '';
-            }
-
-            return join($delimiter, array_values(array_filter($array)));
-        });
-
-        // Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
-        Str::macro('humanFilesize', function (int $size, int $precision = 2): string {
-            $suffixes = [
-                trans('common.bytes'),
-                trans('common.KB'),
-                trans('common.MB'),
-                trans('common.GB'),
-                trans('common.TB'),
-            ];
-
-            for ($i = 0; $size > 1024; $i++) {
-                $size /= 1024;
-            }
-
-            return round($size, $precision).' '.$suffixes[$i];
-        });
-
-        Filesystem::macro('humanSize', function (string $path, int $precision = 2): string {
-            return Str::humanFilesize($this->size($path, $precision));
-        });
-
-        // Создаем макрос перезагрузки `json` файлов переводов.
-        // Когда стронние пакеты используют помощник `trans` в своих поставщиках,
-        // то метод `addJsonPath` не отрабатывает ожидаемым образом,
-        // т.к. метод `load` считает, что все уже загружено:
-        // https://github.com/laravel/framework/blob/6.x/src/Illuminate/Translation/Translator.php#L271
-        // Пакет на котором был отслежен данный факт:
-        // https://github.com/russsiq/laravel-grecaptcha/blob/master/src/app/GRecaptchaServiceProvider.php#L49
-        Lang::macro('reloadJsonPaths', function ($namespace, $group, $locale) {
-            $this->loaded[$namespace][$group][$locale] = array_merge(
-                $this->loaded[$namespace][$group][$locale] ?? [],
-                $this->loader->load($locale, $group, $namespace)
-            );
         });
     }
 
