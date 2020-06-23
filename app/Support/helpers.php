@@ -70,29 +70,6 @@ if (! function_exists('cluster')) {
     }
 }
 
-if (! function_exists('extract_images')) {
-    /**
-     * Extract images paths array from given html string.
-     *
-     * @param  string $html
-     * @return array
-     */
-    function extract_images(string $html): array
-    {
-        $images = [];
-        $doc = new \DOMDocument;
-        if ($doc->loadHTML($html)) {
-            // Analyze all founded <img> tags
-            foreach ($doc->getElementsByTagName('img') as $tag) {
-                // Add record if isset src="" attribute
-                $images[] = $tag->getAttribute('src');
-            }
-        }
-
-        return $images;
-    }
-}
-
 if (! function_exists('formatBytes')) {
     /**
      * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
