@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Lang;
 use App\Support\PageInfo;
 use App\Support\CacheFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class BixbiteServiceProvider extends ServiceProvider
@@ -76,6 +78,27 @@ class BixbiteServiceProvider extends ServiceProvider
             }
 
             return join($delimiter, array_values(array_filter($array)));
+        });
+
+        // Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
+        Str::macro('humanFilesize', function (int $size, int $precision = 2): string {
+            $suffixes = [
+                trans('common.bytes'),
+                trans('common.KB'),
+                trans('common.MB'),
+                trans('common.GB'),
+                trans('common.TB'),
+            ];
+
+            for ($i = 0; $size > 1024; $i++) {
+                $size /= 1024;
+            }
+
+            return round($size, $precision).' '.$suffixes[$i];
+        });
+
+        Filesystem::macro('humanSize', function (string $path, int $precision = 2): string {
+            return Str::humanFilesize($this->size($path, $precision));
         });
 
         // Создаем макрос перезагрузки `json` файлов переводов.

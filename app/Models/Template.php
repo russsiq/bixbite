@@ -92,7 +92,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         if ($exists) {
             $this->attributes['content'] = File::get($path);
             $this->attributes['modified'] = strftime('%Y-%m-%d %H:%M', File::lastModified($path));
-            $this->attributes['size'] = formatBytes(File::size($path));
+            $this->attributes['size'] = File::humanSize($path);
         }
     }
 

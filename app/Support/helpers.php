@@ -5,7 +5,6 @@ define('DS', DIRECTORY_SEPARATOR);
 /**
  * app_locale - Get current lang.
  * app_theme - Get current theme name.
- * formatBytes - Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
  * get_gravatar - Get Gravatar url for img tag using specified email.
  * html_clean - Remove html tags.
@@ -50,34 +49,6 @@ if (! function_exists('app_theme')) {
     function app_theme(): string
     {
         return setting('system.app_theme', 'default');
-    }
-}
-
-if (! function_exists('formatBytes')) {
-    /**
-     * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
-     *
-     * @param  integer $size
-     * @param  integer $precision
-     * @return string
-     */
-    function formatBytes(int $size, int $precision = 2): string
-    {
-        if ($size > 0) {
-            $base = log($size) / log(1024);
-
-            $suffixes = [
-                __('common.bytes'),
-                __('common.KB'),
-                __('common.MB'),
-                __('common.GB'),
-                __('common.TB'),
-            ];
-
-            return round(pow(1024, $base - floor($base)), $precision).' '.$suffixes[floor($base)];
-        }
-
-        return $size;
     }
 }
 
