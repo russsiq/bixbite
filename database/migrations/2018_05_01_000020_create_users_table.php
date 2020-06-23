@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->timestamps(); // registered_at and logined_at
             $table->timestamp('logined_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('banned_until')->nullable();
 
             $table->index('name');
             $table->index('password');

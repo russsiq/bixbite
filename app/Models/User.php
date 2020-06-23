@@ -74,6 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'where_from',
         'last_ip',
         'logined_at',
+        'banned_until',
 
     ];
 
