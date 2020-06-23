@@ -5,7 +5,6 @@ define('DS', DIRECTORY_SEPARATOR);
 /**
  * app_locale - Get current lang.
  * app_theme - Get current theme name.
- * cluster - Remove empty array values and joined with delimiter.
  * formatBytes - Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
  * get_captcha - Generate captcha html-block.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
@@ -52,20 +51,6 @@ if (! function_exists('app_theme')) {
     function app_theme(): string
     {
         return setting('system.app_theme', 'default');
-    }
-}
-
-if (! function_exists('cluster')) {
-    /**
-     * Remove empty array values and joined with delimiter.
-     *
-     * @param  array  $array
-     * @param  string $delimiter
-     * @return string
-     */
-    function cluster(array $array, string $delimiter = ' — '): string
-    {
-        return join($delimiter, array_values(array_filter($array)));
     }
 }
 

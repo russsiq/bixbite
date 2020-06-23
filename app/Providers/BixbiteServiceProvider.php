@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Lang;
 // Сторонние зависимости.
 use App\Support\PageInfo;
 use App\Support\CacheFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -66,6 +67,15 @@ class BixbiteServiceProvider extends ServiceProvider
 
         Blade::if('role', function (string $environment) {
             return $environment === user('role');
+        });
+
+        // Удалить пустые значения массива и объединить их разделителем.
+        Arr::macro('cluster', function (array $array = null, string $delimiter = ' – '): string {
+            if (is_null($array)) {
+                return '';
+            }
+
+            return join($delimiter, array_values(array_filter($array)));
         });
 
         // Создаем макрос перезагрузки `json` файлов переводов.

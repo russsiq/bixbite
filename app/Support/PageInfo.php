@@ -5,6 +5,8 @@ namespace App\Support;
 use RuntimeException;
 use BadMethodCallException;
 
+use Illuminate\Support\Arr;
+
 /**
 * pageinfo([...])
 * pageinfo()->make([...])
@@ -49,7 +51,7 @@ class PageInfo
             'title' => $this->get('title') ?? null,
         ];
 
-        return cluster(
+        return Arr::cluster(
             setting('system.meta_title_reverse', false) ? array_reverse($titles) : $titles,
             setting('system.meta_title_delimiter', ' — ')
         );
