@@ -17,7 +17,7 @@ class StrMixin
      */
     public function cleanHTML(): callable
     {
-        return function(string $text = null): string {
+        return function (string $text = null): string {
             if (is_null($text)) {
                 return '';
             }
@@ -47,7 +47,7 @@ class StrMixin
      */
     public function humanFilesize(): callable
     {
-        return function(int $size, int $precision = 2): string {
+        return function (int $size, int $precision = 2): string {
             $suffixes = [
                 trans('common.bytes'),
                 trans('common.KB'),
@@ -71,7 +71,7 @@ class StrMixin
      */
     public function readingTime(): callable
     {
-        return function(string $text): string {
+        return function (string $text): string {
             $word_count = str_word_count(strip_tags($text));
             $minutes = floor($word_count / 150);
 
@@ -85,7 +85,7 @@ class StrMixin
      */
     public function teaser(): callable
     {
-        return function(string $text = null, int $length = 255, string $finisher = ' ...'): string {
+        return function (string $text = null, int $length = 255, string $finisher = ' ...'): string {
             if (is_null($text)) {
                 return '';
             }
