@@ -7,7 +7,6 @@ define('DS', DIRECTORY_SEPARATOR);
  * app_theme - Get current theme name.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
  * get_gravatar - Get Gravatar url for img tag using specified email.
- * html_clean - Remove html tags.
  * html_secure - Advanced htmlspecialchars. HTML & special symbols protection.
  * pageinfo - Working with global information about the page.
  * reading_time - Calculating of the time for which the text can be read.
@@ -89,31 +88,6 @@ if (! function_exists('get_gravatar')) {
         $url .= "?s=$s&d=$d";
 
         return $url;
-    }
-}
-
-if (! function_exists('html_clean')) {
-    /**
-     * Remove html tags and non printable chars.
-     *
-     * @param  string  $text
-     * @return string
-     */
-    function html_clean(string $text = null)
-    {
-        if (is_null($text)) {
-            return null;
-        }
-
-        $old_text = $text;
-
-        $text = preg_replace("/\>(\\x20|\t|\r|\n)+\</", '> <', $text);
-        $text = strip_tags($text);
-        $text = preg_replace('/([^\pL\pN\pP\pS\pZ])|([\xC2\xA0])/u', ' ', $text);
-        $text = str_replace('  ', ' ', $text);
-        $text = trim($text);
-
-        return $text === $old_text ? $text : html_clean($text);
     }
 }
 
@@ -466,7 +440,7 @@ if (! function_exists('teaser')) {
             return null;
         }
 
-        $text = html_clean($text);
+        $text = Str::cleanHTML($text);
         $length -= mb_strlen($finisher);
 
         if ((mb_strlen($text.$finisher) <= $length) or (0 == $length)) {

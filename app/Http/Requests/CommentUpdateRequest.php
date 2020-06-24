@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
+use Illuminate\Support\Str;
 
 class CommentUpdateRequest extends BaseFormRequest
 {
@@ -27,7 +28,7 @@ class CommentUpdateRequest extends BaseFormRequest
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
 
         if (! setting('comments.use_html', false)) {
-            $input['content'] = html_clean($input['content']);
+            $input['content'] = Str::cleanHTML($input['content']);
         }
 
         $this->replace($input);

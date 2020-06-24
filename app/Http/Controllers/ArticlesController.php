@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Контроллер, управляющий Записями сайта.
@@ -154,7 +155,7 @@ class ArticlesController extends SiteController
      */
     public function search(Request $request): Renderable
     {
-        $query = html_clean($request->input('query'));
+        $query = Str::cleanHTML($request->input('query'));
 
         $articles = $query
             ? $this->model->shortArticle()

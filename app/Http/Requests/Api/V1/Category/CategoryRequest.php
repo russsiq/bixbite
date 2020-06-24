@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api\V1\Category;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
+use Illuminate\Support\Str;
 
 class CategoryRequest extends BaseFormRequest
 {
@@ -26,8 +27,8 @@ class CategoryRequest extends BaseFormRequest
         $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
         $input['slug'] = string_slug($input['slug'] ?? $input['title']);
 
-        $input['description'] = html_clean($this->input('description', null));
-        $input['keywords'] = html_clean($this->input('keywords', null));
+        $input['description'] = Str::cleanHTML($this->input('description', null));
+        $input['keywords'] = Str::cleanHTML($this->input('keywords', null));
 
         // Delete all scripts from info sector.
         $input['info'] = ! empty($input['info']) ? preg_replace("/\<script.*?\<\/script\>/", '', $input['info']) : null;

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api\V1\File;
 
+use Illuminate\Support\Str;
+
 class Update extends FileRequest
 {
     /**
@@ -27,7 +29,7 @@ class Update extends FileRequest
                 // 'title' => $this->input('title', null),
 
                 // 3 Clean html tags in descroption.
-                'description' => html_clean($this->input('description', null)),
+                'description' => Str::cleanHTML($this->input('description', null)),
 
             ]);
     }

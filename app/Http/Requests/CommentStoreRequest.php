@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Support\Str;
 
 class CommentStoreRequest extends BaseFormRequest
 {
@@ -39,7 +40,7 @@ class CommentStoreRequest extends BaseFormRequest
         $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
 
         if (! setting('comments.use_html', false)) {
-            $input['content'] = html_clean($input['content']);
+            $input['content'] = Str::cleanHTML($input['content']);
         }
 
         $this->replace($input)

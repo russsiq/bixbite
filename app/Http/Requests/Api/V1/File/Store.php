@@ -89,7 +89,7 @@ class Store extends FileRequest
             'checksum' => md5_file($file->getPathname()),
 
             'title' => $title,
-            'description' => html_clean($this->input('description', null)),
+            'description' => Str::cleanHTML($this->input('description', null)),
             'properties' => $properties,
         ]);
     }
