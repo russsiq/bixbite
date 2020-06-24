@@ -26,6 +26,7 @@
             <div class="single_article__info">
                 <span class="single_article__meta"><a href="{{ $article->user->profile }}" itemprop="author">{{ $article->user->name }}</a>,</span>
                 <span class="single_article__meta">{{ $article->created }}</span>
+                <span class="single_article__meta-right"><i class="fa fa-book"></i> {{ Str::readingTime($article->content) }}</span>
                 @if ($article->views)
                     <span class="single_article__meta-right"><i class="fa fa-eye"></i> {{ $article->views }}</span>
                 @endif

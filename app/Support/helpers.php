@@ -9,7 +9,6 @@ define('DS', DIRECTORY_SEPARATOR);
  * get_gravatar - Get Gravatar url for img tag using specified email.
  * html_secure - Advanced htmlspecialchars. HTML & special symbols protection.
  * pageinfo - Working with global information about the page.
- * reading_time - Calculating of the time for which the text can be read.
  * select_dir (optional: `custom_views`, and folder in resource_path($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
@@ -155,22 +154,6 @@ if (! function_exists('pageinfo')) {
         }
 
         throw new \BadMethodCallException;
-    }
-}
-
-if (! function_exists('reading_time')) {
-    /**
-     * Calculating of the time for which the text can be read.
-     *
-     * @param  string    $text
-     * @return string
-     */
-    function reading_time(string $text)
-    {
-        $word_count = str_word_count(strip_tags($text));
-        $minutes = floor($word_count / 150);
-
-        return $minutes.' minute'.($minutes > 1 ? 's' : '');
     }
 }
 

@@ -66,6 +66,20 @@ class StrMixin
     }
 
     /**
+     * Подсчет времени, за которое текст может быть прочитан.
+     * @return callable
+     */
+    public function readingTime(): callable
+    {
+        return function(string $text): string {
+            $word_count = str_word_count(strip_tags($text));
+            $minutes = floor($word_count / 150);
+
+            return $minutes.' min read';
+        };
+    }
+
+    /**
      * Удалить HTML-теги и обрезать строку до указанной длины с ограничителем.
      * @return callable
      */
