@@ -32,13 +32,11 @@ class StrMixin
             $text = ASCII::clean($text, true, false, false, true);
 
             // Замеяем все кроме буквы, числа, пунктуацию, пробельный разделитель.
-            $text = preg_replace('/([^\pL\pN\pP\p{Zs}])/u', ' ', $text);
+            // Повторяющиеся пробельные символы заменяем на пробел.
+            $text = preg_replace('/([^\pL\pN\pP\p{Zs}])|(\pZ+)/u', ' ', $text);
 
             // Преобразовываем оставшиеся HTML-сущности.
             $text = static::secureHtml($text);
-
-            // Убираем двойные пробелы.
-            $text = str_replace('  ', ' ', $text);
 
             return trim($text);
         };
