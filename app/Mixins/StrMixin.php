@@ -7,7 +7,7 @@ use voku\helper\ASCII;
 class StrMixin
 {
     /**
-     * Удаление HTML-тегов, непечатаемых символов.
+     * Удалить HTML-теги и непечатаемые символы.
      * @return callable
      *
      * @NB Фильтры с флагами `FILTER_FLAG_STRIP_LOW`, `FILTER_FLAG_STRIP_HIGH` вырезают кирилицу.
