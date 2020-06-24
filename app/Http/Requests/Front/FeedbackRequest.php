@@ -24,8 +24,8 @@ class FeedbackRequest extends BaseFormRequest
         $this->replace($input)
             ->merge([
                 'name' => Str::teaser($this->input('name'), 100),
-                'contact' => html_secure($this->input('contact')),
-                'content' => nl2br(html_secure($this->input('content'))),
+                'contact' => Str::secureHtml($this->input('contact')),
+                'content' => nl2br(Str::secureHtml($this->input('content'))),
                 'politics' => $this->input('politics', false),
 
             ]);

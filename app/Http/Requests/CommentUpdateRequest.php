@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Support\Str;
+use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 class CommentUpdateRequest extends BaseFormRequest
 {
@@ -19,19 +20,28 @@ class CommentUpdateRequest extends BaseFormRequest
 
         ]);
 
-        $input['content'] = preg_replace_callback("/\<code\>(.+?)\<\/code\>/is",
-            function ($match) {
-                return '<pre>'.html_secure($match[1]).'</pre>';
-            }, $this->input('content')
-        );
-
-        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
-
-        if (! setting('comments.use_html', false)) {
-            $input['content'] = Str::cleanHTML($input['content']);
-        }
+        $input['content'] = $this->prepareContent($this->input('content'));
 
         $this->replace($input);
+    }
+
+    protected function prepareContent(string $content = null): string
+    {
+        if (is_null($content)) {
+            return '';
+        }
+
+        $content = DOMManipulator::removeEmoji($content);
+
+        $content = DOMManipulator::wrapAsDocument($content)
+            ->revisionPreTag()
+            ->remove('script');
+
+        if (! setting('comments.use_html', false)) {
+            $content = Str::cleanHTML($content);
+        }
+
+        return $content;
     }
 
     /**

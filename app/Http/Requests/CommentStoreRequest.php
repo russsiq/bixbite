@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Str;
+use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 class CommentStoreRequest extends BaseFormRequest
 {
@@ -29,19 +30,7 @@ class CommentStoreRequest extends BaseFormRequest
             $input['email'] = filter_var($this->input('email'), FILTER_SANITIZE_EMAIL, FILTER_FLAG_EMPTY_STRING_NULL);
         }
 
-        $input['content'] = preg_replace_callback(
-            "/\<code\>(.+?)\<\/code\>/is",
-            function ($match) {
-                return '<pre>'.html_secure($match[1]).'</pre>';
-            },
-            $this->input('content')
-        );
-
-        $input['content'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['content']);
-
-        if (! setting('comments.use_html', false)) {
-            $input['content'] = Str::cleanHTML($input['content']);
-        }
+        $input['content'] = $this->prepareContent($this->input('content'));
 
         $this->replace($input)
             ->merge([
@@ -57,6 +46,25 @@ class CommentStoreRequest extends BaseFormRequest
                 'user_ip' => $this->ip(),
 
             ]);
+    }
+
+    protected function prepareContent(string $content = null): string
+    {
+        if (is_null($content)) {
+            return '';
+        }
+
+        $content = DOMManipulator::removeEmoji($content);
+
+        $content = DOMManipulator::wrapAsDocument($content)
+            ->revisionPreTag()
+            ->remove('script');
+
+        if (! setting('comments.use_html', false)) {
+            $content = Str::cleanHTML($content);
+        }
+
+        return $content;
     }
 
     /**

@@ -7,7 +7,6 @@ define('DS', DIRECTORY_SEPARATOR);
  * app_theme - Get current theme name.
  * get_avatar - Get avatar url for img tag using specified user ID or email.
  * get_gravatar - Get Gravatar url for img tag using specified email.
- * html_secure - Advanced htmlspecialchars. HTML & special symbols protection.
  * pageinfo - Working with global information about the page.
  * select_dir (optional: `custom_views`, and folder in resource_path($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
@@ -99,33 +98,6 @@ if (! function_exists('html_raw')) {
     function html_raw(string $html)
     {
         return new HtmlString($html);
-    }
-}
-
-if (! function_exists('html_secure')) {
-    /**
-     * Advanced htmlspecialchars. HTML & special symbols protection.
-     *
-     * @param  string|array  $text
-     * @return string
-     */
-    function html_secure($text): string
-    {
-        if (is_array($text)) {
-            return array_map('html_secure', $text);
-        }
-
-        if (is_string($text)) {
-            $text = e($text);
-
-            return trim(str_replace(
-                ['{', '}', '<', '>', '"', "'"],
-                ['&#123;', '&#125;', '&lt;', '&gt;', '&#34;', '&#039;'],
-                $text
-            ));
-        }
-
-        return '';
     }
 }
 

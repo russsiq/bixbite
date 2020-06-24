@@ -34,6 +34,9 @@ class StrMixin
             // Замеяем все кроме буквы, числа, пунктуацию, пробельный разделитель.
             $text = preg_replace('/([^\pL\pN\pP\p{Zs}])/u', ' ', $text);
 
+            // Преобразовываем оставшиеся HTML-сущности.
+            $text = static::secureHtml($text);
+
             // Убираем двойные пробелы.
             $text = str_replace('  ', ' ', $text);
 
@@ -76,6 +79,29 @@ class StrMixin
             $minutes = floor($word_count / 150);
 
             return $minutes.' min read';
+        };
+    }
+
+    /**
+     * Дополнительное преобразование специальных символов в HTML-сущности.
+     * @return callable
+     */
+    public function secureHtml(): callable
+    {
+        return function (string $text = null): string {
+            if (is_null($text)) {
+                return '';
+            }
+
+            $text = e($text, false);
+
+            $text = str_replace(
+                ['{', '}', '<', '>', '"', "'"],
+                ['&#123;', '&#125;', '&lt;', '&gt;', '&#34;', '&#039;'],
+                $text
+            );
+
+            return trim($text);
         };
     }
 
