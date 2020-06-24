@@ -58,17 +58,19 @@ trait FullTextSearch
     protected function fullTextWildcards(string $term): string
     {
         // Удаление символов, используемых MySQL.
-        $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
+        // https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html
+        // $reservedSymbols = ['+', '-', '@', '>', '<', '(', ')', '~', '*', '"', '`', "'"];
 
         return Str::of($term)
-            ->replace($reservedSymbols, '')
+            // Проще оставить только буквы, цифры и пробельные символы.
+            ->replaceMatches('/[^[:alnum:][:space:]]/u', '')
             ->explode(' ')
+            ->map(function (string $word) {
+                return trim($word);
+            })
             ->filter(function (string $word) {
                 // Исключаем слова короче трех символов.
-                return strlen(trim($word)) >= 3;
-            })
-            ->map(function (string $word) {
-                return $word; // '+' . $word . '*';
+                return mb_strlen($word, 'utf-8') >= 3;
             })
             ->implode(' ');
     }
