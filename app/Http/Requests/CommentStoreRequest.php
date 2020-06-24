@@ -148,10 +148,7 @@ class CommentStoreRequest extends BaseFormRequest
             // ],
 
             'g-recaptcha-response' => [
-                'bail',
-                (! auth()->check() && config('g_recaptcha.used') ? 'required' : 'nullable'),
-                'string',
-                (! auth()->check() && config('g_recaptcha.used') ? 'g_recaptcha' : 'nullable'),
+                config('g_recaptcha.used') ? 'g_recaptcha' : 'nullable',
 
             ],
 
