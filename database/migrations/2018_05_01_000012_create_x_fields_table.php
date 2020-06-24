@@ -13,7 +13,6 @@ class CreateXFieldsTable extends Migration
     public function up()
     {
         Schema::create('x_fields', function (Blueprint $table) {
-
             $table->id();
             $table->string('extensible', 30);
             $table->string('name', 30);
@@ -22,13 +21,12 @@ class CreateXFieldsTable extends Migration
             $table->string('title', 125)->nullable();
             $table->text('descr')->length(500)->nullable();
             $table->text('html_flags')->length(500)->nullable();
+            $table->timestamps();
 
             // disabled or except or used or activated.
 
             $table->index('extensible');
             $table->unique(['extensible', 'name']);
-
-            $table->timestamps();
         });
     }
 

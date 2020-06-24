@@ -13,16 +13,11 @@ class CreateFollowsUsersTable extends Migration
     public function up()
     {
         Schema::create('follows_users', function (Blueprint $table) {
-            $table->unsignedBigInteger('follow_id');
-            $table->unsignedBigInteger('user_id');
-
-            $table->foreign('user_id')
-                ->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('follow_id')
-                ->references('id')->on('users')->onDelete('cascade');
-
             $table->primary(['user_id', 'follow_id']);
-
+            $table->foreignId('user_id')->constrained()
+                  ->onDelete('cascade');
+            $table->foreignId('follow_id')->constrained('users')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

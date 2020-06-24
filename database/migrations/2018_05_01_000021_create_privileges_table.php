@@ -12,16 +12,13 @@ class CreatePrivilegesTable extends Migration
     public function up()
     {
         Schema::create('privileges', function (Blueprint $table) {
-
             $table->id();
             $table->string('privilege')->unique();
             $table->string('description')->nullable(); // ->default('No description available');
-
             $table->boolean('owner')->default(1);
             $table->boolean('admin')->nullable();
             $table->boolean('moder')->nullable();
             $table->boolean('user')->nullable();
-
             $table->timestamps();
         });
     }
@@ -32,9 +29,6 @@ class CreatePrivilegesTable extends Migration
      */
     public function down()
     {
-        Schema::table('privileges', function(Blueprint $table) {
-            // $table->dropUnique(['privilege']);
-        });
-        Schema::drop('privileges');
+        Schema::dropIfExists('privileges');
     }
 }

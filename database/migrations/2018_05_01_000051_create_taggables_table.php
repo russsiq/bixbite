@@ -13,7 +13,6 @@ class CreateTaggablesTable extends Migration
     public function up()
     {
         Schema::create('taggables', function (Blueprint $table) {
-
             $table->id();
             $table->unsignedBigInteger('tag_id');
             $table->morphs('taggable');
@@ -32,13 +31,6 @@ class CreateTaggablesTable extends Migration
      */
     public function down()
     {
-        Schema::table('taggables', function(Blueprint $table) {
-            $table->dropForeign(['tag_id']);
-            // $table->dropIndex(['tag_id']);
-            // $table->dropIndex(['taggable_id']);
-            // $table->dropIndex(['taggable_type']);
-        });
-
         Schema::dropIfExists('taggables');
     }
 }

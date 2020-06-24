@@ -39,7 +39,7 @@ class CreateCommentsTable extends Migration
             $table->index('commentable_id');
             $table->index('commentable_type');
             $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('SET NULL');
+                  ->onDelete('SET NULL');
         });
     }
 
@@ -49,14 +49,6 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('comments', function(Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            // $table->dropIndex(['user_id']);
-            // $table->dropIndex(['is_approved']);
-            // $table->dropIndex(['parent_id']);
-            // $table->dropIndex(['commentable_id']);
-            // $table->dropIndex(['commentable_type']);
-        });
         Schema::dropIfExists('comments');
     }
 }

@@ -20,12 +20,13 @@ class CreateNotesTable extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->boolean('is_completed')->default(false);
+            $table->timestamps();
 
             $table->index('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('image_id')->references('id')->on('files')->onDelete('set null');
-
-            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')
+                  ->onDelete('cascade');
+            $table->foreign('image_id')->references('id')->on('files')
+                  ->onDelete('set null');
         });
 
     }
@@ -36,9 +37,6 @@ class CreateNotesTable extends Migration
      */
     public function down()
     {
-        Schema::table('notes', function(Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
         Schema::dropIfExists('notes');
     }
 }

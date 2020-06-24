@@ -14,17 +14,15 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('module_name', 30);
+            $table->string('module_name', 30)->index();
             $table->string('name', 30);
             $table->string('type', 20)->default('string');
             $table->string('value');
+            $table->timestamps();
 
-            $table->index('module_name');
             $table->unique(['name', 'module_name']);
             $table->foreign('module_name')->references('name')->on('modules')
                   ->onDelete('cascade')->onUpdate('cascade');
-
-            $table->timestamps();
         });
     }
 
@@ -34,10 +32,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function(Blueprint $table) {
-            $table->dropForeign(['module_name']);
-        });
-
         Schema::dropIfExists('settings');
     }
 }

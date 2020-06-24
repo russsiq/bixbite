@@ -13,7 +13,6 @@ class CreateCategoryablesTable extends Migration
     public function up()
     {
         Schema::create('categoryables', function (Blueprint $table) {
-
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->morphs('categoryable');
@@ -23,8 +22,6 @@ class CreateCategoryablesTable extends Migration
             $table->index('categoryable_type');
             $table->foreign('category_id')->references('id')->on('categories')
                   ->onDelete('cascade');
-
-            // $table->timestamps();
         });
     }
 
@@ -34,13 +31,6 @@ class CreateCategoryablesTable extends Migration
      */
     public function down()
     {
-        Schema::table('categoryables', function(Blueprint $table) {
-            $table->dropForeign(['category_id']);
-            // $table->dropIndex(['tag_id']);
-            // $table->dropIndex(['taggable_id']);
-            // $table->dropIndex(['taggable_type']);
-        });
-
         Schema::dropIfExists('categoryables');
     }
 }

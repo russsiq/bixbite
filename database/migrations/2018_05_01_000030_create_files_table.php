@@ -73,10 +73,10 @@ class CreateFilesTable extends Migration
             $table->timestamps();
 
             // Make indexes.
-            $table->unique(['checksum']); // $table->unique(['type', 'name', 'extension']);
             $table->index('user_id');
             $table->index('attachment_id');
             $table->index('attachment_type');
+            $table->unique(['checksum']); // $table->unique(['type', 'name', 'extension']);
             $table->foreign('user_id')->references('id')->on('users')
                   ->onDelete('set null');
         });
@@ -88,9 +88,6 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        Schema::table('files', function(Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
         Schema::dropIfExists('files');
     }
 }
