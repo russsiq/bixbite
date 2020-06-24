@@ -38,7 +38,7 @@
                         left: 0;
                         bottom: 0;
                     ">
-                    <h5 style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">{{ teaser($article->title, 70) }}</h5>
+                    <h5 style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);">{{ $article->title }}</h5>
                     <p><small><i class="fa fa-calendar-o"></i>&nbsp;{{ $article->created }}</small></p>
                 </div>
             </a>

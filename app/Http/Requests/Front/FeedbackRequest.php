@@ -4,6 +4,7 @@ namespace App\Http\Requests\Front;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
+use Illuminate\Support\Str;
 
 class FeedbackRequest extends BaseFormRequest
 {
@@ -22,7 +23,7 @@ class FeedbackRequest extends BaseFormRequest
 
         $this->replace($input)
             ->merge([
-                'name' => teaser($this->input('name'), 100),
+                'name' => Str::teaser($this->input('name'), 100),
                 'contact' => html_secure($this->input('contact')),
                 'content' => nl2br(html_secure($this->input('content'))),
                 'politics' => $this->input('politics', false),

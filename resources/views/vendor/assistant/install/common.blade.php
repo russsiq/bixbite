@@ -75,7 +75,7 @@
 	        					<h3 class="theme-title">{{ $theme->id }}</h3>
 	        					<h4 class="theme-info"><a href="{{ $theme->author_url }}" target="_blank">{{ $theme->author }}</a><br>v{{ $theme->version }} ({{ $theme->reldate }})</h4>
 	        				</div>
-	        				<p class="theme-desc">{{ $theme->title }}<br>{{ teaser($theme->description, 150) }}</p>
+	        				<p class="theme-desc">{{ $theme->title }}<br>{{ $theme->description }}</p>
 	        			</div>
 	        		</div>
 	    		</div>

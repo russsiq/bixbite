@@ -64,4 +64,34 @@ class StrMixin
             return round($size, $precision).' '.$suffixes[$i];
         };
     }
+
+    /**
+     * Удалить HTML-теги и обрезать строку до указанной длины с ограничителем.
+     * @return callable
+     */
+    public function teaser(): callable
+    {
+        return function(string $text = null, int $length = 255, string $finisher = ' ...'): string {
+            if (is_null($text)) {
+                return '';
+            }
+
+            $text = static::cleanHTML($text);
+            $length -= mb_strlen($finisher);
+
+            if ((mb_strlen($text.$finisher) <= $length) or (0 === $length)) {
+                return $text;
+            }
+
+            $text = mb_substr($text, 0, $length);
+            $text = rtrim($text, ' .,:;!?-');
+
+            if (strpos($text, ' ')) {
+                $text = mb_substr($text, 0, mb_strrpos($text, ' '));
+                $text = rtrim($text, ' .,:;!?-');
+            }
+
+            return empty($text) ? $text : $text.$finisher;
+        };
+    }
 }

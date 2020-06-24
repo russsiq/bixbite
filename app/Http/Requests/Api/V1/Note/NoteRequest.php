@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api\V1\Note;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class NoteRequest extends BaseFormRequest
 {
@@ -20,7 +21,7 @@ class NoteRequest extends BaseFormRequest
         $input['image_id'] = $this->get('image_id', null);
         $input['title'] = $this->get('title', null);
         $input['slug'] = string_slug($input['title']);
-        $input['description'] = teaser($this->get('description', null), 500);
+        $input['description'] = Str::teaser($this->get('description', null), 500);
         $input['is_completed'] = $this->get('is_completed', false);
 
         $this->replace($input);

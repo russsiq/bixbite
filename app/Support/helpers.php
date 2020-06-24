@@ -16,7 +16,6 @@ define('DS', DIRECTORY_SEPARATOR);
  * skin - Generate a url to asset for current skin of application.
  * skin_path - Get path to `resources/skins/{skin}/{path}` folder.
  * string_slug - Create a web friendly URL slug from a string.
- * teaser - Remove html tags and truncate string at the specified length.
  * theme - Generate a url to asset for current theme of application.
  * theme_path - Get path to `resources\themes\\{theme-from-setting}\\{path}` resources $directory.
  * theme_version - Obtaining info about theme from version file.
@@ -422,40 +421,6 @@ if (! function_exists('string_slug')) {
         }
 
         return $str ?: null;
-    }
-}
-
-if (! function_exists('teaser')) {
-    /**
-     * Remove html tags and truncate string at the specified length.
-     *
-     * @param  string $text
-     * @param  int $length
-     * @param  string $finisher
-     * @return string|null \Illuminate\Support\HtmlString
-     */
-    function teaser($text, int $length = 255, string $finisher = ' ...')
-    {
-        if (! is_string($text) or empty($text)) {
-            return null;
-        }
-
-        $text = Str::cleanHTML($text);
-        $length -= mb_strlen($finisher);
-
-        if ((mb_strlen($text.$finisher) <= $length) or (0 == $length)) {
-            return $text;
-        }
-
-        $text = mb_substr($text, 0, $length);
-        $text = rtrim($text, ' :!,.-\xC2\xA0');
-
-        if (strpos($text, ' ')) {
-            $text = mb_substr($text, 0, mb_strrpos($text, ' '));
-            $text = rtrim($text, ' :!,.-\xC2\xA0');
-        }
-
-        return trim($text) ? $text.$finisher : null;
     }
 }
 

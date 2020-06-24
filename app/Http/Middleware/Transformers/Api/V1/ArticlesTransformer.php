@@ -12,6 +12,7 @@ use Russsiq\DomManipulator\Facades\DOMManipulator;
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Преобразователь данных Запроса для Записей.
@@ -47,14 +48,14 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
         ]);
 
-        $input['title'] = filter_var($this->request->input('title'), FILTER_SANITIZE_STRING);
+        $input['title'] = Str::teaser($this->request->input('title'), 255, '');
         $input['slug'] = string_slug($this->request->input('slug', $this->request->input('title')));
 
-        $input['teaser'] = filter_var($this->request->input('teaser'), FILTER_SANITIZE_STRING);
+        $input['teaser'] = Str::teaser($this->request->input('teaser'));
         $input['content'] = $this->prepareContent($this->request->input('content'));
 
-        $input['description'] = teaser($this->request->input('description'));
-        $input['keywords'] = teaser($this->request->input('keywords'), 255, '');
+        $input['description'] = Str::teaser($this->request->input('description'));
+        $input['keywords'] = Str::teaser($this->request->input('keywords'), 255, '');
 
         $input['tags'] = array_map(
             function (string $tag) {

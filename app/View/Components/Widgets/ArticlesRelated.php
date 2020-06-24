@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Support\WidgetAbstract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Компонент виджета `Похожие записи`.
@@ -148,7 +149,7 @@ class ArticlesRelated extends WidgetAbstract
                 });
             })
             ->where('articles.id', '<>', $article->id)
-            ->search(teaser($article->title . ' ' . $article->teaser, 255, ''))
+            ->search(Str::teaser($article->title.' '.$article->teaser, 255, ''))
             ->limit($this->parameter('limit'))
             ->get();
     }
