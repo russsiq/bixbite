@@ -63,16 +63,29 @@ class ArticleRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
+            // Отношения и другие поля с индексами.
             'user_id' => [
                 'bail',
-                'sometimes',
-                'required',
                 'integer',
                 'exists:users,id',
 
             ],
 
-            // Main content.
+            'image_id' => [
+                'nullable',
+                'integer',
+                'exists:files,id',
+
+            ],
+
+            'state' => [
+                'required',
+                'string',
+                'in:published,unpublished,draft',
+
+            ],
+
+            // Основное содержимое.
             'title' => [
                 'bail',
                 'required',
@@ -86,6 +99,7 @@ class ArticleRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
+                'alpha_dash',
 
             ],
 
@@ -102,6 +116,7 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
+            // Мета поля.
             'description' => [
                 'nullable',
                 'string',
@@ -116,14 +131,14 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            // Flags ?
-            'state' => [
-                'required',
+            'robots' => [
+                'nullable',
                 'string',
-                'in:published,unpublished,draft',
+                'in:noindex,nofollow,none', // null - content="all"
 
             ],
 
+            // Дополнительная информация.
             'on_mainpage' => [
                 'nullable',
                 'boolean',
@@ -148,15 +163,21 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            // Extension.
             'allow_com' => [
                 'required',
                 'numeric',
-                'in:0,1,2',
+                'in:0,1,2', // 0 - no; 1 - yes; 2 - by default
 
             ],
 
+            // Счетчики.
             'views' => [
+                'nullable',
+                'integer',
+
+            ],
+
+            'shares' => [
                 'nullable',
                 'integer',
 
@@ -174,14 +195,19 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            // Relations types.
-            'image_id' => [
-                'nullable',
-                'integer',
-                'exists:files,id',
+            'created_at' => [
+                // 'date_format:"Y-m-d H:i:s"',
+                'date',
 
             ],
 
+            'updated_at' => [
+                // 'date_format:"Y-m-d H:i:s"',
+                'date',
+
+            ],
+
+            // Отношения, которых тут быть не должно.
             'categories' => [
                 'nullable',
                 'array',
@@ -224,28 +250,6 @@ class ArticleRequest extends BaseFormRequest
                 'string',
                 'max:255',
                 'regex:/^[\w-]+$/u',
-
-            ],
-
-            // Временные метки.
-            'date_at' => [
-                'nullable',
-                'string',
-                'in:'.$this->allowedForInRule('date_at'),
-
-            ],
-
-            'created_at' => [
-                'nullable',
-                'required_with:date_at',
-                // 'date_format:"Y-m-d H:i:s"',
-
-            ],
-
-            'updated_at' => [
-                'nullable',
-                'required_without:date_at',
-                // 'date_format:"Y-m-d H:i:s"',
 
             ],
 
