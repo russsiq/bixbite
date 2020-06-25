@@ -91,7 +91,7 @@ class StoreTest extends TestCase
     {
         try {
             $request = $this->resolveRequestForTesting(
-                $generator($this->faker)
+                $generator($this->faker, $this->ownerUser)
             );
 
             $this->assertTrue($shouldPass);
@@ -147,9 +147,33 @@ class StoreTest extends TestCase
         return [
             'пропустить запрос с минимальным набором данных' => [
                 true,
-                function (Faker $faker) {
+                function (Faker $faker, User $ownerUser) {
+                    $title = $faker->sentence(mt_rand(4, 12));
+
                     return [
-                        'title' => $faker->sentence(mt_rand(4, 12))
+                        'user_id' => $ownerUser->id,
+                        'state' => 'draft',
+                        'title' => $title,
+                        'slug' => Str::slug($title),
+                        'allow_com' => 2,
+                        'created_at' => date('Y-m-d H:i:s'),
+
+                        // "user_id" => 51
+                        // "state" => "unpublished"
+                        // "title" => "Черновик"
+                        // "slug" => "chernovik"
+                        // "teaser" => ""
+                        // "content" => ""
+                        // "description" => ""
+                        // "keywords" => ""
+                        // "on_mainpage" => 0
+                        // "is_favorite" => 0
+                        // "is_pinned" => 0
+                        // "is_catpinned" => 0
+                        // "allow_com" => 2
+                        // "created_at" => "2020-06-25 20:54:26"
+                        // "tags" => []
+
                     ];
                 },
             ],

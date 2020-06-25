@@ -405,7 +405,9 @@ class ArticlesControllerTest extends TestCase
 
         $this->actingAsOwner()
             ->putJson(route('api.articles.update', $article->id), [
-                'title' => 'New title'
+                'title' => 'New title',
+                'created_at' => date('Y-m-d H:i:s'),
+
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
             ->assertJsonPath('data.title', 'New title');
