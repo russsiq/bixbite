@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api\V1\Category;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Support\Str;
+use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 class CategoryRequest extends BaseFormRequest
 {
@@ -24,14 +25,12 @@ class CategoryRequest extends BaseFormRequest
 
         ]);
 
-        $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+        $input['title'] = Str::teaser($this->input('title'), 255, '');
         $input['slug'] = $this->input('slug') ?: Str::slug($this->input('title'), '-', setting('system.translite_code', 'ru__gost_2000_b'));
 
-        $input['description'] = Str::cleanHTML($this->input('description', null));
-        $input['keywords'] = Str::cleanHTML($this->input('keywords', null));
-
-        // Delete all scripts from info sector.
-        $input['info'] = ! empty($input['info']) ? preg_replace("/\<script.*?\<\/script\>/", '', $input['info']) : null;
+        $input['description'] = Str::teaser($this->input('description'));
+        $input['keywords'] = Str::teaser($this->input('keywords'), 255, '');
+        $input['info'] = $this->prepareContent($this->input('info'));
 
         if (! empty($input['alt_url'])) {
             $input['alt_url'] = filter_var($input['alt_url'], FILTER_SANITIZE_URL, FILTER_FLAG_EMPTY_STRING_NULL);
@@ -43,6 +42,19 @@ class CategoryRequest extends BaseFormRequest
                 'show_in_menu' => $this->input('show_in_menu', false),
 
             ]);
+    }
+
+    protected function prepareContent(string $content = null): string
+    {
+        if (is_null($content)) {
+            return '';
+        }
+
+        $content = DOMManipulator::removeEmoji($content);
+
+        return DOMManipulator::wrapAsDocument($content)
+            ->revisionPreTag()
+            ->remove('script');
     }
 
     /**
