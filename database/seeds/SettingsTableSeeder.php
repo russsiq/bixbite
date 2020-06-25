@@ -168,6 +168,7 @@ class SettingsTableSeeder extends Seeder
         array_push($out, array_merge($def, ['name' => 'app_locale', 'value' => app_locale(), ]));
         array_push($out, array_merge($def, ['name' => 'app_theme', 'value' => app_theme(), ]));
         array_push($out, array_merge($def, ['name' => 'app_skin', 'value' => 'default', ]));
+        array_push($out, array_merge($def, ['name' => 'translite_code', 'value' => 'ru__gost_2000_b', 'type' => 'select', ]));
         array_push($out, array_merge($def, ['name' => 'homepage_personalized', 'value' => true, 'type' => 'boolean', ]));
 
         return $out;

@@ -386,6 +386,21 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-7">
+                                    <label class="control-label">Правила транслитерации ярлыков</label>
+                                    <small class="form-text text-muted">Данное правило будет применено при автоматической транслитерации дружественных фрагментов URL-адресов Категорий и Записей.</small>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select v-model="form.translite_code" class="form-control">
+                                        <option value="en">en</option>
+                                        <option value="ru">ru</option>
+                                        <option value="ru__passport_2013">ru__passport_2013</option>
+                                        <option value="ru__gost_2000_b">ru__gost_2000_b</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-7">
                                     <label class="control-label">Использовать персонализированную домашнюю страницу</label>
                                     <small class="form-text text-muted">Нет - на главной странице будет выведен список последних записей.</small>
                                 </div>
