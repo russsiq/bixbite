@@ -17,7 +17,7 @@ use Tests\TestCase;
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\ArticlesController
  *
- * @cmd phpunit tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest.php
+ * @cmd vendor\bin\phpunit tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest.php
  *
  * @NB Приложение использует двойную аутентификацию
  * для доступа к API-ресурсам.
@@ -77,6 +77,20 @@ class ArticlesControllerTest extends TestCase
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::index
+     *
+     * Ошибка аутентификации при просмотре списка записей собственником сайта.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileOwnerListingArticles(): void
+    {
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
+            ->postJson(route('api.articles.index'))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     /**
