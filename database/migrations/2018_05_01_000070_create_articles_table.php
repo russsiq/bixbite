@@ -20,7 +20,7 @@ class CreateArticlesTable extends Migration
 
             // Relation and other indexed keys.
             $table->string('img')->nullable();
-            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('image_id')->nullable();
 
             // Main content.
