@@ -57,7 +57,7 @@ class ArticlesController extends ApiController
      */
     public function store(StoreArticleRequest $request): JsonResponse
     {
-        $article = Article::create($request->all());
+        $article = Article::create($request->validated());
 
         $resource = new ArticleResource($article);
 
@@ -93,7 +93,7 @@ class ArticlesController extends ApiController
      */
     public function update(UpdateArticleRequest $request, Article $article): JsonResponse
     {
-        $article->update($request->all());
+        $article->update($request->validated());
 
         $article->load([
             'categories',
