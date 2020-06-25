@@ -40,7 +40,7 @@ class CommentStoreRequest extends BaseFormRequest
 
                 // Default value from route.
                 'commentable_id' => (int) $this->route('commentable_id'),
-                'commentable_type' => string_slug($this->route('commentable_type'), '_'),
+                'commentable_type' => Str::slug($this->route('commentable_type'), '_'),
 
                 // Aditional default value.
                 'user_ip' => $this->ip(),

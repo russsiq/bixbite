@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api\V1\Setting;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class SettingRequest extends BaseFormRequest
 {
@@ -29,8 +30,8 @@ class SettingRequest extends BaseFormRequest
         $input['fieldset'] = $input['fieldset'] ?? 'general';
 
         // By default type as string with delimiter `-`. Ex.: datetime-local.
-        $input['type'] = string_slug($input['type'], '-');
-        $input['name'] = string_slug($input['name'], '_');
+        $input['type'] = Str::slug($input['type'], '-');
+        $input['name'] = Str::slug($input['type'], '_');
 
         if ('select' == $input['type'] and ! empty($input['params'])) {
             $params = explode("\n", str_replace("\r\n", "\n", $input['params']));

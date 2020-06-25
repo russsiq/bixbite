@@ -17,12 +17,12 @@ class NoteRequest extends BaseFormRequest
     {
         $input = [];
 
-        $input['user_id'] = $this->get('user_id', null);
-        $input['image_id'] = $this->get('image_id', null);
-        $input['title'] = $this->get('title', null);
-        $input['slug'] = string_slug($input['title']);
-        $input['description'] = Str::teaser($this->get('description', null), 500);
-        $input['is_completed'] = $this->get('is_completed', false);
+        $input['user_id'] = $this->input('user_id', null);
+        $input['image_id'] = $this->input('image_id', null);
+        $input['title'] = $this->input('title', null);
+        $input['slug'] = Str::slug($this->input('title'));
+        $input['description'] = Str::teaser($this->input('description', null), 500);
+        $input['is_completed'] = $this->input('is_completed', false);
 
         $this->replace($input);
     }

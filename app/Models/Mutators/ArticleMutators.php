@@ -11,11 +11,6 @@ use Illuminate\Support\Str;
  */
 trait ArticleMutators
 {
-    public function setSlugAttribute($value)
-    {
-        $this->attributes['slug'] = string_slug($value ?? $this->title);
-    }
-
     public function getUrlAttribute()
     {
         return ($this->id and $this->categories->count() > 0  and 'published' === $this->state)

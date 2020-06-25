@@ -49,7 +49,9 @@ class ArticlesTransformer implements ResourceRequestTransformer
         ]);
 
         $input['title'] = Str::teaser($this->request->input('title'), 255, '');
-        $input['slug'] = string_slug($this->request->input('slug', $this->request->input('title')));
+        if (!setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
+            $input['slug'] = Str::slug($this->request->input('title'), '-', setting('system.translite_code', 'ru__gost_2000_b'));
+        }
 
         $input['teaser'] = Str::teaser($this->request->input('teaser'));
         $input['content'] = $this->prepareContent($this->request->input('content'));
@@ -59,7 +61,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
         $input['tags'] = array_map(
             function (string $tag) {
-                return string_slug($tag, setting('tags.delimiter', '-'), false, false);
+                return Str::slug($tag, setting('tags.delimiter', '-'), null);
             },
             preg_split('/,/', $this->request->input('tags'), -1, PREG_SPLIT_NO_EMPTY)
         );

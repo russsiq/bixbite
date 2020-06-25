@@ -25,7 +25,7 @@ class CategoryRequest extends BaseFormRequest
         ]);
 
         $input['title'] = filter_var($input['title'], FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
-        $input['slug'] = string_slug($input['slug'] ?? $input['title']);
+        $input['slug'] = $this->input('slug') ?: Str::slug($this->input('title'), '-', setting('system.translite_code', 'ru__gost_2000_b'));
 
         $input['description'] = Str::cleanHTML($this->input('description', null));
         $input['keywords'] = Str::cleanHTML($this->input('keywords', null));
@@ -61,9 +61,11 @@ class CategoryRequest extends BaseFormRequest
             ],
 
             'slug' => [
+                'bail',
                 'required',
                 'string',
                 'max:255',
+                'alpha_dash',
 
             ],
 
