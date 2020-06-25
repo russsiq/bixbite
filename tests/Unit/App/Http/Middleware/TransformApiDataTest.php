@@ -10,6 +10,7 @@ use App\Http\Middleware\TransformApiData;
 
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -84,10 +85,26 @@ class TransformApiDataTest extends TestCase
         $action = current($actions);
 
         $container = Mockery::mock(new Container);
+
+        $container->shouldReceive('make')
+            ->with('config')
+            ->once()
+            ->andReturnUsing(function($abstract) {
+                $this->assertSame('config', $abstract);
+
+                // Создать заглушку для класса ConfigRepository.
+                $config = Mockery::mock(ConfigRepository::class);
+
+                return $config;
+            });
+
         $container->shouldReceive('make')
             ->once()
             ->andReturnUsing(function($transformer) use ($action) {
+                // Создать заглушку для преобразователя.
                 $transformer = Mockery::mock($transformer);
+
+                // Настроить заглушку.
                 $transformer->shouldReceive($action)
                     ->once();
 
@@ -149,7 +166,7 @@ class TransformApiDataTest extends TestCase
             ->andReturn($routeName);
 
         if (is_null($container)) {
-            $container = Mockery::mock(new Container);
+            $container = Mockery::mock(Container::class);
         }
 
         return new TransformApiData($container);

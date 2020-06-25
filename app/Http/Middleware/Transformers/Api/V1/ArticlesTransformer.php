@@ -11,6 +11,7 @@ use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 // Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -26,12 +27,32 @@ class ArticlesTransformer implements ResourceRequestTransformer
     protected $request;
 
     /**
+     * Экземпляр репозитория Конфигурации.
+     * @var ConfigRepository
+     */
+    protected $config;
+
+    /**
      * Создать новый экземпляр Преобразователя данных.
      * @param  Request  $request
+     * @param  array  $settings
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, ConfigRepository $config)
     {
         $this->request = $request;
+        $this->config = $config;
+    }
+
+    /**
+     * Get the specified configuration value.
+     *
+     * @param  array|string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    protected function setting(string $key, $default = null)
+    {
+        return $this->config->get('settings.'.$key, $default);
     }
 
     /**
@@ -49,8 +70,8 @@ class ArticlesTransformer implements ResourceRequestTransformer
         ]);
 
         $input['title'] = Str::teaser($this->request->input('title'), 255, '');
-        if (!setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
-            $input['slug'] = Str::slug($this->request->input('title'), '-', setting('system.translite_code', 'ru__gost_2000_b'));
+        if (!$this->setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
+            $input['slug'] = Str::slug($this->request->input('title'), '-', $this->setting('system.translite_code', 'ru__gost_2000_b'));
         }
 
         $input['teaser'] = Str::teaser($this->request->input('teaser'));
@@ -61,7 +82,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
         $input['tags'] = array_map(
             function (string $tag) {
-                return Str::slug($tag, setting('tags.delimiter', '-'), null);
+                return Str::slug($tag, $this->setting('tags.delimiter', '-'), null);
             },
             preg_split('/,/', $this->request->input('tags'), -1, PREG_SPLIT_NO_EMPTY)
         );

@@ -6,7 +6,9 @@ namespace Tests\Unit\App\Http\Middleware\Transformers\Api\V1;
 use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
 
 // Сторонние зависимости.
+use App\Mixins\StrMixin;
 use App\Support\Contracts\ResourceRequestTransformer;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,13 @@ use PHPUnit\Framework\TestCase;
 class ArticlesTransformerTest extends TestCase
 {
     protected $mocks = [];
+
+    public static function setUpBeforeClass(): void
+    {
+        // После создания экземпляра текущего класса,
+        // используем миксины для работы со строками.
+        Str::mixin(new StrMixin);
+    }
 
     protected function tearDown(): void
     {
@@ -188,19 +197,43 @@ class ArticlesTransformerTest extends TestCase
     /**
      * [createTransformer description]
      * @param  Request  $request
-     * @param  DOMFactoryContract  $domManipulator
+     * @param  ConfigRepository  $config
      * @return ResourceRequestTransformer
      */
-    protected function createTransformer(Request $request, DOMFactoryContract $domManipulator = null): ResourceRequestTransformer
+    protected function createTransformer(Request $request, ConfigRepository $config = null): ResourceRequestTransformer
     {
-        if (is_null($domManipulator)) {
-            // $domManipulator = $this->getMockBuilder(DOMFactoryContract::class)
-            //     ->disableOriginalConstructor()
-            //     ->getMock();
-            $domManipulator = Mockery::mock(DOMFactoryContract::class);
+        if (is_null($config)) {
+            // Создать карту аргументов для возврата значений
+            $map = [
+                [
+                    'articles', [
+                        'manual_slug' => false,
+
+                    ],
+
+                    'system', [
+                        'translite_code' => 'ru__gost_2000_b',
+
+                    ],
+
+                    'tags', [
+                        'delimiter' => '-',
+
+                    ],
+
+                ],
+
+            ];
+
+            // Создать заглушку для класса ConfigRepository.
+            $config = $this->createMock(ConfigRepository::class);
+
+            // Настроить заглушку.
+            $config->method('get')
+                ->will($this->returnValueMap($map));
         }
 
-        return new ArticlesTransformer($request, $domManipulator);
+        return new ArticlesTransformer($request, $config);
     }
 
     /**

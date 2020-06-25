@@ -166,7 +166,9 @@ class TransformApiData
      */
     protected function createTransformer(): ResourceRequestTransformer
     {
-        return $this->container->make($this->getTransformerClassName());
+        return $this->container->make($this->getTransformerClassName(), [
+            $this->container->make('config')
+        ]);
     }
 
     /**
