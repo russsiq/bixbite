@@ -237,6 +237,101 @@ class ArticlesControllerTest extends TestCase
 
     /**
      * @test
+     * @covers ::show
+     *
+     * Ошибка аутентификации при просмотре Записи гостем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileGuestShowArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::show
+     *
+     * Ошибка аутентификации при просмотре Записи пользователем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileUserShowArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::show
+     *
+     * Доступ запрещен при просмотре Записи пользователем.
+     * @return void
+     */
+    public function testForbiddenWhileUserShowArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::show
+     *
+     * Ошибка аутентификации при просмотре Записи собственником сайта.
+     * @return void
+     */
+    public function testForbiddenWhileOwnerShowArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::show
+     *
+     * Собственник сайта получает Запись.
+     * @return void
+     */
+    public function testOwnerRecivesArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAsOwner()
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_OK)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'title',
+                    'content',
+                    'categories',
+                    'files',
+                    'tags',
+                    'user',
+
+                ],
+
+            ]);
+    }
+
+    /**
+     * @test
      * @covers ::update
      *
      * Ошибка аутентификации при редактировании записи гостем.
@@ -417,6 +512,94 @@ class ArticlesControllerTest extends TestCase
                         'content',
                     ]
                 ]
+            ]);
+    }
+
+    /**
+     * @test
+     * @covers ::destroy
+     *
+     * Ошибка аутентификации при удалении Записи гостем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileGuestDestroyArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->deleteJson(route('api.articles.destroy', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::destroy
+     *
+     * Ошибка аутентификации при удалении Записи пользователем.
+     * @return void
+     */
+    public function testAuthenticationFailedWhileUserDestroyArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->deleteJson(route('api.articles.destroy', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::destroy
+     *
+     * Доступ запрещен при удалении Записи пользователем.
+     * @return void
+     */
+    public function testForbiddenWhileUserDestroyArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($user = $this->createImprovisedUser())
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$user->generateApiToken(),
+            ])
+            ->deleteJson(route('api.articles.destroy', $article))
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * @test
+     * @covers ::destroy
+     *
+     * Ошибка аутентификации при удалении Записи собственником сайта.
+     * @return void
+     */
+    public function testForbiddenWhileOwnerDestroyArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAs($owner = $this->createImprovisedUser('owner'))
+            ->deleteJson(route('api.articles.destroy', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @test
+     * @covers ::destroy
+     *
+     * Собственник сайта удаляет Запись.
+     * @return void
+     */
+    public function testOwnerDestroyArticle(): void
+    {
+        $article = factory(Article::class)->create();
+
+        $this->actingAsOwner()
+            ->deleteJson(route('api.articles.destroy', $article))
+            ->assertStatus(JsonResponse::HTTP_NO_CONTENT)
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('articles', [
+                'id' => $article->id,
+
             ]);
     }
 
