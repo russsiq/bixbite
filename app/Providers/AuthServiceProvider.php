@@ -25,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Note::class => \App\Policies\NotePolicy::class,
         \App\Models\Privilege::class => \App\Policies\PrivilegePolicy::class,
         \App\Models\Setting::class => \App\Policies\SettingPolicy::class,
+        \App\Models\Tag::class => \App\Policies\TagPolicy::class,
         \App\Models\Template::class => \App\Policies\TemplatePolicy::class,
         \App\Models\User::class => \App\Policies\UserPolicy::class,
         \App\Models\XField::class => \App\Policies\XFieldPolicy::class,

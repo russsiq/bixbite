@@ -41,7 +41,7 @@ Route::group([
                 'notes' => 'NotesController',
                 'privileges' => 'PrivilegesController',
                 'settings' => 'SettingsController',
-                // 'tags' => 'TagsController',
+                'tags' => 'TagsController',
                 'templates' => 'TemplatesController',
                 'users' => 'UsersController',
                 'x_fields' => 'XFieldsController',
