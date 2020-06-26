@@ -33,7 +33,7 @@ export default class extends Model {
 
         return 'form' === id
             ? this.query().last()
-            : this.find(id);
+            : this.query().whereId(id).withAll().first();
     }
 
     static async $create({data}) {
@@ -45,7 +45,9 @@ export default class extends Model {
                 dataKey: 'data',
             });
 
-        return this.find(response.entities[this.entity][0].id);
+        const id = response.entities[this.entity][0].id;
+
+        return this.query().whereId(id).withAll().first();
         return this.query().last();
     }
 
@@ -60,7 +62,7 @@ export default class extends Model {
                 dataKey: 'data',
             });
 
-        return this.find(id);
+        return this.query().whereId(id).withAll().first();
     }
 
     static $delete({params}) {

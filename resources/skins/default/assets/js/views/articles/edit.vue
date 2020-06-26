@@ -119,10 +119,12 @@
                     </div>
                     <div id="card_tags">
                         <div class="card-body">
-                            <div class="form-group has-float-label">
+                            <!-- <div class="form-group has-float-label">
                                 <label class="control-label">Теги</label>
                                 <input type="text" v-model="form.tags" maxlength="255" class="form-control" autocomplete="off" />
-                            </div>
+                            </div> -->
+
+                            <tags-items :value="form.tags" :taggable="taggable"></tags-items>
                         </div>
                     </div>
                 </div>
@@ -246,6 +248,7 @@ import ImageUploader from '@/components/image-uploader.vue';
 import InputDatetimeLocal from '@/components/input-datetime-local.vue';
 
 import CategoriesItems from './partials/categories-items';
+import TagsItems from './partials/tags-items';
 
 export default {
     name: 'articles-edit',
@@ -254,6 +257,7 @@ export default {
         'image-uploader': ImageUploader,
         'input-datetime-local': InputDatetimeLocal,
         'categories-items': CategoriesItems,
+        'tags-items': TagsItems,
         'quill-editor': QuillEditor,
     },
 
@@ -277,6 +281,11 @@ export default {
             saveTimer: null,
 
             attachment: {
+                id: this.$props.id,
+                type: this.$props.model.entity
+            },
+
+            taggable: {
                 id: this.$props.id,
                 type: this.$props.model.entity
             },
@@ -385,7 +394,7 @@ export default {
             console.log(article);
             this.form = Object.assign({}, this.form, article);
             this.form.categories = this.form.categories.map(cat => cat.id);
-            this.form.tags = this.form.tags.map(tag => tag.title).join(', ');
+            // this.form.tags = this.form.tags.map(tag => tag.title).join(', ');
 
             this.saveTimer = setTimeout(this.update, this.saveInterval);
         },

@@ -80,11 +80,19 @@ class ArticlesTransformer implements ResourceRequestTransformer
         $input['description'] = Str::teaser($this->request->input('description'));
         $input['keywords'] = Str::teaser($this->request->input('keywords'), 255, '');
 
+        // $input['tags'] = array_map(
+        //     function (string $tag) {
+        //         return Str::slug($tag, $this->setting('tags.delimiter', '-'), null);
+        //     },
+        //     preg_split('/,/', $this->request->input('tags'), -1, PREG_SPLIT_NO_EMPTY)
+        // );
         $input['tags'] = array_map(
-            function (string $tag) {
+            function (array $tag) {
+                return $tag['title'];
+                dd($tag);
                 return Str::slug($tag, $this->setting('tags.delimiter', '-'), null);
             },
-            preg_split('/,/', $this->request->input('tags'), -1, PREG_SPLIT_NO_EMPTY)
+            $this->request->input('tags')
         );
 
         if (empty($input['date_at'])) {

@@ -7,9 +7,11 @@ use App\Models\Tag;
 use App\Http\Resources\TagResource;
 use App\Http\Resources\TagCollection;
 
+use App\Http\Requests\Api\V1\Tag\TagRequest;
 use App\Http\Requests\Api\V1\Tag\Store as StoreTagRequest;
 use App\Http\Requests\Api\V1\Tag\Update as UpdateTagRequest;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -32,11 +34,16 @@ class TagsController extends ApiController
      * Отобразить список тегов.
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(TagRequest $request): JsonResponse
     {
+        $suggestion = $request->validated();
+
         $tags = Tag::withCount([
                 'articles'
             ])
+            ->when($suggestion['title'], function(Builder $query, $suggestion) {
+                $query->searchByKeyword($suggestion);
+            })
             ->get();
 
         $collection = new TagCollection($tags);
@@ -52,7 +59,13 @@ class TagsController extends ApiController
      */
     public function store(StoreTagRequest $request): JsonResponse
     {
-        $tag = Tag::create($request->all());
+        $data = $request->validated();
+
+        $tag = Tag::create($data);
+
+        if (isset($data['taggable_type'])) {
+            $tag->{$data['taggable_type']}()->attach($data['taggable_id']);
+        }
 
         $resource = new TagResource($tag);
 
@@ -83,7 +96,13 @@ class TagsController extends ApiController
      */
     public function update(UpdateTagRequest $request, Tag $tag): JsonResponse
     {
-        $tag->update($request->all());
+        $data = $request->validated();
+
+        $tag->update($data);
+
+        if (isset($data['taggable_type'])) {
+            $tag->{$data['taggable_type']}()->attach($data['taggable_id']);
+        }
 
         $resource = new TagResource($tag);
 

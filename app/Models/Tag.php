@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Tag extends BaseModel
 {
+    use Mutators\TagMutators,
+        Scopes\TagScopes;
+
     /**
      * Таблица БД, ассоциированная с моделью.
      * @var string
@@ -69,15 +72,6 @@ class Tag extends BaseModel
             /* $foreignPivotKey */ 'tag_id',
             /* $relatedPivotKey */ 'taggable_id'
         );
-    }
-
-    /**
-     * Получить атрибут `url`.
-     * @return string
-     */
-    public function getUrlAttribute(): string
-    {
-        return route('tags.tag', $this);
     }
 
     /**
