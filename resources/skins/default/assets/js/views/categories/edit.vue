@@ -263,17 +263,26 @@ export default {
         },
     },
 
-    async mounted() {
+    mounted() {
         if (this.isEditMode) {
-            this.form = await this.$props.model.$get({
-                params: {
-                    id: this.$props.id
-                }
-            });
+            this.$props.model.$get({
+                    params: {
+                        id: this.$props.id
+                    }
+                })
+                .then(this.fillForm);
         }
     },
 
     methods: {
+        /**
+         * Добавить поле для настройки в форму.
+         * @param {Category} category
+         */
+        fillForm(category) {
+            this.form = Object.assign({}, this.form, category);
+        },
+
         async onSubmit(event) {
             const item = this.isEditMode ?
                 await this.$props.model.$update({

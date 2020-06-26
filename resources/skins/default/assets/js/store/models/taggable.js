@@ -1,11 +1,9 @@
-import {
-    Model
-} from '@vuex-orm/core'
+import Model from '@/store/model';
 
 class Taggable extends Model {
     static fields() {
         return {
-            id: this.attr(null), // important: attr to null
+            id: this.attr(null),
             tag_id: this.number().nullable(),
             taggable_id: this.number().nullable(),
             taggable_type: this.string(),

@@ -1,6 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core';
+import Model from '@/store/model';
 
 import Article from './article';
 import File from './file';
@@ -8,7 +6,7 @@ import File from './file';
 class User extends Model {
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
             name: this.string(''),
             email: this.string(''),
             role: this.string(''),

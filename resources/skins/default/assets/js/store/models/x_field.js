@@ -1,6 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core'
+import Model from '@/store/model';
 
 class XField extends Model {
     static state() {
@@ -12,7 +10,7 @@ class XField extends Model {
 
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
             extensible: this.string(),
             name: this.string(),
             type: this.string(),

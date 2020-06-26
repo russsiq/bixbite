@@ -4,8 +4,9 @@
 
 import store from '@/store';
 import router from '@/router';
+import axios from 'axios'
 
-export default {
+const http = {
     /**
      * Default create new axios instance, provide
      * option to pass an existing instance through.
@@ -84,6 +85,8 @@ export default {
         // Обязательно сохраняем контекст.
         // Так проще складировать набор методов.
         status in statuses && statuses[status].apply(this, arguments);
+
+        return response;
 
         // Возвращаем данные для хранилища `vuex-orm`.
         // В Laravel всё, включая  постраничку, оборачиваем в `data`.
@@ -320,3 +323,19 @@ export default {
         });
     },
 };
+
+const instance = axios.create(http);
+
+// instance.defaults.headers.common['Authorization'] = `Bearer ${http.access_token()}`;
+
+instance.interceptors.request.use(
+    config => http.onRequest(config, instance),
+    error => http.onError(error, instance),
+);
+
+instance.interceptors.response.use(
+    response => http.onResponse(response, instance),
+    error => http.onError(error, instance),
+);
+
+export default instance;

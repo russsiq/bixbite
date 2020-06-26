@@ -1,6 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core';
+import Model from '@/store/model';
 
 import User from './user';
 import File from './file';
@@ -8,7 +6,7 @@ import File from './file';
 class Note extends Model {
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
             user_id: this.number().nullable(),
             image_id: this.number().nullable(),
 

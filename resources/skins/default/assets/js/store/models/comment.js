@@ -1,6 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core';
+import Model from '@/store/model';
 
 import User from './user';
 
@@ -37,7 +35,7 @@ class Comment extends Model {
 
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
 
             // Связи с другими сущностями,
             // а также индексные ключи.

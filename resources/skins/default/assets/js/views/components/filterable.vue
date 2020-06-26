@@ -115,7 +115,7 @@
                                 <option v-for="limit in limits" :value="limit">{{ limit }}</option>
                             </select>
                         </div>
-                        
+
                         <div class="has-float-label">
                             <label>{{ 'Order by' | trans }}</label>
                             <div class="input-group">

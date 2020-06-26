@@ -17,8 +17,9 @@ import database from './database'
 import http from './axios-request-config'
 
 VuexORM.use(VuexORMAxios, {
+    axios: http,
     database,
-    http,
+    // http
 })
 
 // Instantiate and exports our data store.

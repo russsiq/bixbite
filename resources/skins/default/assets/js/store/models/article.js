@@ -1,7 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core'
-
+import Model from '@/store/model';
 
 import File from './file';
 import Category from './category';
@@ -61,7 +58,7 @@ class Article extends Model {
 
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
             user_id: this.number(1),
             image_id: this.number().nullable(),
 

@@ -1,6 +1,4 @@
-import {
-    Model
-} from '@vuex-orm/core';
+import Model from '@/store/model';
 
 class Setting extends Model {
     static state() {
@@ -9,7 +7,7 @@ class Setting extends Model {
 
     static fields() {
         return {
-            id: this.increment(),
+            id: this.attr(null),
             module_name: this.string(),
             name: this.string(),
             type: this.string('string'),
