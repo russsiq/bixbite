@@ -31,7 +31,9 @@ export default class extends Model {
                 dataKey: 'data',
             });
 
-        return this.find(id);
+        return 'form' === id
+            ? this.query().last()
+            : this.find(id);
     }
 
     static async $create({data}) {
@@ -43,7 +45,8 @@ export default class extends Model {
                 dataKey: 'data',
             });
 
-        return this.find(id);
+        return this.find(response.entities[this.entity][0].id);
+        return this.query().last();
     }
 
     static async $update({params, data}) {

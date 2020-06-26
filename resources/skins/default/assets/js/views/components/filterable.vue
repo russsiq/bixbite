@@ -414,10 +414,8 @@ export default {
 
             // Fetch user resource.
             await this.$props.model.$fetch({
-                query: {
-                    ...this.filters,
-                    ...this.query
-                }
+                ...this.filters,
+                ...this.query
             });
         },
 

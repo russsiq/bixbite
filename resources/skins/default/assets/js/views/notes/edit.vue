@@ -93,12 +93,13 @@ export default {
         },
     },
 
-    async mounted() {
-        this.form = await this.$props.model.$get({
-            params: {
-                id: this.isEditMode ? this.$props.id : 'form'
-            }
-        });
+    mounted() {
+        this.$props.model.$get({
+                params: {
+                    id: this.isEditMode ? this.$props.id : 'form'
+                }
+            })
+            .then(this.fillForm);
     },
 
     beforeDestroy() {
@@ -106,6 +107,14 @@ export default {
     },
 
     methods: {
+        /**
+         * Добавить поле для настройки в форму.
+         * @param {Note} note
+         */
+        fillForm(note) {
+            this.form = Object.assign({}, this.form, note);
+        },
+
         async onSubmit(event) {
             const item = this.isEditMode ?
                 await this.$props.model.$update({
