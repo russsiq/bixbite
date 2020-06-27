@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Api\V1\Note;
 
+// Зарегистрированные фасады приложения.
+use Illuminate\Support\Facades\Auth;
+
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
@@ -17,7 +20,11 @@ class NoteRequest extends BaseFormRequest
     {
         $input = [];
 
-        $input['user_id'] = $this->input('user_id', null);
+        // Не доверяя пользователю,
+        // выбираем его идентификатор
+        // из фасада аутентификации.
+        $input['user_id'] = Auth::id();
+
         $input['image_id'] = $this->input('image_id', null);
         $input['title'] = $this->input('title', null);
         $input['slug'] = Str::slug($this->input('title'));
