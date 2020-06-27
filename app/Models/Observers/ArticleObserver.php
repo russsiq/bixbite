@@ -54,7 +54,7 @@ class ArticleObserver extends BaseObserver
             $this->request->input('categories', [])
         );
 
-        if (!$article->categories->count()) {
+        if ($article->categories->isEmpty()) {
             $article->state = 'unpublished';
         }
 
