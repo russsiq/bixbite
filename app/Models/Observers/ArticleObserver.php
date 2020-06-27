@@ -59,13 +59,8 @@ class ArticleObserver extends BaseObserver
         }
 
         $article->tags()->sync(array_map(
-            function (string $tag) use ($article) {
-                return $article->tags()
-                    ->getModel()
-                    ->firstOrCreate([
-                        'title' => $tag,
-                    ])
-                    ->id;
+            function (array $tag) use ($article) {
+                return (int) $tag['id'];
             },
             $this->request->input('tags', [])
         ));

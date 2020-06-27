@@ -59,6 +59,7 @@ class Article extends Model {
     static fields() {
         return {
             id: this.attr(null),
+            tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
             user_id: this.number(1),
             image_id: this.number().nullable(),
 
@@ -99,7 +100,7 @@ class Article extends Model {
             image: this.hasOne(File, 'image_id', 'attachment_id'),
             files: this.morphMany(File, 'attachment_id', 'attachment_type'),
             comments: this.morphMany(Comment, 'commentable_id', 'commentable_type'),
-            tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
+            // tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
             categories: this.morphToMany(Category, Categoryable, 'category_id', 'categoryable_id', 'categoryable_type'),
 
             // Временные метки.

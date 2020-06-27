@@ -246,7 +246,15 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            'tags.*' => [
+            'tags.*.id' => [
+                'required',
+                'integer',
+                'exists:tags,id',
+
+            ],
+
+            'tags.*.title' => [
+                'required',
                 'string',
                 'max:255',
                 'regex:/^[\w-]+$/u',

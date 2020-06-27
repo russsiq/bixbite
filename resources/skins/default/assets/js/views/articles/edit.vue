@@ -124,7 +124,7 @@
                                 <input type="text" v-model="form.tags" maxlength="255" class="form-control" autocomplete="off" />
                             </div> -->
 
-                            <tags-items :value="form.tags" :taggable="taggable"></tags-items>
+                            <tags-items v-model="form.tags" :taggable="taggable" @input="this.update"></tags-items>
                         </div>
                     </div>
                 </div>

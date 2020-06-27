@@ -1,15 +1,14 @@
 <template>
-<div class="form-group tagsinput has-float-label">
-    <label class="control-label">Теги</label>
+<div class="tags-group">
     <template v-for="(tag, index) in tags">
-        <span class="tag my-1 btn btn-sm btn-outline-dark">
+        <span class="tag form-control">
             <span class="tag-text">{{ tag.title }}</span>
             <button type="button" class="tag-remove" @click="detach(tag, index)"><i class="fa fa-times"></i></button>
         </span>
     </template>
 
-    <div>
-        <input type="text" list="suggested-tags" v-model="tag" maxlength="255" autocomplete="off" placeholder="Добавить тег" class="tag-input form-control" @keyup.enter="attach" />
+    <div class="tags-group-input">
+        <input type="text" list="suggested-tags" v-model="tag" maxlength="255" autocomplete="off" placeholder="Добавить тег" class="form-control" @keyup.enter="attach" />
     </div>
 
     <datalist id="suggested-tags">
@@ -36,8 +35,8 @@ export default {
             type: Object,
             required: true,
             validator(taggable) {
-                return 'number' === typeof taggable.id
-                    && 'string' === typeof taggable.type;
+                return 'number' === typeof taggable.id &&
+                    'string' === typeof taggable.type;
             }
         }
     },
@@ -77,35 +76,32 @@ export default {
             // )
         },
 
-        attach() {
+        async attach() {
             if (this.tag) {
                 const title = this.tag.trim();
 
-                const exists = this.suggestedTags.some(tag => title === tag.title);
+                const finded = this.suggestedTags.find(tag => title === tag.title); // find
 
-                if (!exists) {
-                    Tag.$create({
-                            data: {
-                                title,
-                                taggable_id: this.taggable.id,
-                                taggable_type: this.taggable.type,
+                if (finded) {
+                    this.tags.push(finded);
+                } else {
+                    const result = await Tag.$create({
+                        data: {
+                            title,
+                            taggable_id: this.taggable.id,
+                            taggable_type: this.taggable.type,
 
-                            }
-                        })
-                        // .then((response) => {
-                        //     this.suggestedTags = response.entities.tags
-                        // });
+                        }
+                    })
+
+                    this.tags.push(result);
                 }
-
-                this.tags.push({
-                    title: this.tag
-                });
 
                 this.tag = '';
 
                 this.suggestedTags = [];
 
-                // this.$emit('input', this.tags);
+                this.$emit('input', this.tags);
             }
         },
 
@@ -150,54 +146,52 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tagsinput {
+.tags-group {
     display: flex;
-    width: auto;
-    min-height: auto;
-    height: auto;
     flex-wrap: wrap;
-    background: #fff;
-    color: #556270;
-    padding: 5px 5px 0;
-    border: 1px solid #e6e6e6;
 }
 
-.tagsinput .tag {
+.tags-group .tag {
     position: relative;
     display: block;
     max-width: 100%;
+    width: auto;
     word-wrap: break-word;
-    padding-right: 30px;
-    border-radius: 2px;
     margin: 5px;
+    color: #222;
+    background-color: #fff;
+    border-color: #222;
+    padding-right: 37px;
 }
 
-.tagsinput .tag-remove {
+.tags-group .tag:hover {
+    color: #fff;
+    background-color: #222;
+    border-color: #222;
+}
+
+.tags-group .tag-remove {
     position: absolute;
     background: 0 0;
     display: block;
-    width: 30px;
-    height: 30px;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
     top: 0;
     right: 0;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
+    outline: none;
     color: var(--danger);
-    line-height: 30px;
     padding: 0;
     border: 0;
     font-weight: 300;
     font-size: 0.9rem;
-    font-weight: 300;
 }
 
-.tagsinput div {
+.tags-group-input {
     flex-grow: 1;
-}
-
-.tagsinput div .tag-input {
-    background: none;
-    border: none;
+    margin: 5px;
 }
 </style>
