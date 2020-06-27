@@ -5,7 +5,6 @@ namespace App\Http\Requests\Api\V1\Tag;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Validation\Rule;
 
 class TagRequest extends BaseFormRequest
 {
@@ -21,7 +20,6 @@ class TagRequest extends BaseFormRequest
                 'string',
                 'max:255',
                 'regex:/^[\w-]+$/u',
-                Rule::unique('tags')->ignore($this->tag),
 
             ],
 
