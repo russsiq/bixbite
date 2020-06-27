@@ -67,15 +67,6 @@ export default {
     },
 
     methods: {
-        handleChange(event) {
-            // this.$emit(
-            //     'input',
-            //     Array.from(event.target.options)
-            //     .filter(option => option.selected)
-            //     .map(option => Number(option.value))
-            // )
-        },
-
         async attach() {
             if (this.tag) {
                 const title = this.tag.trim();
