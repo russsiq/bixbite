@@ -4,6 +4,7 @@ namespace App\Models\Observers;
 
 // Сторонние зависимости.
 use App\Models\Article;
+use Illuminate\Http\Request;
 
 /**
  * Наблюдатель модели `Article`.
@@ -11,12 +12,23 @@ use App\Models\Article;
 class ArticleObserver extends BaseObserver
 {
     /**
+     * [$request description]
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * Массив ключей для очистки кэша.
      * @var array
      */
     protected $keysToForgetCache = [
 
     ];
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     /**
      * Обработать событие `retrieved` модели.
@@ -38,7 +50,9 @@ class ArticleObserver extends BaseObserver
      */
     public function saved(Article $article): void
     {
-        $article->categories()->sync(request()->categories);
+        $article->categories()->sync(
+            $this->request->input('categories', [])
+        );
 
         if (!$article->categories->count()) {
             $article->state = 'unpublished';
@@ -53,7 +67,7 @@ class ArticleObserver extends BaseObserver
                     ])
                     ->id;
             },
-            request()->tags ?? []
+            $this->request->input('tags', [])
         ));
 
         $dirty = $article->getDirty();
