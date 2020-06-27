@@ -247,11 +247,11 @@ export default {
         }),
 
         x_fields() {
-            return this.meta.x_fields || [];
+            return this.isEditMode ? this.meta.x_fields : [];
         },
 
         template_list() {
-            return this.meta.template_list || [];
+            return this.isEditMode ? this.meta.template_list : [];
         },
 
         showedForm() {

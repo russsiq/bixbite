@@ -31,9 +31,7 @@ export default class extends Model {
                 dataKey: 'data',
             });
 
-        return 'form' === id
-            ? this.query().last()
-            : this.query().whereId(id).withAll().first();
+        return this.query().whereId(id).withAll().first();
     }
 
     static async $create({data}) {

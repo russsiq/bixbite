@@ -79,7 +79,7 @@ export default {
 
     data() {
         return {
-            form: {},
+            form: new this.$props.model,
         }
     },
 
@@ -94,12 +94,14 @@ export default {
     },
 
     mounted() {
-        this.$props.model.$get({
-                params: {
-                    id: this.isEditMode ? this.$props.id : 'form'
-                }
-            })
-            .then(this.fillForm);
+        if (this.isEditMode) {
+            this.$props.model.$get({
+                    params: {
+                        id: this.$props.id
+                    }
+                })
+                .then(this.fillForm);
+        }
     },
 
     beforeDestroy() {
