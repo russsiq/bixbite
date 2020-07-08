@@ -64,7 +64,10 @@ class TagsController extends ApiController
         $tag = Tag::create($data);
 
         if (isset($data['taggable_type'])) {
-            $tag->{$data['taggable_type']}()->attach($data['taggable_id']);
+            $tag->{$data['taggable_type']}()
+                ->attach($data['taggable_id']);
+
+            $tag->load($data['taggable_type']);
         }
 
         $resource = new TagResource($tag);
