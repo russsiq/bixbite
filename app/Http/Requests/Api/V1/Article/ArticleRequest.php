@@ -214,7 +214,8 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            'categories.*' => [
+            'categories.*.id' => [
+                'required',
                 'integer',
                 'exists:categories,id',
 
