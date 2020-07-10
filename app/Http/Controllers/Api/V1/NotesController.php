@@ -38,7 +38,8 @@ class NotesController extends ApiController
                 'user:users.id,users.name',
             ])
             ->where('user_id', auth('api')->user()->id)
-            ->get();
+            ->get()
+            ->append('image');
 
         $collection = new NoteCollection($notes);
 
