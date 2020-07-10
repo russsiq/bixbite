@@ -50,9 +50,12 @@ class ArticleObserver extends BaseObserver
      */
     public function saved(Article $article): void
     {
-        $article->categories()->sync(
+        $article->categories()->sync(array_map(
+            function (array $category) use ($article) {
+                return (int) $category['id'];
+            },
             $this->request->input('categories', [])
-        );
+        ));
 
         if ($article->categories->isEmpty()) {
             $article->state = 'unpublished';
