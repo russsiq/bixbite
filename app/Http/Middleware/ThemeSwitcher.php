@@ -137,6 +137,7 @@ class ThemeSwitcher
      */
     protected function associateResources(Request $request): self
     {
+        $langPathes = [];
         $prefix = $request->segment(1);
 
         // Если это панель или запрос по API.
@@ -147,26 +148,30 @@ class ThemeSwitcher
 
             // Добавляем расположение общих языковых файлов
             // административной панели сайта.
-            $this->addLangJsonPath(skin_path('public/lang'));
+            $langPathes[] = skin_path('public/lang');
 
             // Добавляем расположение языковых файлов текущей секции
             // административной панели сайта.
             if ('panel' === $prefix and $request->segment(2) and 'login' !== $request->segment(2)) {
-                $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(2)));
+                $langPathes[] = skin_path('public/lang/'.$request->segment(2));
             }
 
             // Если это запрос по API.
             if ('api' === $prefix and $request->segment(3) and 'auth' !== $request->segment(3)) {
                 // Добавляем расположение языковых файлов текущего подраздела
                 // административной панели сайта.
-                $this->addLangJsonPath(skin_path('public/lang/'.$request->segment(3)));
+                $langPathes[] = skin_path('public/lang/'.$request->segment(3));
             }
         } else {
             // Добавляем расположение шаблонов темы сайта.
             $this->addViewLocation(theme_path('views'));
 
             // Добавляем расположение языковых файлов темы сайта.
-            $this->addLangJsonPath(theme_path('public/lang'));
+            $langPathes[] = theme_path('public/lang');
+        }
+
+        foreach (array_filter($langPathes) as $path) {
+            $this->addLangJsonPath($path);
         }
 
         return $this;
