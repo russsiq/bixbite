@@ -1,3 +1,5 @@
+import Privilege from '@/store/models/privilege';
+
 import Privileges from '@/views/privileges/index'
 
 export default [{
@@ -6,5 +8,8 @@ export default [{
     component: Privileges,
     meta: {
         title: 'Привилегии пользователей'
-    }
+    },
+    props: route => ({
+        model: Privilege,
+    }),
 }]
