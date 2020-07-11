@@ -1,5 +1,5 @@
 <template>
-<filterable v-bind="filterable">
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <div class="btn-group d-flex ml-auto">
             <router-link :to="{name: 'comments.settings'}" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></router-link>
@@ -24,7 +24,7 @@
         <tr :key="row.id">
             <td>{{ row.id }}</td>
             <td>
-                <i>{{ row.user && row.user.name }}</i>: {{ row.content }}
+                <b>{{ row.user && row.user.name }}</b>: {{ row.content }}
             </td>
             <td style="white-space: nowrap;">{{ row.created_at | dateToString }}</td>
             <td class="text-right d-print-none">
@@ -36,7 +36,7 @@
                     <a v-if="row.is_approved && row.url" :href="row.url" target="_blank" class="btn btn-link"><i class="fa fa-external-link"></i></a>
                     <button v-else type="button" class="btn btn-link" disabled><i class="fa fa-external-link text-muted"></i></button>
 
-                    <router-link :to="{name: 'comments.edit', params:{id: row.id}}" class="btn btn-link"><i class="fa fa-pencil"></i></router-link>
+                    <!-- <router-link :to="{name: 'comments.edit', params:{id: row.id}}" class="btn btn-link"><i class="fa fa-pencil"></i></router-link> -->
 
                     <button type="button" class="btn btn-link" @click="destroy(row)"><i class="fa fa-trash-o text-danger"></i></button>
                 </div>
@@ -63,9 +63,9 @@
                     <option value="published">Опубликовать</option>
                     <option value="unpublished">Отправить на модерацию</option>
                 </optgroup>
-                <!-- <optgroup label="Удалить">
+                <optgroup label="Удалить">
                     <option value="delete">Удалить отмеченные</option>
-                </optgroup> -->
+                </optgroup>
             </select>
             <div class="input-group-append">
                 <button type="submit" class="btn btn-outline-success" @click="applyMassAction">Применить</button>
@@ -76,11 +76,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
-    put,
-    destroy
-} from '@/helpers/api';
-
 import Filterable from '@/views/components/filterable';
 
 export default {
@@ -100,6 +95,7 @@ export default {
     data() {
         return {
             selected: [],
+            collection: [],
             selectedAll: false,
             massAction: '',
             filterable: {
@@ -112,16 +108,14 @@ export default {
 
     computed: {
         classState() {
-            return (is_approved) => is_approved ? 'fa fa-check text-success' : 'fa fa-times text-warning';
+            return (is_approved) => is_approved ?
+                'fa fa-check text-success' :
+                'fa fa-times text-warning';
         },
     },
 
     mounted() {
         //
-    },
-
-    beforeDestroy() {
-        this.$props.model.deleteAll();
     },
 
     methods: {
@@ -130,28 +124,37 @@ export default {
         },
 
         toggleStateComment(row) {
-            this.massUpdate([row.id], row.is_approved ? 'unpublished' : 'published');
+            const state = row.is_approved ? 'unpublished' : 'published';
+
+            this.massUpdate([row.id], state);
         },
 
         selectAll() {
             this.selected = [];
 
             if (!this.selectedAll) {
-                const items = this.$props.model.all();
-
-                this.selected = items.map(item => item.id);
+                this.selected = this.collection.map(item => item.id);
             }
+        },
+
+        fetch(filter) {
+            this.$props.model.$fetch(filter)
+                .then(this.fillTable);
+        },
+
+        fillTable(collection) {
+            this.collection = collection;
         },
 
         applyMassAction() {
             if (!this.selected.length) {
-                return Notification.warning({
-                    message: 'Пожалуйста, выберите комментарии.'
+                return this.$notification.warning({
+                    message: 'Пожалуйста, выберите Комментарии.'
                 });
             }
 
             if (!this.massAction) {
-                return Notification.warning({
+                return this.$notification.warning({
                     message: 'Пожалуйста, выберите действие.'
                 });
             }
@@ -159,38 +162,28 @@ export default {
             const action = this.massAction.toString();
 
             if (action.startsWith('delete')) {
-                return this.massDelete(this.selected, action);
+                return this.massDelete(this.selected);
             }
 
             return this.massUpdate(this.selected, action);
         },
 
-        async massUpdate(comments, mass_action) {
-            // Не использовать это: this.$props.model.$update(...)
-            // Потому что ArticleRequest удаляет отсутствующие атрибуты.
+        massUpdate(comments, mass_action) {
+            this.$props.model.$massUpdate(comments, mass_action)
+                .then((collection) => {
+                    this.collection = this.collection.map((comment) => {
+                        if (comments.includes(comment.id)) {
+                            const updated = collection.find(item => item.id === comment.id);
 
-            const response = await put(`${Pageinfo.api_url}/comments`, {
-                comments,
-                mass_action,
-            });
+                            return {
+                                ...comment,
+                                ...updated
+                            };
+                        }
 
-            // Before used insertOrUpdate, need to delete all morph relation.
-            // Because duplicates are created.
-            // response.data.data.forEach(item => {
-            //     delete item.categories
-            //     delete item.tags
-            // })
-
-            const data = await this.$props.model.insertOrUpdate({
-                where: (record) => comments.includes(record.id),
-                data: response.data.data,
-            });
-
-            // const ids = data.comments.map(comment => comment.id);
-            //
-            // ids.length && Notification.success({
-            //     message: `Записи обновлены: [${ids.toString()}].`
-            // });
+                        return comment;
+                    });
+                });
         },
 
         massDelete(comments) {
@@ -199,17 +192,17 @@ export default {
             }));
         },
 
-        /**
-         * Delete the comment.
-         */
         destroy(comment) {
-            const result = confirm(`Вы точно хотите удалить этот комментарий: [${comment.id}] с прикрепленными файлами?`);
+            const result = confirm(`Хотите удалить этот Комментарий [${comment.id}] с прикрепленными файлами?`);
 
             result && this.$props.model.$delete({
-                params: {
-                    id: comment.id
-                }
-            });
+                    params: {
+                        id: comment.id
+                    }
+                })
+                .then((response) => {
+                    this.collection = this.collection.filter((item) => item.id !== comment.id);
+                });
         },
     },
 }

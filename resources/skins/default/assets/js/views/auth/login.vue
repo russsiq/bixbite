@@ -74,7 +74,7 @@ export default {
         });
 
         // Если пользователь сразу зашел на страницу авторизации,
-        // например набрал адрес в браузере, но есть вероятность,
+        // например, набрал адрес в браузере, но есть вероятность,
         // что он авторизован, то его необходимо перенаправить.
         this.authInitialize()
             .then(() => {
@@ -102,9 +102,8 @@ export default {
                 .catch((error) => {
                     this.isProcessing = false;
 
-                    if (error.response) {
-                        [422, 429].includes(error.response.status) &&
-                            (this.errors = error.response.data.errors);
+                    if (error.response && [422, 429].includes(error.response.status)) {
+                        this.errors = error.response.data.errors;
                     }
                 });
         },

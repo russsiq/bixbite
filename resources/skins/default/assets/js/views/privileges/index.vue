@@ -7,7 +7,7 @@
         <div class="btn-group d-flex ml-auto"></div>
     </div>
 
-    <form action="#" @submit.prevent="onSubmit">
+    <form action="#" @submit.prevent="save">
         <div class="card-body table-responsive">
             <table class="table table-sm table-hover">
                 <thead>
@@ -17,7 +17,7 @@
                         <template v-for="(role, index) in roles">
                             <th>
                                 <label class="control-label">
-                                    <input type="checkbox" v-if="'owner' !== role" @click="updateColumn($event, role)" /> {{ role }}
+                                    <input type="checkbox" v-if="'owner' !== role" @click="updateColumn(role, $event)" /> {{ role }}
                                 </label>
                             </th>
                         </template>
@@ -28,7 +28,7 @@
                     <tr v-for="(item, index) in privileges">
                         <td>
                             <label class="control-label">
-                                <input type="checkbox" @click="updateRow($event, index)" />&nbsp; {{ item.privilege }}
+                                <input type="checkbox" @click="updateRow(index, $event)" />&nbsp; {{ item.privilege }}
                             </label>
                         </td>
                         <td>{{ item.description }}</td>
@@ -57,11 +57,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
-    get,
-    post
-} from '@/helpers/api'
-
 export default {
     name: 'privileges',
 
@@ -70,6 +65,13 @@ export default {
             privileges: [],
             roles: []
         }
+    },
+
+    props: {
+        model: {
+            type: Function,
+            required: true
+        },
     },
 
     computed: {
@@ -90,36 +92,27 @@ export default {
         }
     },
 
-    async mounted() {
-        try {
-            const response = await get(`${Pageinfo.api_url}/privileges`);
-
-            this.roles = response.data.roles;
-            this.privileges = response.data.privileges;
-        } catch (e) {
-            console.error('Не удалось загрузить привилегии пользователей.');
-        }
+    mounted() {
+        this.$props.model.$fetch()
+            .then(this.fillTable);
     },
 
     methods: {
-        async onSubmit(event) {
-            if (!confirm('Вы уверены?')) return false;
-
-            try {
-                const response = await post(`${Pageinfo.api_url}/privileges`, this.table);
-
-                this.roles = response.data.roles;
-                this.privileges = response.data.privileges;
-
-                Notification.success({
-                    message: __('Updated!'),
-                });
-            } catch (e) {
-                console.error('Не удалось сохранить привилегии пользователей.');
-            }
+        fillTable(data) {
+            this.roles = data.roles;
+            this.privileges = data.privileges;
         },
 
-        updateColumn(event, role) {
+        save(event) {
+            const result = confirm('Вы уверены?');
+
+            result && this.$props.model.$create({
+                    data: this.table
+                })
+                .then(this.fillTable);
+        },
+
+        updateColumn(role, event) {
             if ('owner' !== role) {
                 this.privileges.forEach(item => {
                     item[role] = event.target.checked;
@@ -127,7 +120,7 @@ export default {
             }
         },
 
-        updateRow(event, index) {
+        updateRow(index, event) {
             this.roles.forEach(role => {
                 if ('owner' !== role) {
                     this.privileges[index][role] = event.target.checked;

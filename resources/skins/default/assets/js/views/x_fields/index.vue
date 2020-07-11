@@ -1,5 +1,5 @@
 <template>
-<filterable v-bind="filterable">
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <router-link :to="{name: 'x_fields.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
         <div class="btn-group d-flex mx-auto">
@@ -73,9 +73,11 @@ export default {
 
     data() {
         return {
+            collection: [],
             filterable: {
                 model: this.$props.model,
                 active: false,
+                massAction: false,
             },
         }
     },
@@ -84,19 +86,24 @@ export default {
         await this.loadFromJsonPath('x_fields');
     },
 
-    beforeDestroy() {
-        this.$props.model.deleteAll();
-    },
-
     methods: {
-        destroy(row) {
+        fetch(filter) {
+            this.$props.model.$fetch(filter)
+                .then(this.fillTable);
+        },
+
+        fillTable(collection) {
+            this.collection = collection;
+        },
+
+        destroy(field) {
             const result = confirm(
-                ` Вы уверены, что хотите безвозвратно удалить поле [${row.title}] \n из таблицы [${row.extensible}] со всеми связанными данными?`
+                `Хотите безвозвратно удалить поле [${field.title}] \n из таблицы [${field.extensible}] со всеми связанными данными?`
             );
 
             result && this.$props.model.$delete({
                 params: {
-                    id: row.id
+                    id: field.id
                 }
             });
         }

@@ -14,9 +14,7 @@
 import {
     mapGetters,
     mapActions
-} from 'vuex'
-
-import Category from '@/store/models/category';
+} from 'vuex';
 
 import LoadingLayer from '@/views/components/loading-layer';
 import PageHeader from '@/views/components/page-header';
@@ -44,11 +42,7 @@ export default {
 
         this.authInitialize()
             .then(() => {
-                if (this.isLogged) {
-                    // При создании экземпляра приложения
-                    // загружаем по API список всех категорий.
-                    Category.$fetch();
-                } else if ('login' != this.$router.currentRoute.name) {
+                if (!this.isLogged && 'login' !== this.$router.currentRoute.name) {
                     this.$router.push({
                         name: 'login'
                     });

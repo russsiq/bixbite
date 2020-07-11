@@ -1,11 +1,11 @@
 <template>
 <div class="tags-group">
-    <template v-for="(tag, index) in tags">
-        <span class="tag form-control">
-            <span class="tag-text">{{ tag.title }}</span>
-            <button type="button" class="tag-remove" @click="detach(tag, index)"><i class="fa fa-times"></i></button>
-        </span>
-    </template>
+    <div v-for="(tag, index) in tags" class="tag form-control">
+        <div class="tag-text">{{ tag.title }}</div>
+        <button type="button" class="tag-remove" @click="detach(tag, index)">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
 
     <div class="tags-group-input">
         <input type="text" list="suggested-tags" v-model="tag" maxlength="255" autocomplete="off" placeholder="Добавить тег" class="form-control" @keyup.enter="attach" />
@@ -23,6 +23,7 @@
 import debounce from 'lodash/debounce';
 
 import Tag from '@/store/models/tag';
+import Article from '@/store/models/article';
 
 export default {
     props: {
@@ -49,88 +50,87 @@ export default {
         }
     },
 
-    watch: {
-        // эта функция запускается при любом изменении вопроса
-        tag: function(newTag, oldTag) {
-            this.debouncedGetSuggestions();
-        }
+    computed: {
+        title() {
+            const title = this.tag.trim()
+
+            return title.length >= 3 ? title : '';
+        },
     },
 
-    computed: {
+    watch: {
+        tag(newTag, oldTag) {
+            this.debouncedGetSuggestions();
+        },
 
+        'value': {
+            immediate: true,
+            handler(val, oldVal) {
+                this.tags = val;
+            }
+        },
     },
 
     mounted() {
-        this.tags = this.$props.value;
-
         this.debouncedGetSuggestions = debounce(this.getSuggestions, 888);
     },
 
     methods: {
         async attach() {
-            if (this.tag) {
-                const title = this.tag.trim();
-
-                const finded = this.suggestedTags.find(tag => title === tag.title); // find
-
-                if (finded) {
-                    this.tags.push(finded);
-                } else {
-                    const result = await Tag.$create({
-                        data: {
-                            title,
-                            taggable_id: this.taggable.id,
-                            taggable_type: this.taggable.type,
-
-                        }
-                    })
-
-                    this.tags.push(result);
-                }
-
-                this.tag = '';
-
-                this.suggestedTags = [];
-
-                this.$emit('input', this.tags);
-            }
-        },
-
-        detach(tag, index) {
-            this.tags.splice(index, 1);
-
-            this.$emit('input', this.tags);
-
-            // const result = confirm(`Вы точно хотите открепить этот тег [${tag.id}]?`);
-            //
-            // result && Tag.$delete({
-            //     params: {
-            //         id: tag.id
-            //     }
-            // });
-        },
-
-        getSuggestions() {
-            const title = this.tag.trim();
-
-            if (this.suggestedTags && this.suggestedTags.some(tag => title === tag.title)) {
+            if (!this.title) {
                 return false;
             }
 
-            this.fetchSuggestions(title);
+            const finded = this.suggestedTags.find(tag => this.title === tag.title);
+
+            if (finded) {
+                this.tags.push(finded);
+            } else {
+                const result = await Tag.$create({
+                    data: {
+                        title: this.title,
+                        taggable_id: this.taggable.id,
+                        taggable_type: this.taggable.type,
+
+                    }
+                })
+
+                this.tags.push(result);
+            }
+
+            this.tag = '';
+
+            this.suggestedTags = [];
+
+            this.$emit('update:tags', this.tags);
         },
 
-        fetchSuggestions(title) {
-            if (title.length >= 3) {
-                return Tag.$fetch({
-                        title
-                    })
-                    .then((response) => {
-                        this.suggestedTags = response.entities.tags || []
-                    });
+        detach(tag, index) {
+            const id = tag.id;
+
+            this.$emit(
+                'update:tags',
+                this.tags.filter((tag) => id !== tag.id)
+            );
+        },
+
+        getSuggestions() {
+            if (this.suggestedTags && this.suggestedTags.some(tag => this.title === tag.title)) {
+                return false;
             }
 
             this.suggestedTags = [];
+
+            this.fetchSuggestions();
+        },
+
+        fetchSuggestions() {
+            this.title && Tag.$fetch({
+                    title: this.title
+                })
+                .then((collection) => {
+                    this.suggestedTags = collection || []
+                });
         }
     }
 }

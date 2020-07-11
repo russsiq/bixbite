@@ -1,5 +1,5 @@
 <template>
-<filterable v-bind="filterable">
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <button type="button" class="btn btn-outline-dark" @click="create"><i class="fa fa-plus"></i> Создать</button>
         <div class="btn-group d-flex ml-auto">
@@ -111,11 +111,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {
-    put,
-    destroy
-} from '@/helpers/api';
-
 import Filterable from '@/views/components/filterable';
 
 export default {
@@ -135,6 +130,7 @@ export default {
     data() {
         return {
             selected: [],
+            collection: [],
             selectedAll: false,
             massAction: '',
             filterable: {
@@ -186,14 +182,6 @@ export default {
         },
     },
 
-    async mounted() {
-        await this.loadFromJsonPath('articles');
-    },
-
-    beforeDestroy() {
-        this.$props.model.deleteAll();
-    },
-
     methods: {
         toggleFilter() {
             this.filterable.active = !this.filterable.active;
@@ -209,73 +197,21 @@ export default {
             this.selected = [];
 
             if (!this.selectedAll) {
-                const items = this.$props.model.all();
-
-                this.selected = items.map(item => item.id);
+                this.selected = this.collection.map(item => item.id);
             }
         },
 
-        applyMassAction() {
-            if (!this.selected.length) {
-                return Notification.warning({
-                    message: 'Пожалуйста, выберите записи.'
-                });
-            }
-
-            if (!this.massAction) {
-                return Notification.warning({
-                    message: 'Пожалуйста, выберите действие.'
-                });
-            }
-
-            const action = this.massAction.toString();
-
-            if (action.startsWith('delete')) {
-                return this.massDelete(this.selected, action);
-            }
-
-            return this.massUpdate(this.selected, action);
+        fetch(filter) {
+            this.$props.model.$fetch(filter)
+                .then(this.fillTable);
         },
 
-        async massUpdate(articles, mass_action) {
-            // Не использовать это: this.$props.model.$update(...)
-            // Потому что ArticleRequest удаляет отсутствующие атрибуты.
-
-            const response = await put(`${Pageinfo.api_url}/articles`, {
-                articles,
-                mass_action,
-            });
-
-            // Before used insertOrUpdate, need to delete all morph relation.
-            // Because duplicates are created.
-            // response.data.data.forEach(item => {
-            //     delete item.categories
-            //     delete item.tags
-            // })
-
-            const data = await this.$props.model.insertOrUpdate({
-                where: (record) => articles.includes(record.id),
-                data: response.data.data,
-            });
-
-            // const ids = data.articles.map(article => article.id);
-            //
-            // ids.length && Notification.success({
-            //     message: `Записи обновлены: [${ids.toString()}].`
-            // });
+        fillTable(collection) {
+            this.collection = collection;
         },
 
-        massDelete(articles) {
-            articles.map(id => this.destroy({
-                id
-            }));
-        },
-
-        /**
-         * Create the new article.
-         */
         create() {
-            const title = prompt('Укажите заголовок новой записи: ', 'Черновик');
+            const title = prompt('Укажите заголовок новой Записи:', 'Черновик');
 
             title && this.$props.model.$create({
                 data: {
@@ -284,18 +220,64 @@ export default {
             });
         },
 
-        /**
-         * Delete the article.
-         */
+        applyMassAction() {
+            if (!this.selected.length) {
+                return this.$notification.warning({
+                    message: 'Пожалуйста, выберите Записи.'
+                });
+            }
+
+            if (!this.massAction) {
+                return this.$notification.warning({
+                    message: 'Пожалуйста, выберите действие.'
+                });
+            }
+
+            const action = this.massAction.toString();
+
+            if (action.startsWith('delete')) {
+                return this.massDelete(this.selected);
+            }
+
+            return this.massUpdate(this.selected, action);
+        },
+
+        massUpdate(articles, mass_action) {
+            this.$props.model.$massUpdate(articles, mass_action)
+                .then((collection) => {
+                    this.collection = this.collection.map((article) => {
+                        if (articles.includes(article.id)) {
+                            const updated = collection.find(item => item.id === article.id);
+
+                            return {
+                                ...article,
+                                ...updated
+                            };
+                        }
+
+                        return article;
+                    });
+                });
+        },
+
+        massDelete(articles) {
+            articles.map(id => this.destroy({
+                id
+            }));
+        },
+
         destroy(article) {
-            const result = confirm(`Вы точно хотите удалить эту запись [${article.id}] с прикрепленными файлами?`);
+            const result = confirm(`Хотите удалить эту Запись [${article.title}] с прикрепленными файлами?`);
 
             result && this.$props.model.$delete({
-                params: {
-                    id: article.id
-                }
-            });
-        },
+                    params: {
+                        id: article.id
+                    }
+                })
+                .then((response) => {
+                    this.collection = this.collection.filter((item) => item.id !== article.id);
+                });
+        }
     },
 }
 </script>

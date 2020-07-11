@@ -1,7 +1,6 @@
 import Model from '@/store/model';
 
 import Article from './article'
-import Taggable from './taggable'
 
 class Tag extends Model {
     static fields() {
@@ -15,5 +14,6 @@ class Tag extends Model {
 }
 
 Tag.entity = 'tags'
+Tag.primaryKey = 'id';
 
-export default Tag
+export default Tag;

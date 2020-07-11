@@ -37,15 +37,10 @@ export default Vue.extend({
             .then(this.fillForm);
     },
 
-    beforeDestroy() {
-        // Очищаем хранилище.
-        Setting.deleteAll();
-    },
-
     methods: {
         /**
          * Заполнить форму с настройками.
-         * @param {Array} data Массив с настройками.
+         * @param  {Array}  data  Массив с настройками.
          */
         fillForm(data) {
             data.map(this.addField);
@@ -53,7 +48,7 @@ export default Vue.extend({
 
         /**
          * Добавить поле для настройки в форму.
-         * @param {Setting} setting
+         * @param  {Setting}  setting
          */
         addField(setting) {
             this.form = Object.assign({}, this.form, {
@@ -63,14 +58,15 @@ export default Vue.extend({
 
         /**
          * Обработать отправку формы.
-         * @param  {Event} event
+         * @param  {Event}  event
          */
         onSubmit(event) {
             const form = event.target;
 
-            this.hignlightInvalidInput(form, form.elements);
+            this.hignlightInvalidInput(form);
 
             // Если форма провалидирована, то сохраняем настройки.
+            // @NB: `form.checkValidity()` – не предотвращает отправку формы.
             form.checkValidity() && Setting.$update({
                 params: {
                     id: this.entity
@@ -83,17 +79,23 @@ export default Vue.extend({
         },
 
         /**
-         * Установить фокус на первом не валидном поле ввода.
-         * @param {HTMLFormElement} form
-         * @param {HTMLFormControlsCollection} elements
+         * Установить фокус на первом невалидном поле ввода.
+         * @param  {HTMLFormElement}  form
          */
-        hignlightInvalidInput(form, [...elements]) {
-            // Перебираем элементы.
+        hignlightInvalidInput(form) {
+            // Перебираем элементы формы.
+            const elements = [...form.elements];
+
             elements.forEach(element => {
                 // Принудительно расставляем атрибут `required`.
                 // Все поля должны попадать в БД со значениями.
-                // Исключения составляют `checkbox` с булевыми значениями.
-                'checkbox' !== element.type && element.setAttribute('required', 'required');
+                // Исключения составляют:
+                //  - `checkbox` с булевыми значениями;
+                //  - поля с атрибутом `disabled`;
+                'checkbox' !== element.type &&
+                    // !element.getAttribute('readonly') &&
+                    !element.getAttribute('disabled') &&
+                    element.setAttribute('required', 'required');
 
                 // Валидируем поле.
                 const isValid = element.validity && element.validity.valid;
@@ -121,7 +123,7 @@ export default Vue.extend({
 
             // Отображаем подсказку невалидности. Пусть будет оранжевая,
             // так как в данный момент ничего критичного не случилось.
-            first.validationMessage && Notification.warning({
+            first.validationMessage && this.$notification.warning({
                 message: first.validationMessage,
             });
         }

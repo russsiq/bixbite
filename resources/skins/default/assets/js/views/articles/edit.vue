@@ -1,41 +1,31 @@
-<!--
-     - обернуть в тег `form`;
-     - убрать обработку ошибок - они все во всплывающих подсказках;
-     - убрать `name` у полей ввода - вроде как не нужны;
-
--->
-
 <template>
-<form v-if="showedForm" action="" method="post" @submit.prevent="update" @keydown.ctrl.83.prevent="update">
+<form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
-            <image-uploader v-model.number="form.image_id" @input="this.update"></image-uploader>
+            <image-uploader :value="article.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
         </div>
 
         <div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">
             <div class="form-group has-float-label">
                 <label class="control-label">Заголовок</label>
                 <div class="input-group">
-                    <input type="text" v-model="form.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
+                    <input type="text" v-model="article.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
                     <div v-if="isPublished" class="input-group-append">
-                        <a :href="form.url" target="_blank" class="btn btn-outline-secondary"><i class="fa fa-external-link"></i></a>
+                        <a :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
                     </div>
                 </div>
-
-                <!-- <transition name="fade">
-                    <span v-if="errors.title" class="invalid-feedback">{{ errors.title[0] }}</span>
-                </transition> -->
             </div>
+
             <div class="form-group has-float-label">
                 <label class="control-label">Предисловие</label>
-                <textarea v-model="form.teaser" rows="4" maxlength="255" class="form-control noresize" placeholder="Заинтересуйте свою аудиторию ..." @keydown.13.prevent></textarea>
+                <textarea v-model="article.teaser" rows="4" maxlength="255" class="form-control noresize" placeholder="Заинтересуйте свою аудиторию ..." @keydown.13.prevent></textarea>
             </div>
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
             <div class="form-group has-float-label">
-                <label for="catmenu" class="control-label">Категории</label>
-                <categories-items v-model="form.categories" :selected="form.categories"></categories-items>
+                <label class="control-label">Категории</label>
+                <categories-items :categoryable="categoryable" :value="article.categories" @update:categories="sync('categories', $event)"></categories-items>
             </div>
         </div>
     </div>
@@ -43,7 +33,7 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="form-group">
-                <quill-editor :attachment="attachment" :value="form.content" @input="updateContent" @json="updateAttributesFromJson"></quill-editor>
+                <quill-editor :attachment="attachment" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
     </div>
@@ -67,7 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="file in article.files" >
+                                <tr v-for="file in article.files">
                                     <td>{{ file.id }}</td>
                                     <td>{{ file.title }}</td>
                                     <td>{{ file.extension }}</td>
@@ -94,15 +84,15 @@
                         <div class="card-body">
                             <div class="form-group has-float-label">
                                 <label class="control-label">Описание</label>
-                                <textarea v-model="form.description" rows="3" maxlength="255" class="form-control"></textarea>
+                                <textarea v-model="article.description" rows="3" maxlength="255" class="form-control"></textarea>
                             </div>
                             <div class="form-group has-float-label">
                                 <label class="control-label">Ключевые слова</label>
-                                <input type="text" v-model="form.keywords" maxlength="255" class="form-control" autocomplete="off">
+                                <input type="text" v-model="article.keywords" maxlength="255" class="form-control" autocomplete="off" />
                             </div>
                             <div class="form-group has-float-label">
                                 <label class="control-label">Инструкции для поисковых роботов</label>
-                                <select v-model="form.robots" class="form-control">
+                                <select v-model="article.robots" class="form-control">
                                     <option :value="null">По умолчанию</option>
                                     <option value="noindex">noindex</option>
                                     <option value="nofollow">nofollow</option>
@@ -119,12 +109,7 @@
                     </div>
                     <div id="card_tags">
                         <div class="card-body">
-                            <!-- <div class="form-group has-float-label">
-                                <label class="control-label">Теги</label>
-                                <input type="text" v-model="form.tags" maxlength="255" class="form-control" autocomplete="off" />
-                            </div> -->
-
-                            <tags-items v-model="form.tags" :taggable="taggable" @input="this.update"></tags-items>
+                            <tags-items :taggable="taggable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
                         </div>
                     </div>
                 </div>
@@ -139,24 +124,24 @@
                             </div>
                             <div class="col-sm-7">
                                 <template v-if="'string' === field.type">
-                                    <input type="text" v-model="form[field.name]" class="form-control" />
+                                    <input type="text" v-model="article[field.name]" class="form-control" />
                                 </template>
                                 <template v-else-if="'integer' === field.type">
-                                    <input type="number" v-model="form[field.name]" class="form-control" />
+                                    <input type="number" v-model="article[field.name]" class="form-control" />
                                 </template>
                                 <template v-else-if="'boolean' === field.type">
-                                    <input type="checkbox" v-model="form[field.name]" />
+                                    <input type="checkbox" v-model="article[field.name]" />
                                 </template>
                                 <template v-else-if="'array' === field.type">
-                                    <select v-model="form[field.name]" class="form-control">
+                                    <select v-model="article[field.name]" class="form-control">
                                         <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
                                     </select>
                                 </template>
                                 <template v-else-if="'text' === field.type">
-                                    <textarea v-model="form[field.name]" rows="4" class="form-control"></textarea>
+                                    <textarea v-model="article[field.name]" rows="4" class="form-control"></textarea>
                                 </template>
                                 <template v-else-if="'timestamp' === field.type">
-                                    <input-datetime-local v-model="form[field.name]" class="form-control"></input-datetime-local>
+                                    <input-datetime-local v-model="article[field.name]" class="form-control"></input-datetime-local>
                                 </template>
 
                                 <div v-else class="alert alert-danger">Неизвестный тип поля.</div>
@@ -165,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <pre>{{ form }}</pre>
+            <pre v-if="isDebug">{{ article }}</pre>
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
@@ -176,19 +161,19 @@
                         <tbody>
                             <tr>
                                 <td>Автор</td>
-                                <td>{{ form.user && form.user.name }}</td>
+                                <td>{{ article.user && article.user.name }}</td>
                             </tr>
                             <tr>
                                 <td>Состояние</td>
-                                <td><span :class="classState(form.state)">{{ titleState(form.state) }}</span></td>
+                                <td><span :class="classState(article.state)">{{ titleState(article.state) }}</span></td>
                             </tr>
                             <tr>
-                                <td>Создание</td>
-                                <td>{{ form.created_at | dateToString }}</td>
+                                <td>Дата создания</td>
+                                <td>{{ article.created_at | dateToString }}</td>
                             </tr>
-                            <tr v-if="form.updated_at">
-                                <td>Обновление</td>
-                                <td>{{ form.updated_at | dateToString }}</td>
+                            <tr v-if="article.updated_at">
+                                <td>Дата обновления</td>
+                                <td>{{ article.updated_at | dateToString }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -198,10 +183,10 @@
             <div class="card card-default">
                 <div class="card-header">Параметры публикации</div>
                 <div class="card-body">
-                    <label class="control-label"><input type="checkbox" v-model="form.on_mainpage" /> Отобразить на главной</label>
-                    <label class="control-label"><input type="checkbox" v-model="form.is_pinned" /> Прикрепить на главной</label>
-                    <label class="control-label"><input type="checkbox" v-model="form.is_catpinned" /> Прикрепить в категории</label>
-                    <label class="control-label"><input type="checkbox" v-model="form.is_favorite" /> Добавить в избранное</label>
+                    <label class="control-label"><input type="checkbox" v-model="article.on_mainpage" /> Отобразить на главной</label>
+                    <label class="control-label"><input type="checkbox" v-model="article.is_pinned" /> Прикрепить на главной</label>
+                    <label class="control-label"><input type="checkbox" v-model="article.is_catpinned" /> Прикрепить в категории</label>
+                    <label class="control-label"><input type="checkbox" v-model="article.is_favorite" /> Добавить в избранное</label>
                 </div>
             </div>
 
@@ -215,7 +200,7 @@
                     </div>
 
                     <div v-if="'customdate' === date_at" class="form-group">
-                        <input-datetime-local v-model="form.created_at" class="form-control"></input-datetime-local>
+                        <input-datetime-local v-model="article.created_at" class="form-control"></input-datetime-local>
                     </div>
                 </div>
             </div>
@@ -223,7 +208,7 @@
             <div class="card card-default">
                 <div class="card-header">Комментирование</div>
                 <div class="card-body">
-                    <select v-model.number="form.allow_com" class="form-control">
+                    <select v-model.number="article.allow_com" class="form-control">
                         <option value="2">По умолчанию</option>
                         <option value="1">Разрешить</option>
                         <option value="0">Запретить</option>
@@ -239,6 +224,7 @@
 import {
     mapGetters
 } from 'vuex';
+
 import Quill from 'quill';
 
 import File from '@/store/models/file';
@@ -275,7 +261,8 @@ export default {
 
     data() {
         return {
-            form: {},
+            article: {},
+
             date_at: null,
 
             saveTimer: null,
@@ -289,6 +276,11 @@ export default {
                 id: this.$props.id,
                 type: this.$props.model.entity
             },
+
+            categoryable: {
+                id: this.$props.id,
+                type: this.$props.model.entity
+            }
         }
     },
 
@@ -297,40 +289,37 @@ export default {
             meta: 'meta/all',
         }),
 
+        isDebug() {
+            return process.env.NODE_ENV !== 'production';
+        },
+
         x_fields() {
             return this.meta.x_fields || [];
         },
 
         setting() {
-            // Если настройки не заданы,
-            // то возвращаем пустой массив.
-            return this.meta.setting.articles || [];
+            // Если настройки не заданы, то возвращаем значения по умолчанию.
+            return this.meta.setting && this.meta.setting.articles || {
+                'save_interval': 120,
+            };
         },
 
         saveInterval() {
-            const interval = Math.max(this.setting.save_interval || 120, 120);
+            const interval = Math.max(this.setting.save_interval, 120);
 
             return interval * 1000;
         },
 
-        // article() {
-        //     // Load article with all relations. withAllRecursive()
-        //     return this.model.query().withAll().find(this.$props.id)
-        //
-        //     // Load nested relations with dot syntax
-        //     // const user = User.query() .with('posts.comments|reviews').find(1)
-        // },
-
+        /**
+         * Разрешено ли отобразить форму создания/редактирования.
+         * @return {Boolean}
+         */
         showedForm() {
-            return Object.keys(this.form).length > 0;
+            return Object.keys(this.article).length > 0;
         },
 
         isPublished() {
-            return 'published' === this.form.state;
-        },
-
-        article() {
-            return this.$props.model.query().withAllRecursive().find(this.$props.id);
+            return 'published' === this.article.state;
         },
 
         classState() {
@@ -357,14 +346,11 @@ export default {
     },
 
     watch: {
-        'form.title'(val, oldVal) {
+        'article.title'(val, oldVal) {
             document.title = val;
-        }
+        },
     },
 
-    /**
-     * Prepare the component.
-     */
     created() {
         this.$props.model.$get({
                 params: {
@@ -374,114 +360,91 @@ export default {
             .then(this.fillForm);
     },
 
-    /**
-     * Clean after the component is destroyed.
-     */
     beforeDestroy() {
-        // Teardown the watcher.
         clearTimeout(this.saveTimer);
-
-        // Reset resource list.
-        this.$props.model.deleteAll();
     },
 
     methods: {
-        /**
-         * Добавить поле для настройки в форму.
-         * @param {Article} article
-         */
         fillForm(article) {
-            console.log(article);
-            this.form = Object.assign({}, this.form, article);
-            this.form.categories = this.form.categories.map(cat => cat.id);
-            // this.form.tags = this.form.tags.map(tag => tag.title).join(', ');
+            clearTimeout(this.saveTimer);
 
-            this.saveTimer = setTimeout(this.update, this.saveInterval);
+            this.article = Object.assign({}, this.article, article);
+
+            this.saveTimer = setTimeout(this.save, this.saveInterval);
         },
 
         updateAttributesFromJson(data) {
-            for (let attribute in data) {
-                if (this.form.hasOwnProperty(attribute)) {
-                    this.form[attribute] = data[attribute];
+            for (const attribute in data) {
+                if (this.article.hasOwnProperty(attribute)) {
+                    this.article[attribute] = data[attribute];
                 }
             }
 
-            this.update();
+            this.save();
         },
 
-        updateContent(content) {
-            this.form.content = content;
+        sync(attribute, value) {
+            this.update(attribute, value)
+                .save();
         },
 
-        updateImage(id) {
-            this.form.image_id = id;
+        update(attribute, value) {
+            this.article[attribute] = value;
+
+            return this;
         },
 
         /**
-         * Update the article.
+         * Отправить данные по текущей Заметки на сервер.
          */
-        update() {
+        save() {
             // Очищаем предыдущий таймер,
             // чтобы не было зацикливаний.
             clearTimeout(this.saveTimer);
 
-            this.model.$update({
+            this.$props.model.$update({
                     params: {
                         id: this.$props.id
                     },
 
                     data: {
-                        ...this.form,
+                        ...this.article,
                         // Дополнительные поля.
                         // Переписать на сторону клиента.
                         date_at: this.date_at
-                    },
-
-                    // Не понятно: работает ли это?
-                    update: ['files']
+                    }
                 })
-                .then(this.fillForm)
-                .catch((error) => {})
-                .then(() => {});
+                .then(this.fillForm);
         },
 
         fileDelete(file) {
-            if (this.form.image_id === file.id) {
+            if (this.article.image_id === file.id) {
                 return alert(`Это основное изображение записи.`)
             }
 
-            const result = confirm(`Вы точно хотите удалить это изображение [${file.id}] с сервера?`);
-
-            if (result) {
-                const quillComponent = this.$children.find((component) => {
-                    return component.editor && component.editor instanceof Quill;
-                });
-
-                const html = quillComponent.editor.root;
-                const [...images] = html.querySelectorAll('figure');
-                const selectedImage = images.find(image => +image.dataset.id === file.id);
-
-                selectedImage && selectedImage.remove();
-
-                File.$delete({
-                    params: {
-                        id: file.id
-                    }
-                });
+            if (!confirm(`Хотите удалить это изображение [${file.id}] с сервера?`)) {
+                return false;
             }
+
+            const quillComponent = this.$children.find((component) => {
+                return component.editor && component.editor instanceof Quill;
+            });
+
+            const html = quillComponent.editor.root;
+            const [...images] = html.querySelectorAll('figure');
+            const selectedImage = images.find(image => +image.dataset.id === file.id);
+
+            selectedImage && selectedImage.remove();
+
+            File.$delete({
+                params: {
+                    id: file.id
+                }
+            })
+            .then((response) => {
+                this.save();
+            });
         },
     },
 }
 </script>
-
-<!--style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s;
-}
-/* .fade-leave-active до версии 2.1.8 */
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
-}
-</style-->

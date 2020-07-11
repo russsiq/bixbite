@@ -1,5 +1,5 @@
 <template>
-<filterable v-bind="filterable">
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <div class="btn-group d-flex ml-auto mr-auto">
             <router-link :to="{name: 'privileges'}" class="btn btn-outline-dark" title="Привилегии"><i class="fa fa-user-secret"></i></router-link>
@@ -84,18 +84,16 @@ export default {
 
     data() {
         return {
+            collection: [],
             filterable: {
                 model: this.$props.model,
                 active: false,
+                massAction: false,
             },
         }
     },
 
     computed: {
-        collection() {
-            return this.model.all();
-        },
-
         isOnline() {
             return (is_online) => is_online ?
                 'text-success' :
@@ -109,17 +107,36 @@ export default {
         }
     },
 
-    mounted() {
-        this.loadFromJsonPath('users');
-    },
+    async mounted() {
+        await this.loadFromJsonPath('users');
 
-    beforeDestroy() {
-        this.$props.model.deleteAll();
     },
 
     methods: {
+        fetch(filter) {
+            this.$props.model.$fetch(filter)
+                .then(this.fillTable);
+        },
+
+        fillTable(collection) {
+            this.collection = collection;
+        },
+
         toggleIsActive(row) {
             console.log(row);
+        },
+
+        destroy(user) {
+            const result = confirm(`Хотите удалить этого Пользователя [${user.name}]?`);
+
+            result && this.$props.model.$delete({
+                    params: {
+                        id: user.id
+                    }
+                })
+                .then((response) => {
+                    this.collection = this.collection.filter((item) => item.id !== user.id);
+                });
         }
     },
 }

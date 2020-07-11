@@ -2,10 +2,8 @@ import Model from '@/store/model';
 
 import File from './file';
 import Category from './category';
-import Categoryable from './categoryable';
 import Comment from './comment';
 import Tag from './tag';
-import Taggable from './taggable';
 import User from './user';
 
 class Article extends Model {
@@ -59,6 +57,9 @@ class Article extends Model {
     static fields() {
         return {
             id: this.attr(null),
+            categories: this.morphToMany(Category, Categoryable, 'category_id', 'categoryable_id', 'categoryable_type'),
+            comments: this.morphMany(Comment, 'commentable_id', 'commentable_type'),
+            files: this.morphMany(File, 'attachment_id', 'attachment_type'),
             tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
             user_id: this.number(1),
             image_id: this.number().nullable(),
@@ -98,10 +99,6 @@ class Article extends Model {
             //img: this.string().nullable(),
             user: this.belongsTo(User, 'user_id'),
             image: this.hasOne(File, 'image_id', 'attachment_id'),
-            files: this.morphMany(File, 'attachment_id', 'attachment_type'),
-            comments: this.morphMany(Comment, 'commentable_id', 'commentable_type'),
-            // tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
-            categories: this.morphToMany(Category, Categoryable, 'category_id', 'categoryable_id', 'categoryable_type'),
 
             // Временные метки.
             created_at: this.string(),
@@ -111,5 +108,6 @@ class Article extends Model {
 }
 
 Article.entity = 'articles';
+Article.primaryKey = 'id';
 
 export default Article;

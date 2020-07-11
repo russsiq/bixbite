@@ -138,11 +138,6 @@ import {
     mapGetters
 } from 'vuex';
 
-import {
-    get,
-    post
-} from '@/helpers/api';
-
 import TemplatesTree from '@/views/templates/partials/templates-tree';
 
 // Синтаксисы для подсветки языков.
@@ -233,9 +228,15 @@ export default {
     data() {
         return {
             /**
+             * Текущий шаблон.
+             * @type {?string}
+             */
+            template: null,
+
+            /**
              * Имя текущего файла. Данное поле находится в наблюдателе.
              * От этого имени зависит выбор текущего шаблона.
-             * @type {String}
+             * @type {?string}
              */
             filename: null,
 
@@ -244,6 +245,19 @@ export default {
              * @type {CodeMirror}
              */
             editor: null,
+
+            /**
+             * Плоская коллекия шаблонов. Данное поле находится в наблюдателе.
+             * При изменении коллекции меняется древовидная коллекция.
+             * @type {array}
+             */
+            collection: [],
+
+            /**
+             * Древовидная коллекция шаблонов.
+             * @type {array}
+             */
+            templates: [],
         }
     },
 
@@ -256,68 +270,74 @@ export default {
             return this.meta.theme || 'Загрузка шаблонов темы ...';
         },
 
-        template() {
-            return this.$props.model
-                .query()
-                .where('filename', this.filename)
-                .first();
-        },
-
         tmode() {
             const extension = this.filename ? this.filename.split('.').pop() : 'php';
 
             return CM_MODES[extension] || CM_MODES['default'];
-        },
-
-        templates() {
-            const templates = this.$props.model.all();
-            const folders = [];
-            const parents_map = new Map();
-
-            // Создадим дубликат массива объектов только с необходимым набором свойств.
-            const nested = templates.map(function(item, index, arr) {
-                const parts = item.filename.split('\\');
-                const name = parts.pop();
-                const parent = parts.length ? hash(parts) : 0;
-
-                // Построение структуры категорий выполнять
-                // после удаления имени файла `name`,
-                // чтобы остался только массив категорий.
-                build(parts, parents_map, folders);
-
-                return {
-                    ...item,
-                    name,
-                    parent,
-                }
-            });
-
-            const data = [...folders, ...nested];
-
-            // Добавим дочерние элементы.
-            data.forEach(function(item, index, arr) {
-                item.children = arr.filter(subItem => item.id === subItem.parent);
-            });
-
-            // Оставим только корневые элементы.
-            return data.filter(item => item.parent === 0);
         },
     },
 
     watch: {
         filename(newVal, oldVal) {
             newVal && this.onChangeFileName();
+        },
+
+        collection:{
+            immediate: true,
+            deep: true,
+            handler: function(templates, oldVal) {
+                const folders = [];
+                const parents_map = new Map();
+
+                // Создадим дубликат массива объектов, но с необходимым набором свойств.
+                const nested = templates.map(function(item, index, arr) {
+                    const parts = item.filename.split('\\');
+                    const name = parts.pop();
+                    const parent = parts.length ? hash(parts) : 0;
+
+                    // Построение структуры категорий выполнять
+                    // после удаления имени файла `name`,
+                    // чтобы остался только массив категорий.
+                    build(parts, parents_map, folders);
+
+                    return {
+                        ...item,
+                        name,
+                        parent,
+                    }
+                });
+
+                const data = [...folders, ...nested];
+
+                // Добавим дочерние элементы.
+                data.forEach(function(item, index, arr) {
+                    item.children = arr.filter(subItem => item.id === subItem.parent);
+                });
+
+                // Оставим только корневые элементы.
+                this.templates = data.filter(item => item.parent === 0);
+            }
         }
     },
 
     async mounted() {
         await this.loadFromJsonPath('templates');
-        await this.$props.model.$fetch();
+
+        this.$props.model.$fetch()
+            .then(this.fillTree);
 
         this.initialize();
     },
 
+    beforeDestroy() {
+        this.destroy();
+    },
+
     methods: {
+        fillTree(templates) {
+            this.collection = templates;
+        },
+
         /**
          * Выбрать шаблон.
          */
@@ -328,6 +348,8 @@ export default {
         },
 
         onChangeFileName() {
+            this.template = this.collection.find((template) => template.filename === this.filename)
+
             this.editor.setOption('mode', this.tmode);
             this.editor.setValue(this.template.content);
 
@@ -349,16 +371,13 @@ export default {
                         content: '',
                     }
                 })
-                .then((template) => this.filename = template.filename);
+                .then((template) => {
+                    this.collection.push(template);
+                    this.filename = template.filename;
+                });
         },
 
         updateTemplate() {
-            /**
-             * Плагин `vuex-ORM` самостоятельно генерирует `id`,
-             * но нам этот `id` не важен. Он нужен только для
-             * обновления шаблона в хранилище `vuex`.
-             * @uri `/api/v1/templates/{fiction_id_from_vuex_orm}`
-             */
             this.template && this.template.id && this.$props.model.$update({
                 params: {
                     id: this.template.id
@@ -377,12 +396,9 @@ export default {
             this.editor = CodeMirror.fromTextArea(this.$refs.codeEditor, CM_OPTIONS);
 
             this.editor.on('change', (editor) => {
-                this.template.id && this.$props.model.update({
-                    where: this.template.id,
-                    data: {
-                        content: editor.getValue()
-                    }
-                });
+                if (this.template.id) {
+                    this.template.content = editor.getValue();
+                }
             });
 
             document.addEventListener('keydown', this.onSaveHandler);
@@ -398,18 +414,12 @@ export default {
         },
 
         onSaveHandler(event) {
-            if (event.ctrlKey && event.keyCode == 'S'.charCodeAt(0)) {
+            if (event.ctrlKey && 'S'.charCodeAt(0) === event.keyCode) {
                 event.preventDefault();
 
                 this.updateTemplate();
             }
         },
     },
-
-    async beforeDestroy() {
-        await this.$props.model.deleteAll();
-
-        this.destroy();
-    }
 }
 </script>

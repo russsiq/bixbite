@@ -65,13 +65,3 @@ export function destroy(url, params = {}) {
         }
     })
 }
-
-export function interceptors(cb) {
-    axios.interceptors.response.use((response) => {
-        return response;
-    }, (error) => {
-        cb(error)
-
-        return Promise.reject(error)
-    })
-}

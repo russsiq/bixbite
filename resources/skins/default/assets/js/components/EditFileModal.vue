@@ -81,7 +81,7 @@ export default {
                     throw new Error(response.data.message);
                 }
 
-                Notification.success({
+                this.$notification.success({
                     message: response.data.message
                 })
 

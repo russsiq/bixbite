@@ -69,8 +69,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
     {
         // Если возникнет необходимость самостоятельно
         // генерировать идентификатор для маршрутизоторов.
-        // В данной версии генерируется во `vuex-orm`.
-        // $id = md5($this->filename);
+        $id = md5($this->filename);
 
         // Полный путь с корневого каталога сайта.
         $path = $this->path();
@@ -80,6 +79,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
         // Заполняем нулевую информацию.
         $this->attributes = [
+            'id' => $id,
             'filename' => $this->filename,
             'path' => $path,
             'exists' => $exists,

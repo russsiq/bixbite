@@ -53,17 +53,40 @@ export default {
 
     data() {
         return {
+            image: {},
             modalShown: false,
         }
     },
 
-    computed: {
-        image() {
-            return File.query().withAll().find(this.image_id);
-        }
+    computed: {},
+
+    watch: {
+        'image_id': {
+            immediate: true,
+            handler: function(id, oldVal) {
+                this.image = {};
+
+                if ('number' === typeof id) {
+                    File.$get({
+                            params: {
+                                id: id
+                            }
+                        })
+                        .then(this.fillForm);
+                }
+            }
+        },
     },
 
     methods: {
+        /**
+         * Заполнить форму полученными данными.
+         * @param {File} image
+         */
+        fillForm(image) {
+            this.image = image;
+        },
+
         /**
          * Open the modal to edit image attributes.
          */
@@ -83,27 +106,25 @@ export default {
                     data: {
                         title: this.image.title,
                         description: this.image.description,
-                    },
-
-                    // update: ['users']
+                    }
                 })
                 .then(response => {
+                    console.log(response);
                     this.closeModal();
                 });
         },
 
         deleteImage() {
-            if (confirm('Вы уверены, что хотите удалить этот файл с сервера?')) {
-                this.$emit('destroy');
+            const result = confirm(`Хотите удалить этот файл [${this.image.title}] с сервера?`);
 
-                File.$delete({
+            result && File.$delete({
                     params: {
                         id: this.image_id
                     },
-
-                    // update: ['users']
+                })
+                .then(response => {
+                    this.$emit('destroy');
                 });
-            }
         },
 
         closeModal() {

@@ -8,15 +8,6 @@ import axios from 'axios'
 
 const http = {
     /**
-     * Default create new axios instance, provide
-     * option to pass an existing instance through.
-     * @NB: Невозможно использовать из-за
-     *      повторного отправления `onResponse`, подробнее:
-     *      https://github.com/vuex-orm/plugin-axios/issues/39
-     */
-    // axios: axios.create(http),
-
-    /**
      * Default URL.
      */
     url: '/',
@@ -86,10 +77,8 @@ const http = {
         // Так проще складировать набор методов.
         status in statuses && statuses[status].apply(this, arguments);
 
-        return response;
-
-        // Возвращаем данные для хранилища `vuex-orm`.
-        // В Laravel всё, включая  постраничку, оборачиваем в `data`.
+        // Возвращаем данные. В Laravel всё,
+        // включая  постраничку, оборачиваем в `data`.
         return data && data.data;
     },
 

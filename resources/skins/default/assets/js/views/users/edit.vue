@@ -124,10 +124,6 @@ export default {
         .then(this.fillForm);
     },
 
-    beforeDestroy() {
-        this.$props.model.deleteAll();
-    },
-
     methods: {
         fillForm(data) {
             this.form = Object.assign({}, this.form, {
@@ -141,7 +137,7 @@ export default {
         },
 
         onSubmit(event) {
-            Notification.warning({
+            this.$notification.warning({
                 message: 'This feature is not implemented!'
             });
 

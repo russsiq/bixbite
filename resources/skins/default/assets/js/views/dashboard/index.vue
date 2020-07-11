@@ -63,44 +63,9 @@ import Note from '@/store/models/note';
 export default {
     name: 'dashboard',
 
-    computed: {
-        notes() {
-            // Список всех заметок был получен по API
-            // единожды в компоненте `App.vue`.
-            return Note.query()
-                .withAll()
-                .where('is_completed', false)
-                .limit(4)
-                .get();
-        },
-    },
-
-    methods: {
-        toggleComplete(note) {
-            Note.$update({
-                params: {
-                    id: note.id
-                },
-
-                data: {
-                    ...note.$toJson(),
-                    is_completed: !note.is_completed,
-                }
-            });
-        },
-    },
-
-    mounted() {
-        // Подгружаем по API список всех заметок.
-        Note.$fetch();
-    },
-
-    beforeDestroy() {
-        //
-    },
-
     data() {
         return {
+            noteCollection: [],
             modules: [{
                 id: 1,
                 name: 'articles',
@@ -131,11 +96,11 @@ export default {
                 name: 'comments',
                 title: 'Комментарии',
                 icon: 'fa-comments-o',
-            }, {
-                id: 7,
-                name: 'polls',
-                title: 'Опросы',
-                icon: 'fa-list-ol',
+            // }, {
+            //     id: 7,
+            //     name: 'polls',
+            //     title: 'Опросы',
+            //     icon: 'fa-list-ol',
             }, {
                 id: 8,
                 name: 'x_fields',
@@ -148,6 +113,40 @@ export default {
                 icon: 'fa-list-alt',
             }],
         }
+    },
+
+    computed: {
+        notes() {
+            const noteCollection = this.noteCollection.filter((note) => {
+                    return !note.is_completed;
+                })
+                .sort((b, a) => b.id < a.id ? 1: -1)
+                .splice(0, 4)
+
+            return noteCollection;
+        },
+    },
+
+    mounted() {
+        Note.$fetch()
+            .then((notes) => {
+                this.noteCollection = notes;
+            });
+    },
+
+    methods: {
+        toggleComplete(note) {
+            Note.$update({
+                params: {
+                    id: note.id
+                },
+
+                data: {
+                    ...note,
+                    is_completed: !note.is_completed,
+                }
+            });
+        },
     },
 }
 </script>

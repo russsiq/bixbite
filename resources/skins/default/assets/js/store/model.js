@@ -1,10 +1,20 @@
-import {
-    Model
-} from '@vuex-orm/core';
-
 import store from '@/store';
+import http from '@/store/axios-request-config';
 
-export default class extends Model {
+// let query = this.search.query
+// let where = this.search.where
+// let filter = new RegExp(query, 'i')
+//
+// if (['title', 'description'].includes(where)) {
+//     return this.articles.filter(article => article[where].match(filter))
+// }
+
+export default class {
+
+    static api() {
+        return http;
+    }
+
     static apiToken() {
         return store.getters['auth/api_token'];
     }
@@ -16,62 +26,56 @@ export default class extends Model {
                 headers: {
                     'Authorization': 'Bearer ' + this.apiToken(),
                 },
-                dataKey: 'data'
             });
     }
 
-    static async $get({params}) {
-        const id = params.id;
-
-        const response = await this.api()
-            .get(this.entity+'/'+id, {
+    static $get({params}) {
+        return this.api()
+            .get(`${this.entity}/${params.id}`, {
                 headers: {
                     'Authorization': 'Bearer ' + this.apiToken(),
                 },
-                dataKey: 'data',
             });
-
-        return this.query().whereId(id).withAll().first();
     }
 
-    static async $create({data}) {
-        const response = await this.api()
+    static $create({data}) {
+        return this.api()
             .post(this.entity, data, {
                 headers: {
                     'Authorization': 'Bearer ' + this.apiToken(),
                 },
-                dataKey: 'data',
             });
-
-        const id = response.entities[this.entity][0].id;
-
-        return this.query().whereId(id).withAll().first();
-        return this.query().last();
     }
 
-    static async $update({params, data}) {
+    static $update({params, data}) {
         const id = params.id;
 
-        const response = await this.api()
+        return this.api()
             .put(this.entity+'/'+id, data, {
                 headers: {
                     'Authorization': 'Bearer ' + this.apiToken(),
                 },
-                dataKey: 'data',
             });
-
-        return this.query().whereId(id).withAll().first();
     }
 
-    static $delete({params}) {
-        const id = params.id;
-
+    static $massUpdate(ids, mass_action) {
         return this.api()
-            .delete(this.entity+'/'+id, {
+            .put(this.entity, {
+                [this.entity]: ids,
+                mass_action: mass_action
+            }, {
                 headers: {
                     'Authorization': 'Bearer ' + this.apiToken(),
                 },
-                delete: id
+            });
+    }
+
+    static $delete({params}) {
+        return this.api()
+            .delete(`${this.entity}/${params.id}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + this.apiToken(),
+                },
             });
     }
 }

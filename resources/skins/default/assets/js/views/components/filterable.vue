@@ -190,6 +190,7 @@ export default {
             type: Function,
             required: true
         },
+        value: Array
     },
 
     data() {
@@ -210,7 +211,12 @@ export default {
     computed: {
         ...mapGetters({
             meta: 'meta/all',
+            loading: 'loadingLayer/show',
         }),
+
+        collection() {
+            return this.$props.value || [];
+        },
 
         orderableColumns() {
             return this.meta.orderableColumns || [];
@@ -220,18 +226,6 @@ export default {
             // На данный момент фильтрация доступна только для модели Article.
             return this.$props.model.state().allowedFilters || {};
             // return this.meta.allowedFilters || {};
-        },
-
-        collection() {
-            // После того, как был получен ответ от сервера и были установлены мета-данные в хранилище `vuex`, а также изменен маршрут в троке браузера, отображаем список.
-            return this.query.page ? this.$props.model.query()
-                .withAll()
-                .orderBy(this.query.order_column, this.query.order_direction)
-                .all() : [];
-        },
-
-        loading() {
-            return this.$props.model.getters('loading');
         },
 
         fetchOperators() {
@@ -285,16 +279,6 @@ export default {
             immediate: true,
             deep: true
         });
-    },
-
-    /**
-     * Не всегда есть необходимость в удалении сущностей.
-     * Удаление сущностей оставить за дочерними компонентами.
-     */
-    destroyed() {
-        /*
-         * this.clearList();
-         */
     },
 
     methods: {
@@ -406,25 +390,10 @@ export default {
         },
 
         applyChange() {
-            this.fetch();
-        },
-
-        async fetch() {
-            await this.clearList();
-
-            // Fetch user resource.
-            await this.$props.model.$fetch({
+            this.$emit('apply:change', {
                 ...this.filters,
                 ...this.query
             });
-        },
-
-        /**
-         * Reset resource list.
-         */
-        async clearList() {
-            // await this.$props.model.query().withAllRecursive().deleteAll();
-            await this.$props.model.deleteAll();
         },
 
         /**

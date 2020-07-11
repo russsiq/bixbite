@@ -1,5 +1,5 @@
 <template>
-<filterable v-bind="filterable">
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <div class="btn-group">
             <!--  -->
@@ -18,7 +18,7 @@
             <th>#</th>
             <th>Заголовок</th>
             <th>Расширение</th>
-            <th>Прикрепление файла</th>
+            <th colspan="3">Прикрепление файла</th>
             <th>Загрузил</th>
             <th class="text-right d-print-none">Действия</th>
         </tr>
@@ -29,8 +29,18 @@
             <td>{{ row.id }}</td>
             <td><a :href="row.url" target="_blank">{{ row.title }}</a></td>
             <td>{{ row.extension }}</td>
-            <td v-if="row.attachment"><a :href="row.attachment.url" target="_blank">{{ row.attachment.title }}</a></td>
-            <td v-else><code>Файл не прикреплен</code></td>
+            <template v-if="row.attachment">
+                <td>
+                    {{ row.attachment_type }}
+                </td>
+                <td>
+                    {{ row.attachment_id }}
+                </td>
+                <td>
+                    <a :href="row.attachment.url" target="_blank">{{ row.attachment.title }}</a>
+                </td>
+            </template>
+            <td v-else colspan="3"><code>Файл не прикреплен</code></td>
             <td>{{ row.user && row.user.name }}</td>
             <td class="text-right d-print-none">
                 <div class="btn-group">
@@ -47,7 +57,7 @@
             <td>#</td>
             <td>Заголовок</td>
             <td>Расширение</td>
-            <td>Прикрепление файла</td>
+            <td colspan="3">Прикрепление файла</td>
             <td>Загрузил</td>
             <td class="text-right d-print-none">Действия</td>
         </tr>
@@ -78,6 +88,7 @@ export default {
 
     data() {
         return {
+            collection: [],
             filterable: {
                 model: this.$props.model,
                 active: false,
@@ -93,26 +104,36 @@ export default {
     },
 
     mounted() {
-        //
+        this.$props.model.$fetch()
+            .then(this.fillTable);
     },
 
     methods: {
+        fetch(filter) {
+            this.$props.model.$fetch(filter)
+                .then(this.fillTable);
+        },
+
+        fillTable(collection) {
+            this.collection = collection;
+        },
+
         toggleFilter() {
             this.filterable.active = !this.filterable.active;
         },
 
-        /**
-         * Delete the article.
-         */
         destroy(file) {
-            const result = confirm(`Вы точно хотите удалить этот файл: ${file.title}?`);
+            const result = confirm(`Хотите удалить этот файл [${file.title}]?`);
 
             result && this.$props.model.$delete({
-                params: {
-                    id: file.id
-                }
-            });
-        }
+                    params: {
+                        id: file.id
+                    }
+                })
+                .then((response) => {
+                    this.collection = this.collection.filter((item) => item.id !== file.id);
+                });
+        },
     },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 <select class="form-control" @change="handleChange" multiple>
-    <template v-for="(item, index) in categories">
+    <template v-for="(item, index) in nestedCategories">
         <option :value="item.id" :selected="item.selected" :disabled="item.disabled">{{ item.title }}</option>
     </template>
 </select>
@@ -14,60 +14,82 @@ export default {
         value: {
             type: Array,
             default: [],
+        },
+
+        categoryable: {
+            type: Object,
+            required: true,
+            validator(categoryable) {
+                return 'number' === typeof categoryable.id &&
+                    'string' === typeof categoryable.type;
+            }
         }
     },
 
     data() {
-        return {}
+        return {
+            categories: []
+        }
     },
 
     computed: {
-        categories() {
-            const categories = Category.query().orderBy('position', 'asc').all();
-            const roots = this.getRootCategories(categories);
+        selected() {
+            return this.value.map(category => category.id);
+        },
+
+        nestedCategories() {
+            const categories = this.categories;
+            const roots = categories.filter(element => !element.parent_id);
 
             return this.getNestedCategories(roots, 0, categories);
         },
+
+        getNestedCategories() {
+            return (items, depth, categories) => {
+                let nested = [];
+
+                items.forEach((item, index, array) => {
+                    item.depth = depth;
+                    item.disabled = 'string' === typeof item.alt_url;
+                    item.selected = this.$props.value.some(category => item.id === category.id);
+                    item.title = ' — '.repeat(item.depth) + item.title;
+
+                    nested.push(item);
+
+                    const children = categories.filter(element => element.parent_id === item.id);
+
+                    if (children.length) {
+                        nested = nested.concat(this.getNestedCategories(children, depth + 1, categories));
+                    }
+                });
+
+                return nested;
+            }
+        },
+    },
+
+    created() {
+        Category.$fetch({
+
+            })
+            .then(this.fillForm);
     },
 
     methods: {
-        getRootCategories(categories) {
-            return categories.filter(element => !element.parent_id)
-        },
-
-        getNestedCategories(items, depth, categories) {
-            let nested = [];
-
-            items.forEach((item, index, array) => {
-                item = item.$toJson();
-
-                item.depth = depth;
-                item.disabled = 'string' === typeof item.alt_url;
-                item.selected = this.$props.value.includes(item.id);
-
-                item.title = ' — '.repeat(item.depth) + item.title;
-
-                nested.push(item);
-
-                const children = categories.filter(element => element.parent_id === item.id);
-
-                if (children.length) {
-                    nested = nested.concat(this.getNestedCategories(children, depth + 1, categories));
-                }
-            });
-
-            return nested;
+        fillForm(categories) {
+            this.categories = categories;
         },
 
         handleChange(event) {
-            this.$emit(
-                'input',
-                Array.from(event.target.options)
+            const selected = Array.from(event.target.options)
                 .filter(option => option.selected)
-                .map(option => Number(option.value))
-            )
-        },
+                .map(option => Number(option.value));
 
+            this.$emit(
+                'update:categories',
+                this.categories.filter(category => selected.includes(category.id))
+            );
+        },
     }
 }
 </script>

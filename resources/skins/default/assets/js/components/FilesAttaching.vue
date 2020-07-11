@@ -192,7 +192,7 @@ export default {
 
         async uploadFile(key) {
             if (!this.$props.attachment_id || !this.$props.attachment_type) {
-                Notification.warning({
+                this.$notification.warning({
                     message: this.lang.trans('Before you can upload files, you must save the article.')
                 })
 
@@ -253,7 +253,7 @@ export default {
                 .delete(this.$props.file_url + '/' + this.files[key].id)
                 .then((response) => {
                     this.files.splice(key, 1)
-                    Notification.success({
+                    this.$notification.success({
                         message: response.data.message
                     })
                 })

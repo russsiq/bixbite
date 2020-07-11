@@ -122,9 +122,5 @@ export default {
             });
         }
     },
-
-    async beforeDestroy() {
-        await this.$props.model.deleteAll();
-    }
 }
 </script>

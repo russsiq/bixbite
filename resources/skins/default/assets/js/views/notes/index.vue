@@ -88,21 +88,16 @@ export default {
     },
 
     data() {
-        return {}
+        return {
+            collection: [],
+        }
     },
 
     computed: {
         ...mapGetters({
             meta: 'meta/all',
+            loading: 'loadingLayer/show',
         }),
-
-        collection() {
-            return this.$props.model.query().withAll().get();
-        },
-
-        loading() {
-            return this.$props.model.getters('loading');
-        },
 
         isCompleted() {
             return (note) => ({
@@ -113,14 +108,15 @@ export default {
     },
 
     mounted() {
-        this.$props.model.$fetch();
-    },
-
-    beforeDestroy() {
-        this.$props.model.deleteAll();
+        this.$props.model.$fetch()
+            .then(this.fillTable);
     },
 
     methods: {
+        fillTable(collection) {
+            this.collection = collection;
+        },
+
         toggleCompleted(note) {
             this.$props.model.$update({
                 params: {
@@ -128,22 +124,34 @@ export default {
                 },
 
                 data: {
-                    ...note.$toJson(),
+                    ...note,
                     is_completed: !note.is_completed,
                 }
+            })
+            .then((updated) => {
+                this.collection = this.collection.map((item) => {
+                    if (item.id === note.id) {
+                        return {
+                            ...item,
+                            ...updated
+                        };
+                    }
+
+                    return item;
+                });
             });
         },
 
-        /**
-         * Delete the article.
-         */
         destroy(note) {
-            const result = confirm(`Вы точно хотите удалить эту заметку: ${note.title}?`);
+            const result = confirm(`Хотите удалить эту Заметку: [${note.title}] с прикрепленными файлами?`);
 
             result && this.$props.model.$delete({
                 params: {
                     id: note.id
                 }
+            })
+            .then((response) => {
+                this.collection = this.collection.filter((item) => item.id !== note.id);
             });
         }
     },

@@ -1,7 +1,6 @@
 import Model from '@/store/model';
 
 import Article from './article';
-import Categoryable from './categoryable';
 import File from './file';
 
 class Category extends Model {
@@ -50,5 +49,6 @@ class Category extends Model {
 }
 
 Category.entity = 'categories';
+Category.primaryKey = 'id';
 
 export default Category;

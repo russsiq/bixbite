@@ -187,7 +187,7 @@
                         </div>
                     </div>
 
-                    <div class="card card-default">
+                    <!-- <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Стандартная капча</div>
                         <div class="card-body">
                             <div class="form-group row">
@@ -237,7 +237,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div id="pane-sitemap" class="tab-pane">
