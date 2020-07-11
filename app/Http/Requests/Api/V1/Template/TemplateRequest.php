@@ -14,8 +14,8 @@ class TemplateRequest extends BaseFormRequest
      */
     protected function prepareForValidation(): void
     {
-        $filename = $this->get('filename');
-        $content = $this->get('content', null);
+        $filename = $this->input('filename');
+        $content = $this->input('content', null);
 
         $template = new Template([
             'filename' => $filename,
