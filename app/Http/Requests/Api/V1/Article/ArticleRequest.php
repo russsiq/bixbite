@@ -74,6 +74,7 @@ class ArticleRequest extends BaseFormRequest
             'image_id' => [
                 'nullable',
                 'integer',
+                'min:1',
                 'exists:files,id',
 
             ],
