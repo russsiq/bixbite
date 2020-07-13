@@ -9,12 +9,12 @@ trait XFieldMutators
 {
     /**
      * Задать атрибуту `name` значение.
-     * @param  string  $value
+     * @param  string  $name
      * @return void
      */
-    public function setNameAttribute(string $value): void
+    public function setNameAttribute(string $name): void
     {
-        $this->attributes['name'] = trim(Str::start($value, $this->xPrefix()), '_');
+        $this->attributes['name'] = $this->normalizeXFieldPrefix($name);
     }
 
     /**
@@ -23,6 +23,16 @@ trait XFieldMutators
      */
     public function getNameAttribute(): string
     {
-        return trim(Str::start($this->attributes['name'], $this->xPrefix()), '_');
+        return $this->normalizeXFieldPrefix($this->attributes['name']);
+    }
+
+    /**
+     * Нормализовать префикс атрибута `$name`.
+     * @param  string $name
+     * @return string
+     */
+    protected function normalizeXFieldPrefix(string $name): string
+    {
+        return trim(Str::start($name, $this->xPrefix()), '_');
     }
 }
