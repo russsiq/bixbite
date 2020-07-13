@@ -21,10 +21,10 @@ class ArticleResource extends JsonResource
         return array_merge($this->resource->getOriginal(), [
             'content' => $this->resource->getRawOriginal('content'),
             'url' => $this->url,
-            'categories' => new CategoryResource($this->whenLoaded('categories')),
-            'comments' => new CommentResource($this->whenLoaded('comments')),
-            'files' => new FileResource($this->whenLoaded('files')),
-            'tags' => new TagResource($this->whenLoaded('tags')),
+            'categories' => new CategoryCollection($this->whenLoaded('categories')),
+            'comments' => new CommentCollection($this->whenLoaded('comments')),
+            'files' => new FileCollection($this->whenLoaded('files')),
+            'tags' => new TagCollection($this->whenLoaded('tags')),
             'user' => new UserResource($this->whenLoaded('user')),
 
         ]);
