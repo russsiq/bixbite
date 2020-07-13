@@ -68,10 +68,12 @@ class CategoriesController extends ApiController
      */
     public function show(Category $category): JsonResponse
     {
-        $category->articles_count = $category->articles()->count();
-        $category->load([
-            'files',
-        ]);
+        $category->loadCount([
+                'articles',
+            ])
+            ->load([
+                'files',
+            ]);
 
         $resource = new CategoryResource($category);
 
