@@ -114,7 +114,7 @@ class XField extends BaseModel
                 return static::query()->get();
             });
 
-        return is_null($table) ? $fields : $fields->where('extensible', $table);
+        return is_null($table) ? $fields : $fields->where('extensible', $table)->values();
     }
 
     /**
