@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api\V1\Category;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
+use App\Models\XField;
 use Illuminate\Support\Str;
 use Russsiq\DomManipulator\Facades\DOMManipulator;
 
@@ -64,7 +65,24 @@ class CategoryRequest extends BaseFormRequest
      */
     public function rules(): array
     {
-        return [
+        $extensibles = [];
+
+        foreach (XField::fields('articles') as $field) {
+            $rule = $field->type;
+
+            if (in_array($rule, ['array', 'text'])) {
+                $rule = 'string';
+            } elseif ('timestamp' === $rule) {
+                $rule = 'date';
+            }
+
+            $extensibles[$field->name] = [
+                'nullable',
+                $rule
+            ];
+        }
+
+        return array_merge($extensibles, [
             'title' => [
                 'required',
                 'string',
@@ -146,6 +164,6 @@ class CategoryRequest extends BaseFormRequest
 
             ],
 
-        ];
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api\V1\Article;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
+use App\Models\XField;
 
 /**
  * @NB В связи с тем, что Записи идентифицируются по ID,
@@ -62,7 +63,24 @@ class ArticleRequest extends BaseFormRequest
      */
     public function rules(): array
     {
-        return [
+        $extensibles = [];
+
+        foreach (XField::fields('articles') as $field) {
+            $rule = $field->type;
+
+            if (in_array($rule, ['array', 'text'])) {
+                $rule = 'string';
+            } elseif ('timestamp' === $rule) {
+                $rule = 'date';
+            }
+
+            $extensibles[$field->name] = [
+                'nullable',
+                $rule
+            ];
+        }
+
+        return array_merge($extensibles, [
             // Отношения и другие поля с индексами.
             'user_id' => [
                 'bail',
@@ -263,6 +281,6 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-        ];
+        ]);
     }
 }
