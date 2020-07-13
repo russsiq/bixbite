@@ -42,12 +42,12 @@
             <div v-if="isArrayType" class="form-group row">
                 <label class="col-sm-7 control-label">Список пар <small class="form-text text-muted">Список пар <u>ключ => значение</u> для доп. поля типа <b>array</b>.</small></label>
                 <div class="col-sm-5">
-                    <table class="table table-sm">
+                    <table v-if="form.params.length" class="table table-sm">
                         <thead>
                             <tr>
                                 <th>Ключ</th>
                                 <th>Значение</th>
-                                <th></th>
+                                <th>Действия</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,12 +57,9 @@
                                 <td><button type="button" @click="delParam(index)" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></button></td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3"><button type="button" @click="addParam" class="btn btn-sm btn-outline-success">Добавить пару</button></td>
-                            </tr>
-                        </tfoot>
                     </table>
+
+                    <button type="button" @click="addParam" class="btn btn-sm btn-outline-success">Добавить пару</button>
                 </div>
             </div>
 
@@ -203,7 +200,7 @@ export default {
         },
 
         addParam(event) {
-            this.form.params.push( {
+            this.form.params.push({
                 key: null,
                 value: null
             });
@@ -211,23 +208,6 @@ export default {
 
         delParam(index) {
             this.form.params.splice(index, 1);
-        },
-
-        async onSubmit(event) {
-            if (this.isEditMode) {
-                await this.$props.model.$update({
-                    params: {
-                        id: this.form.id
-                    },
-                    data: this.form
-                });
-            } else {
-                const item = await this.$props.model.$create({
-                    data: this.form
-                });
-
-                this.form = item;
-            }
         },
 
         save() {

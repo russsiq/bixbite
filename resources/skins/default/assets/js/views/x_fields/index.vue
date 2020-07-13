@@ -102,10 +102,13 @@ export default {
             );
 
             result && this.$props.model.$delete({
-                params: {
-                    id: field.id
-                }
-            });
+                    params: {
+                        id: field.id
+                    }
+                })
+                .then((response) => {
+                    this.collection = this.collection.filter((item) => item.id !== field.id);
+                });
         }
     },
 };

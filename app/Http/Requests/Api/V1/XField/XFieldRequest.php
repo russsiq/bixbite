@@ -36,6 +36,8 @@ class XFieldRequest extends BaseFormRequest
            'name' => trans('name'),
            'type' => trans('type'),
            'params' => trans('params'),
+           'params.*.key' => 'Ключ в Списке пар',
+           'params.*.value' => 'Значение в Списке пар',
            'title' => trans('title'),
            'descr' => trans('descr'),
            'html_flags' => trans('html_flags'),
@@ -89,6 +91,22 @@ class XFieldRequest extends BaseFormRequest
                 'nullable',
                 'array',
                 'required_if:type,array',
+
+            ],
+
+            'params.*.key' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/^[\w-]+$/u',
+
+            ],
+
+            'params.*.value' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\w\s\d\-\_\.]+$/u',
 
             ],
 

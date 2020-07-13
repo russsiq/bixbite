@@ -17,7 +17,7 @@ class CreateXFieldsTable extends Migration
             $table->string('extensible', 30);
             $table->string('name', 30);
             $table->string('type', 20)->default('string');
-            $table->text('params')->nullable();
+            $table->json('params');
             $table->string('title', 125)->nullable();
             $table->text('descr')->length(500)->nullable();
             $table->text('html_flags')->length(500)->nullable();

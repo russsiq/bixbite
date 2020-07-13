@@ -12,7 +12,9 @@
             <tr><td>{{ $x_field->title }}</td><td></td>
                 <td>
                     @if ('array' == $x_field->type)
-                        {{ $x_field->params[$user->{$x_field->name}] ?? '...' }}
+                        @foreach ($x_field->params as $parameter)
+                            {{ $user->{$x_field->name} === $parameter['key'] ? $parameter['value'] : '' }}
+                        @endforeach
                     @else
                         {{ $user->{$x_field->name} ?? '...' }}
                     @endif

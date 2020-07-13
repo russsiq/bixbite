@@ -14,8 +14,8 @@
 			<textarea name="{{ $x_field->name }}" class="form-control" {{ $x_field->html_flags }}>{{ old($x_field->name, optional($item)->{$x_field->name}) }}<textarea>
 		@elseif ('array' == $x_field->type)
 			<select name="{{ $x_field->name }}" class="form-control" {{ $x_field->html_flags }}>
-			@foreach($x_field->params as $key => $var)
-				<option value="{{ $key }}" {{ old($x_field->name, optional($item)->{$x_field->name}) == $key ? 'selected' : '' }}>{{ $var }}</option>
+			@foreach($x_field->params as $parameter)
+				<option value="{{ $parameter['key'] }}" {{ old($x_field->name, optional($item)->{$x_field->name}) == $parameter['key'] ? 'selected' : '' }}>{{ $parameter['value'] }}</option>
 			@endforeach
 			</select>
 		@elseif ('timestamp' == $x_field->type)
