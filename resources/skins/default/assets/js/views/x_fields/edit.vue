@@ -185,7 +185,7 @@ export default {
         },
     },
 
-    async mounted() {
+    mounted() {
         this.isEditMode && this.$props.model.$get({
                 params: {
                     id: this.$props.id
