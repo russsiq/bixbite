@@ -32,7 +32,7 @@ class CategoriesController extends ApiController
      * включая связанные сущности.
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $categories = Category::withCount([
                 'articles'
@@ -51,7 +51,7 @@ class CategoriesController extends ApiController
      * @param  StoreCategoryRequest  $request
      * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
         $category = Category::create($request->all());
 
@@ -66,7 +66,7 @@ class CategoriesController extends ApiController
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function show(Category $category)
+    public function show(Category $category): JsonResponse
     {
         $category->articles_count = $category->articles()->count();
         $category->load([
@@ -85,7 +85,7 @@ class CategoriesController extends ApiController
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
         $category->update($request->all());
 
@@ -100,7 +100,7 @@ class CategoriesController extends ApiController
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): JsonResponse
     {
         $category->delete();
 
