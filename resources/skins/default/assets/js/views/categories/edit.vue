@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div v-if="x_fields && x_fields.length" class="card card-default">
+    <div v-if="x_fields.length" class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
         <div class="card-body">
             <div v-for="field in x_fields" class="form-group row">
@@ -249,11 +249,11 @@ export default {
         }),
 
         x_fields() {
-            return this.isEditMode ? this.meta.x_fields : [];
+            return this.meta.x_fields || [];
         },
 
         template_list() {
-            return this.isEditMode ? this.meta.template_list : [];
+            return this.meta.template_list || [];
         },
 
         /**
