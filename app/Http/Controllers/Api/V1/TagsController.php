@@ -41,8 +41,8 @@ class TagsController extends ApiController
         $tags = Tag::withCount([
                 'articles'
             ])
-            ->when($suggestion['title'], function(Builder $query, $suggestion) {
-                $query->searchByKeyword($suggestion);
+            ->when($suggestion['title'], function(Builder $query, $title) {
+                $query->searchByKeyword($title);
             })
             ->get();
 
