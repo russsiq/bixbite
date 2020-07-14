@@ -37,6 +37,7 @@ return [
                 // Удаляем ненужные.
                 'exclude' => [
                     'bootstrap/cache',
+                    'config/settings',
 
                 ],
 
