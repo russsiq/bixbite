@@ -5,7 +5,7 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -ExecCGI -MultiViews -Indexes
+        Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
@@ -21,6 +21,10 @@ DirectoryIndex index.php
     # RewriteCond %{SERVER_PORT} !^443$
     # RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
@@ -30,10 +34,6 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
 
 # Force Files to Download
