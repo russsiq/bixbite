@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer
  *
- * @cmd phpunit tests\Unit\App\Http\Middleware\Transformers\Api\V1\ArticlesTransformerTest.php
+ * @cmd vendor\bin\phpunit tests\Unit\App\Http\Middleware\Transformers\Api\V1\ArticlesTransformerTest.php
  */
 class ArticlesTransformerTest extends TestCase
 {

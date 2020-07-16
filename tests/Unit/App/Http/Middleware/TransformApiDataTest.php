@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \App\Http\Middleware\TransformApiData
  *
- * @cmd phpunit tests\Unit\App\Http\Middleware\TransformApiDataTest.php
+ * @cmd vendor\bin\phpunit tests\Unit\App\Http\Middleware\TransformApiDataTest.php
  */
 class TransformApiDataTest extends TestCase
 {

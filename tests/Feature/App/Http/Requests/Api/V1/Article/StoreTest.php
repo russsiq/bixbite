@@ -22,7 +22,7 @@ use Tests\TestCase;
 /**
  * @coversDefaultClass \App\Http\Requests\Api\V1\Article\Store
  *
- * @cmd phpunit tests/Feature/App/Http/Requests/Api/V1/Article
+ * @cmd vendor\bin\phpunit tests/Feature/App/Http/Requests/Api/V1/Article
  */
 class StoreTest extends TestCase
 {

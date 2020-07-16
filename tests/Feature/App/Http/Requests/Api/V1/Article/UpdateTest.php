@@ -26,7 +26,7 @@ use Tests\TestCase;
  * В данном классе по-минимуму будет использован `Faker`.
  * Дабы избежать дублирования кода с `StoreTest`,
  * так как у них один родительский класс.
- * @cmd phpunit tests/Feature/App/Http/Requests/Api/V1/Article
+ * @cmd vendor\bin\phpunit tests/Feature/App/Http/Requests/Api/V1/Article
  */
 class UpdateTest extends TestCase
 {

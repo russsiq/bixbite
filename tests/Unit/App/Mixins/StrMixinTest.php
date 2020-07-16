@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \App\Mixins\StrMixin
  *
- * @cmd phpunit tests\Unit\App\Mixins\StrMixinTest.php
+ * @cmd vendor\bin\phpunit tests\Unit\App\Mixins\StrMixinTest.php
  */
 class StrMixinTest extends TestCase
 {
