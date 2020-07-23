@@ -12,6 +12,7 @@ Disallow: /vendor/
 
 Disallow: /search$
 Disallow: /admin/
+Disallow: /panel/
 Disallow: /login$
 Disallow: /register$
 Disallow: /logout$
