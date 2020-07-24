@@ -43,19 +43,19 @@ class StrMixin
     }
 
     /**
-     * Отобразить размер файла в удобочитаемом формате в байтах, КБ, МБ, ГБ, ТБ.
+     * Отобразить размер файла в удобочитаемом формате:
+     * 'bytes', 'KB', 'MB', 'GB', 'TB'.
      * @return callable
      */
     public function humanFilesize(): callable
     {
         return function (int $size, int $precision = 2): string {
             $suffixes = [
-                trans('common.bytes'),
-                trans('common.KB'),
-                trans('common.MB'),
-                trans('common.GB'),
-                trans('common.TB'),
-
+                'bytes',
+                'KB',
+                'MB',
+                'GB',
+                'TB',
             ];
 
             for ($i = 0; $size > 1024; $i++) {
