@@ -5,6 +5,7 @@ const BlockEmbed = Quill.import('blots/block/embed');
 /**
  * [FigureBlot description]
  * @SEE parchment\src\blot\abstract\blot.ts Для возможностей наследований.
+ * @SEE https://github.com/quilljs/parchment
  * @extends BlockEmbed
  */
 class FigureBlot extends BlockEmbed {
