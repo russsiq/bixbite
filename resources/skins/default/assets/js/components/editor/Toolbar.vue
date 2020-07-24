@@ -65,10 +65,12 @@
             <button class="ql-formula"></button> -->
         </span>
 
-        <!-- <span class="ql-formats">
-            <button class="ql-table"><i class="fa fa-table"></i></button>
-            <button class="ql-columns"><i class="fa fa-columns"></i></button>
-        </span> -->
+        <span class="ql-formats">
+            <button class="ql-fragment"><i class="fa fa-html5"></i></button>
+            <!-- <button class="ql-table"><i class="fa fa-table"></i></button> -->
+            <!-- <button class="ql-table" value='{"cols": 5, "rows": 2}'><i class="fa fa-table"></i></button> -->
+            <!-- <button class="ql-columns"><i class="fa fa-columns"></i></button> -->
+        </span>
 
         <span class="ql-formats">
             <select class="ql-shortcodes" ref="ql-shortcodes">

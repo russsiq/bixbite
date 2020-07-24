@@ -2,6 +2,8 @@
 <div class="quill-editor">
     <toolbar></toolbar>
     <div ref="editor"></div>
+
+    <quill-fragment :prompt-content="promptFragmentContent" :blot="currentFragmentBlot" @embed="embedFragment" @remove="removeFragment" @close="closePromptFragmentContent"></quill-fragment>
 </div>
 </template>
 
@@ -10,6 +12,10 @@ import Quill from 'quill';
 import Parchment from 'parchment';
 
 import Toolbar from './editor/toolbar.vue';
+import QuillFragment from './editor/quill-fragment.vue';
+
+import FragmentBlot from './editor/blots/FragmentBlot.js';
+import fragmentHandler from './editor/handlers/fragmentHandler';
 
 import FigureBlot from './editor/blots/FigureBlot';
 import figureHandler from './editor/handlers/figureHandler';
@@ -19,6 +25,7 @@ export default {
 
     components: {
         'toolbar': Toolbar,
+        'quill-fragment': QuillFragment,
     },
 
     props: {
@@ -40,7 +47,9 @@ export default {
     data() {
         return {
             editor: null,
-            seoModalShown: false,
+
+            promptFragmentContent: false,
+            currentFragmentBlot: null,
 
             form: {
                 meta: {
@@ -80,6 +89,7 @@ export default {
             }*/
 
             Quill.register(FigureBlot, true);
+            Quill.register(FragmentBlot, true);
 
             const icons = Quill.import('ui/icons');
             icons.header[3] = require('!html-loader!quill/assets/icons/header-3.svg');
@@ -101,7 +111,7 @@ export default {
                                     this.quill.format('link', false);
                                 }
                             },
-                            'columns': this.columns,
+                            'fragment': this.queryFragmentContent,
                             'shortcodes': this.insertShortcode,
                             'save': this.saveFromEditor,
 
@@ -144,12 +154,37 @@ export default {
             this.editor.root.addEventListener('click', (event) => {
                 const blot = Parchment.find(event.target, true);
 
-                console.log(blot);
+                if (blot instanceof FragmentBlot) {
+                    this.currentFragmentBlot = blot;
+
+                    this.queryFragmentContent();
+                }
             });
         },
 
-        columns() {
-            prompt('columns');
+        queryFragmentContent() {
+            this.openPromptFragmentContent();
+        },
+
+        embedFragment(data) {
+            fragmentHandler(this.editor, data);
+
+            this.closePromptFragmentContent();
+        },
+
+        removeFragment(blot) {
+            blot.remove && blot.remove();
+
+            this.closePromptFragmentContent();
+        },
+
+        openPromptFragmentContent() {
+            this.promptFragmentContent = true;
+        },
+
+        closePromptFragmentContent() {
+            this.currentFragmentBlot = null;
+            this.promptFragmentContent = false;
         },
 
         insertShortcode(value) {
