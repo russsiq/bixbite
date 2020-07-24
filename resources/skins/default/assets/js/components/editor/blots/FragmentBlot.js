@@ -3,7 +3,7 @@ import Quill from 'quill';
 const BlockEmbed = Quill.import('blots/block/embed');
 
 /**
- * [TableBlot description]
+ * [FragmentBlot description]
  *
  * @extends BlockEmbed
  */

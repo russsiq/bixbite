@@ -3,7 +3,7 @@
     <toolbar></toolbar>
     <div ref="editor"></div>
 
-    <quill-fragment :prompt-content="promptFragmentContent" :blot="currentFragmentBlot" @embed="embedFragment" @remove="removeFragment" @close="closePromptFragmentContent"></quill-fragment>
+    <quill-fragment v-bind="quillFragment" @close="closePromptFragmentContent"></quill-fragment>
 </div>
 </template>
 
@@ -13,9 +13,7 @@ import Parchment from 'parchment';
 
 import Toolbar from './editor/toolbar.vue';
 import QuillFragment from './editor/quill-fragment.vue';
-
 import FragmentBlot from './editor/blots/FragmentBlot.js';
-import fragmentHandler from './editor/handlers/fragmentHandler';
 
 import FigureBlot from './editor/blots/FigureBlot';
 import figureHandler from './editor/handlers/figureHandler';
@@ -48,15 +46,11 @@ export default {
         return {
             editor: null,
 
-            promptFragmentContent: false,
-            currentFragmentBlot: null,
-
-            form: {
-                meta: {
-                    description: '',
-                    keywords: ''
-                }
-            }
+            quillFragment: {
+                quill: null,
+                blot: null,
+                promptContent: false,
+            },
         };
     },
 
@@ -64,6 +58,13 @@ export default {
         cursorPosition() {
             return this.editor.getSelection().index;
         },
+    },
+
+    watch: {
+        editor(editor, nullable) {
+            // Передаем экземпляр Quill-редактора дочерним компонентам.
+            this.quillFragment.quill = editor;
+        }
     },
 
     async mounted() {
@@ -155,36 +156,35 @@ export default {
                 const blot = Parchment.find(event.target, true);
 
                 if (blot instanceof FragmentBlot) {
-                    this.currentFragmentBlot = blot;
-
-                    this.queryFragmentContent();
+                    this.quillFragment = {
+                        ...this.quillFragment,
+                        blot: blot,
+                        promptContent: true
+                    }
                 }
             });
         },
 
+        /**
+         * Запросить содержимое фрагмента.
+         */
         queryFragmentContent() {
-            this.openPromptFragmentContent();
+            this.quillFragment = {
+                ...this.quillFragment,
+                blot: null,
+                promptContent: true
+            }
         },
 
-        embedFragment(data) {
-            fragmentHandler(this.editor, data);
-
-            this.closePromptFragmentContent();
-        },
-
-        removeFragment(blot) {
-            blot.remove && blot.remove();
-
-            this.closePromptFragmentContent();
-        },
-
-        openPromptFragmentContent() {
-            this.promptFragmentContent = true;
-        },
-
-        closePromptFragmentContent() {
-            this.currentFragmentBlot = null;
-            this.promptFragmentContent = false;
+        /**
+         * Закрыть окно получения фрагмента.
+         * @param  {object} quillFragment
+         */
+        closePromptFragmentContent(quillFragment) {
+            this.quillFragment = {
+                ...this.quillFragment,
+                ...quillFragment
+            }
         },
 
         insertShortcode(value) {
@@ -322,18 +322,6 @@ export default {
     background: #e9ecef;
     padding: 0.25rem 1rem;
 }
-</style>
-
-<style>
-/*.form-control {
-    border: none;
-}
-.ql-editor {
-    border: none!important;
-}
-body {
-    background: none;
-}*/
 </style>
 
 
