@@ -49,9 +49,6 @@
     @extend .input-group;
     width: auto;
 }
-.header_area__input-group-append {
-    @extend .input-group-append;
-}
 .header_area__input {
     @extend .form-control;
     border: 1px solid rgba(0, 0, 0, 0.05);

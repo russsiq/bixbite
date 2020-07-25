@@ -38,11 +38,11 @@ hr {
     color: inherit;
 }
 
-.form-group {
+.mb-3 {
     position: relative;
 }
 
-.form-group::after {
+.mb-3::after {
     display: block;
     clear: both;
     content: "";

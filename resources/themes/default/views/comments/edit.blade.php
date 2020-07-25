@@ -6,7 +6,7 @@
 
         <section class="action_page__content">
             <form action="{{ route('comments.update', $comment) }}" method="post">
-                <div class="form-group row has-error">
+                <div class="mb-3 row has-error">
                     <label for="password" class="col-md-3 col-form-label">@lang('comments.content')</label>
                     <div class="col-md-9">
                         <textarea name="content"
@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <div class="col-md-9 offset-md-3">
                         <input type="hidden" name="_method" value="PUT" />
                         <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('common.btn.save')</button>

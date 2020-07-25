@@ -1,57 +1,59 @@
 <template>
 <header>
     <!-- Fixed navbar -->
-    <nav class="navbar fixed-top navbar-expand navbar-dark bg-primary justify-content-between">
-        <a :href="app_url" target="_blank" class="navbar-brand">
-            <i class="fa fa-external-link d-sm-none"></i> <span class="d-none d-sm-inline">{{ app_name }}</span>
-        </a>
+    <nav class="navbar fixed-top navbar-expand navbar-dark bg-primary bg-gradient justify-content-between">
+        <div class="container-fluid">
+            <a :href="app_url" target="_blank" class="navbar-brand">
+                <i class="fa fa-external-link d-sm-none"></i> <span class="d-none d-sm-inline">{{ app_name }}</span>
+            </a>
 
-        <div id="navbar_main" class="collapse navbar-collapse">
-            <ul class="navbar-nav d-none d-md-flex">
-                <li class="nav-item d-sm-none d-md-block">
-                    <router-link :to="{name:'dashboard'}" class="nav-link" exact><i class="fa fa-home"></i></router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name:'articles'}" class="nav-link">Записи</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name:'categories'}" class="nav-link">Категории</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name:'notes'}" class="nav-link">Заметки</router-link>
-                </li>
-            </ul>
+            <div id="navbar_main" class="collapse navbar-collapse">
+                <ul class="navbar-nav d-none d-md-flex">
+                    <li class="nav-item d-sm-none d-md-block">
+                        <router-link :to="{name:'dashboard'}" class="nav-link" exact><i class="fa fa-home"></i></router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name:'articles'}" class="nav-link">Записи</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name:'categories'}" class="nav-link">Категории</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name:'notes'}" class="nav-link">Заметки</router-link>
+                    </li>
+                </ul>
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item d-sm-block d-md-none">
-                    <router-link :to="{name:'dashboard'}" class="nav-link"><i class="fa fa-home"></i></router-link>
-                </li>
-                <!-- <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" title="Создать" data-toggle="dropdown"><i class="fa fa-plus"></i> </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <router-link :to="{name:'articles.create'}" class="dropdown-item">Запись</router-link>
-                        <router-link :to="{name:'categories.create'}" class="dropdown-item">Категория</router-link>
-                        <router-link :to="{name:'notes.create'}" class="dropdown-item">Заметка</router-link>
-                    </div>
-                </li> -->
-                <li class="nav-item">
-                    <a :href="url('assistant/clean')" class="nav-link" title="Ассистент приложения"><i class="fa fa-magic"></i></a>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name: 'templates'}" class="nav-link" title="Редактор шаблонов"><i class="fa fa-paint-brush"></i></router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name: 'system.settings'}" class="nav-link" title="Настройки системы"><i class="fa fa-cogs"></i></router-link>
-                </li>
-                <li class="nav-item">
-                    <a href="https://github.com/russsiq/bixbite" target="_blank" class="nav-link" title="Справка по системе"><i class="fa fa-leanpub"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" @click.prevent="showModal">
-                        <img :src="currentUser.avatar" :alt="currentUser.name" class="rounded-circle" width="20" height="20" />
-                    </a>
-                </li>
-            </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item d-sm-block d-md-none">
+                        <router-link :to="{name:'dashboard'}" class="nav-link"><i class="fa fa-home"></i></router-link>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" title="Создать" data-toggle="dropdown"><i class="fa fa-plus"></i> </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <router-link :to="{name:'articles.create'}" class="dropdown-item">Запись</router-link>
+                            <router-link :to="{name:'categories.create'}" class="dropdown-item">Категория</router-link>
+                            <router-link :to="{name:'notes.create'}" class="dropdown-item">Заметка</router-link>
+                        </div>
+                    </li> -->
+                    <li class="nav-item">
+                        <a :href="url('assistant/clean')" class="nav-link" title="Ассистент приложения"><i class="fa fa-magic"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name: 'templates'}" class="nav-link" title="Редактор шаблонов"><i class="fa fa-paint-brush"></i></router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name: 'system.settings'}" class="nav-link" title="Настройки системы"><i class="fa fa-cogs"></i></router-link>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://github.com/russsiq/bixbite" target="_blank" class="nav-link" title="Справка по системе"><i class="fa fa-leanpub"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" @click.prevent="showModal">
+                            <img :src="currentUser.avatar" :alt="currentUser.name" class="rounded-circle" width="20" height="20" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 

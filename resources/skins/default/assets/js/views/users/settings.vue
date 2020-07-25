@@ -15,17 +15,17 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Разрешить регистрацию</label>
                                     <small class="form-text text-muted">Разрешить новым пользователям регистрироваться на сайте.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.auth_allow_register" class="form-control" />
+                                    <input type="checkbox" v-model="form.auth_allow_register" />
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Идентификация пользователя</label>
                                     <small class="form-text text-muted">Укажите, что для входа на сайт помимо пароля требуется ввести пользователю.</small>
@@ -43,7 +43,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Аватар</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Максимальная ширина</label>
                                 </div>
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Максимальная высота</label>
                                 </div>
@@ -61,12 +61,12 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Использовать сервис <i>gravatar.com</i></label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.gravatar_used" class="form-control" />
+                                    <input type="checkbox" v-model="form.gravatar_used" />
                                 </div>
                             </div>
                         </div>

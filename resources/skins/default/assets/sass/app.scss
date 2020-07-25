@@ -1,14 +1,21 @@
 // Variables
-@import "variables"; // Fonts
-@import url($web-font-path); // fontawesome
+@import "variables";
+
+// Fonts
+@import url($web-font-path);
+
+// fontawesome
 // npm i font-awesome@4.7.0 --save-dev
-@import "~font-awesome/scss/font-awesome"; // Bootstrap framework with Bootswatch theme yeti
-// npm i bootswatch --save-dev
-@import "~bootswatch/dist/yeti/variables";
+@import "~font-awesome/scss/font-awesome";
+
+// Bootstrap framework with Bootswatch theme yeti
 @import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/yeti/bootswatch"; // Simple and easy to use lightbox script written in pure JavaScript
+
+// Simple and easy to use lightbox script written in pure JavaScript
 // npm i baguettebox.js --save-dev
-@import "~baguettebox.js/src/baguetteBox"; // Styles to quill.js editor.
+@import "~baguettebox.js/src/baguetteBox";
+
+// Styles to quill.js editor.
 // npm i quill --save-dev
 @import "node_modules/quill/dist/quill.bubble";
 @import "node_modules/quill/dist/quill.snow";
@@ -259,8 +266,8 @@ img {
     min-height: .01%;
 }
 
-.card-body .form-group:last-of-type {
-    margin-bottom: 0;
+.card-body .mb-3:last-of-type {
+    margin-bottom: 0!important;
 }
 
 .card-footer {
@@ -354,81 +361,6 @@ input i.fa {
 .form-control:focus {
     box-shadow: none;
     color: #000;
-}
-/*
- * Checkbox and radio
- */
-input[type=checkbox],
-input[type=radio] {
-    font-weight: 700;
-    border: 1px solid #bbb;
-    color: #555;
-    cursor: pointer;
-    display: inline-block;
-    line-height: 0;
-    height: 15px;
-    width: 15px;
-    margin: 0;
-    outline: 0 !important;
-    padding: 0 !important;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-appearance: none;
-}
-
-input[type=radio] {
-    border-radius: 50%;
-    line-height: 15px;
-}
-
-input[type=checkbox]:checked:before,
-input[type=radio]:checked:before {
-    float: left;
-    display: inline-block;
-    vertical-align: middle;
-    width: 15px;
-    font-size: 15px;
-}
-
-input[type=checkbox]:checked:before {
-    content: '\2714';
-    margin: 6px 0 0;
-    color: #08c;
-}
-
-input[type=radio]:checked:before {
-    content: '\2022';
-    text-indent: -9999px;
-    border-radius: 50px;
-    font-size: 22px;
-    width: 7px;
-    height: 7px;
-    margin: 3px;
-    line-height: 15px;
-    background-color: #08c;
-}
-
-.checkbox input[type=checkbox],
-.checkbox-inline input[type=checkbox],
-.radio input[type=radio],
-.radio-inline input[type=radio] {
-    position: relative;
-}
-
-label > input[type=checkbox],
-label > input[type=radio] {
-    margin-right: 8px;
-}
-
-input[type="checkbox"]:disabled,
-input[type="radio"]:disabled {
-    border: 1px dashed #ccc;
-    background: none;
-}
-
-input[type="checkbox"]:disabled:before,
-input[type="radio"]:disabled:before {
-    color: #ccc;
 }
 /*
  * Input[type="file"]

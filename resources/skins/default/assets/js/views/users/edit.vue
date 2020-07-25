@@ -8,14 +8,14 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-5">Псевдоним</label>
                         <div class="col-sm-7">
                             <input type="text" v-model="form.name" class="form-control" />
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-5">Группа</label>
                         <div class="col-sm-7">
                             <select v-model="form.role" class="form-control">
@@ -24,21 +24,21 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-5">Почта</label>
                         <div class="col-sm-7">
                             <input type="email" v-model="form.email" class="form-control" />
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-5">Пароль</label>
                         <div class="col-sm-7">
                             <input type="password" v-model="form.password" class="form-control" autocomplete="new-password" />
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-5">Подтверждение пароля</label>
                         <div class="col-sm-7">
                             <input type="password" v-model="form.password_confirmation" class="form-control" autocomplete="off" />

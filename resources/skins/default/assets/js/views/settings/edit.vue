@@ -6,7 +6,7 @@
                 <div class="card-header"><i class="fa fa-th-list"></i> Блок</div>
                 <div class="card-body">
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label class="col-sm-7 control-label">Поле</label>
                         <div class="col-sm-5">
                             <template v-if="isEditMode">

@@ -15,7 +15,7 @@
 
 	<fieldset>
 		<legend>@lang('auth.register')</legend>
-		<div class="form-group row @error('name') is-invalid @enderror">
+		<div class="mb-3 row @error('name') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.name')</label>
 			<div class="col-sm-9">
 				<input type="text" name="name" value="{{ old('name', '') }}" placeholder="admin" class="form-control" />
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 
-		<div class="form-group row @error('email') is-invalid @enderror">
+		<div class="mb-3 row @error('email') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.email')</label>
 			<div class="col-sm-9">
 				<input type="email" name="email" value="{{ old('email', '') }}" placeholder="{{ $email }}" class="form-control" />
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 
-		<div class="form-group row @error('password') is-invalid @enderror">
+		<div class="mb-3 row @error('password') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('auth.password')</label>
 			<div class="col-sm-9">
 				<input type="password" name="password" value="" placeholder="********" class="form-control" autocomplete="new-password"  />
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 
-		<div class="form-group row">
+		<div class="mb-3 row">
 			<label class="col-sm-3 col-form-label">@lang('auth.password_confirmation')</label>
 			<div class="col-sm-9">
 				<input type="password" name="password_confirmation" placeholder="********" class="form-control" autocomplete="new-password"  />
@@ -57,7 +57,7 @@
 		<legend>@lang('assistant::install.forms.legends.theme')</legend>
 
 		@error ('APP_THEME')
-			<div class="form-group">
+			<div class="mb-3">
 				<div class="alert alert-danger">{{ $message }}</div>
 			</div>
 		@enderror
@@ -85,7 +85,7 @@
 
 		<hr>
 
-		<div class="form-group row @error('original_theme') is-invalid @enderror">
+		<div class="mb-3 row @error('original_theme') is-invalid @enderror">
 			<div class="col-sm-9 offset-sm-3">
 				<label class="col-form-label">
 					<input type="checkbox" name="original_theme" value="1" {{ old('original_theme') ? 'checked' : '' }} /> @lang('assistant::install.forms.labels.original_theme')

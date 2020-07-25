@@ -16,7 +16,7 @@
                 <div class="row">
                     @guest
                         <div class="col-md-4 ">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="@lang('auth.name')" required />
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback d-block">{{ $errors->first('name') }}</span>
@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="col-md-4 ">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="@lang('auth.email')" required />
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback d-block">{{ $errors->first('email') }}</span>
@@ -35,7 +35,7 @@
                     @endguest
 
                     <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="mb-3">
                         {{-- @setting('system.captcha_used')
                             @captcha('components.partials.captcha')
                         @endsetting --}}
@@ -46,16 +46,16 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <textarea name="content" rows="8" class="form-control" placeholder="@lang('comments.content')" required>{{ old('content') }}</textarea>
                     @if ($errors->has('content'))
                         <span class="invalid-feedback d-block">{{ $errors->first('content') }}</span>
                     @endif
                 </div>
 
-                <div class="form-group">@lang('comments.msg.rules')</div>
+                <div class="mb-3">@lang('comments.msg.rules')</div>
 
-                <div class="form-group-last">
+                <div class="mb-3-last">
                     <button type="submit" class="btn btn-outline-dark">@lang('comments.btn.post')</button>
 
                     {{-- Атрибуты `id` и `data-reply` используются JavaScript. --}}

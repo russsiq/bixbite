@@ -11,23 +11,23 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Только для зарегистрированных</label>
                             <small class="form-text text-muted">Да - комментирование доступно только для зарегистрированных пользователей.</small>
                         </div>
                         <div class="col-sm-5">
-                            <input type="checkbox" v-model="form.regonly" class="form-control" />
+                            <input type="checkbox" v-model="form.regonly" />
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Модерация комментариев</label>
                             <small class="form-text text-muted">Опубликовывать комментарии только после одобрения.</small>
                         </div>
                         <div class="col-sm-5">
-                            <input type="checkbox" v-model="form.moderate" class="form-control" />
+                            <input type="checkbox" v-model="form.moderate" />
                         </div>
                     </div>
                 </div>
@@ -36,13 +36,13 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Параметры отображения</div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Вывод древовидных комментариев</label>
                             <small class="form-text text-muted">Да - постраничная навигация будет недоступна.</small>
                         </div>
                         <div class="col-sm-5">
-                            <input type="checkbox" v-model="form.nested" class="form-control" />
+                            <input type="checkbox" v-model="form.nested" />
                         </div>
                     </div>
                 </div>

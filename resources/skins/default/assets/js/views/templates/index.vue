@@ -31,16 +31,13 @@
                 </nav>
 
                 <main class="col-md-9 ml-sm-auto p-3 border-bottom border-right">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <div class="input-group">
                             <input type="text" :value="template && template.filename" readonly class="form-control" placeholder="Выберите шаблон для редактирования ..." autocomplete="off" required />
-                            <div class="input-group-append">
-                                <!--  -->
-                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group border">
+                    <div class="mb-3 border">
                         <textarea ref="codeEditor" value="" rows="12" class="form-control"></textarea>
 
                         <div v-if="template && template.exists" class="status d-flex" style="background-color: #f7f7f7; border-top: 1px solid #ddd;">

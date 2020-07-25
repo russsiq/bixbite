@@ -24,7 +24,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Название сайта</label>
                                     <small class="form-text text-muted">Например: BixBite.</small>
@@ -34,7 +34,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Домашняя страница</label>
                                     <small class="form-text text-muted">Например: http://server.com.</small>
@@ -49,7 +49,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Мета данные</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Заголовок домашней страницы</label>
                                     <small class="form-text text-muted">Нет тайтла — нет поискового трафика.</small>
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Разделитель при формировании заголовка</label>
                                     <small class="form-text text-muted">Общие правила для всех страниц.</small>
@@ -69,17 +69,17 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Обратить порядок формирования заголовка</label>
                                     <small class="form-text text-muted">Меняет местами Заголовок сайта и Заголовок целевой страницы. Общие правила для всех страниц.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.meta_title_reverse" class="form-control" />
+                                    <input type="checkbox" v-model="form.meta_title_reverse" />
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Описание домашней страницы</label>
                                 </div>
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Ключевые слова домашней страницы</label>
                                 </div>
@@ -102,7 +102,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Официальные данные об организации</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Название организации</label>
                                 </div>
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Населенный пункт (страна, область/край, город)</label>
                                 </div>
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Адрес (улица, дом/строение)</label>
                                 </div>
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Контактный телефон</label>
                                 </div>
@@ -138,7 +138,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Контактный email</label>
                                 </div>
@@ -155,17 +155,17 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Блокировка сайта</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Заблокировать сайт</label>
                                     <small class="form-text text-muted">Сайт делается неактивным.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.lock" class="form-control" />
+                                    <input type="checkbox" v-model="form.lock" />
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Причина блокировки сайта</label>
                                     <small class="form-text text-muted">Укажите причину по которой сайт был заблокирован. Например: <code>Технические работы</code>.</small>
@@ -175,7 +175,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Повторить попытку</label>
                                     <small class="form-text text-muted">Укажите через какое время боту поисковой системы необходимо повторно вернуться на сайт.<br>По умолчанию: <b>3600</b> сек.</small>
@@ -190,16 +190,16 @@
                     <!-- <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Стандартная капча</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Использовать встроенную капчу</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.captcha_used" class="form-control" />
+                                    <input type="checkbox" v-model="form.captcha_used" />
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Ширина изображения</label>
                                 </div>
@@ -208,7 +208,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Высота изображения</label>
                                 </div>
@@ -217,7 +217,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Семейство шрифтов</label>
                                 </div>
@@ -228,7 +228,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Размер шрифта</label>
                                 </div>
@@ -247,7 +247,7 @@
                             <sup><a :href="url('sitemap.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
                         </div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вероятная частота изменения домашней страницы</label>
                                     <small class="form-text text-muted"><a href="https://www.sitemaps.org/ru/protocol.html" target="_blank">Подробнее</a></small>
@@ -259,7 +259,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Приоритетность относительно других <i>url</i> на сайте</label>
                                 </div>
@@ -276,7 +276,7 @@
                             <sup><a :href="url('sitemap-categories.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
                         </div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
@@ -287,7 +287,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Приоритетность относительно других <i>url</i> на сайте</label>
                                 </div>
@@ -304,7 +304,7 @@
                             <sup><a :href="url('sitemap-articles.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
                         </div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
@@ -315,7 +315,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Приоритетность относительно других <i>url</i> на сайте</label>
                                 </div>
@@ -332,7 +332,7 @@
                             <sup><a :href="url('amp-articles.xml')" target="_blank"><i class="fa fa-external-link"></i></a></sup>
                         </div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
@@ -350,7 +350,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Шаблон сайта</label>
                                 </div>
@@ -361,7 +361,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Шаблон админ. панели</label>
                                 </div>
@@ -372,7 +372,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Язык интерфейса</label>
                                     <small class="form-text text-muted">В текущей версии CMS не влияет на шаблон админ. панели.</small>
@@ -384,7 +384,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Правила транслитерации ярлыков</label>
                                     <small class="form-text text-muted">Данное правило будет применено при автоматической транслитерации дружественных фрагментов URL-адресов Категорий и Записей.</small>
@@ -399,13 +399,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Использовать персонализированную домашнюю страницу</label>
                                     <small class="form-text text-muted">Нет - на главной странице будет выведен список последних записей.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.homepage_personalized" class="form-control" />
+                                    <input type="checkbox" v-model="form.homepage_personalized" />
                                 </div>
                             </div>
                         </div>

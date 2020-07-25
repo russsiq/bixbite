@@ -3,16 +3,16 @@
     <div class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
         <div class="card-body">
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Отображать категорию в меню на панеле навигации</label>
                 </div>
                 <div class="col-sm-5">
-                    <input type="checkbox" v-model="category.show_in_menu" class="form-control" />
+                    <input type="checkbox" v-model="category.show_in_menu" />
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Заголовок <sup class="text-danger">*</sup></label>
                 </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class=" control-label">Ярлык для веб-страницы</label>
                     <small class="form-text text-muted">Оставьте пустым для автоматического создания.</small>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div v-if="!category.articles_count" class="form-group row">
+            <div v-if="!category.articles_count" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Альтернативный URL</label>
                     <small class="form-text text-warning">В категорию, для которой прописан альт. URL, добавлять записи нельзя!</small>
@@ -46,7 +46,7 @@
     <div class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Параметры для главной страницы</div>
         <div class="card-body">
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Прикрепленное изображение</label>
                     <small class="form-text text-muted">Вы можете прикрепить изображение непосредственно к категории.</small>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Информация</label>
                     <small class="form-text text-muted">Информационный блок, отображаемый на странице категории сайта.</small>
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Описание</label>
                     <small class="form-text text-muted">Мета тег description. Формируется только для главной страницы категории.</small>
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Ключевые слова</label>
                     <small class="form-text text-muted">Мета тег keywords. Формируется только для главной страницы категории. Заполняется через запятую.</small>
@@ -91,7 +91,7 @@
     <div class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Параметры отображения</div>
         <div class="card-body">
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Количество записей на странице</label>
                     <small class="form-text text-muted">Если оставить поле пустым, то число будет взято из общих настроек сайта.</small>
@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Сортировка записей на странице</label>
                 </div>
@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Порядок сортировки</label>
                 </div>
@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-            <div v-if="category.id" class="form-group row">
+            <div v-if="category.id" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Активный шаблон</label>
                     <small class="form-text text-muted">Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.</small>
@@ -149,7 +149,7 @@
     <div v-if="x_fields.length" class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
         <div class="card-body">
-            <div v-for="field in x_fields" class="form-group row">
+            <div v-for="field in x_fields" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">{{ field.title }}</label>
                     <small class="form-text text-muted">{{ field.descr }}</small>

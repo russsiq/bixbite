@@ -102,9 +102,7 @@
                     <option value="delete">Удалить отмеченные</option>
                 </optgroup>
             </select>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-outline-success" @click="applyMassAction">Применить</button>
-            </div>
+            <button type="submit" class="btn btn-outline-success" @click="applyMassAction">Применить</button>
         </div>
     </template>
 </filterable>

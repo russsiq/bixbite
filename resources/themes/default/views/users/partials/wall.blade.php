@@ -50,9 +50,7 @@
                         <div class="box-footer box-comments" style="display: block; width: 100%;">
                             @foreach ($post->children->sortBy('id') as $child)
                                 <div id="comment-{{ $child->id }}" class="input-group p-2">
-                                    <div class="input-group-prepend" style="height:31px">
-                                        <img class="img-responsive img-circle img-sm" src="{{ $child->user->avatar }}" alt="{{ $child->user->name }}" width="31px" height="31px" />
-                                    </div>
+                                    <img class="img-responsive img-circle img-sm" src="{{ $child->user->avatar }}" alt="{{ $child->user->name }}" width="37" height="37" />
                                     <div class="form-control ml-2 border-0 p-0">
                                         <span class="username">
                                             <b><a href="{{ $child->user->profile }}">{{ $child->user->name }}</a></b>
@@ -71,16 +69,12 @@
                             <form action="{{ $user->comment_store_action }}" method="post" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="input-group input-group-sm p-2">
-                                    <div class="input-group-prepend" style="height:31px">
-                                        <img class="img-responsive img-circle img-sm" src="{{ user('avatar') }}" alt="{{ user('name') }}" width="31px" height="31px" />
-                                    </div>
+                                <div class="input-group p-2">
+                                    <img class="img-responsive img-circle img-sm" src="{{ user('avatar') }}" alt="{{ user('name') }}" width="37" height="37" />
                                     <input type="text" name="content" class="form-control ml-2" placeholder="Press enter to post comment" autocomplete="off" />
-                                    <div class="input-group-append">
-                                        <button type="submit" name="parent_id" value="{{ $post->id }}" class="btn btn-outline-secondary" title="@lang('users.btn.profile.post')">
-                                            <i class="fa fa-paper-plane-o"></i>
-                                        </button>
-                                    </div>
+                                    <button type="submit" name="parent_id" value="{{ $post->id }}" class="btn btn-outline-secondary" title="@lang('users.btn.profile.post')">
+                                        <i class="fa fa-paper-plane-o"></i>
+                                    </button>
                                 </div>
                             </form>
                         </div>

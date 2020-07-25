@@ -11,17 +11,17 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Общие параметры</div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Конвертировать изображения</label>
                             <small class="form-text text-muted">Конвертировать загружаемые изображения в формат <code>*.jpeg</code>.</small>
                         </div>
                         <div class="col-sm-5">
-                            <input type="checkbox" v-model="form.images_is_convert" class="form-control" />
+                            <input type="checkbox" v-model="form.images_is_convert" />
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Качество изображений</label>
                         </div>
@@ -37,7 +37,7 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Миниатюра изображения <code>thumb</code></div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
                             <small class="form-text text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
                             <small class="form-text text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
@@ -62,7 +62,7 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Малое изображение <code>small</code></div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
                         </div>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
                         </div>
@@ -85,7 +85,7 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Изображение средних размеров <code>medium</code></div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
                         </div>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
                         </div>
@@ -108,7 +108,7 @@
             <div class="card card-default">
                 <div class="card-header"><i class="fa fa-th-list"></i> Оригинал изображения</div>
                 <div class="card-body">
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
                             <small class="form-text text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>
@@ -118,7 +118,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
                             <small class="form-text text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>

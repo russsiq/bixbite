@@ -1,4 +1,4 @@
-<div class="form-group row {{ $errors->has($x_field->name) ? ' has-error' : '' }}">
+<div class="mb-3 row {{ $errors->has($x_field->name) ? ' has-error' : '' }}">
 	<label class="col-sm-4 col-form-label">{{ $x_field->title }}</label>
 	<div class="col-sm-6">
 		@if ('boolean' == $x_field->type)

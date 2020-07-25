@@ -13,12 +13,12 @@
         <template slot="modal__header">Редактирование изображения</template>
 
         <template slot="modal__body">
-            <div class="form-group has-float-label">
+            <div class="mb-3 has-float-label">
                 <label class="control-label">Заголовок</label>
                 <input type="text" v-model="image.title" @keydown.13.prevent class="form-control" autocomplete="off" required />
             </div>
 
-            <div class="form-group has-float-label">
+            <div class="mb-3 has-float-label">
                 <label class="control-label">Описание</label>
                 <textarea v-model="image.description" @keydown.13.prevent class="form-control noresize" rows="4"></textarea>
             </div>

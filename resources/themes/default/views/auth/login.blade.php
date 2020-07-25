@@ -6,7 +6,7 @@
 
         <section class="action_page__content">
             <form action="{{ route('login') }}" method="POST">
-                <div class="form-group row">
+                <div class="mb-3 row">
                     @if ('name' == setting('users.login_username', 'name'))
                         <label for="name" class="col-md-4 col-form-label">@lang('auth.name')</label>
                         <div class="col-md-6">
@@ -26,7 +26,7 @@
                     @endif
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label for="password" class="col-md-4 col-form-label">@lang('auth.password')</label>
                     <div class="col-md-6">
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
@@ -36,13 +36,13 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <div class="col-md-6 offset-md-4">
                         <label><input type="checkbox" name="remember" /> @lang('auth.remember')</label>
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('auth.btn.login')</button>
                         <a href="{{ route('password.request') }}" class="btn btn-link pull-right">@lang('auth.forgot')</a>

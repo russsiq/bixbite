@@ -20,9 +20,7 @@
                 <form action="{{ route('articles.search') }}" method="post" class="header_area__form">
                     <div class="header_area__input-group">
                         <input type="search" name="query" class="header_area__input" placeholder="@lang('common.query')" aria-label="Search" autocomplete="off" />
-                        <div class="header_area__input-group-append">
-                            <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="header_area__submit">@lang('common.btn.search')</button>
-                        </div>
+                        <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="header_area__submit">@lang('common.btn.search')</button>
                     </div>
                 </form>
             </div>

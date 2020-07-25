@@ -4,21 +4,21 @@
         <div class="card-header"><i class="fa fa-th-list"></i> Основное содержание</div>
         <div class="card-body">
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7"><label class="control-label">Заголовок</label></div>
                 <div class="col-sm-5">
                     <input type="text" v-model="note.title" class="form-control" required />
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7"><label class="control-label">Краткое описание</label></div>
                 <div class="col-sm-5">
                     <textarea v-model="note.description" rows="4" class="form-control" required></textarea>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Прикрепленное изображение</label>
                     <small class="form-text text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>

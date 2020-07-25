@@ -15,7 +15,7 @@
             <p>@lang('auth.verify_resend')</p>
 
             <form action="{{ route('verification.resend') }}" method="POST">
-                <div class="form-group text-center">
+                <div class="mb-3 text-center">
                     <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('auth.btn.resend')</button>
                 </div>
             </form>

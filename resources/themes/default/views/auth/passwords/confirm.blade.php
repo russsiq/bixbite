@@ -8,7 +8,7 @@
             <p>@lang('auth.confirm_before')</p>
 
             <form action="{{ route('password.confirm') }}" method="POST">
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label for="password" class="col-md-4 col-form-label">@lang('auth.password')</label>
                     <div class="col-md-6">
                         <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="current-password" required />
@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row mb-0">
+                <div class="mb-3 row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('auth.btn.confirm')</button>
                         <a href="{{ route('password.request') }}" class="btn btn-link pull-right">@lang('auth.forgot')</a>

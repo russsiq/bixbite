@@ -18,13 +18,13 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вести подсчет просмотров записи</label>
                                     <small class="form-text text-muted">Дополнительный запрос к БД при нахождении на целевой странице записи.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.views_used" class="form-control" />
+                                    <input type="checkbox" v-model="form.views_used" />
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Мета теги главной <a :href="url('articles')" target="_blank">страницы записей</a> на сайте</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Заголовок</label>
                                     <small class="form-text text-muted">Нет тайтла — нет поискового трафика.</small>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Описание</label>
                                     <small class="form-text text-muted">Здесь можно ввести краткое описание страницы записей.</small>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Ключевые слова</label>
                                     <small class="form-text text-muted">Здесь можно ввести основные ключевые слова.</small>
@@ -68,7 +68,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Параметры по умолчанию</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Количество записей</label>
                                     <small class="form-text text-muted">Число строк по умолчанию, извлекаемых из базы данных, для отображения на одной отдельно взятой странице или виджете.</small>
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Сортировка записей</label>
                                     <small class="form-text text-muted">Сортировка записей при отображении на одной отдельно взятой странице или виджете.</small>
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Порядок сортировки</label>
                                 </div>
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Количество символов в аннотации к записи</label>
                                     <small class="form-text text-muted">Если предисловие записи не указано, то оно будет сформировано путем обрезки начальной части текста записи.</small>
@@ -126,7 +126,7 @@
                     <div class="card card-default">
                         <div class="card-header"><i class="fa fa-th-list"></i> Основные параметры</div>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Интервал автосохранения записи</label>
                                     <small class="form-text text-muted">Задаётся в секундах.</small>
@@ -136,23 +136,23 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Ручное создание ярлыка</label>
                                     <small class="form-text text-muted">Нет - автоматическое создание.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.manual_slug" disabled class="form-control" />
+                                    <input type="checkbox" v-model="form.manual_slug" disabled />
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Ручное формирование мета данных</label>
                                     <small class="form-text text-muted">Возможность самостоятельно задавать мета: robots, description, keywords персонально для каждой страницы.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <input type="checkbox" v-model="form.manual_meta" class="form-control" />
+                                    <input type="checkbox" v-model="form.manual_meta" />
                                 </div>
                             </div>
                         </div>

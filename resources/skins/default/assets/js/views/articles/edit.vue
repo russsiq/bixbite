@@ -6,24 +6,22 @@
         </div>
 
         <div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">
-            <div class="form-group has-float-label">
+            <div class="mb-3 has-float-label">
                 <label class="control-label">Заголовок</label>
                 <div class="input-group">
                     <input type="text" v-model="article.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
-                    <div v-if="isPublished" class="input-group-append">
-                        <a :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
-                    </div>
+                    <a v-if="isPublished" :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
                 </div>
             </div>
 
-            <div class="form-group has-float-label">
+            <div class="mb-3 has-float-label">
                 <label class="control-label">Предисловие</label>
                 <textarea v-model="article.teaser" rows="4" maxlength="255" class="form-control noresize" placeholder="Заинтересуйте свою аудиторию ..." @keydown.13.prevent></textarea>
             </div>
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
-            <div class="form-group has-float-label">
+            <div class="mb-3 has-float-label">
                 <label class="control-label">Категории</label>
                 <categories-items :categoryable="categoryable" :value="article.categories" @update:categories="sync('categories', $event)"></categories-items>
             </div>
@@ -32,7 +30,7 @@
 
     <div class="row">
         <div class="col-sm-12 mb-2">
-            <div class="form-group">
+            <div class="mb-3">
                 <quill-editor :attachment="attachment" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
@@ -82,15 +80,15 @@
                     </div>
                     <div id="card_meta" class="collapse">
                         <div class="card-body">
-                            <div class="form-group has-float-label">
+                            <div class="mb-3 has-float-label">
                                 <label class="control-label">Описание</label>
                                 <textarea v-model="article.description" rows="3" maxlength="255" class="form-control"></textarea>
                             </div>
-                            <div class="form-group has-float-label">
+                            <div class="mb-3 has-float-label">
                                 <label class="control-label">Ключевые слова</label>
                                 <input type="text" v-model="article.keywords" maxlength="255" class="form-control" autocomplete="off" />
                             </div>
-                            <div class="form-group has-float-label">
+                            <div class="mb-3 has-float-label">
                                 <label class="control-label">Инструкции для поисковых роботов</label>
                                 <select v-model="article.robots" class="form-control">
                                     <option :value="null">По умолчанию</option>
@@ -117,7 +115,7 @@
                 <div v-if="x_fields.length" class="card card-default">
                     <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
                     <div class="card-body">
-                        <div v-for="field in x_fields" class="form-group row">
+                        <div v-for="field in x_fields" class="mb-3 row">
                             <div class="col-sm-5">
                                 <label class="control-label">{{ field.title }}</label>
                                 <small class="form-text text-muted">{{ field.descr }}</small>
@@ -193,13 +191,13 @@
             <div class="card card-default">
                 <div class="card-header">Управление временем публикации</div>
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="control-label"><input type="radio" v-model="date_at" :value="null" /> Естесственное формирование даты</label>
                         <label class="control-label"><input type="radio" v-model="date_at" value="currdate" /> Установить текущую дату</label>
                         <label class="control-label"><input type="radio" v-model="date_at" value="customdate" /> Установить дату вручную</label>
                     </div>
 
-                    <div v-if="'customdate' === date_at" class="form-group">
+                    <div v-if="'customdate' === date_at" class="mb-3">
                         <input-datetime-local v-model="article.created_at" class="form-control"></input-datetime-local>
                     </div>
                 </div>

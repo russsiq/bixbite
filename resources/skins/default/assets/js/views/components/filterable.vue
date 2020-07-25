@@ -22,7 +22,7 @@
 
         <div class="card-body filter">
             <div v-for="(filter, index) in filterCandidates" class="row">
-                <div class="col col-md-4 form-group filter-column">
+                <div class="col col-md-4 mb-3 filter-column">
                     <div class="input-group">
                         <select v-model="filter.column" @change="selectColumn(index)" class="form-control">
                             <option value="" disabled selected>{{ 'Select a filter' | trans }}</option>
@@ -30,13 +30,11 @@
                                 <option v-for="(column, columnName) in table" :value="columnName">{{ columnName | title | trans }}</option>
                             </optgroup>
                         </select>
-                        <div class="input-group-append">
-                            <button type="button" @click="removeFilter(index)" class="filter-remove btn btn-outline-secondary">x</button>
-                        </div>
+                        <button type="button" @click="removeFilter(index)" class="filter-remove btn btn-outline-secondary">x</button>
                     </div>
                 </div>
 
-                <div class="col col-md-4 form-group filter-operator">
+                <div class="col col-md-4 mb-3 filter-operator">
                     <template v-if="filter.column">
                         <select v-model="filter.operator" @change="selectOperator(index)" class="form-control">
                             <option v-for="operator in fetchOperators(filter)" :value="operator.name">{{ operator.title | trans }}</option>
@@ -44,7 +42,7 @@
                     </template>
                 </div>
 
-                <div class="col col-md-4 form-group filter-query">
+                <div class="col col-md-4 mb-3 filter-query">
                     <div class="input-group">
                         <template v-if="filter.component === 'single'">
                             <input type="text" v-model="filter.query_1" class="form-control" />
@@ -91,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="filter-controls form-group d-flex">
+            <div class="filter-controls mb-3 d-flex">
                 <button type="button" @click="addFilter" class="btn btn-outline-primary mr-auto">{{ 'Add filter' | trans }}</button>
                 <template v-if="filterCandidates.length && filterCandidates[0].query_1">
                     <button type="button" @click="applyFilter" class="btn btn-outline-success">{{ 'Apply' | trans }}</button>
@@ -124,12 +122,10 @@
                                         <option :value="column">{{ column | title | trans }}</option>
                                     </template>
                                 </select>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary bg-white" @click="changeOrderDirection">
-                                        <span v-if="query.order_direction === 'asc'">&uarr;</span>
-                                        <span v-else>&darr;</span>
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-outline-secondary bg-white" @click="changeOrderDirection">
+                                    <span v-if="query.order_direction === 'asc'">&uarr;</span>
+                                    <span v-else>&darr;</span>
+                                </button>
                             </div>
                         </div>
                     </div>
