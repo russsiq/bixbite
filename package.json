@@ -12,7 +12,7 @@
         "@emmetio/codemirror-plugin": "^1.2.1",
         "axios": "^0.19.2",
         "baguettebox.js": "^1.11.1",
-        "bootstrap": "^4.5.0",
+        "bootstrap": "^5.0.0-alpha1",
         "bootswatch": "^4.5.0",
         "bxb-modal": "^0.1.2",
         "bxb-notification": "^0.1.5",
