@@ -23,7 +23,7 @@
 
             <div class="mb-3 row">
                 <div class="col-sm-7">
-                    <label class=" control-label">Ярлык для веб-страницы</label>
+                    <label class=" control-label">Дружественный фрагмент URL-адреса веб-страницы</label>
                     <small class="form-text text-muted">Оставьте пустым для автоматического создания.</small>
                 </div>
                 <div class="col-sm-5">
@@ -33,8 +33,8 @@
 
             <div v-if="!category.articles_count" class="mb-3 row">
                 <div class="col-sm-7">
-                    <label class="control-label">Альтернативный URL</label>
-                    <small class="form-text text-warning">В категорию, для которой прописан альт. URL, добавлять записи нельзя!</small>
+                    <label class="control-label">Ссылка на внешний ресурс</label>
+                    <small class="form-text text-warning">В категорию, для которой прописана данная ссылка, добавлять записи нельзя!</small>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" v-model="category.alt_url" class="form-control" />
