@@ -265,6 +265,9 @@ export default {
         },
 
         destroy(article) {
+            // Получаем все данные по конкретной записи.
+            article = this.collection.find((item) => item.id === article.id);
+
             const result = confirm(`Хотите удалить эту Запись [${article.title}] с прикрепленными файлами?`);
 
             result && this.$props.model.$delete({
