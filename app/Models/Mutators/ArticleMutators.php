@@ -41,10 +41,10 @@ trait ArticleMutators
         // Give shortcodes from app settings. static::$shortcodes ???
         $shortcodes = [
             'app_url' => setting('system.app_url'),
-            'organization' => setting('system.organization'),
-            'contact_telephone' => setting('system.contact_telephone'),
-            'contact_email' => setting('system.contact_email'),
-            'address' => setting('system.address_locality').', '.setting('system.address_street'),
+            'organization' => setting('system.org_name'),
+            'contact_telephone' => setting('system.org_contact_telephone'),
+            'contact_email' => setting('system.org_contact_email'),
+            'address' => setting('system.org_address_locality').', '.setting('system.org_address_street'),
         ];
 
         // Give shortcode from extra fields. static::$x_shortcode ???
