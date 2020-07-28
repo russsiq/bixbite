@@ -42,10 +42,17 @@ trait ArticleMutators
         $shortcodes = [
             'app_url' => setting('system.app_url'),
             'organization' => setting('system.org_name'),
-            'contact_telephone' => setting('system.org_contact_telephone'),
             'contact_email' => setting('system.org_contact_email'),
             'address' => setting('system.org_address_locality').', '.setting('system.org_address_street'),
         ];
+
+        $telephone = setting('system.org_contact_telephone');
+
+        $shortcodes['contact_telephone'] = sprintf(
+            '<a href="tel:+%d" rel="nofollow" class="font-weight-bold">%s</a>',
+            preg_replace('/\D/', '', $telephone),
+            $telephone
+        );
 
         // Give shortcode from extra fields. static::$x_shortcode ???
         // $x_shortcode = $this->x_fields->keyBy('name')->toArray();
