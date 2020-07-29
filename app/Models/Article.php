@@ -108,7 +108,7 @@ class Article extends BaseModel
      * @var array
      */
     protected $with = [
-        'categories:categories.id,categories.title,categories.slug',
+        'categories:categories.id,categories.title,categories.slug,categories.template',
 
     ];
 
