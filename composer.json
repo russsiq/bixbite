@@ -17,26 +17,27 @@
         "url": "https://github.com/russsiq/bixbite"
     }],
     "require": {
-        "php": ">=7.3.0",
+        "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.5",
-        "laravel/framework": "^7.21",
-        "laravel/tinker": "^2.4",
-        "russsiq/laravel-assistant": "dev-master",
-        "russsiq/laravel-dom-manipulator": "dev-master",
-        "russsiq/laravel-env-manager": "^0.2",
-        "russsiq/laravel-grecaptcha": "^0.1",
-        "russsiq/laravel-zipper": "^0.1"
+        "guzzlehttp/guzzle": "^7.0",
+        "laravel/framework": "^8.12",
+        "laravel/tinker": "^2.5",
+        "russsiq/laravel-assistant": "^0.1",
+        "russsiq/laravel-dom-manipulator": "^0.1",
+        "russsiq/laravel-env-manager": "^0.3",
+        "russsiq/laravel-grecaptcha": "^0.2",
+        "russsiq/laravel-zipper": "^0.2"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.3",
-        "facade/ignition": "^2.3",
-        "fzaninotto/faker": "^1.9",
-        "laravel/ui": "^2.1",
+        "barryvdh/laravel-debugbar": "^3.5",
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9",
+        "laravel/sail": "^0.0.5",
+        "laravel/ui": "^3.1",
         "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^4.2",
-        "phpunit/phpunit": "^9.2"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.3"
     },
     "autoload": {
         "classmap": [
