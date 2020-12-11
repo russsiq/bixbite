@@ -3,12 +3,15 @@
 namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
 
 /**
  * Полнейший бардак с регулярными выражениями, т.е. в секции `boot`.
@@ -17,6 +20,9 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * The path to the "home" route for your application.
+     *
+     * This is used by Laravel authentication to redirect users after login.
+     *
      * @var string
      */
     public const HOME = '/';
@@ -24,6 +30,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * This namespace is applied to your controller routes.
      * In addition, it is set as the URL generator's root namespace.
+     *
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
@@ -39,10 +46,13 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
+     *
      * @return void
      */
     public function boot()
     {
+        $this->configureRateLimiting();
+
         Route::pattern('any', $this->routePattern('any'));
         Route::pattern('id', $this->routePattern('id'));
         Route::pattern('slug', $this->routePattern('slug'));
@@ -70,7 +80,11 @@ class RouteServiceProvider extends ServiceProvider
         // Route::model('category', \App\Models\Category::class);
         // Route::model('users', App\Models\User::class);
 
-        parent::boot();
+        $this->routes(function () {
+            $this->mapRssRoutes();
+            $this->mapApiRoutes();
+            $this->mapWebRoutes();
+        });
     }
 
     public function routePatterns(): array
@@ -81,17 +95,6 @@ class RouteServiceProvider extends ServiceProvider
     public function routePattern(string $type): string
     {
         return $this->routePatterns[$type];
-    }
-
-    /**
-     * Define the routes for the application.
-     * @return void
-     */
-    public function map()
-    {
-        $this->mapRssRoutes();
-        $this->mapApiRoutes();
-        $this->mapWebRoutes();
     }
 
     /**
@@ -121,6 +124,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the "web" routes for the application.
      * These routes all receive session state, CSRF protection, etc.
+     *
      * @return void
      */
     protected function mapWebRoutes()
@@ -131,5 +135,17 @@ class RouteServiceProvider extends ServiceProvider
             ])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
     }
 }

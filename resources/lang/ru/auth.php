@@ -1,14 +1,22 @@
 <?php
 
-/**
- * Authentication Language Lines
- *
- * The following language lines are used during authentication for various
- * messages that we need to display to the user. You are free to modify
- * these language lines according to your application's requirements.
- * @var array
- */
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'failed' => 'Не найден пользователем с введёнными данными.',
+    'password' => 'Указан некорректный пароль.',
+    'throttle' => 'Слишком много попыток входа.<br>Пожалуйста, попробуйте еще раз через :seconds сек.',
+
     // Регистрация
     'name' => 'Псевдоним',
     'email' => 'Почта',
@@ -23,8 +31,6 @@ return [
     'login' => 'Вход на сайт',
     'remember' => 'Запомнить меня',
     'forgot' => 'Забыли пароль?',
-    'failed' => 'Не найден пользователем с введёнными данными.',
-    'throttle' => 'Слишком много попыток входа.<br>Пожалуйста, попробуйте еще раз через :seconds сек.',
 
     // Верификация.
     'verify' => 'Подтверждение адреса электронной почты',

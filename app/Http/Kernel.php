@@ -8,7 +8,9 @@ class Kernel extends HttpKernel
 {
     /**
      * Глобальный стек HTTP посредников приложения.
+     *
      * Эти посредники запускаются во время каждого запроса к вашему приложению.
+     *
      * @var array
      */
     protected $middleware = [
@@ -17,7 +19,7 @@ class Kernel extends HttpKernel
         // \App\Http\Middleware\AccessToLockedSite::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -26,6 +28,7 @@ class Kernel extends HttpKernel
 
     /**
      * Группы посредников маршрутов приложения.
+     *
      * @var array
      */
     protected $middlewareGroups = [
@@ -44,7 +47,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
         ],
@@ -53,7 +56,9 @@ class Kernel extends HttpKernel
 
     /**
      * Посредники маршрутов приложения.
+     *
      * Эти посредники могут быть групповыми или использоваться по отдельности.
+     *
      * @var array
      */
     protected $routeMiddleware = [
@@ -76,7 +81,9 @@ class Kernel extends HttpKernel
 
     /**
      * Список посредников, отсортированный по приоритетности.
+     *
      * Заставит неглобальных посредников всегда быть в заданном порядке.
+     *
      * @var array
      */
     protected $middlewarePriority = [

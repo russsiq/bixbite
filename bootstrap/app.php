@@ -12,12 +12,8 @@
 */
 
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
-// $app->instance('path.config', base_path() . '/engine/config');
-// $app->configPath(base_path() . '/engine/config');
-// $app->bind('config', function() {return base_path() . '/engine/config';});
 
 /*
 |--------------------------------------------------------------------------

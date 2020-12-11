@@ -8,6 +8,7 @@ class EncryptCookies extends Middleware
 {
     /**
      * Названия файлов cookie, которые не должны быть зашифрованы.
+     *
      * @var array
      */
     protected $except = [

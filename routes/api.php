@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\TransformApiData;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('v1/auth/login', 'V1\AuthController@login')->name('api.auth.login');
