@@ -44,58 +44,54 @@
             <li style="color: #555753;">✓ Not changed article state with necessary data</li>
             <li style="color: #555753;">✓ Seo fields with string type trimmed to 255 characters</li>
         </ul>
-        <h2 id="Tests\Unit\App\Mixins\StrMixinTest">Str Mixin (Tests\Unit\App\Mixins\StrMixin)</h2>
-        <ul>
-            <li style="color: #555753;">✓ Example</li>
-        </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest">Articles Controller (Tests\Feature\App\Http\Controllers\Api\V1\ArticlesController)</h2>
         <ul>
             <li style="color: #555753;">✓ Authentication failed while guest listing articles</li>
-            <li style="color: #555753;">✓ Authentication failed while user listing articles</li>
-            <li style="color: #555753;">✓ Forbidden while user listing articles</li>
-            <li style="color: #555753;">✓ Authentication failed while owner listing articles</li>
-            <li style="color: #555753;">✓ Owner recives empty articles list</li>
-            <li style="color: #555753;">✓ Owner recives articles</li>
+            <li style="color: #ef2929;">❌ Authentication failed while user listing articles</li>
+            <li style="color: #ef2929;">❌ Forbidden while user listing articles</li>
+            <li style="color: #ef2929;">❌ Authentication failed while owner listing articles</li>
+            <li style="color: #ef2929;">❌ Owner recives empty articles list</li>
+            <li style="color: #ef2929;">❌ Owner recives articles</li>
             <li style="color: #555753;">✓ Authentication failed while guest create article</li>
-            <li style="color: #555753;">✓ Authentication failed while user create article</li>
-            <li style="color: #555753;">✓ Forbidden while user create article</li>
-            <li style="color: #555753;">✓ Authentication failed while owner create article</li>
-            <li style="color: #555753;">✓ Owner can not create article</li>
-            <li style="color: #555753;">✓ Owner can create article with minimal data provided</li>
-            <li style="color: #555753;">✓ Authentication failed while guest show article</li>
-            <li style="color: #555753;">✓ Authentication failed while user show article</li>
-            <li style="color: #555753;">✓ Forbidden while user show article</li>
-            <li style="color: #555753;">✓ Forbidden while owner show article</li>
-            <li style="color: #555753;">✓ Owner recives article</li>
-            <li style="color: #555753;">✓ Authentication failed while guest update article</li>
-            <li style="color: #555753;">✓ Forbidden while user update article</li>
-            <li style="color: #555753;">✓ Owner can not update article without data provided</li>
-            <li style="color: #555753;">✓ Owner can update article with minimal data provided</li>
-            <li style="color: #555753;">✓ Authentication failed while guest mass update article</li>
-            <li style="color: #555753;">✓ Forbidden while user mass update article</li>
-            <li style="color: #555753;">✓ Owner can not mass update article without data provided</li>
-            <li style="color: #555753;">✓ Owner mass can update article with minimal data provided</li>
-            <li style="color: #555753;">✓ Authentication failed while guest destroy article</li>
-            <li style="color: #555753;">✓ Authentication failed while user destroy article</li>
-            <li style="color: #555753;">✓ Forbidden while user destroy article</li>
-            <li style="color: #555753;">✓ Forbidden while owner destroy article</li>
-            <li style="color: #555753;">✓ Owner destroy article</li>
+            <li style="color: #ef2929;">❌ Authentication failed while user create article</li>
+            <li style="color: #ef2929;">❌ Forbidden while user create article</li>
+            <li style="color: #ef2929;">❌ Authentication failed while owner create article</li>
+            <li style="color: #ef2929;">❌ Owner can not create article</li>
+            <li style="color: #ef2929;">❌ Owner can create article with minimal data provided</li>
+            <li style="color: #ef2929;">❌ Authentication failed while guest show article</li>
+            <li style="color: #ef2929;">❌ Authentication failed while user show article</li>
+            <li style="color: #ef2929;">❌ Forbidden while user show article</li>
+            <li style="color: #ef2929;">❌ Forbidden while owner show article</li>
+            <li style="color: #ef2929;">❌ Owner recives article</li>
+            <li style="color: #ef2929;">❌ Authentication failed while guest update article</li>
+            <li style="color: #ef2929;">❌ Forbidden while user update article</li>
+            <li style="color: #ef2929;">❌ Owner can not update article without data provided</li>
+            <li style="color: #ef2929;">❌ Owner can update article with minimal data provided</li>
+            <li style="color: #ef2929;">❌ Authentication failed while guest mass update article</li>
+            <li style="color: #ef2929;">❌ Forbidden while user mass update article</li>
+            <li style="color: #ef2929;">❌ Owner can not mass update article without data provided</li>
+            <li style="color: #ef2929;">❌ Owner mass can update article with minimal data provided</li>
+            <li style="color: #ef2929;">❌ Authentication failed while guest destroy article</li>
+            <li style="color: #ef2929;">❌ Authentication failed while user destroy article</li>
+            <li style="color: #ef2929;">❌ Forbidden while user destroy article</li>
+            <li style="color: #ef2929;">❌ Forbidden while owner destroy article</li>
+            <li style="color: #ef2929;">❌ Owner destroy article</li>
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\HomeControllerWithoutContentTest">Home Controller Without Content (Tests\Feature\App\Http\Controllers\HomeControllerWithoutContent)</h2>
         <ul>
             <li style="color: #555753;">✓ Guest can browse home page</li>
-            <li style="color: #555753;">✓ User can browse home page</li>
+            <li style="color: #ef2929;">❌ User can browse home page</li>
         </ul>
         <h2 id="Tests\Feature\App\Http\Requests\Api\V1\Article\StoreTest">Store (Tests\Feature\App\Http\Requests\Api\V1\Article\Store)</h2>
         <ul>
-            <li style="color: #555753;">✓ Successfully initiated</li>
-            <li style="color: #555753;">✓ Example with data set "отклонить запрос из-за отсутствия данных"</li>
-            <li style="color: #555753;">✓ Example with data set "отклонить запрос из-за превышения длины заголовка"</li>
-            <li style="color: #555753;">✓ Example with data set "пропустить запрос с минимальным набором данных"</li>
+            <li style="color: #ef2929;">❌ Successfully initiated</li>
+            <li style="color: #ef2929;">❌ Example with data set "отклонить запрос из-за отсутствия данных"</li>
+            <li style="color: #ef2929;">❌ Example with data set "отклонить запрос из-за превышения длины заголовка"</li>
+            <li style="color: #ef2929;">❌ Example with data set "пропустить запрос с минимальным набором данных"</li>
         </ul>
         <h2 id="Tests\Feature\App\Http\Requests\Api\V1\Article\UpdateTest">Update (Tests\Feature\App\Http\Requests\Api\V1\Article\Update)</h2>
         <ul>
-            <li style="color: #555753;">✓ Successfully initiated</li>
+            <li style="color: #ef2929;">❌ Successfully initiated</li>
         </ul>
         <h2 id="Tests\Feature\App\View\Components\ConsentCookieTest">Consent Cookie (Tests\Feature\App\View\Components\ConsentCookie)</h2>
         <ul>
