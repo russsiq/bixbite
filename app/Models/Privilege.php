@@ -5,11 +5,15 @@ namespace App\Models;
 // Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Schema;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 /**
  * Модель Привилегии.
  */
 class Privilege extends BaseModel
 {
+    use HasFactory;
+
     /**
      * Таблица БД, ассоциированная с моделью.
      * @var string

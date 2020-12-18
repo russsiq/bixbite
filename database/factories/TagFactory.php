@@ -1,19 +1,32 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-use Faker\Generator as Faker;
+class TagFactory extends Factory
+{
+    /**
+     * Название модели соответствующей фабрики.
+     *
+     * @var string
+     */
+    protected $model = Tag::class;
 
-/**
- * Define the factory to generate new Tag model instances
- * for testing/seeding your application's database.
- */
-$factory->define(Tag::class, function (Faker $faker) {
-    return [
-        'title' => $faker->unique()->word,
+    /**
+     * Определить состояние модели по умолчанию.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->unique()->word,
 
-    ];
-});
+        ];
+    }
+}
 
 // $tags = [
 //     ['title' => 'Бизнес', ],

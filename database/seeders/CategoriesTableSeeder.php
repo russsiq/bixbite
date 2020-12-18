@@ -1,21 +1,23 @@
 <?php
 
-use App\Models\User;
+namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-class UsersTableSeeder extends Seeder
+class CategoriesTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
     {
         // Truncate used tables.
-        // User::truncate();
+        // Category::truncate();
 
         // Seeding used table.
-        factory(User::class, 50)->create();
+        Category::factory()->count(8)->create();
     }
 }

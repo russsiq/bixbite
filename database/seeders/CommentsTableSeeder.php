@@ -1,13 +1,15 @@
 <?php
 
-use App\Models\Comment;
+namespace Database\Seeders;
 
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
 class CommentsTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
@@ -16,6 +18,6 @@ class CommentsTableSeeder extends Seeder
         // Comment::truncate();
 
         // Seeding used table.
-        factory(Comment::class, 50)->create();
+        Comment::factory()->count(50)->create();
     }
 }

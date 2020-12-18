@@ -9,6 +9,7 @@ use Russsiq\EnvManager\Facades\EnvManager;
 
 // Сторонние зависимости.
 use App\Models\Module;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection as BaseCollection;
@@ -19,7 +20,8 @@ use Illuminate\Support\Collection as BaseCollection;
 class Setting extends BaseModel
 {
     use Mutators\SettingMutators,
-        Traits\Dataviewer;
+        Traits\Dataviewer,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.

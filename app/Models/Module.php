@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\{BaseModel, Setting};
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Module extends BaseModel
 {
+    use HasFactory;
+
     protected $table = 'modules';
 
     /**

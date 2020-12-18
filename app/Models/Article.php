@@ -5,6 +5,7 @@ namespace App\Models;
 // Сторонние зависимости.
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -21,7 +22,8 @@ class Article extends BaseModel
         Relations\Taggable,
         Scopes\ArticleScopes,
         Traits\Dataviewer,
-        Traits\FullTextSearch;
+        Traits\FullTextSearch,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 // Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Collections\CategoryCollection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Модель Категории.
@@ -17,7 +18,8 @@ class Category extends BaseModel
     use Mutators\CategoryMutators,
         Relations\Extensible,
         Relations\Fileable,
-        Scopes\CategoryScopes;
+        Scopes\CategoryScopes,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.

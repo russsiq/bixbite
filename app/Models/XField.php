@@ -5,6 +5,7 @@
 namespace App\Models;
 
 // Сторонние зависимости.
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -13,7 +14,8 @@ use Illuminate\Database\Eloquent\Collection;
 class XField extends BaseModel
 {
     use Mutators\XFieldMutators,
-        Traits\Dataviewer;
+        Traits\Dataviewer,
+        HasFactory;
 
     /**
      * Префикс имени столбца в таблице БД.

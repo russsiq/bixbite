@@ -4,6 +4,7 @@ namespace App\Models;
 
 // Сторонние зависимости.
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -12,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Note extends BaseModel
 {
     use Mutators\NoteMutators,
-        Relations\Fileable;
+        Relations\Fileable,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.

@@ -8,7 +8,7 @@ use App\Models\Comment;
 use App\Models\File;
 use App\Models\Note;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         Traits\Dataviewer,
         Traits\hasOnline,
         Traits\hasPrivileges,
-        // HasFactory,
+        HasFactory,
         Notifiable;
 
     // use Commentable; user not commentable, Wall Profile is commentable !!!

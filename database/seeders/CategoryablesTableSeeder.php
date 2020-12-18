@@ -1,9 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Article;
 use App\Models\Category;
-
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
 class CategoryablesTableSeeder extends Seeder
@@ -28,9 +30,10 @@ class CategoryablesTableSeeder extends Seeder
                 'category_id' => Arr::random($categories),
                 'categoryable_id' => $id,
                 'categoryable_type' => 'articles',
+
             ];
         }
 
-        \DB::table('categoryables')->insert($categoryables);
+        DB::table('categoryables')->insert($categoryables);
     }
 }

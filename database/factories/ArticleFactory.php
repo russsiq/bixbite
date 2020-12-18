@@ -1,51 +1,64 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Article;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
-/**
- * Define the factory to generate new Article model instances
- * for testing/seeding your application's database.
- */
-$factory->define(Article::class, function (Faker $faker) {
-    $title = $faker->unique()->sentence(mt_rand(4, 12));
+class ArticleFactory extends Factory
+{
+    /**
+     * Название модели соответствующей фабрики.
+     *
+     * @var string
+     */
+    protected $model = Article::class;
 
-    $content = '';
+    /**
+     * Определить состояние модели по умолчанию.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        $title = $this->faker->unique()->sentence(mt_rand(4, 12));
 
-    foreach (range(1, mt_rand(8, 20)) as $step) {
-        $content .= '<p>'.$faker->paragraph.'</p>';
-    }
+        $content = '';
 
-    $user = User::inRandomOrder()
-        ->select('id')
-        ->first();
+        foreach (range(1, mt_rand(8, 20)) as $step) {
+            $content .= '<p>'.$this->faker->paragraph.'</p>';
+        }
 
-    $date = now()
-        ->subDays(mt_rand(1, 720))
-        ->addSeconds(mt_rand(1, 86400))
-        ->format('Y-m-d H:i:s');
-
-    return [
-        'title' => $title,
-        'slug' => Str::slug($title),
-        'teaser' => $faker->text(mt_rand(120, 255)),
-        'content' => $content,
         // Если нет пользователей, то создадим нового.
-        'user_id' => $user->id ?? factory(User::class),
-        // 'img' => $images[Arr::random($images)],
-        'state' => $faker->randomElement([
-            'published',
-            'unpublished',
-            'draft',
-        ]),
-        'created_at' => $date,
-        'updated_at' => $date,
+        $user = User::inRandomOrder()->select('id')->first()
+            ?? User::factory()->create();
 
-    ];
-});
+        $date = now()
+            ->subDays(mt_rand(1, 720))
+            ->addSeconds(mt_rand(1, 86400))
+            ->format('Y-m-d H:i:s');
+
+        return [
+            'title' => $title,
+            'slug' => Str::slug($title),
+            'teaser' => $this->faker->text(mt_rand(120, 255)),
+            'content' => $content,
+            'user_id' => $user->id,
+            // 'img' => $this->faker->randomElement($images),
+            'state' => $this->faker->randomElement([
+                'published',
+                'unpublished',
+                'draft',
+
+            ]),
+            'created_at' => $date,
+            'updated_at' => $date,
+
+        ];
+    }
+}
 
 // $images = [
 //     '{"min":"scarlet-130x90.jpg","max":"scarlet-390x205.jpg","full":"scarlet-800x445.jpg"}',

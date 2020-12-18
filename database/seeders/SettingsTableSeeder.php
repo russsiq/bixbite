@@ -1,14 +1,18 @@
 <?php
 
+namespace Database\Seeders;
+
 // Данный сид нужно разделить после (потом) по-модульно.
 // Во время установки конкретного модуля заливать конкретный сид с настройками.
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SettingsTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
@@ -18,16 +22,23 @@ class SettingsTableSeeder extends Seeder
             'name' => null,
             'type' => 'string',
             'value' => null,
+
         ];
 
-        \DB::table('settings')->insert($this->getArticles($default));
-        \DB::table('settings')->insert($this->getComments($default));
-        \DB::table('settings')->insert($this->getFiles($default));
-        \DB::table('settings')->insert($this->getSystem($default));
-        \DB::table('settings')->insert($this->getTags($default));
-        \DB::table('settings')->insert($this->getUsers($default));
+        DB::table('settings')->insert($this->getArticles($default));
+        DB::table('settings')->insert($this->getComments($default));
+        DB::table('settings')->insert($this->getFiles($default));
+        DB::table('settings')->insert($this->getSystem($default));
+        DB::table('settings')->insert($this->getTags($default));
+        DB::table('settings')->insert($this->getUsers($default));
     }
 
+    /**
+     * [getArticles description]
+     *
+     * @param  array  $def
+     * @return array
+     */
     protected function getArticles(array $def): array
     {
         $out = [];
@@ -55,6 +66,11 @@ class SettingsTableSeeder extends Seeder
         return $out;
     }
 
+    /**
+     * [getComments description]
+     * @param  array  $def
+     * @return array
+     */
     protected function getComments(array $def): array
     {
         $out = [];
@@ -70,6 +86,12 @@ class SettingsTableSeeder extends Seeder
         return $out;
     }
 
+    /**
+     * [getFiles description]
+     *
+     * @param  array  $def
+     * @return array
+     */
     protected function getFiles(array $def): array
     {
         $out = [];
@@ -92,6 +114,12 @@ class SettingsTableSeeder extends Seeder
         return $out;
     }
 
+    /**
+     * [getTags description]
+     *
+     * @param  array  $def
+     * @return array
+     */
     protected function getTags(array $def): array
     {
         $out = [];
@@ -103,6 +131,12 @@ class SettingsTableSeeder extends Seeder
         return $out;
     }
 
+    /**
+     * [getUsers description]
+     *
+     * @param  array  $def
+     * @return array
+     */
     protected function getUsers(array $def): array
     {
         $out = [];
@@ -120,6 +154,12 @@ class SettingsTableSeeder extends Seeder
         return $out;
     }
 
+    /**
+     * [getSystem description]
+     *
+     * @param  array  $def
+     * @return array
+     */
     protected function getSystem(array $def): array
     {
         $out = [];

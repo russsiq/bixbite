@@ -1,15 +1,18 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Article;
 use App\Models\Tag;
-
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
 class TaggablesTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
@@ -28,9 +31,10 @@ class TaggablesTableSeeder extends Seeder
                 'tag_id' => Arr::random($tags),
                 'taggable_id' => Arr::random($articles),
                 'taggable_type' => 'articles',
+
             ];
         }
 
-        \DB::table('taggables')->insert($taggables);
+        DB::table('taggables')->insert($taggables);
     }
 }

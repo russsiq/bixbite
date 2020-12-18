@@ -1,21 +1,23 @@
 <?php
 
-use App\Models\Article;
+namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class ArticlesTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
     {
         // Truncate used tables.
-        // Article::truncate();
+        // User::truncate();
 
         // Seeding used table.
-        factory(Article::class, 55)->create();
+        User::factory()->count(50)->create();
     }
 }

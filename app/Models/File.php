@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 // Сторонние зависимости.
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
@@ -23,7 +24,8 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 class File extends BaseModel
 {
     use Mutators\FileMutators,
-        Traits\Dataviewer;
+        Traits\Dataviewer,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.

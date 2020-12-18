@@ -1,21 +1,23 @@
 <?php
 
-use App\Models\Tag;
+namespace Database\Seeders;
 
+use App\Models\Article;
 use Illuminate\Database\Seeder;
 
-class TagsTableSeeder extends Seeder
+class ArticlesTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     * 
      * @return void
      */
     public function run()
     {
         // Truncate used tables.
-        // Tag::truncate();
+        // Article::truncate();
 
         // Seeding used table.
-        factory(Tag::class, 15)->create();
+        Article::factory()->count(55)->create();
     }
 }

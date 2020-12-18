@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 /**
  *
@@ -15,6 +18,7 @@ class PrivilegesTableSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
@@ -80,16 +84,17 @@ class PrivilegesTableSeeder extends Seeder
             // // 'users.delete', only owner site or profile
         ];
 
-        $inserted = [];
+        $inserting = [];
 
         foreach ($privileges as $privilege) {
-            $inserted[] = [
+            $inserting[] = [
                 'privilege' => $privilege,
-                'description' => trans('privileges.'.$privilege)
+                'description' => trans('privileges.'.$privilege),
+
             ];
         }
 
         // Insert
-        \DB::table('privileges')->insert($inserted);
+        DB::table('privileges')->insert($inserting);
     }
 }

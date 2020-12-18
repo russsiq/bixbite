@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Article;
 use App\Models\User;
 use App\Models\Collections\CommentCollection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -15,7 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Comment extends BaseModel
 {
     use Mutators\CommentMutators,
-        Traits\Dataviewer;
+        Traits\Dataviewer,
+        HasFactory;
 
     /**
     * Таблица БД, ассоциированная с моделью.

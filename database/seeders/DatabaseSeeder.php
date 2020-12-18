@@ -1,11 +1,14 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Запустить наполнение базы данных.
+     *
      * @return void
      */
     public function run()
@@ -16,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ModulesTableSeeder::class,
             PrivilegesTableSeeder::class,
             SettingsTableSeeder::class,
+
         ]);
 
         // Model::reguard();
