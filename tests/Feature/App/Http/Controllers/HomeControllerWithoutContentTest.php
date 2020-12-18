@@ -46,8 +46,8 @@ class HomeControllerWithoutContentTest extends TestCase
     public function testUserCanBrowseHomePage(): void
     {
         $this->actingAs(
-                factory(User::class)
-                    ->create()
+                User::factory()
+                    ->createOne()
             )
             ->get(route('home'))
             ->assertStatus(200);

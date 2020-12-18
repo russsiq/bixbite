@@ -53,9 +53,7 @@ class StoreTest extends TestCase
     {
         parent::setUp();
 
-        $this->ownerUser = factory(User::class)
-            ->states('owner')
-            ->create();
+        $this->ownerUser = User::factory()->asOwner()->createOne();
 
         $this->actingAs($this->ownerUser);
 

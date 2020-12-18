@@ -64,12 +64,10 @@ class UpdateTest extends TestCase
     {
         parent::setUp();
 
-        $this->ownerUser = factory(User::class)
-            ->states('owner')
-            ->create();
+        $this->ownerUser = User::factory()->asOwner()->createOne();
 
-        $this->article = factory(Article::class)
-            ->create([
+        $this->article = Article::factory()
+            ->createOne([
                 'user_id' => $this->ownerUser->id
             ]);
 
