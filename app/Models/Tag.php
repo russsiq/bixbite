@@ -4,6 +4,7 @@ namespace App\Models;
 
 // Сторонние зависимости.
 use App\Models\Article;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -12,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Tag extends BaseModel
 {
     use Mutators\TagMutators,
-        Scopes\TagScopes;
+        Scopes\TagScopes,
+        HasFactory;
 
     /**
      * Таблица БД, ассоциированная с моделью.
