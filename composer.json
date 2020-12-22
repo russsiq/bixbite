@@ -1,21 +1,28 @@
 {
     "name": "russsiq/bixbite",
     "description": "Система для оперативного развертывания простейших сайтов на shared хостингах на базе Laravel.",
-    "keywords": ["bixbite", "cms", "laravel"],
+    "keywords": [
+        "bixbite",
+        "cms",
+        "laravel"
+    ],
     "homepage": "https://github.com/russsiq/bixbite",
     "type": "project",
-
     "license": "MIT",
-    "authors": [{
-        "name": "Рустам Гимранов",
-        "email": "rustam_gimranov@mail.ru",
-        "homepage": "https://github.com/russsiq",
-        "role": "Developer"
-    }],
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/russsiq/bixbite"
-    }],
+    "authors": [
+        {
+            "name": "Рустам Гимранов",
+            "email": "rustam_gimranov@mail.ru",
+            "homepage": "https://github.com/russsiq",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/russsiq/bixbite"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
