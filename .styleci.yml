@@ -1,13 +1,9 @@
-php:
-  preset: laravel
-  disabled:
-    - no_unused_imports
-  finder:
-    not-name:
-      - index.php
-      - server.php
-js:
-  finder:
-    not-name:
-      - webpack.mix.js
-css: true
+risky: false
+version: 7
+preset: laravel
+disabled:
+  - no_unused_imports
+finder:
+not-name:
+  - index.php
+  - server.php
