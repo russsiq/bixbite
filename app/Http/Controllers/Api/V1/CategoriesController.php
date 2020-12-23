@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Category;
-
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\CategoryCollection;
-
 use App\Http\Requests\Api\V1\Category\Store as StoreCategoryRequest;
 use App\Http\Requests\Api\V1\Category\Update as UpdateCategoryRequest;
-
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 
 class CategoriesController extends ApiController
 {
-    protected $advancedAbilityMap = [
-        // 'massUpdate' => 'massUpdate',
-    ];
-
-    protected $advancedMethodsWithoutModels = [
-        // 'massUpdate',
-    ];
-
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Category::class, 'category');
@@ -30,6 +22,7 @@ class CategoriesController extends ApiController
     /**
      * Отобразить весь список сущностей,
      * включая связанные сущности.
+     *
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -48,6 +41,7 @@ class CategoriesController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
+     *
      * @param  StoreCategoryRequest  $request
      * @return JsonResponse
      */
@@ -63,6 +57,7 @@ class CategoriesController extends ApiController
 
     /**
      * Отобразить сущность.
+     *
      * @param  Category  $category
      * @return JsonResponse
      */
@@ -83,6 +78,7 @@ class CategoriesController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateCategoryRequest  $request
      * @param  Category  $category
      * @return JsonResponse
@@ -99,6 +95,7 @@ class CategoriesController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
+     *
      * @param  Category  $category
      * @return JsonResponse
      */

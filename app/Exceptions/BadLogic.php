@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
-class BadLogic extends \LogicException
+use LogicException;
+
+class BadLogic extends LogicException
 {
     /**
      * Exception message.

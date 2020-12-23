@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-// Сторонние зависимости.
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -20,6 +19,7 @@ class PanelController extends BaseController
 
     /**
      * Шаблон одностраничного приложения.
+     *
      * @var string
      */
     protected $template = 'panel.app';
@@ -29,11 +29,11 @@ class PanelController extends BaseController
      */
     public function __construct()
     {
-
     }
 
     /**
      * Обработать все маршруты одностраничного приложения.
+     *
      * @return Renderable
      */
     public function __invoke(): Renderable

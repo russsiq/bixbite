@@ -2,29 +2,43 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Comment;
-
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\CommentCollection;
-
+use App\Http\Requests\Api\V1\Comment\MassUpdate as MassUpdateCommentRequest;
 use App\Http\Requests\Api\V1\Comment\Store as StoreCommentRequest;
 use App\Http\Requests\Api\V1\Comment\Update as UpdateCommentRequest;
-use App\Http\Requests\Api\V1\Comment\MassUpdate as MassUpdateCommentRequest;
-
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\CommentCollection;
+use App\Http\Resources\CommentResource;
+use App\Models\Comment;
 // use Illuminate\Database\Eloquent\Relations\MorphTo;
 // use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 
 class CommentsController extends ApiController
 {
+    /**
+     * Дополнение к карте сопоставления
+     * методов ресурса и методов в классе политик.
+     *
+     * @var array
+     */
     protected $advancedAbilityMap = [
         'massUpdate' => 'massUpdate',
+
     ];
 
+    /**
+     * Массив дополнительных методов, не имеющих
+     * конкретной модели в качестве параметра класса политик.
+     *
+     * @var array
+     */
     protected $advancedMethodsWithoutModels = [
         'massUpdate',
+
     ];
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Comment::class, 'comment');
@@ -33,6 +47,7 @@ class CommentsController extends ApiController
     /**
      * Отобразить весь список сущностей,
      * включая связанные сущности.
+     *
      * @return JsonResponse
      */
     public function index()
@@ -51,6 +66,7 @@ class CommentsController extends ApiController
 
     /**
      * Отобразить сущность.
+     *
      * @param  Comment  $comment
      * @return JsonResponse
      */
@@ -69,6 +85,7 @@ class CommentsController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateCommentRequest  $request
      * @param  Comment  $comment
      * @return JsonResponse
@@ -85,6 +102,7 @@ class CommentsController extends ApiController
 
     /**
      * Массово обновить сущности по `id` в хранилище.
+     *
      * @param  MassUpdateCommentRequest  $request
      * @return JsonResponse
      */
@@ -118,6 +136,7 @@ class CommentsController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
+     *
      * @param  Comment  $comment
      * @return JsonResponse
      */

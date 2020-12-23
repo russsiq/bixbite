@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\Front;
 
-use Artisan;
 use App\Http\Controllers\BaseController;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
 
 class SystemCareController extends BaseController
 {
+    /**
+     * [complexOptimize description].
+     *
+     * @return RedirectResponse
+     */
     public function complexOptimize()
     {
         $this->clearStat();
@@ -22,11 +28,22 @@ class SystemCareController extends BaseController
         return redirect()->back()->withStatus(__('common.msg.complete'));
     }
 
+    /**
+     * [clearStat description].
+     *
+     * @return void
+     */
     public function clearStat()
     {
         clearstatcache();
     }
 
+    /**
+     * [clearCache description].
+     *
+     * @param  string  $key
+     * @return RedirectResponse
+     */
     public function clearCache(string $key = null)
     {
         if (empty($key)) {
@@ -44,6 +61,11 @@ class SystemCareController extends BaseController
         }
     }
 
+    /**
+     * [clearViews description].
+     *
+     * @return RedirectResponse
+     */
     public function clearViews()
     {
         return redirect()->back()->withStatus(
@@ -51,6 +73,11 @@ class SystemCareController extends BaseController
         );
     }
 
+    /**
+     * [clearXCache description].
+     *
+     * @return void
+     */
     public function clearXCache()
     {
         if (function_exists('xcache_get')) {
@@ -58,6 +85,11 @@ class SystemCareController extends BaseController
         }
     }
 
+    /**
+     * [clearOpCache description].
+     *
+     * @return void
+     */
     public function clearOpCache()
     {
         if (function_exists('opcache_invalidate')) {
@@ -74,6 +106,12 @@ class SystemCareController extends BaseController
         }
     }
 
+    /**
+     * [artisanCall description].
+     *
+     * @param  string  $name
+     * @return string
+     */
     protected function artisanCall(string $name)
     {
         Artisan::call($name);

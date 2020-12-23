@@ -9,12 +9,14 @@ class HomeController extends SiteController
 {
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template = 'home';
 
     /**
      * Системные настройки.
+     * 
      * @var object
      */
     protected $settings;

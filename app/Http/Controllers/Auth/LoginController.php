@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-// Сторонние зависимости.
 use App\Http\Controllers\SiteController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
- * Login Controller
+ * Login Controller.
  *
  * This controller handles authenticating users for the application and
  * redirecting them to your home screen. The controller uses a trait
@@ -20,19 +19,20 @@ class LoginController extends SiteController
 
     /**
      * Куда перенаправить пользователя после входа.
+     *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Пространство имен шаблонов.
+     *
      * @var string
      */
     protected $template = 'auth';
 
     /**
      * Создать новый экземпляр контроллера.
-     * @return void
      */
     public function __construct()
     {
@@ -41,6 +41,7 @@ class LoginController extends SiteController
 
     /**
      * Показать форму входа на сайт.
+     *
      * @return mixed
      */
     public function showLoginForm()
@@ -57,6 +58,7 @@ class LoginController extends SiteController
     /**
      * Получить имя пользователя для входа,
      * которое будет использоваться контроллером.
+     *
      * @return string
      */
     public function username()

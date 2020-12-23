@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Rss;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Category;
+use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Response;
@@ -20,36 +17,42 @@ class SitemapController extends BaseController
 {
     /**
      * Префикс шаблонов. По факту пространство имен.
+     *
      * @const string
      */
     const TEMPLATE_PREFIX = 'rss.sitemap.';
 
     /**
      * Текущая карта сайта.
+     *
      * @var string
      */
     protected $sitemap;
 
     /**
      * Массив данных для шаблона текущей карты.
+     *
      * @var array
      */
     protected $data = [];
 
     /**
      * Дата последнего изменения записей на сайте.
+     *
      * @var Carbon
      */
     protected static $articlesLastmod;
 
     /**
      * Дата последнего изменения категорий на сайте.
+     *
      * @var Carbon
      */
     protected static $categoriesLastmod;
 
     /**
      * Основная карта сайта, содержащая ссылки на остальные карты.
+     *
      * @return Response
      */
     public function index(): Response
@@ -67,6 +70,7 @@ class SitemapController extends BaseController
 
     /**
      * Карта домашней страницы сайта.
+     *
      * @return Response
      */
     public function home(): Response
@@ -83,6 +87,7 @@ class SitemapController extends BaseController
 
     /**
      * Карта записей сайта.
+     *
      * @return Response
      */
     public function articles(): Response
@@ -99,6 +104,7 @@ class SitemapController extends BaseController
 
     /**
      * Карта записей сайта.
+     *
      * @return Response
      */
     public function categories(): Response
@@ -115,6 +121,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить ключ кэша карты.
+     *
      * @return string
      */
     protected function cacheKey(): string
@@ -124,6 +131,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить время кеширования текущей карты.
+     *
      * @param  string  $sitemap
      * @return int|null
      */
@@ -137,6 +145,7 @@ class SitemapController extends BaseController
     /**
      * Получить дату последнего изменения информации,
      * которая будет представлена в текущей ленте.
+     *
      * @return Carbon|null
      */
     protected function lastmod(): ?Carbon
@@ -149,12 +158,14 @@ class SitemapController extends BaseController
 
         return self::$lastmods[$key] = max([
             $this->articlesLastmod(),
-            $this->categoriesLastmod()
+            $this->categoriesLastmod(),
+
         ]);
     }
 
     /**
      * Получить компилируемое представление текущей карты.
+     *
      * @return Renderable
      */
     protected function view(): Renderable
@@ -170,6 +181,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить шаблон текущей карты.
+     *
      * @return string
      */
     public function template(): string
@@ -179,6 +191,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить Массив данных для шаблона текущей карты.
+     *
      * @return array
      */
     public function data(): array
@@ -188,6 +201,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить дату последнего изменения записей на сайте.
+     *
      * @return Carbon|null
      */
     protected function articlesLastmod(): ?Carbon
@@ -209,6 +223,7 @@ class SitemapController extends BaseController
 
     /**
      * Получить дату последнего изменения категорий на сайте.
+     *
      * @return Carbon|null
      */
     protected function categoriesLastmod(): ?Carbon
@@ -230,80 +245,82 @@ class SitemapController extends BaseController
 
     /**
      * Извлечь все записи из базы данных.
+     *
      * @return Closure
      */
     protected function resolveArticles(): Closure
     {
         return function() {
-        return Article::select([
-                'articles.id',
-                'articles.image_id',
-                'articles.slug',
-                'articles.created_at',
-                'articles.updated_at',
+            return Article::select([
+                    'articles.id',
+                    'articles.image_id',
+                    'articles.slug',
+                    'articles.created_at',
+                    'articles.updated_at',
 
-            ])
-            ->with([
-                'files' => function ($query) {
-                    $query->select([
-                        'files.id',
-                        'files.disk',
-                        'files.type',
-                        'files.category',
-                        'files.name',
-                        'files.extension',
-                        'files.attachment_type',
-                        'files.attachment_id',
+                ])
+                ->with([
+                    'files' => function ($query) {
+                        $query->select([
+                            'files.id',
+                            'files.disk',
+                            'files.type',
+                            'files.category',
+                            'files.name',
+                            'files.extension',
+                            'files.attachment_type',
+                            'files.attachment_id',
 
-                    ])
-                    ->join('articles', function ($join) {
-                        $join->on('files.id', '=', 'articles.image_id');
-                    })
-                    ->where('type', 'image');
-                },
-            ])
-            ->published()
-            ->latest('updated_at')
-            ->get();
+                        ])
+                        ->join('articles', function ($join) {
+                            $join->on('files.id', '=', 'articles.image_id');
+                        })
+                        ->where('type', 'image');
+                    },
+                ])
+                ->published()
+                ->latest('updated_at')
+                ->get();
         };
     }
 
     /**
      * Извлечь все категории из базы данных.
+     *
      * @return Closure
      */
     protected function resolveCategories(): Closure
     {
         return function() {
-        return Category::select([
-                'categories.id',
-                'categories.slug',
-                'categories.image_id',
-                'categories.created_at',
-                'categories.updated_at',
+            return Category::select([
+                    'categories.id',
+                    'categories.slug',
+                    'categories.image_id',
+                    'categories.created_at',
+                    'categories.updated_at',
 
-            ])
-            ->with([
-                'files' => function ($query) {
-                    $query->select([
-                        'files.id',
-                        'files.disk',
-                        'files.type',
-                        'files.category',
-                        'files.name',
-                        'files.extension',
-                        'files.attachment_type',
-                        'files.attachment_id',
+                ])
+                ->with([
+                    'files' => function ($query) {
+                        $query->select([
+                            'files.id',
+                            'files.disk',
+                            'files.type',
+                            'files.category',
+                            'files.name',
+                            'files.extension',
+                            'files.attachment_type',
+                            'files.attachment_id',
 
-                    ])
-                    ->join('categories', function ($join) {
-                        $join->on('files.id', '=', 'categories.image_id');
-                    })
-                    ->where('type', 'image');
-                },
-            ])
-            ->excludeExternal()
-            ->get();
+                        ])
+                        ->join('categories', function ($join) {
+                            $join->on('files.id', '=', 'categories.image_id');
+                        })
+                        ->where('type', 'image');
+                    },
+                ])
+                ->excludeExternal()
+                ->get();
         };
     }
 }

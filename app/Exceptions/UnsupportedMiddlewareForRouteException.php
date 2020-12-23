@@ -2,18 +2,18 @@
 
 namespace App\Exceptions;
 
-// Исключения.
 use RuntimeException;
 
 /**
  * Исключение, выбрасываемое,
  * когда применяемый посредник
- * не предназначен для выбранного маршрута
+ * не предназначен для выбранного маршрута.
  */
 class UnsupportedMiddlewareForRouteException extends RuntimeException
 {
     /**
      * Создать новый экземпляр исключения.
+     *
      * @param  object  $middleware
      * @param  string  $route
      * @return self

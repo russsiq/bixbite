@@ -14,21 +14,34 @@ use Illuminate\Http\JsonResponse;
 class TemplatesController extends ApiController
 {
     /**
+     * Массив дополнительных методов, не имеющих
+     * конкретной модели в качестве параметра класса политик.
+     *
      * Вся информация о шаблонах формируется в `Request`, поэтому указываем,
      * что в данных методах не нужно создавать экземпляр модели `Template`
      * при проверки прав доступа авторизованного пользователя.
+     *
      * @var array
      */
     protected $advancedMethodsWithoutModels = [
         'show',
         'update',
+
     ];
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Template::class, 'template');
     }
 
+    /**
+     * Отобразить список сущностей.
+     *
+     * @return JsonResponse
+     */
     public function index()
     {
         $templates = Template::all();
@@ -39,6 +52,12 @@ class TemplatesController extends ApiController
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
+    /**
+     * Создать и сохранить сущность в хранилище.
+     *
+     * @param  StoreTemplateRequest  $request
+     * @return JsonResponse
+     */
     public function store(StoreTemplateRequest $request)
     {
         $file = $request->template->save($request->all());
@@ -51,6 +70,12 @@ class TemplatesController extends ApiController
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
+    /**
+     * Отобразить сущность.
+     *
+     * @param  ShowTemplateRequest  $request
+     * @return JsonResponse
+     */
     public function show(ShowTemplateRequest $request)
     {
         $file = $request->template;
@@ -61,6 +86,12 @@ class TemplatesController extends ApiController
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
+    /**
+     * Обновить сущность в хранилище.
+     *
+     * @param  UpdateTemplateRequest  $request
+     * @return JsonResponse
+     */
     public function update(UpdateTemplateRequest $request)
     {
         $file = $request->template->save($request->all());
@@ -72,9 +103,12 @@ class TemplatesController extends ApiController
     }
 
     /**
+     * Удалить сущность из хранилища.
+     *
      * В данной версии не используется.
-     * @param  ShowTemplateRequest $request Подгружаем для формирования информации о файле шаблона.
-     * @return \Illuminate\Http\Response
+     *
+     * @param  ShowTemplateRequest  $request  Подгружаем для формирования информации о файле шаблона.
+     * @return JsonResponse
      */
     public function destroy(ShowTemplateRequest $request)
     {

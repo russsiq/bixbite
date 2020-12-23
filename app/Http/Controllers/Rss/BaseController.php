@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Rss;
 
-// Зарегистрированные фасады приложения.
 use App\Support\Facades\CacheFile;
-
-// Сторонние зависимости.
 use Illuminate\Contracts\Cache\Factory as CacheFactoryContract;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Support\Renderable;
@@ -26,12 +23,14 @@ abstract class BaseController
 {
     /**
      * Менеджер кеша.
+     *
      * @var Repository
      */
     protected $cache;
 
     /**
      * Шаблон ленты.
+     *
      * @var string
      */
     protected $template;
@@ -40,6 +39,7 @@ abstract class BaseController
      * Вероятная частота изменения информации на сайте.
      * Алгоритмов поисковых роботов не знаем,
      * поэтому несколько сокращаем периоды для месяца и года.
+     *
      * @var array
      */
     protected $changefreq = [
@@ -68,12 +68,14 @@ abstract class BaseController
 
     /**
      * Массив дат с информацией о последних измененных данных сайта.
+     *
      * @var array
      */
     protected static $lastmods = [];
 
     /**
      * Создать новый экземпляр генератора ленты.
+     *
      * @param  CacheFactoryContract  $cache
      */
     public function __construct(
@@ -85,6 +87,7 @@ abstract class BaseController
     /**
      * По умолчанию генераторы RSS лент
      * являются контроллерами одиночного действия.
+     *
      * @return Response
      */
     public function __invoke(): Response
@@ -98,6 +101,7 @@ abstract class BaseController
 
     /**
      * Получить скомпилированное XML-строковое содержимое ленты.
+     *
      * @return string
      */
     protected function content(): string
@@ -127,6 +131,7 @@ abstract class BaseController
 
     /**
      * Получить ключ кеша ленты.
+     *
      * @return string
      */
     abstract protected function cacheKey(): string;
@@ -134,6 +139,7 @@ abstract class BaseController
     /**
      * Получить время кеширования ленты.
      * По умолчанию возвращаем ежедневное кеширование ленты.
+     *
      * @return int|null
      */
     protected function cacheTime(): ?int
@@ -143,6 +149,7 @@ abstract class BaseController
 
     /**
      * Проверить просроченность кеширования ленты.
+     *
      * @return bool
      */
     protected function isExpired(): bool
@@ -153,12 +160,14 @@ abstract class BaseController
     /**
      * Получить дату последнего изменения информации,
      * которая будет представлена в текущей ленте.
+     *
      * @return Carbon|null
      */
     abstract protected function lastmod(): ?Carbon;
 
     /**
      * Получить дату создания текущей ленты.
+     *
      * @return Carbon|null
      */
     protected function created(): ?Carbon
@@ -168,12 +177,14 @@ abstract class BaseController
 
     /**
      * Получить компилируемое представление ленты.
+     *
      * @return Renderable
      */
     abstract protected function view(): Renderable;
 
     /**
      * Подготовить XML-строковое представление к кешированию.
+     *
      * @return string
      */
     protected function prepareForCache(string $view): string

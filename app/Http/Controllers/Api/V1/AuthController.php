@@ -2,30 +2,32 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use App\Http\Resources\UserResource;
-
 use App\Http\Requests\Api\V1\Auth\Login as AuthLoginRequest;
 use App\Http\Requests\Api\V1\Auth\Logout as AuthLogoutRequest;
-
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Hash;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 /**
- * Api авторизации и аутентификации пользователя по AJAX.
- * По мотивам трейта Illuminate\Foundation\Auth\AuthenticatesUsers
+ * API авторизации и аутентификации пользователя по AJAX.
+ * По мотивам трейта `Illuminate\Foundation\Auth\AuthenticatesUsers`.
  */
 class AuthController extends ApiController
 {
     use ThrottlesLogins;
 
     protected $maxAttempts = 3;
+
     protected $decayMinutes = 1;
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->middleware('auth:api')->only('logout');
@@ -34,6 +36,7 @@ class AuthController extends ApiController
     /**
      * Авторизация пользователя в административной панели.
      * Производим идентификацию по электронной почте и паролю.
+     *
      * @param  AuthLoginRequest $request
      * @return JsonResponse
      */
@@ -62,6 +65,7 @@ class AuthController extends ApiController
 
     /**
      * Сбросить ключ Api пользователя, чтобы он считался неаутентифицированным.
+     *
      * @param  AuthLogoutRequest $request
      * @return JsonResponse
      */
@@ -80,6 +84,7 @@ class AuthController extends ApiController
     /**
      * Дополнительная проверка на совпадение хэшей паролей.
      * Неизвестно насколько это оправдано.
+     *
      * @param  Request  $request
      * @return bool
      */
@@ -93,6 +98,7 @@ class AuthController extends ApiController
 
     /**
      * Попытаться авторизовать пользователя.
+     *
      * @param  Request  $request
      * @return bool
      */
@@ -107,6 +113,7 @@ class AuthController extends ApiController
 
     /**
      * Получить данные для авторизации из запроса.
+     *
      * @param  Request  $request
      * @return array
      */
@@ -117,6 +124,7 @@ class AuthController extends ApiController
 
     /**
      * Получить параметр в качестве имени для авторизации.
+     *
      * @return string
      */
     protected function username(): string
@@ -125,7 +133,8 @@ class AuthController extends ApiController
     }
 
     /**
-     * Получить посредника, который используется во время аутентификации
+     * Получить посредника, который используется во время аутентификации.
+     *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
     protected function guard()
@@ -135,6 +144,7 @@ class AuthController extends ApiController
 
     /**
      * Получить авторизованного пользователя из посредника.
+     *
      * @return User
      */
     protected function guardUser(): User
@@ -145,6 +155,7 @@ class AuthController extends ApiController
     /**
      * Отправить ответ после того как пользователь был аутентифицирован.
      * Генерируем новый `api` ключ для пользователя.
+     *
      * @return JsonResponse
      */
     protected function sendLoginResponse()
@@ -161,6 +172,7 @@ class AuthController extends ApiController
     /**
      * Отправить ответ, если
      * попытка аутентификации пользователя оказалась неудачной.
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws ValidationException
      */

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
-use App\Models\Tag;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -19,30 +18,35 @@ class ArticlesController extends SiteController
 {
     /**
      * Директория пользовательских шаблонов текущей категории.
+     *
      * @const string
      */
     const DIRECTORY_CUSTOM_VIEWS = 'custom_views';
 
     /**
      * Модель Запись.
+     *
      * @var Article
      */
     protected $model;
 
     /**
      * Настройки модели Запись.
+     *
      * @var object
      */
     protected $settings;
 
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template = 'articles';
 
     /**
      * Создать экземпляр контроллера.
+     *
      * @param  Article  $model
      */
     public function __construct(Article $model)
@@ -54,7 +58,7 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить список ресурса.
-     * @param  Request  $request
+     *
      * @return Renderable
      */
     public function index(): Renderable
@@ -67,7 +71,7 @@ class ArticlesController extends SiteController
 
         $articles = $this->model->shortArticle()
             ->published()
-            ->when($filters, function(Builder $query, $filters) {
+            ->when($filters, function (Builder $query, $filters) {
                 $query->filter($filters);
             })
             ->where('on_mainpage', 1)
@@ -90,6 +94,7 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить список ресурса в зависимости от выбранной категории.
+     *
      * @param  Category  $category
      * @return Renderable
      */
@@ -122,7 +127,8 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить список ресурса в зависимости от выбранного тега.
-     * @param  Category  $category
+     *
+     * @param  Tag  $tag
      * @return Renderable
      */
     public function tag(Tag $tag): Renderable
@@ -150,6 +156,7 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить список ресурса в зависимости от поискового запроса.
+     *
      * @param  Request  $request
      * @return Renderable
      */
@@ -179,6 +186,7 @@ class ArticlesController extends SiteController
 
     /**
      * Отобразить целевую страницу сайта.
+     *
      * @param  string  $category_slug
      * @param  int  $article_id
      * @param  string  $article_slug

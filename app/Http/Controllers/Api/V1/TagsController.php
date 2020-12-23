@@ -2,29 +2,21 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Tag;
-
-use App\Http\Resources\TagResource;
-use App\Http\Resources\TagCollection;
-
-use App\Http\Requests\Api\V1\Tag\TagRequest;
 use App\Http\Requests\Api\V1\Tag\Store as StoreTagRequest;
+use App\Http\Requests\Api\V1\Tag\TagRequest;
 use App\Http\Requests\Api\V1\Tag\Update as UpdateTagRequest;
-
+use App\Http\Resources\TagCollection;
+use App\Http\Resources\TagResource;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TagsController extends ApiController
 {
-    protected $advancedAbilityMap = [
-
-    ];
-
-    protected $advancedMethodsWithoutModels = [
-
-    ];
-
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Tag::class, 'tag');
@@ -32,6 +24,7 @@ class TagsController extends ApiController
 
     /**
      * Отобразить список тегов.
+     *
      * @return JsonResponse
      */
     public function index(TagRequest $request): JsonResponse
@@ -54,6 +47,7 @@ class TagsController extends ApiController
 
     /**
      * Сохранить вновь созданный тег в хранилище.
+     *
      * @param  StoreTagRequest  $request
      * @return JsonResponse
      */
@@ -78,6 +72,7 @@ class TagsController extends ApiController
 
     /**
      * Отобразить сущность.
+     *
      * @param  Tag  $tag
      * @return JsonResponse
      */
@@ -93,6 +88,7 @@ class TagsController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateTagRequest  $request
      * @param  Tag  $tag
      * @return JsonResponse
@@ -115,6 +111,7 @@ class TagsController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
+     *
      * @param  Tag  $tag
      * @return JsonResponse
      */

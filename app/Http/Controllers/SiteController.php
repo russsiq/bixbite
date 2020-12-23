@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
 use App\Models\Category;
 use App\Models\Collections\CategoryCollection;
 use Illuminate\Contracts\Support\Renderable;
@@ -14,12 +13,14 @@ abstract class SiteController extends BaseController
 {
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template;
 
     /**
      * Извлечь коллекцию категорий из хранилища.
+     *
      * @return CategoryCollection
      */
     protected function resolveCategories(): CategoryCollection
@@ -34,6 +35,7 @@ abstract class SiteController extends BaseController
 
     /**
      * Получить HTML-строковое представление ответа.
+     *
      * @param  string $template
      * @param  array  $vars
      * @return Renderable
@@ -43,9 +45,9 @@ abstract class SiteController extends BaseController
     protected function renderOutput(string $template, array $vars = []): Renderable
     {
         pageinfo([
-           'categories' => $this->resolveCategories(),
+            'categories' => $this->resolveCategories(),
 
-       ]);
+        ]);
 
         $tpl = $this->template.'.'.$template;
 

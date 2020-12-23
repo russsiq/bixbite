@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-// Сторонние зависимости.
 use App\Http\Controllers\SiteController;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
 /**
- * Password Reset Controller
+ * Password Reset Controller.
  *
  * This controller is responsible for handling password reset requests
  * and uses a simple trait to include this behavior. You're free to
@@ -21,12 +21,14 @@ class ResetPasswordController extends SiteController
 
     /**
      * Куда перенаправить пользователя после сброса пароля.
+     *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Пространство имен шаблонов.
+     *
      * @var string
      */
     protected $template = 'auth';
@@ -58,7 +60,7 @@ class ResetPasswordController extends SiteController
     /**
      * Set the user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  CanResetPassword  $user
      * @param  string  $password
      * @return void
      */

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-// Сторонние зависимости.
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
- * Абстрактный базовый класс для контроллеров API.
+ * Абстрактный базовый класс для API-контроллеров.
  */
 abstract class ApiController extends BaseController
 {
@@ -20,20 +19,27 @@ abstract class ApiController extends BaseController
     /**
      * Дополнение к карте сопоставления
      * методов ресурса и методов в классе политик.
+     *
      * @var array
      */
-    protected $advancedAbilityMap = [];
+    protected $advancedAbilityMap = [
+
+    ];
 
     /**
      * Массив дополнительных методов, не имеющих
      * конкретной модели в качестве параметра класса политик.
+     *
      * @var array
      */
-    protected $advancedMethodsWithoutModels = [];
+    protected $advancedMethodsWithoutModels = [
+
+    ];
 
     /**
      * Получить карту сопоставления
      * методов ресурса и методов в классе политик.
+     *
      * @return array
      *
      * @NOTE: Переписанный метод `resourceAbilityMap` из трейта
@@ -55,6 +61,7 @@ abstract class ApiController extends BaseController
     /**
      * Получить список методов ресурса, которые не имеют
      * конкретной модели в качестве параметра класса политик.
+     *
      * @return array
      *
      * @NOTE: Переписанный метод `resourceMethodsWithoutModels` из трейта

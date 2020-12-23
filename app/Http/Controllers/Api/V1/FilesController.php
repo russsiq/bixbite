@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\File;
-
-use App\Http\Resources\FileResource;
-use App\Http\Resources\FileCollection;
-
 use App\Http\Requests\Api\V1\File\Store as StoreFileRequest;
 use App\Http\Requests\Api\V1\File\Update as UpdateFileRequest;
-
+use App\Http\Resources\FileCollection;
+use App\Http\Resources\FileResource;
+use App\Models\File;
 use Illuminate\Http\JsonResponse;
 
 class FilesController extends ApiController
 {
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(File::class, 'file');
@@ -22,6 +22,7 @@ class FilesController extends ApiController
     /**
      * Отобразить список сущностей с дополнительной фильтрацией,
      * включая связанные сущности.
+     *
      * @return JsonResponse
      */
     public function index()
@@ -40,6 +41,7 @@ class FilesController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
+     *
      * @param  StoreFileRequest  $request
      * @return JsonResponse
      */
@@ -59,7 +61,8 @@ class FilesController extends ApiController
 
     /**
      * Отобразить сущность.
-     * @param  File   $file
+     *
+     * @param  File  $file
      * @return JsonResponse
      */
     public function show(File $file)
@@ -77,8 +80,9 @@ class FilesController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
-     * @param  UpdateFileRequest $request
-     * @param  File $file
+     *
+     * @param  UpdateFileRequest  $request
+     * @param  File  $file
      * @return JsonResponse
      */
     public function update(UpdateFileRequest $request, File $file)
@@ -93,7 +97,8 @@ class FilesController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
-     * @param  File $file
+     *
+     * @param  File  $file
      * @return JsonResponse
      */
     public function destroy(File $file)

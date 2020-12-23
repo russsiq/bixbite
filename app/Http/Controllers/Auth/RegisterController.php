@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-// Сторонние зависимости.
 use App\Http\Controllers\SiteController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -11,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Register Controller
+ * Register Controller.
  *
  * This controller handles the registration of new users as well as their
  * validation and creation. By default this controller uses a trait to
@@ -23,19 +22,20 @@ class RegisterController extends SiteController
 
     /**
      * Куда перенаправить пользователя после регистрации.
+     *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Пространство имен шаблонов.
+     *
      * @var string
      */
     protected $template = 'auth';
 
     /**
      * Создать новый экземпляр контроллера.
-     * @return void
      */
     public function __construct()
     {
@@ -44,6 +44,7 @@ class RegisterController extends SiteController
 
     /**
      * Показать форму регистрации.
+     *
      * @return mixed
      */
     public function showRegistrationForm()
@@ -60,8 +61,8 @@ class RegisterController extends SiteController
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data Request data.
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  array  $data  Request data.
+     * @return Validator
      */
     protected function validator(array $data)
     {
@@ -124,6 +125,7 @@ class RegisterController extends SiteController
 
     /**
      * Пользователь зарегистрирован.
+     *
      * @param  Request  $request
      * @param  mixed  $user
      * @return void

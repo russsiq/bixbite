@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\XField;
-
-use App\Http\Resources\XFieldResource;
-use App\Http\Resources\XFieldCollection;
-
 use App\Http\Requests\Api\V1\XField\Store as StoreXFieldRequest;
 use App\Http\Requests\Api\V1\XField\Update as UpdateXFieldRequest;
-
+use App\Http\Resources\XFieldCollection;
+use App\Http\Resources\XFieldResource;
+use App\Models\XField;
 use Illuminate\Http\JsonResponse;
 
 class XFieldsController extends ApiController
 {
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(XField::class, 'x_field');
@@ -21,7 +21,8 @@ class XFieldsController extends ApiController
 
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return JsonResponse
      */
     public function index()
     {
@@ -41,24 +42,25 @@ class XFieldsController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
+     *
      * @param  StoreXFieldRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(StoreXFieldRequest $request)
     {
         $x_field = XField::create($request->all());
 
-       $resource = new XFieldResource($x_field);
+        $resource = new XFieldResource($x_field);
 
-       return $resource->response()
-           ->setStatusCode(JsonResponse::HTTP_CREATED);
+        return $resource->response()
+            ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Display the specified resource.
+     * Отобразить сущность.
      *
      * @param  XField  $x_field
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(XField $x_field)
     {
@@ -74,9 +76,10 @@ class XFieldsController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateXFieldRequest  $request
      * @param  XField  $x_field
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(UpdateXFieldRequest $request, XField $x_field)
     {
@@ -90,8 +93,9 @@ class XFieldsController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
+     *
      * @param  XField  $x_field
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(XField $x_field)
     {
@@ -102,7 +106,8 @@ class XFieldsController extends ApiController
             return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
         }
 
-        return response()->json([
+        return response()
+            ->json([
                 'message' => 'You can not delete x_fields.'
             ], JsonResponse::HTTP_FORBIDDEN);
     }

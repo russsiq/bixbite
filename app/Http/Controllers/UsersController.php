@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
 use App\Models\User;
 use App\Models\XField;
 use App\Http\Requests\Front\UserRequest;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Контроллер, управляющий Пользователями сайта.
@@ -14,25 +15,29 @@ class UsersController extends SiteController
 {
     /**
      * Модель Пользователь.
+     *
      * @var User
      */
     protected $model;
 
     /**
      * Настройки модели Комментарий.
+     *
      * @var object
      */
     protected $settings;
 
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template = 'users';
 
     /**
      * Создать экземпляр контроллера.
-     * @param  Article  $model
+     *
+     * @param  User  $model
      */
     public function __construct(User $model)
     {
@@ -42,8 +47,9 @@ class UsersController extends SiteController
     }
 
     /**
-     * [index description]
-     * @return [type]
+     * [index description].
+     *
+     * @return Renderable
      */
     public function index() {
         $users = $this->model->latest()
@@ -63,9 +69,10 @@ class UsersController extends SiteController
     }
 
     /**
-     * [edit description]
+     * [edit description].
+     *
      * @param  User  $user
-     * @return [type]
+     * @return Renderable
      */
     public function edit(User $user)
     {
@@ -81,10 +88,11 @@ class UsersController extends SiteController
     }
 
     /**
-     * [update description]
+     * [update description].
+     *
      * @param  UserRequest  $request
      * @param  User  $user
-     * @return [type]
+     * @return RedirectResponse
      */
     public function update(UserRequest $request, User $user)
     {
@@ -99,8 +107,9 @@ class UsersController extends SiteController
 
     /**
      * Показать профиль пользователя.
+     *
      * @param  int  $id
-     * @return [type]
+     * @return Renderable
      */
     public function profile(int $id)
     {
@@ -118,7 +127,8 @@ class UsersController extends SiteController
         $user->posts = $user->posts_count
             ? $user->posts()
                 ->with([
-                    'user:users.id,users.name,users.email,users.avatar'
+                    'user:users.id,users.name,users.email,users.avatar',
+
                 ])->latest()
                 ->get()
                 ->treated(true)
@@ -145,8 +155,9 @@ class UsersController extends SiteController
 
     /**
      * Добавить пользователя в закладки.
+     *
      * @param  User  $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function follow(User $user)
     {
@@ -158,8 +169,9 @@ class UsersController extends SiteController
 
     /**
      * Убрать пользователя из закладок.
+     *
      * @param  User  $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function unfollow(User $user)
     {

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Privilege;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PrivilegesController extends ApiController
 {
     /**
-     * [__construct description]
+     * Создать экземпляр контроллера.
      */
     public function __construct()
     {
@@ -17,8 +17,9 @@ class PrivilegesController extends ApiController
     }
 
     /**
-     * [index description]
-     * @param  Privilege    $model
+     * [index description].
+     *
+     * @param  Privilege  $model
      * @return JsonResponse
      */
     public function index(Privilege $model): JsonResponse
@@ -35,9 +36,10 @@ class PrivilegesController extends ApiController
     }
 
     /**
-     * [store description]
-     * @param  Request      $request
-     * @param  Privilege    $model
+     * [store description].
+     *
+     * @param  Request  $request
+     * @param  Privilege  $model
      * @return JsonResponse
      */
     public function store(Request $request, Privilege $model): JsonResponse

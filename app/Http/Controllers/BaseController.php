@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -21,6 +20,7 @@ abstract class BaseController extends Controller
 
     /**
      * Создать HTTP-ответ.
+     *
      * @param  string  $template
      * @param  array  $vars
      * @return mixed
@@ -36,6 +36,7 @@ abstract class BaseController extends Controller
 
     /**
      * Выполнить редирект по указанному пути.
+     *
      * @param  bool  $status
      * @param  string|array  $route
      * @param  string  $message
@@ -64,6 +65,7 @@ abstract class BaseController extends Controller
 
     /**
      * Отправить JSON-ответ.
+     *
      * @param  array  $vars
      * @return JsonResponse
      */
@@ -78,6 +80,7 @@ abstract class BaseController extends Controller
 
     /**
      * Получить HTML-строковое представление ответа.
+     *
      * @param  string  $template
      * @param  array  $vars
      * @return Renderable

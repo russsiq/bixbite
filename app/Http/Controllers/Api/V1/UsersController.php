@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserCollection;
-
 // use App\Http\Requests\Api\V1\User\Store as StoreUserRequest;
 use App\Http\Requests\Api\V1\User\Update as UpdateUserRequest;
-
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class UsersController extends ApiController
 {
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(User::class, 'user');
@@ -21,7 +21,8 @@ class UsersController extends ApiController
 
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return JsonResponse
      */
     public function index()
     {
@@ -39,7 +40,8 @@ class UsersController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return JsonResponse
      */
     public function store()
     {
@@ -48,8 +50,9 @@ class UsersController extends ApiController
 
     /**
      * Отобразить сущность.
-     * @param  User $user
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @param  User  $user
+     * @return JsonResponse
      */
     public function show(User $user)
     {
@@ -61,9 +64,10 @@ class UsersController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
-     * @param  UpdateUserRequest $request
-     * @param  User $user
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @param  UpdateUserRequest  $request
+     * @param  User  $user
+     * @return JsonResponse
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -80,8 +84,9 @@ class UsersController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
-     * @param  User $user
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @param  User  $user
+     * @return JsonResponse
      */
     public function destroy(User $user)
     {

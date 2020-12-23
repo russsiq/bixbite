@@ -2,27 +2,41 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Article;
-
-use App\Http\Resources\ArticleResource;
-use App\Http\Resources\ArticleCollection;
-
+use App\Http\Requests\Api\V1\Article\MassUpdate as MassUpdateArticleRequest;
 use App\Http\Requests\Api\V1\Article\Store as StoreArticleRequest;
 use App\Http\Requests\Api\V1\Article\Update as UpdateArticleRequest;
-use App\Http\Requests\Api\V1\Article\MassUpdate as MassUpdateArticleRequest;
-
+use App\Http\Resources\ArticleCollection;
+use App\Http\Resources\ArticleResource;
+use App\Models\Article;
 use Illuminate\Http\JsonResponse;
 
 class ArticlesController extends ApiController
 {
+    /**
+     * Дополнение к карте сопоставления
+     * методов ресурса и методов в классе политик.
+     *
+     * @var array
+     */
     protected $advancedAbilityMap = [
         'massUpdate' => 'massUpdate',
+
     ];
 
+    /**
+     * Массив дополнительных методов, не имеющих
+     * конкретной модели в качестве параметра класса политик.
+     *
+     * @var array
+     */
     protected $advancedMethodsWithoutModels = [
         'massUpdate',
+
     ];
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
         $this->authorizeResource(Article::class, 'article');
@@ -30,6 +44,7 @@ class ArticlesController extends ApiController
 
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
+     *
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -52,6 +67,7 @@ class ArticlesController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
+     *
      * @param  StoreArticleRequest  $request
      * @return JsonResponse
      */
@@ -67,6 +83,7 @@ class ArticlesController extends ApiController
 
     /**
      * Отобразить сущность.
+     *
      * @param  Article  $article
      * @return JsonResponse
      */
@@ -87,6 +104,7 @@ class ArticlesController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateArticleRequest  $request
      * @param  Article  $article
      * @return JsonResponse
@@ -110,6 +128,7 @@ class ArticlesController extends ApiController
 
     /**
      * Массово обновить сущности по массиву `id` в хранилище.
+     *
      * @param  MassUpdateArticleRequest  $request
      * @return JsonResponse
      */
@@ -163,6 +182,7 @@ class ArticlesController extends ApiController
 
     /**
      * Удалить сущность из хранилища.
+     *
      * @param  Article $article
      * @return JsonResponse
      */

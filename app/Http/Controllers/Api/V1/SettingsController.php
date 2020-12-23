@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-// Сторонние зависимости.
-use App\Models\Module;
-use App\Models\Setting;
 use App\Http\Requests\Api\V1\Setting\Store as StoreSettingRequest;
 use App\Http\Requests\Api\V1\Setting\Update as UpdateSettingRequest;
 use App\Http\Resources\SettingResource;
+use App\Models\Module;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-/**
- * [SettingsController description]
- */
 class SettingsController extends ApiController
 {
     /**
      * Дополнение к карте сопоставления
      * методов ресурса и методов в классе политик.
+     *
      * @var array
      */
     protected $advancedAbilityMap = [
@@ -30,6 +27,7 @@ class SettingsController extends ApiController
     /**
      * Массив дополнительных методов, не имеющих
      * конкретной модели в качестве параметра класса политик.
+     *
      * @var array
      */
     protected $advancedMethodsWithoutModels = [
@@ -48,6 +46,7 @@ class SettingsController extends ApiController
 
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
+     *
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -69,6 +68,7 @@ class SettingsController extends ApiController
 
     /**
      * Отобразить список настроек для определенного модуля.
+     *
      * @param  Request  $request
      * @param  Module  $module
      * @return JsonResponse
@@ -101,6 +101,7 @@ class SettingsController extends ApiController
 
     /**
      * Создать и сохранить сущность в хранилище.
+     *
      * @param  StoreSettingRequest  $request
      * @return JsonResponse
      */
@@ -116,6 +117,7 @@ class SettingsController extends ApiController
 
     /**
      * Отобразить сущность.
+     *
      * @param  Setting  $setting
      * @return JsonResponse
      */
@@ -133,6 +135,7 @@ class SettingsController extends ApiController
 
     /**
      * Обновить сущность в хранилище.
+     *
      * @param  UpdateSettingRequest  $request
      * @param  Setting  $setting
      * @return JsonResponse
@@ -149,6 +152,7 @@ class SettingsController extends ApiController
 
     /**
      * Обновить список настроек для указанного модуля.
+     *
      * @param  Request  $request
      * @param  Module  $module
      * @return JsonResponse
@@ -165,6 +169,7 @@ class SettingsController extends ApiController
 
     /**
      * Удалить указанную сущность из хранилища.
+     *
      * @param  Setting  $setting
      * @return Response
      */

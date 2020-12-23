@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
 use App\Models\File;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -13,12 +12,14 @@ class DownloadsController extends BaseController
 {
     /**
      * Модель Файл.
+     *
      * @var File
      */
     protected $model;
 
     /**
      * Создать экземпляр контроллера.
+     *
      * @param  File  $model
      */
     public function __construct(File $model)
@@ -28,6 +29,7 @@ class DownloadsController extends BaseController
 
     /**
      * Скачать файл с сайта.
+     *
      * @param  File  $file
      * @return BinaryFileResponse
      */

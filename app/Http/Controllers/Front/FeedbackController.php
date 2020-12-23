@@ -4,19 +4,32 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\SiteController;
 use App\Http\Requests\Front\FeedbackRequest;
-
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
 class FeedbackController extends SiteController
 {
+    /**
+     * Макет шаблонов контроллера.
+     *
+     * @var string
+     */
     protected $template = 'feedback';
 
+    /**
+     * Создать экземпляр контроллера.
+     */
     public function __construct()
     {
-
     }
 
-    public function create()
+    /**
+     * Отобразить страницу с формой обратной связи.
+     *
+     * @return Renderable
+     */
+    public function create(): Renderable
     {
         pageinfo([
             'title' => __('feedback.page.title'),
@@ -27,6 +40,12 @@ class FeedbackController extends SiteController
         return $this->makeResponse('create');
     }
 
+    /**
+     * [send description].
+     *
+     * @param  FeedbackRequest  $request
+     * @return JsonResponse|RedirectResponse
+     */
     public function send(FeedbackRequest $request)
     {
         $complete = $this->mail($request);
@@ -46,12 +65,19 @@ class FeedbackController extends SiteController
             redirect()->route('feedback.create')->withErrors(trans('feedback.messages.failure'))->withInput();
     }
 
-    protected function mail($request)
+    /**
+     * [mail description].
+     *
+     * @param  FeedbackRequest $request
+     * @return bool
+     */
+    protected function mail(FeedbackRequest $request): bool
     {
         $data = $request->only([
             'name',
             'contact',
             'content',
+
         ]);
 
         // Тестировать отправку почты на localhost https://mailtrap.io.
@@ -65,7 +91,8 @@ class FeedbackController extends SiteController
                 $message->attach($file->getRealPath(), [
                     // If you want you can change original name to custom name
                     'as' => $file->getClientOriginalName(),
-                    'mime' => $file->getMimeType()
+                    'mime' => $file->getMimeType(),
+
                 ]);
             }
         });

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-// Сторонние зависимости.
 use App\Models\Comment;
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 /**
@@ -16,25 +16,29 @@ class CommentsController extends SiteController
 {
     /**
      * Модель Комментарий.
+     *
      * @var Comment
      */
     protected $model;
 
     /**
      * Настройки модели Комментарий.
+     *
      * @var object
      */
     protected $settings;
 
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template = 'comments';
 
     /**
      * Создать экземпляр контроллера.
-     * @param  Article  $model
+     *
+     * @param  Comment  $model
      */
     public function __construct(Comment $model)
     {
@@ -51,7 +55,8 @@ class CommentsController extends SiteController
     }
 
     /**
-     * Сохранить комментарий в хранилище.
+     * Создать и сохранить сущность в хранилище.
+     *
      * @param  CommentStoreRequest  $request
      * @return [type]
      */
@@ -102,7 +107,8 @@ class CommentsController extends SiteController
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Отобразить форму редактирования для указанного ресурса.
+     *
      * @param  Comment  $comment
      * @return Renderable
      */
@@ -120,10 +126,11 @@ class CommentsController extends SiteController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновить сущность в хранилище.
+     *
      * @param  CommentUpdateRequest  $request
      * @param  Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(CommentUpdateRequest $request, Comment $comment)
     {
@@ -138,9 +145,10 @@ class CommentsController extends SiteController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удалить сущность из хранилища.
+     *
      * @param  Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Comment $comment)
     {
@@ -151,7 +159,7 @@ class CommentsController extends SiteController
         $comment->delete();
 
         if (request()->expectsJson()) {
-            return response()->json(null, 204);
+            return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
         }
 
         return $this->makeRedirect(true, $url, trans('comments.msg.destroy'));

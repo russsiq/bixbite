@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-// Сторонние зависимости.
 use App\Http\Controllers\SiteController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
@@ -10,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * Email Verification Controller
+ * Email Verification Controller.
  *
  * This controller is responsible for handling email verification for any
  * user that recently registered with the application. Emails may also
@@ -22,19 +21,20 @@ class VerificationController extends SiteController
 
     /**
      * Пространство имен шаблонов.
+     *
      * @var string
      */
     protected $template = 'auth';
 
     /**
      * Куда перенаправить пользователя после верификации.
+     *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Создать новый экземпляр контроллера.
-     * @return void
      */
     public function __construct()
     {
@@ -45,6 +45,7 @@ class VerificationController extends SiteController
 
     /**
      * Показать форму верификации адреса электронной почты.
+     *
      * @param  Request  $request
      * @return mixed
      */
