@@ -33,8 +33,6 @@ Auth::routes([
 Route::get('/', 'HomeController@index')->name('home');
 
 // Вначале располагаем группу маршрутов, где не нужны регулярные выражения.
-Route::get('feedback', 'Front\FeedbackController@create')->name('feedback.create');
-Route::post('feedback', 'Front\FeedbackController@send')->name('feedback.send')->middleware(['throttle:5,1']);
 
 // Route::get('{commentable_type}/{commentable_id}/comments/{comment}', function ($postId, $commentId) {});
 Route::post(
@@ -55,15 +53,6 @@ Route::get('unfollow/{user:id}', 'UsersController@unfollow')->name('unfollow');
 Route::get('@{user:id}', 'UsersController@profile')->name('profile');
 Route::get('profile/{user:id}/edit', 'UsersController@edit')->name('profile.edit')->middleware(['own_profile']);
 Route::put('profile/{user:id}', 'UsersController@update')->name('profile.update')->middleware(['own_profile']);
-
-// Очистка кеша по ключу. Только собственник сайта.
-Route::middleware([
-        'role:owner',
-
-    ])
-    ->get('app_common/clearcache/{key?}', 'Front\SystemCareController@clearCache')
-    ->where('key', '.*')
-    ->name('system_care.clearcache');
 
 // Данные маршруты всегда должны располагаться последними.
 Route::get('{category:slug}', 'ArticlesController@category')->name('articles.category');
