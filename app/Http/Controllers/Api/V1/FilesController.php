@@ -28,9 +28,9 @@ class FilesController extends ApiController
     public function index()
     {
         $files = File::with([
-                'user',
-                'attachment',
-            ])
+            'user',
+            'attachment',
+        ])
             ->advancedFilter();
 
         $collection = new FileCollection($files);
@@ -53,8 +53,8 @@ class FilesController extends ApiController
         $resource = new FileResource($file);
 
         return $resource->additional([
-                'message' => __('msg.uploaded_success'),
-            ])
+            'message' => __('msg.uploaded_success'),
+        ])
             ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }

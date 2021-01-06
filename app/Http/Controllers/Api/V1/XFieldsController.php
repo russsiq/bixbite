@@ -27,10 +27,10 @@ class XFieldsController extends ApiController
     public function index()
     {
         $x_fields = XField::with([
-                //
-            ])
+
+        ])
             ->withCount([
-                //
+
             ])
             ->advancedFilter();
 
@@ -65,7 +65,7 @@ class XFieldsController extends ApiController
     public function show(XField $x_field)
     {
         $x_field->load([
-            //
+
         ]);
 
         $resource = new XFieldResource($x_field);
@@ -108,7 +108,7 @@ class XFieldsController extends ApiController
 
         return response()
             ->json([
-                'message' => 'You can not delete x_fields.'
+                'message' => 'You can not delete x_fields.',
             ], JsonResponse::HTTP_FORBIDDEN);
     }
 }

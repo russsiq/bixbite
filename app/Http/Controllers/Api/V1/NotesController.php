@@ -50,9 +50,9 @@ class NotesController extends ApiController
     public function index()
     {
         $notes = Note::with([
-                'files',
-                'user:users.id,users.name',
-            ])
+            'files',
+            'user:users.id,users.name',
+        ])
             ->where('user_id', auth('api')->user()->id)
             ->get()
             ->append('image');

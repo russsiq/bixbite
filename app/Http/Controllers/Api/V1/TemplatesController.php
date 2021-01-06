@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Template;
-use App\Http\Resources\TemplateResource;
-use App\Http\Resources\TemplateCollection;
 use App\Http\Requests\Api\V1\Template\Show as ShowTemplateRequest;
 use App\Http\Requests\Api\V1\Template\Store as StoreTemplateRequest;
 use App\Http\Requests\Api\V1\Template\Update as UpdateTemplateRequest;
-
+use App\Http\Resources\TemplateCollection;
+use App\Http\Resources\TemplateResource;
+use App\Models\Template;
 use Illuminate\Http\JsonResponse;
 
 class TemplatesController extends ApiController

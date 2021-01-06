@@ -50,9 +50,9 @@ class ArticlesController extends ApiController
     public function index(): JsonResponse
     {
         $articles = Article::with([
-                'categories:categories.id,categories.title,categories.slug',
-                'user:users.id,users.name',
-            ])
+            'categories:categories.id,categories.title,categories.slug',
+            'user:users.id,users.name',
+        ])
             ->withCount([
                 'comments',
                 'files',

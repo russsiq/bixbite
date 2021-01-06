@@ -180,7 +180,8 @@ class AuthController extends ApiController
     {
         throw ValidationException::withMessages([
             $this->username() => [
-                trans('auth.failed')
+                trans('auth.failed'),
+
             ],
         ]);
     }

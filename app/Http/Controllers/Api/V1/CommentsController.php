@@ -53,9 +53,9 @@ class CommentsController extends ApiController
     public function index()
     {
         $comments = Comment::with([
-                'commentable',
-                'user:users.id,users.name',
-            ])
+            'commentable',
+            'user:users.id,users.name',
+        ])
             ->advancedFilter();
 
         $collection = new CommentCollection($comments);

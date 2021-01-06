@@ -27,9 +27,9 @@ class UsersController extends ApiController
     public function index()
     {
         $users = User::withCount([
-                'articles',
-                'comments'
-            ])
+            'articles',
+            'comments'
+        ])
             ->advancedFilter();
 
         $collection = new UserCollection($users);

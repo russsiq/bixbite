@@ -53,7 +53,7 @@ class SettingsController extends ApiController
     {
         $settings = Setting::with([
 
-            ])
+        ])
             ->withCount([
 
             ])

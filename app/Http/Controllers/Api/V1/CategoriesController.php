@@ -28,8 +28,8 @@ class CategoriesController extends ApiController
     public function index(): JsonResponse
     {
         $categories = Category::withCount([
-                'articles'
-            ])
+            'articles',
+        ])
             ->orderByRaw('ISNULL(`position`), `position` ASC')
             ->get();
 
@@ -64,8 +64,8 @@ class CategoriesController extends ApiController
     public function show(Category $category): JsonResponse
     {
         $category->loadCount([
-                'articles',
-            ])
+            'articles',
+        ])
             ->load([
                 'files',
             ]);
