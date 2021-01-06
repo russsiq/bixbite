@@ -7,7 +7,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 class EncryptCookies extends Middleware
 {
     /**
-     * Названия файлов cookie, которые не должны быть зашифрованы.
+     * Имена файлов Cookies, которые не должны быть зашифрованы.
      *
      * @var array
      */
