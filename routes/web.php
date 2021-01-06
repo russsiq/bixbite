@@ -65,16 +65,6 @@ Route::middleware([
     ->where('key', '.*')
     ->name('system_care.clearcache');
 
-// Одностраничная административная панель.
-Route::middleware([
-        'auth',
-        'can:global.panel',
-
-    ])
-    ->get('panel/{any?}', 'Admin\PanelController')
-    ->where('any', '.*')
-    ->name('panel');
-
 // Данные маршруты всегда должны располагаться последними.
 Route::get('{category:slug}', 'ArticlesController@category')->name('articles.category');
 Route::get('{category_slug}/{article_id}-{article_slug}.html', 'ArticlesController@article')->name('articles.article');

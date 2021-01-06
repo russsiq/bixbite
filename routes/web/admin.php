@@ -4,12 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * Данная группа маршрутов имеет общие в поставщике службы:
- *      - префикс: `panel`;
  *      - посредники: `web`.
  */
 
- // Одностраничная административная панель.
- Route::middleware([
+// Одностраничная административная панель.
+Route::middleware([
         'auth',
         'can:global.panel',
 

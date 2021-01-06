@@ -83,6 +83,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             $this->mapRssRoutes();
             $this->mapApiRoutes();
+            $this->mapAdminRoutes();
             $this->mapWebRoutes();
         });
     }
@@ -119,6 +120,21 @@ class RouteServiceProvider extends ServiceProvider
             ])
             ->namespace($this->namespace.'\Api')
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Определить маршруты «админ» для приложения.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::middleware([
+                'web',
+
+            ])
+            ->namespace($this->namespace.'\Admin')
+            ->group(base_path('routes/web/admin.php'));
     }
 
     /**
