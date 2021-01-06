@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PanelController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -13,7 +14,7 @@ Route::middleware([
         'can:global.panel',
 
     ])
-    ->get('panel/{any?}', 'PanelController')
+    ->get('panel/{any?}', PanelController::class)
     ->where('any', '.*')
     ->name('panel');
 

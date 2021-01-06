@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Front\FeedbackController;
+use App\Http\Controllers\Front\SystemCareController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -7,10 +9,10 @@ use Illuminate\Support\Facades\Route;
  *      - посредники: `web`.
  */
 
-Route::get('feedback', 'FeedbackController@create')
+Route::get('feedback', [FeedbackController::class, 'create'])
     ->name('feedback.create');
 
-Route::post('feedback', 'FeedbackController@send')
+Route::post('feedback', [FeedbackController::class, 'send'])
     ->name('feedback.send')
     ->middleware([
         'throttle:5,1',
@@ -18,7 +20,7 @@ Route::post('feedback', 'FeedbackController@send')
     ]);
 
 // Очистка кеша по ключу. Только собственник сайта.
-Route::get('app_common/clearcache/{key?}', 'SystemCareController@clearCache')
+Route::get('app_common/clearcache/{key?}', [SystemCareController::class, 'clearCache'])
     ->where('key', '.*')
     ->name('system_care.clearcache')
     ->middleware([

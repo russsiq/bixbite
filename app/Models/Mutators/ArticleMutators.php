@@ -2,7 +2,7 @@
 
 namespace App\Models\Mutators;
 
-// Сторонние зависимости.
+use App\Http\Controllers\ArticlesController;
 use Illuminate\Support\Str;
 
 /**
@@ -14,7 +14,7 @@ trait ArticleMutators
     public function getUrlAttribute()
     {
         return ($this->id and $this->categories->count() > 0  and 'published' === $this->state)
-            ? action('ArticlesController@article', [
+            ? action([ArticlesController::class, 'article'], [
                 $this->categories->pluck('slug')->implode('_'),
                 $this->id,
                 $this->slug
