@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Container\Container;
+
 /**
  * Контроллер домашней страницы сайта.
  */
@@ -16,16 +18,26 @@ class HomeController extends SiteController
 
     /**
      * Системные настройки.
-     * 
+     *
      * @var object
      */
     protected $settings;
 
     /**
-     * Создать экземпляр контроллера.
+     * Экземпляр контейнера служб.
+     *
+     * @var Container
      */
-    public function __construct()
+    private $container;
+
+    /**
+     * Создать экземпляр контроллера.
+     *
+     * @param  Container  $container
+     */
+    public function __construct(Container $container)
     {
+        $this->container = $container;
         $this->settings = (object) setting('system');
     }
 
@@ -46,6 +58,6 @@ class HomeController extends SiteController
             return $this->makeResponse('index');
         }
 
-        return app(ArticlesController::class)->index();
+        return $this->container->makeWith(ArticlesController::class)->index();
     }
 }
