@@ -17,12 +17,13 @@ class SettingObserver extends BaseObserver
      */
     public function retrieved(Setting $setting): void
     {
-        // @NB: в типизации Eloquent нет типа `select`,
-        // будет возвращено значение как есть.
-        $setting->mergeCasts([
-            'value' => $setting->type,
+        // @NB: в типизации Eloquent нет типа `select`, `email`.
+        if (in_array($setting->type, $setting->primitiveCastTypes())) {
+            $setting->mergeCasts([
+                'value' => $setting->type,
 
-        ]);
+            ]);
+        }
     }
 
     /**
