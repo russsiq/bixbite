@@ -24,6 +24,6 @@ abstract class BaseModel extends Model
      */
     public function isPrimitiveCastTypes(string $castType): bool
     {
-        return in_array($castType, primitiveCastTypes());
+        return in_array($castType, $this->primitiveCastTypes());
     }
 }
