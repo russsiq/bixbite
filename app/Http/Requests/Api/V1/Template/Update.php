@@ -7,6 +7,7 @@ class Update extends TemplateRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -17,7 +18,7 @@ class Update extends TemplateRequest
                 'string',
                 // Шаблон должен существовать при обновлении содержимого.
                 function ($attribute, $value, $fail) {
-                    if (!$this->input('exists', false)) {
+                    if (! $this->input('exists', false)) {
                         $fail(sprintf(trans('msg.not_exists'), $value));
                     }
                 },

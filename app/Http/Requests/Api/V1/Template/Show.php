@@ -17,7 +17,7 @@ class Show extends TemplateRequest
                 'string',
                 // Шаблон должен существовать при отображении содержимого.
                 function ($attribute, $value, $fail) {
-                    if (!$this->input('exists')) {
+                    if (! $this->input('exists')) {
                         $fail(sprintf(trans('msg.not_exists'), $value));
                     }
                 },

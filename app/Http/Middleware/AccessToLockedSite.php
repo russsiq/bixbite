@@ -2,11 +2,8 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Сторонние зависимости.
 use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 
 /**
@@ -17,6 +14,7 @@ class AccessToLockedSite
 {
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @return mixed

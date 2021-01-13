@@ -2,11 +2,8 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Сторонние зависимости.
 use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -18,6 +15,7 @@ class OwnProfile
 {
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @return mixed
@@ -31,6 +29,7 @@ class OwnProfile
 
     /**
      * Проверить пользователя по идентификатору.
+     *
      * @param  ?User  $user
      * @param  string  $role
      * @return bool
@@ -46,6 +45,7 @@ class OwnProfile
 
     /**
      * Обработать запрос от ненадежного пользователя.
+     *
      * @return void
      *
      * @throws HttpException

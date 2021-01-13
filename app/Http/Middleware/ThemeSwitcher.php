@@ -2,10 +2,7 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
 use Closure;
-
-// Сторонние зависимости.
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -18,30 +15,35 @@ class ThemeSwitcher
 {
     /**
      * Поле, задающее значение языка.
+     *
      * @var string
      */
     const REQUEST_INPUT_LOCALE = 'app_locale';
 
     /**
      * Экземпляр приложения.
+     *
      * @var Application
      */
     protected $app;
 
     /**
      * Текущий язык.
+     *
      * @var string
      */
     protected $locale;
 
     /**
      * Индикатор необходимости установки куков к ответу.
+     *
      * @var bool
      */
     protected $addHttpCookie = false;
 
     /**
      * Создать новый экземпляр посредника.
+     *
      * @param  Application  $app
      * @return void
      */
@@ -57,6 +59,7 @@ class ThemeSwitcher
 
     /**
      * Установить текущий язык.
+     *
      * @param  string  $locale
      * @return void
      */
@@ -67,6 +70,7 @@ class ThemeSwitcher
 
     /**
      * Определить текущий язык.
+     *
      * @param  Request  $request
      * @return string
      */
@@ -84,6 +88,7 @@ class ThemeSwitcher
 
     /**
      * Обязать задание куков.
+     *
      * @return void
      */
     protected function addHttpCookie()
@@ -93,6 +98,7 @@ class ThemeSwitcher
 
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @return mixed
@@ -112,6 +118,7 @@ class ThemeSwitcher
 
     /**
      * Установить текущий язык приложения, если он изменился.
+     *
      * @param  string  $locale
      * @return $this
      */
@@ -130,6 +137,7 @@ class ThemeSwitcher
 
     /**
      * Ассоциировать ресурсы в соответствии с запросом.
+     *
      * @param  Request  $request
      * @return $this
      *
@@ -179,6 +187,7 @@ class ThemeSwitcher
 
     /**
      * Необходимо ли установить язык приложения в куки.
+     *
      * @return bool
      */
     protected function shouldAddCookie(): bool
@@ -188,6 +197,7 @@ class ThemeSwitcher
 
     /**
      * Добавить язык приложения к кукам ответа.
+     *
      * @param  Request  $request
      * @param  BaseResponse  $response
      * @return BaseResponse
@@ -203,6 +213,7 @@ class ThemeSwitcher
 
     /**
      * Добавить расположение файлов шаблона.
+     *
      * @param  string  $location
      * @return void
      */
@@ -212,10 +223,11 @@ class ThemeSwitcher
     }
 
     /**
-    * Добавить расположение JSON файлов со строками перевода.
-    * @param  string  $path
-    * @return void
-    */
+     * Добавить расположение JSON файлов со строками перевода.
+     *
+     * @param  string  $path
+     * @return void
+     */
     protected function addLangJsonPath(string $path)
     {
         $this->app->translator->addJsonPath($path);
@@ -223,6 +235,7 @@ class ThemeSwitcher
 
     /**
      * Подгрузить ассоциированные языковые строки из JSON файлов.
+     *
      * @param  string  $locale
      * @return void
      */

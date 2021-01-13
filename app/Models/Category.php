@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\DB;
-
-// Сторонние зависимости.
 use App\Models\Article;
 use App\Models\Collections\CategoryCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Модель Категории.
@@ -23,18 +20,21 @@ class Category extends BaseModel
 
     /**
      * Таблица БД, ассоциированная с моделью.
+     *
      * @var string
      */
     protected $table = 'categories';
 
     /**
      * Первичный ключ таблицы БД.
+     *
      * @var string
      */
     protected $primaryKey = 'id';
 
     /**
      * Значения по умолчанию для атрибутов модели.
+     *
      * @var array
      */
     protected $attributes = [
@@ -57,6 +57,7 @@ class Category extends BaseModel
 
     /**
      * Аксессоры, добавляемые при сериализации модели.
+     *
      * @var array
      */
     protected $appends = [
@@ -67,6 +68,7 @@ class Category extends BaseModel
 
     /**
      * Атрибуты, которые должны быть типизированы.
+     *
      * @var array
      */
     protected $casts = [
@@ -98,6 +100,7 @@ class Category extends BaseModel
 
     /**
      * Атрибуты, для которых разрешено массовое присвоение значений.
+     *
      * @var array
      */
     protected $fillable = [
@@ -123,6 +126,7 @@ class Category extends BaseModel
 
     /**
      * Получить все записи, относящиеся к данной категории.
+     *
      * @return MorphToMany
      */
     public function articles()
@@ -138,6 +142,7 @@ class Category extends BaseModel
 
     /**
      * Создать новый экземпляр коллекции Eloquent.
+     *
      * @param  array  $models
      * @return CategoryCollection
      */
@@ -165,6 +170,7 @@ class Category extends BaseModel
     /**
      * Обновить позиции для всех категорий и
      * сохранить обновленные модели в базу данных.
+     *
      * @return bool
      */
     public function positionUpdate(object $data): bool
@@ -179,6 +185,7 @@ class Category extends BaseModel
     /**
      * Обновить позиции для каждой категорий из списка и
      * сохранить обновленные модели в базу данных.
+     *
      * @param  array  $list
      * @param  integer  $parent_id
      * @param  integer  $m_order

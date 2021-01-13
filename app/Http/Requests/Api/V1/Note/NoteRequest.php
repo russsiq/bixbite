@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests\Api\V1\Note;
 
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Auth;
-
-// Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class NoteRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -37,6 +35,7 @@ class NoteRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array

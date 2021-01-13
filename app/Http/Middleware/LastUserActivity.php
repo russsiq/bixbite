@@ -2,11 +2,8 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Сторонние зависимости.
 use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 
 /**

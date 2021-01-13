@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api\V1\Setting;
 
-// Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -11,6 +10,7 @@ class SettingRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -44,6 +44,7 @@ class SettingRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -80,7 +81,6 @@ class SettingRequest extends BaseFormRequest
                 'alpha_dash',
 
             ],
-
 
             'name' => [
                 'required',

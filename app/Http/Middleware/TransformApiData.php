@@ -2,19 +2,14 @@
 
 namespace App\Http\Middleware;
 
-// Исключения.
 use App\Exceptions\UnsupportedMiddlewareForRouteException;
-
-// Базовые расширения PHP.
-use Closure;
-use ReflectionClass;
-
-// Сторонние зависимости.
 use App\Http\Middleware\Transformers\Api\V1\ArticlesTransformer;
 use App\Support\Contracts\ResourceRequestTransformer;
+use Closure;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use ReflectionClass;
 
 /**
  * Преобразование данных, полученных из API-запросов
@@ -24,6 +19,7 @@ class TransformApiData
 {
     /**
      * Карта преобразователей данных для ресурсов.
+     *
      * @const array
      */
     const AVAILABLE_TRANSFORMERS = [
@@ -33,6 +29,7 @@ class TransformApiData
 
     /**
      * Разрешенные действия для ресурсов маршрута.
+     *
      * @const string[]
      */
     const ALLOWED_ACTIONS = [
@@ -44,30 +41,35 @@ class TransformApiData
 
     /**
      * Экземпляр Контейнера служб.
+     *
      * @var Container
      */
     protected $container;
 
     /**
      * Имя текущего маршрута.
+     *
      * @var string
      */
     protected $currentRouteName;
 
     /**
      * Имя текущей группы маршрута.
+     *
      * @var string
      */
     protected $group;
 
     /**
      * Имя текущего ресурса маршрута.
+     *
      * @var string
      */
     protected $resource;
 
     /**
      * Имя текущего действия для ресурса маршрута.
+     *
      * @var string
      */
     protected $action;
@@ -75,12 +77,14 @@ class TransformApiData
     /**
      * Пространство имен для преобразователей данных.
      * `В настоящее время не используется`.
+     *
      * @var string
      */
     protected $namespace = 'App\Http\Middleware\Transformers\Api\V1';
 
     /**
      * Создать новый экземпляр Посредника.
+     *
      * @param  Container  $container
      */
     public function __construct(Container $container)
@@ -94,6 +98,7 @@ class TransformApiData
 
     /**
      * Получить Имя текущего маршрута.
+     *
      * @return string
      */
     public function currentRouteName(): string
@@ -103,6 +108,7 @@ class TransformApiData
 
     /**
      * Получить Имя текущей группы маршрута.
+     *
      * @return string
      */
     public function group(): string
@@ -112,6 +118,7 @@ class TransformApiData
 
     /**
      * Получить Имя текущего ресурса маршрута.
+     *
      * @return string
      */
     public function resource(): string
@@ -121,6 +128,7 @@ class TransformApiData
 
     /**
      * Получить Имя текущего действия для ресурса маршрута.
+     *
      * @return string
      */
     public function action(): string
@@ -130,6 +138,7 @@ class TransformApiData
 
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @return mixed
@@ -147,6 +156,7 @@ class TransformApiData
 
     /**
      * Имеется ли Преобразователь для текущего маршрута.
+     *
      * @return bool
      */
     public function hasTransformerForCurrentRoute(): bool
@@ -162,17 +172,19 @@ class TransformApiData
 
     /**
      * Создать новый экземпляр Преобразователя входящих данных.
+     *
      * @return ResourceRequestTransformer
      */
     protected function createTransformer(): ResourceRequestTransformer
     {
         return $this->container->make($this->getTransformerClassName(), [
-            $this->container->make('config')
+            $this->container->make('config'),
         ]);
     }
 
     /**
      * Определить сегменты для текущего маршрута.
+     *
      * @param  string  $name
      * @return void
      */
@@ -185,6 +197,7 @@ class TransformApiData
 
     /**
      * Убедиться, что группа маршрутов принадлежит к группе `api`.
+     *
      * @param  string  $group
      * @return void
      *
@@ -200,16 +213,31 @@ class TransformApiData
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     protected function isAvailableTransformer(): bool
     {
         return array_key_exists($this->resource(), self::AVAILABLE_TRANSFORMERS);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     protected function isAllowedAction(): bool
     {
         return in_array($this->action(), self::ALLOWED_ACTIONS);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     protected function getTransformerClassName(): string
     {
         return self::AVAILABLE_TRANSFORMERS[$this->resource()];

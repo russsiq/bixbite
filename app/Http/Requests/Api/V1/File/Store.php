@@ -16,23 +16,23 @@ class Store extends FileRequest
     protected $allowedForInRule = [
         'file_types' => [
             'archive' => [
-                'ext' => ['7z','cab','rar','zip'],
+                'ext' => ['7z', 'cab', 'rar', 'zip'],
                 'mime' => ['application/x-gzip'],
             ],
             'audio' => [
-                'ext' => ['mpga','mp3','ogg'],
+                'ext' => ['mpga', 'mp3', 'ogg'],
                 'mime' => [],
             ],
             'document' => [
-                'ext' => ['doc','docx','ods','odt','pdf','ppt','rtf','xls','xlsx','xml'],
+                'ext' => ['doc', 'docx', 'ods', 'odt', 'pdf', 'ppt', 'rtf', 'xls', 'xlsx', 'xml'],
                 'mime' => ['application/pdf'],
             ],
             'image' => [
-                'ext' => ['bmp','gif','ico','jpe','jpeg','jpg','png','svg','svgz','tif','tiff','webp'],
+                'ext' => ['bmp', 'gif', 'ico', 'jpe', 'jpeg', 'jpg', 'png', 'svg', 'svgz', 'tif', 'tiff', 'webp'],
                 'mime' => [],
             ],
             'video' => [
-                'ext' => ['3gp','avi','f4v','flv','m4a','m4v','mkv','mov','mp4','mpeg','qt','swf','wmv'],
+                'ext' => ['3gp', 'avi', 'f4v', 'flv', 'm4a', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'qt', 'swf', 'wmv'],
                 'mime' => [],
             ],
 
@@ -42,19 +42,22 @@ class Store extends FileRequest
 
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
     {
         // Перед тем как собрать необходимую информацию о файле,
         // провалидиуем на его физическое присутствие.
-        validator($this->all(), [
+        validator(
+            $this->all(),
+            [
                 'file' => [
                     'required',
                     'file',
                 ]
-            ])
-            ->validate();
+            ]
+        )->validate();
 
         $file = $this->file('file');
 
@@ -97,6 +100,7 @@ class Store extends FileRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules()
@@ -215,6 +219,7 @@ class Store extends FileRequest
 
     /**
      * Надстройка экземпляра валидатора.
+     *
      * @param  ValidatorContract  $validator
      * @return void
      */
@@ -255,6 +260,6 @@ class Store extends FileRequest
             }
         }
 
-        return in_array($ext, ['php','exe']) ? 'forbidden' : 'other';
+        return in_array($ext, ['php', 'exe']) ? 'forbidden' : 'other';
     }
 }

@@ -15,24 +15,28 @@ class TagsController extends SiteController
 {
     /**
      * Модель Тег.
+     *
      * @var Tag
      */
     protected $model;
 
     /**
      * Настройки модели Тег.
+     *
      * @var object
      */
     protected $settings;
 
     /**
      * Макет шаблонов контроллера.
+     *
      * @var string
      */
     protected $template = 'tags';
 
     /**
      * Создать экземпляр контроллера.
+     *
      * @param  Tag  $model
      */
     public function __construct(
@@ -45,6 +49,7 @@ class TagsController extends SiteController
 
     /**
      * Отобразить список ресурса.
+     *
      * @param  Request  $request
      * @return Renderable
      */
@@ -53,10 +58,10 @@ class TagsController extends SiteController
         $related = 'articles';
 
         $tags = $this->model->select([
-                'tags.id',
-                'tags.title',
+            'tags.id',
+            'tags.title',
 
-            ])
+        ])
             ->when($related, function (Builder $builder, string $related) {
                 $builder->whereHas($related)
                     ->withCount($related)

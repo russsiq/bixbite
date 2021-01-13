@@ -250,15 +250,15 @@ class SitemapController extends BaseController
      */
     protected function resolveArticles(): Closure
     {
-        return function() {
+        return function () {
             return Article::select([
-                    'articles.id',
-                    'articles.image_id',
-                    'articles.slug',
-                    'articles.created_at',
-                    'articles.updated_at',
+                'articles.id',
+                'articles.image_id',
+                'articles.slug',
+                'articles.created_at',
+                'articles.updated_at',
 
-                ])
+            ])
                 ->with([
                     'files' => function ($query) {
                         $query->select([
@@ -293,13 +293,13 @@ class SitemapController extends BaseController
     {
         return function() {
             return Category::select([
-                    'categories.id',
-                    'categories.slug',
-                    'categories.image_id',
-                    'categories.created_at',
-                    'categories.updated_at',
+                'categories.id',
+                'categories.slug',
+                'categories.image_id',
+                'categories.created_at',
+                'categories.updated_at',
 
-                ])
+            ])
                 ->with([
                     'files' => function ($query) {
                         $query->select([

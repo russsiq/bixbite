@@ -2,11 +2,8 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Сторонние зависимости.
 use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -20,6 +17,7 @@ class CheckRole
 {
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @param  string  $role
@@ -34,6 +32,7 @@ class CheckRole
 
     /**
      * Проверить пользователя по группе пользователей.
+     *
      * @param  User|null  $user
      * @param  string  $role
      * @return bool
@@ -49,6 +48,7 @@ class CheckRole
 
     /**
      * Обработать запрос от ненадежного пользователя.
+     *
      * @return void
      *
      * @throws HttpException

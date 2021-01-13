@@ -51,7 +51,8 @@ class UsersController extends SiteController
      *
      * @return Renderable
      */
-    public function index() {
+    public function index()
+    {
         $users = $this->model->latest()
             ->paginate($this->settings->paginate ?? 15);
 

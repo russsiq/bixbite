@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
 use Closure;
 
 /**
- * [CheckBanned description]
+ * [CheckBanned description].
  *
  * @source https://laraveldaily.com/how-to-ban-suspend-users-in-laravel-project/
  */
@@ -14,6 +13,7 @@ class CheckBanned
 {
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @param  Closure  $next
      * @param  string  $role

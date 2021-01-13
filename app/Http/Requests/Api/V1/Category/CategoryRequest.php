@@ -61,6 +61,7 @@ class CategoryRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -78,7 +79,8 @@ class CategoryRequest extends BaseFormRequest
 
             $extensibles[$field->name] = [
                 'nullable',
-                $rule
+                $rule,
+
             ];
         }
 

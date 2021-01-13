@@ -11,6 +11,7 @@ class TagRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -44,6 +45,7 @@ class TagRequest extends BaseFormRequest
 
     /**
      * Получить список из карты полиморфных отношений.
+     *
      * @return string
      */
     protected static function morphMap(): string

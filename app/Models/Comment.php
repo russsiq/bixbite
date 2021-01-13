@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// Сторонние зависимости.
 use App\Models\Article;
 use App\Models\User;
 use App\Models\Collections\CommentCollection;

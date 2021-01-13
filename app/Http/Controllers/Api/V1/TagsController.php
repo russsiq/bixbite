@@ -25,6 +25,7 @@ class TagsController extends ApiController
     /**
      * Отобразить список тегов.
      *
+     * @param TagRequest $request
      * @return JsonResponse
      */
     public function index(TagRequest $request): JsonResponse
@@ -32,12 +33,12 @@ class TagsController extends ApiController
         $suggestion = $request->validated();
 
         $tags = Tag::withCount([
-            'articles'
+            'articles',
         ])
-            ->when($suggestion['title'], function (Builder $query, $title) {
-                $query->searchByKeyword($title);
-            })
-            ->get();
+        ->when($suggestion['title'], function (Builder $query, $title) {
+            $query->searchByKeyword($title);
+        })
+        ->get();
 
         $collection = new TagCollection($tags);
 

@@ -10,6 +10,7 @@ class TemplateRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -24,21 +25,22 @@ class TemplateRequest extends BaseFormRequest
         $template->get();
 
         $this->replace([
-                'filename' => $filename,
-                'content' => $content,
+            'filename' => $filename,
+            'content' => $content,
 
-            ])
-            ->merge([
-                'template' => $template,
-                'path' => $template->path,
-                'exists' => $template->exists,
+        ])
+        ->merge([
+            'template' => $template,
+            'path' => $template->path,
+            'exists' => $template->exists,
 
-            ]);
+        ]);
     }
 
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function attributes(): array
@@ -53,6 +55,7 @@ class TemplateRequest extends BaseFormRequest
     /**
      * Получить массив пользовательских строк перевода
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function messages(): array

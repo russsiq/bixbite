@@ -12,6 +12,7 @@ class CommentStoreRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -156,7 +157,9 @@ class CommentStoreRequest extends BaseFormRequest
             // ],
 
             'g-recaptcha-response' => [
-                !auth()->check() && config('g_recaptcha.used') ? 'g_recaptcha' : 'nullable',
+                ! auth()->check() && config('g_recaptcha.used')
+                    ? 'g_recaptcha'
+                    : 'nullable',
 
             ],
 

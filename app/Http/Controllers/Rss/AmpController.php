@@ -16,18 +16,21 @@ class AmpController extends BaseController
 {
     /**
      * Ключ кэша турбо страниц.
+     *
      * @const string
      */
     const CACHE_KEY = 'amp-articles.xml';
 
     /**
      * Шаблон представления.
+     *
      * @var string
      */
     protected $template = 'rss.amp-articles';
 
     /**
      * Получить ключ кэша карты.
+     *
      * @return string
      */
     protected function cacheKey(): string
@@ -37,6 +40,7 @@ class AmpController extends BaseController
 
     /**
      * Получить время кеширования карты турбо-страниц.
+     *
      * @return int|null
      */
     protected function cacheTime(): ?int
@@ -48,6 +52,7 @@ class AmpController extends BaseController
 
     /**
      * Получить дату последнего изменения информации на сайте.
+     *
      * @return Carbon|null
      */
     protected function lastmod(): ?Carbon
@@ -69,6 +74,7 @@ class AmpController extends BaseController
 
     /**
      * Получить компилируемое представление карты турбо-страниц.
+     *
      * @return Renderable
      */
     protected function view(): Renderable
@@ -80,21 +86,22 @@ class AmpController extends BaseController
 
     /**
      * Извлечь коллекцию записей из хранилища.
+     *
      * @return EloquentCollection
      */
     protected function resolveArticles(): EloquentCollection
     {
         return Article::select([
-                'articles.id',
-                'articles.image_id',
-                'articles.slug',
-                'articles.created_at',
-                'articles.updated_at',
+            'articles.id',
+            'articles.image_id',
+            'articles.slug',
+            'articles.created_at',
+            'articles.updated_at',
 
-                'articles.title',
-                'articles.content',
+            'articles.title',
+            'articles.content',
 
-            ])
+        ])
             ->includeXFieldsNames()
             ->with([
                 'files' => function ($query) {

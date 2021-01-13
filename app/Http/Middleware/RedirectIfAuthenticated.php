@@ -2,15 +2,10 @@
 
 namespace App\Http\Middleware;
 
-// Базовые расширения PHP.
-use Closure;
-
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Auth;
-
-// Сторонние зависимости.
 use App\Providers\RouteServiceProvider;
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Перенаправление на главную страницу сайта со страницы,

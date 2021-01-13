@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// Сторонние зависимости.
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,24 +26,28 @@ class Article extends BaseModel
 
     /**
      * Таблица БД, ассоциированная с моделью.
+     *
      * @var string
      */
     protected $table = 'articles';
 
     /**
      * Первичный ключ таблицы БД.
+     *
      * @var string
      */
     protected $primaryKey = 'id';
 
     /**
      * Следует ли обрабатывать временные метки модели.
+     *
      * @var bool
      */
     public $timestamps = false;
 
     /**
      * Аксессоры, добавляемые при сериализации модели.
+     *
      * @var array
      */
     protected $appends = [
@@ -57,6 +60,7 @@ class Article extends BaseModel
 
     /**
      * Атрибуты, которые должны быть типизированы.
+     *
      * @var array
      */
     protected $casts = [
@@ -74,6 +78,7 @@ class Article extends BaseModel
 
     /**
      * Атрибуты, для которых разрешено массовое присвоение значений.
+     *
      * @var array
      */
     protected $fillable = [
@@ -107,6 +112,7 @@ class Article extends BaseModel
      * Отношения, которые всегда должны быть загружены.
      * Пример: при выводе списка комментариев нужно получить ссылку на комментарий,
      * а ссылка на комментарий к записи формируется с использованием категорий.
+     *
      * @var array
      */
     protected $with = [
@@ -116,6 +122,7 @@ class Article extends BaseModel
 
     /**
      * Атрибуты, по которым разрешена фильтрация сущностей.
+     *
      * @var array
      */
     protected $allowedFilters = [
@@ -140,6 +147,7 @@ class Article extends BaseModel
 
     /**
      * Атрибуты, по которым разрешена сортировка сущностей.
+     *
      * @var array
      */
     protected $orderableColumns = [
@@ -153,6 +161,7 @@ class Article extends BaseModel
 
     /**
      * Атрибуты, по которым будет выполняться полнотекстовый поиск.
+     *
      * @var array
      */
     protected $searchable = [
@@ -163,6 +172,7 @@ class Article extends BaseModel
 
     /**
      * Получить автора записи.
+     *
      * @return BelongsTo
      */
     public function user(): BelongsTo
@@ -172,6 +182,7 @@ class Article extends BaseModel
 
     /**
      * Получить настройки записей.
+     *
      * @return HasMany
      */
     public function settings(): HasMany

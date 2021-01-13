@@ -11,7 +11,8 @@ class LangMixin
      * т.к. метод `load` считает, что все уже загружено:
      * https://github.com/laravel/framework/blob/6.x/src/Illuminate/Translation/Translator.php#L271
      * Пакет на котором был отслежен данный факт:
-     * https://github.com/russsiq/laravel-grecaptcha/blob/master/src/app/GRecaptchaServiceProvider.php#L49
+     * https://github.com/russsiq/laravel-grecaptcha/blob/master/src/app/GRecaptchaServiceProvider.php#L49.
+     *
      * @return callable
      */
     public function reloadJsonPaths(): callable

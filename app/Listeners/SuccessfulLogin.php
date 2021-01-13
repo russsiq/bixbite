@@ -11,10 +11,13 @@ class SuccessfulLogin
     /**
      * Создать слушателя события.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Обработать событие.
+     *
      * @param  EventLogin  $event
      * @return void
      */

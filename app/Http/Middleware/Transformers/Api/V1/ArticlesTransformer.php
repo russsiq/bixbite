@@ -2,18 +2,13 @@
 
 namespace App\Http\Middleware\Transformers\Api\V1;
 
-// Исключения.
-use Illuminate\Validation\ValidationException;
-
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Auth;
-use Russsiq\DomManipulator\Facades\DOMManipulator;
-
-// Сторонние зависимости.
 use App\Support\Contracts\ResourceRequestTransformer;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 /**
  * Преобразователь данных Запроса для Записей.
@@ -22,18 +17,21 @@ class ArticlesTransformer implements ResourceRequestTransformer
 {
     /**
      * Экземпляр Запроса.
+     *
      * @var Request
      */
     protected $request;
 
     /**
      * Экземпляр репозитория Конфигурации.
+     *
      * @var ConfigRepository
      */
     protected $config;
 
     /**
      * Создать новый экземпляр Преобразователя данных.
+     *
      * @param  Request  $request
      * @param  array  $settings
      */
@@ -57,6 +55,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
     /**
      * Получить массив данных, используемых по умолчанию.
+     *
      * @return array
      */
     public function default(): array
@@ -70,7 +69,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
         ]);
 
         $input['title'] = Str::teaser($this->request->input('title'), 255, '');
-        if (!$this->setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
+        if (! $this->setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
             $input['slug'] = Str::slug($this->request->input('title'), '-', $this->setting('system.translite_code', 'ru__gost_2000_b'));
         }
 
@@ -81,7 +80,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
         $input['keywords'] = Str::teaser($this->request->input('keywords'), 255, '');
 
         if (empty($input['date_at'])) {
-            $input['updated_at'] =  date('Y-m-d H:i:s');
+            $input['updated_at'] = date('Y-m-d H:i:s');
         } else {
             if ('currdate' === $input['date_at']) {
                 $input['created_at'] = date('Y-m-d H:i:s');
@@ -89,7 +88,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
                 $input['created_at'] = date_format(date_create($input['created_at']), 'Y-m-d H:i:s');
             }
 
-            $input['updated_at'] =  null;
+            $input['updated_at'] = null;
         }
 
         if (empty($input['categories']) or empty($input['state'])) {
@@ -109,6 +108,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
     /**
      * Получить массив данных для сохранения сущности.
+     *
      * @return array
      */
     public function store(): array
@@ -127,6 +127,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
     /**
      * Получить массив данных для обновления сущности.
+     *
      * @return array
      */
     public function update(): array
@@ -142,6 +143,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
 
     /**
      * Получить массив данных для массовго обновления сущностей.
+     *
      * @return array
      */
     public function massUpdate(): array
@@ -151,6 +153,12 @@ class ArticlesTransformer implements ResourceRequestTransformer
         return $inputs;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string|null $content
+     * @return string
+     */
     protected function prepareContent(string $content = null): string
     {
         if (is_null($content)) {

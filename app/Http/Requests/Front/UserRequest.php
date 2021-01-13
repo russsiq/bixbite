@@ -10,6 +10,7 @@ class UserRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -46,6 +47,7 @@ class UserRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -63,7 +65,7 @@ class UserRequest extends BaseFormRequest
                 'required',
                 'email',
                 'between:6,255',
-                'unique:users,email' . (isset($this->user->id) ? ','.$this->user->id.',id' : ''),
+                'unique:users,email'.(isset($this->user->id) ? ','.$this->user->id.',id' : ''),
 
             ],
 

@@ -17,6 +17,7 @@ class ArticleRequest extends BaseFormRequest
 {
     /**
      * Общий массив допустимых значений для правила `in:список_значений`.
+     *
      * @var array
      */
     protected $allowedForInRule = [
@@ -31,6 +32,7 @@ class ArticleRequest extends BaseFormRequest
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function attributes(): array
@@ -47,6 +49,7 @@ class ArticleRequest extends BaseFormRequest
     /**
      * Получить массив пользовательских строк перевода
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function messages(): array
@@ -59,6 +62,7 @@ class ArticleRequest extends BaseFormRequest
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules(): array
@@ -76,7 +80,8 @@ class ArticleRequest extends BaseFormRequest
 
             $extensibles[$field->name] = [
                 'nullable',
-                $rule
+                $rule,
+
             ];
         }
 

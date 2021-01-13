@@ -10,6 +10,7 @@ class XFieldRequest extends BaseFormRequest
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
@@ -27,22 +28,23 @@ class XFieldRequest extends BaseFormRequest
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function attributes(): array
     {
         return [
-           'extensible' => trans('extensible'),
-           'name' => trans('name'),
-           'type' => trans('type'),
-           'params' => trans('params'),
-           'params.*.key' => 'Ключ в Списке пар',
-           'params.*.value' => 'Значение в Списке пар',
-           'title' => trans('title'),
-           'descr' => trans('descr'),
-           'html_flags' => trans('html_flags'),
+            'extensible' => trans('extensible'),
+            'name' => trans('name'),
+            'type' => trans('type'),
+            'params' => trans('params'),
+            'params.*.key' => 'Ключ в Списке пар',
+            'params.*.value' => 'Значение в Списке пар',
+            'title' => trans('title'),
+            'descr' => trans('descr'),
+            'html_flags' => trans('html_flags'),
 
-       ];
+        ];
     }
 
     /**

@@ -28,7 +28,7 @@ class UsersController extends ApiController
     {
         $users = User::withCount([
             'articles',
-            'comments'
+            'comments',
         ])
             ->advancedFilter();
 

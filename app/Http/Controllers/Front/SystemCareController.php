@@ -101,7 +101,7 @@ class SystemCareController extends BaseController
             ]))->filter(function ($value) {
                 return \File::extension($value) == 'php';
             })->each(function ($file) {
-                opcache_invalidate ($file, true);
+                opcache_invalidate($file, true);
             });
         }
     }
