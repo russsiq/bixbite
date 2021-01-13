@@ -214,7 +214,7 @@ class TransformApiData
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return boolean
      */
@@ -224,7 +224,7 @@ class TransformApiData
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return boolean
      */
@@ -234,7 +234,7 @@ class TransformApiData
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return string
      */

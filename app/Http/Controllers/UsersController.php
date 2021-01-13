@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Front\UserRequest;
 use App\Models\User;
 use App\Models\XField;
-use App\Http\Requests\Front\UserRequest;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 

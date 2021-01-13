@@ -291,7 +291,7 @@ class SitemapController extends BaseController
      */
     protected function resolveCategories(): Closure
     {
-        return function() {
+        return function () {
             return Category::select([
                 'categories.id',
                 'categories.slug',

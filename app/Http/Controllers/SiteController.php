@@ -52,7 +52,6 @@ abstract class SiteController extends BaseController
         $tpl = $this->template.'.'.$template;
 
         if (view()->exists($this->template) and view()->exists($tpl)) {
-
             $mainblock = html_raw(view($tpl, $vars)->render());
 
             return view($this->template, compact('mainblock'));
