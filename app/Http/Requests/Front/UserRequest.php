@@ -5,6 +5,7 @@ namespace App\Http\Requests\Front;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use App\Models\Privilege;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseFormRequest
 {
@@ -65,7 +66,7 @@ class UserRequest extends BaseFormRequest
                 'required',
                 'email',
                 'between:6,255',
-                'unique:users,email'.(isset($this->user->id) ? ','.$this->user->id.',id' : ''),
+                Rule::unique('users')->ignore($this->user),
 
             ],
 
