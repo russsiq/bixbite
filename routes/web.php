@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
  * Дополнительная информация:
  *      - App\Http\Kernel - middleware.
  *      - App\Providers\RouteServiceProvider
- *      - Laravel\Ui\AuthRouteMethods
+ *      - vendor\laravel\fortify\src\FortifyServiceProvider.php
+ *      - vendor\laravel\fortify\routes\routes.php
  */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
