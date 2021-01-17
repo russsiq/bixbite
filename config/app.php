@@ -178,6 +178,7 @@ return [
 
         // BBCMS Service Providers
         App\Providers\BixbiteServiceProvider::class,
+        App\Providers\ViewServiceProvider::class,
 
     ],
 
