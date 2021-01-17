@@ -134,18 +134,12 @@ return [
     'features' => [
         // Разрешить регистрацию на сайте.
         Features::registration(),
+
         // Разрешить сброс пароля.
         Features::resetPasswords(),
+
         // Подтверждение адреса электронной почты.
         Features::emailVerification(),
-        //
-        Features::updateProfileInformation(),
-        //
-        Features::updatePasswords(),
-        //
-        Features::twoFactorAuthentication([
-            'confirmPassword' => true,
-        ]),
     ],
 
 ];
