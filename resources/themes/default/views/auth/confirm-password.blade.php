@@ -1,4 +1,7 @@
-<section class="action_page">
+@extends('layouts.app')
+
+@section('mainblock')
+<section class="action_page bg-white">
     <div class="action_page__inner">
         <header class="action_page__header">
             <h2 class="action_page__title">@lang('auth.confirm_password')</h2>
@@ -28,3 +31,4 @@
         </section>
     </div>
 </section>
+@endsection

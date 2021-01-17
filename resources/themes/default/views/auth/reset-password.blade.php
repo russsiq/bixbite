@@ -1,4 +1,7 @@
-<section class="action_page">
+@extends('layouts.app')
+
+@section('mainblock')
+<section class="action_page bg-white">
     <div class="action_page__inner">
         <header class="action_page__header">
             <h2 class="action_page__title">@lang('auth.reset')</h2>
@@ -6,7 +9,7 @@
 
         <section class="action_page__content">
             <form action="{{ route('password.update') }}" method="POST">
-                <input type="hidden" name="token" value="{{ $token }}" />
+                <input type="hidden" name="token" value="{{ $request->token }}" />
 
                 <div class="mb-3 row">
                     <label for="email" class="col-md-4 col-form-label">@lang('auth.email')</label>
@@ -44,3 +47,4 @@
         </section>
     </div>
 </section>
+@endsection

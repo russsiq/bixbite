@@ -1,4 +1,7 @@
-<section class="action_page">
+@extends('layouts.app')
+
+@section('mainblock')
+<section class="action_page bg-white">
     <div class="action_page__inner">
         <header class="action_page__header">
             <h2 class="action_page__title">@lang('auth.login')</h2>
@@ -7,7 +10,7 @@
         <section class="action_page__content">
             <form action="{{ route('login') }}" method="POST">
                 <div class="mb-3 row">
-                    @if ('name' == setting('users.login_username', 'name'))
+                    @if ('name' == config('fortify.username', 'name'))
                         <label for="name" class="col-md-4 col-form-label">@lang('auth.name')</label>
                         <div class="col-md-6">
                             <input id="name" type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" required autofocus />
@@ -52,3 +55,4 @@
         </section>
     </div>
 </section>
+@endsection
