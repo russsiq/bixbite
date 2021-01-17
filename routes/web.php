@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
  *      - посредники: `web`.
  * Дополнительная информация:
  *      - App\Http\Kernel - middleware.
- *      - App\Providers\RouteServiceProvider
- *      - vendor\laravel\fortify\src\FortifyServiceProvider.php
- *      - vendor\laravel\fortify\routes\routes.php
+ *      - App\Providers\RouteServiceProvider.
+ *      - App\Providers\FortifyServiceProvider.
+ *      - vendor\laravel\fortify\src\FortifyServiceProvider.php.
+ *      - vendor\laravel\fortify\routes\routes.php.
  */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
