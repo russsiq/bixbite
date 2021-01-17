@@ -47,11 +47,6 @@ trait UserMutators
         $this->attributes['role'] = $role;
     }
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
     /**
      * Get a non-existing attribute $entity->comment_store_action for html-form.
      * @return string
