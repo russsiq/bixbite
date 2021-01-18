@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Модель Пользователя.
@@ -28,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         Traits\hasPrivileges,
         HasFactory,
         Notifiable;
+    use HasApiTokens;
 
     // use Commentable; user not commentable, Wall Profile is commentable !!!
 
@@ -166,27 +168,5 @@ class User extends Authenticatable implements MustVerifyEmail
             'commentable_id',
             'id'
         );
-    }
-
-    /**
-     * [generateApiToken description]
-     * @return string
-     */
-    public function generateApiToken(): string
-    {
-        $this->api_token = hash('sha256', Str::random(60));
-        $this->save();
-
-        return $this->api_token;
-    }
-
-    /**
-     * [resetApiToken description]
-     * @return void
-     */
-    public function resetApiToken()
-    {
-        $this->api_token = null;
-        $this->save();
     }
 }
