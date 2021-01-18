@@ -34,9 +34,9 @@ Route::group([
         'as' => 'api.'
 
     ], function () {
-        Route::post('auth/logout', [AuthController::class, 'logout'])
-            ->middleware('auth:sanctum')
-            ->name('auth.logout');
+        // Route::post('auth/logout', [AuthController::class, 'logout'])
+        //     ->middleware('auth:sanctum')
+        //     ->name('auth.logout');
 
         Route::get('notes/form', [NotesController::class, 'form'])->name('notes.form');
         Route::get('settings/{module}', [SettingsController::class, 'getModule'])->name('settings.getModule');
