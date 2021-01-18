@@ -26,7 +26,7 @@ Route::post('auth/login', [AuthController::class, 'login'])->name('api.auth.logi
 
 Route::group([
         'middleware' => [
-            'auth:api',
+            'auth:sanctum',
 
         ],
         'as' => 'api.'
