@@ -1,14 +1,14 @@
 {
     "name": "russsiq/bixbite",
+    "type": "project",
     "description": "Система для оперативного развертывания простейших сайтов на shared хостингах на базе Laravel.",
     "keywords": [
         "bixbite",
         "cms",
         "laravel"
     ],
-    "homepage": "https://github.com/russsiq/bixbite",
-    "type": "project",
     "license": "MIT",
+    "homepage": "https://github.com/russsiq/bixbite",
     "authors": [
         {
             "name": "Рустам Гимранов",
@@ -28,9 +28,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/fortify": "^1.7",
         "laravel/framework": "^8.22",
-        "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
         "russsiq/laravel-assistant": "^0.2",
         "russsiq/laravel-dom-manipulator": "^0.1",
@@ -42,9 +40,25 @@
         "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.13",
+        "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^5.2",
+        "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "prestissimo": {
+            "maxConnections": 10,
+            "minConnections": 3,
+            "pipeline": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
     },
     "autoload": {
         "psr-4": {
@@ -52,20 +66,15 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
-        "files": [
-            "app/Support/helpers.php"
-        ]
+        "files": []
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "test": [
             "@php artisan config:clear",
@@ -87,17 +96,5 @@
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
         ]
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "prestissimo": {
-            "maxConnections": 10,
-            "minConnections": 3,
-            "pipeline": true
-        },
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

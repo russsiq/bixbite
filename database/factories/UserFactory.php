@@ -9,86 +9,25 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * Название модели соответствующей фабрики.
+     * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = User::class;
 
     /**
-     * Определить состояние модели по умолчанию.
+     * Define the model's default state.
      *
      * @return array
      */
-    public function definition(): array
+    public function definition()
     {
-        $name = $this->faker->name;
-
         return [
-            'name' => $name,
+            'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'role' => $this->faker->randomElement([
-                'admin',
-                'moder',
-                'user',
-
-            ]),
-            'password' => $name.$name,
-            'api_token' => null,
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-
         ];
-    }
-
-    /**
-     * Указать, что пользователь является собствеником.
-     *
-     * @return Factory
-     */
-    public function asOwner(): Factory
-    {
-        return $this->state([
-            'role' => 'owner',
-
-        ]);
-    }
-
-    /**
-     * Указать, что пользователь является Администратором.
-     *
-     * @return Factory
-     */
-    public function asAdmin(): Factory
-    {
-        return $this->state([
-            'role' => 'admin',
-        ]);
-    }
-
-    /**
-     * Указать, что пользователь является Модератором.
-     *
-     * @return Factory
-     */
-    public function asModer(): Factory
-    {
-        return $this->state([
-            'role' => 'moder',
-
-        ]);
-    }
-
-    /**
-     * Указать, что пользователь является обычным пользователем.
-     *
-     * @return Factory
-     */
-    public function asUser(): Factory
-    {
-        return $this->state([
-            'role' => 'user',
-
-        ]);
     }
 }

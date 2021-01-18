@@ -4,14 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-/**
- * Основной поставщик служб.
- * Индивидуален для каждого проекта.
- */
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Регистрация любых служб приложения.
+     * Register any application services.
      *
      * @return void
      */
@@ -21,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Загрузка любых служб приложения.
+     * Bootstrap any application services.
      *
      * @return void
      */

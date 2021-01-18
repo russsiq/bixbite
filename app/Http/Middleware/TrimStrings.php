@@ -14,7 +14,5 @@ class TrimStrings extends Middleware
     protected $except = [
         'password',
         'password_confirmation',
-        'meta_title_delimiter',
-
     ];
 }

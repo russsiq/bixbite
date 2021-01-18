@@ -7,21 +7,12 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Seed the application's database.
      *
      * @return void
      */
     public function run()
     {
-        // Model::unguard();
-
-        $this->call([
-            ModulesTableSeeder::class,
-            PrivilegesTableSeeder::class,
-            SettingsTableSeeder::class,
-
-        ]);
-
-        // Model::reguard();
+        // \App\Models\User::factory(10)->create();
     }
 }
