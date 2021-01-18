@@ -98,8 +98,18 @@ export default {
                 .catch((error) => {
                     this.isProcessing = false;
 
-                    if (error.response && [422, 429].includes(error.response.status)) {
-                        this.errors = error.response.data.errors;
+                    const response = error.response;
+
+                    if (response) {
+                        if (422 === response.status) {
+                            this.errors = response.data.errors;
+                        } else {
+                            this.$notification.error({
+                                title: response.status,
+                                message: response.statusText
+                            });
+                        }
+
                     }
                 });
         },
