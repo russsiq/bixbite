@@ -16,7 +16,11 @@ use App\Http\Middleware\TransformApiData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('auth/login', [AuthController::class, 'login'])->name('api.auth.login');
+Route::post('auth/login', [AuthController::class, 'login'])
+    ->middleware([
+        'throttle:api.auth.login',
+    ])
+    ->name('api.auth.login');
 
 /**
  * Данная группа маршрутов имеет общие:

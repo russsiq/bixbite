@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Gate;
-
-// Сторонние зависимости.
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Поставщик аутентификационных / авторизационных служб.
@@ -43,6 +43,10 @@ class AuthServiceProvider extends ServiceProvider
 
         // Регистрация глобальных политик.
         $this->registerGlobalPolicies();
+
+        RateLimiter::for('api.auth.login', function (Request $request) {
+            return Limit::perMinute(5)->by($request->email.$request->ip());
+        });
     }
 
     /**
