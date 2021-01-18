@@ -41,6 +41,9 @@ class AuthController extends ApiController
             and $this->checkHashedPassword($request)
             and $newAccessToken = $this->guardUser()->createToken('api_token')
         ) {
+            // Отзываем все ранее выданные токены.
+            $this->guardUser()->tokens()
+                ->whereNotIn('id', $newAccessToken)->delete();
 
             return $this->sendLoginResponse($newAccessToken);
         }
