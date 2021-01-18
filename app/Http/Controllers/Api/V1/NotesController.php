@@ -53,7 +53,7 @@ class NotesController extends ApiController
             'files',
             'user:users.id,users.name',
         ])
-            ->where('user_id', auth('api')->user()->id)
+            ->where('user_id', auth('sanctum')->user()->id)
             ->get()
             ->append('image');
 
@@ -74,7 +74,7 @@ class NotesController extends ApiController
     public function form()
     {
         $note = new Note();
-        $note->user = auth('api')->user();
+        $note->user = auth('sanctum')->user();
         $note->user_id = $note->user->id;
 
         $resource = new NoteResource($note);

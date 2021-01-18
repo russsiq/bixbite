@@ -323,8 +323,8 @@ if (! function_exists('user')) {
      */
     function user(string $attribute = null, string $guard = null)
     {
-        if (auth('api')->check()) {
-            $guard = 'api';
+        if (auth('sanctum')->check()) {
+            $guard = 'sanctum';
         } elseif (! auth($guard)->check()) {
             return null;
         }

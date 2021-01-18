@@ -77,7 +77,7 @@ class Store extends FileRequest
         }
 
         $this->replace([
-            'user_id' => auth('api')->user()->id ?? $this->user()->id,
+            'user_id' => auth('sanctum')->user()->id ?? $this->user()->id,
             'attachment_id' => $this->input('attachment_id', null),
             'attachment_type' => $this->input('attachment_type', null),
             'disk' => $this->input('disk', 'public'),
@@ -118,7 +118,7 @@ class Store extends FileRequest
             'user_id' => [
                 'required',
                 'integer',
-                'in:'.auth('api')->user()->id ?? $this->user()->id,
+                'in:'.auth('sanctum')->user()->id ?? $this->user()->id,
 
             ],
 

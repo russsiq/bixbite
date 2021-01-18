@@ -100,7 +100,7 @@ class XFieldsController extends ApiController
     public function destroy(XField $x_field)
     {
         // Check if currently authenticated user has owner role.
-        if (auth('api')->user()->hasRole('owner')) {
+        if (auth('sanctum')->user()->hasRole('owner')) {
             $x_field->delete();
 
             return response()->json(null, JsonResponse::HTTP_NO_CONTENT);

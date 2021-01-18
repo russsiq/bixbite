@@ -17,9 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login'])
-    ->middleware([
-        'throttle:api.auth.login',
-    ])
+    ->middleware('throttle:api.auth.login')
     ->name('api.auth.login');
 
 /**
@@ -36,7 +34,10 @@ Route::group([
         'as' => 'api.'
 
     ], function () {
-        Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::post('auth/logout', [AuthController::class, 'logout'])
+            ->middleware('auth:sanctum')
+            ->name('auth.logout');
+
         Route::get('notes/form', [NotesController::class, 'form'])->name('notes.form');
         Route::get('settings/{module}', [SettingsController::class, 'getModule'])->name('settings.getModule');
         Route::put('settings/{module}', [SettingsController::class, 'updateModule'])->name('settings.updateModule');
