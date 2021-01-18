@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,22 @@ class RouteServiceProvider extends ServiceProvider
     // protected $namespace = 'App\\Http\\Controllers';
 
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        parent::register();
+
+        // Configure Fortify to not register its routes.
+        Fortify::ignoreRoutes();
+
+        // Configure Jetstream to not register its routes.
+        Jetstream::ignoreRoutes();
+    }
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -46,6 +64,16 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::namespace('Laravel\Fortify\Http\Controllers')
+                ->domain(config('fortify.domain', null))
+                ->prefix(config('fortify.prefix'))
+                ->group(base_path('routes/fortify.php'));
+
+            Route::namespace('Laravel\Jetstream\Http\Controllers')
+                ->domain(config('jetstream.domain', null))
+                ->prefix(config('jetstream.prefix', config('jetstream.path')))
+                ->group(base_path('routes/jetstream.php'));
         });
     }
 
