@@ -39,11 +39,13 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::register();
 
-        // Configure Fortify to not register its routes.
-        Fortify::ignoreRoutes();
+        $this->app->booting(function () {
+            // Configure Fortify to not register its routes.
+            Fortify::ignoreRoutes();
 
-        // Configure Jetstream to not register its routes.
-        Jetstream::ignoreRoutes();
+            // Configure Jetstream to not register its routes.
+            Jetstream::ignoreRoutes();
+        });
     }
 
     /**
