@@ -1,10 +1,10 @@
 <?php
 
-use Russsiq\Assistant\Services\BeforeInstalled;
+use App\Services\Assistant\BeforeInstalled;
 
 return [
     // Имя маршрута для выхода из Ассистента приложения.
-    // 'exit_route' => 'panel',
+    'exit_route' => 'panel',
 
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
@@ -37,6 +37,7 @@ return [
                 // Удаляем ненужные.
                 'exclude' => [
                     'bootstrap/cache',
+                    'config/settings',
 
                 ],
 
@@ -108,6 +109,7 @@ return [
         ],
 
         'driver' => env('ASSISTANT_ARCHIVIST_DRIVER', 'zip'),
+
     ],
 
     // Настройки Чистильщика.
@@ -224,7 +226,7 @@ return [
 
         // Формат строки имени архива, описывающий версию приложения.
         // Например, имя вложения: `app_name-v1.0.0.zip`.
-        'version_format' => env('ASSISTANT_VERSION_FORMAT', 'app_name-v__VERSION__.zip'),
+        'version_format' => env('ASSISTANT_VERSION_FORMAT', 'bixbite-v__VERSION__.zip'),
 
         // Драйвер, используемый по умолчанию.
         // Поддерживаемые типы: `github`.
@@ -234,7 +236,7 @@ return [
         'drivers' => [
             'github' => [
                 'driver' => 'github',
-                'endpoint' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
+                'endpoint' => 'https://api.github.com/repos/russsiq/bixbite/releases/latest',
                 'version_key' => 'tag_name',
                 'source_key' => 'zipball_url',
                 'access_token' => env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
