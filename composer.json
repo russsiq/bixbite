@@ -33,7 +33,7 @@
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.6",
         "livewire/livewire": "^2.0",
-        "russsiq/laravel-assistant": "^0.2",
+        "russsiq/laravel-assistant": "^0.3",
         "russsiq/laravel-dom-manipulator": "^0.1",
         "russsiq/laravel-env-manager": "^0.3",
         "russsiq/laravel-grecaptcha": "^0.2",
