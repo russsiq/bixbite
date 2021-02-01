@@ -15,4 +15,5 @@ use Tests\TestCase;
  */
 class DeleteArticleResourceTest extends TestCase
 {
+    use RefreshDatabase;
 }

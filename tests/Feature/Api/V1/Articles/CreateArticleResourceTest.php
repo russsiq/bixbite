@@ -15,4 +15,5 @@ use Tests\TestCase;
  */
 class CreateArticleResourceTest extends TestCase
 {
+    use RefreshDatabase;
 }
