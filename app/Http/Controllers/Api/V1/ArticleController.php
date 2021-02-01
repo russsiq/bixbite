@@ -28,7 +28,12 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Article::paginate();
+
+        $collection = new ArticleCollection($articles);
+
+        return $collection->response()
+            ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
