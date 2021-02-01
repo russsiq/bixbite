@@ -18,7 +18,7 @@ class ArticlePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
