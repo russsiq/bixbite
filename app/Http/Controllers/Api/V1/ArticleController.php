@@ -67,7 +67,10 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        $resource = new ArticleResource($article);
+
+        return $resource->response()
+            ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
