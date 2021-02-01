@@ -8,6 +8,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Тестирование удаления ресурса `Article`.
+ *
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceTest.php
+ */
 class DeleteArticleResourceTest extends TestCase
 {
 }
