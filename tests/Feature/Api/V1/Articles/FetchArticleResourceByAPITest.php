@@ -47,4 +47,17 @@ class FetchArticleResourceByAPITest extends TestCase
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_OK);
     }
+
+    public function test_user_can_fetch_specific_article()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $article = Article::factory()->create();
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_OK);
+    }
 }
