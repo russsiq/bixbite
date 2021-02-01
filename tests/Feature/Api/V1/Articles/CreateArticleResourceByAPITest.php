@@ -16,4 +16,13 @@ use Tests\TestCase;
 class CreateArticleResourceByAPITest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_guest_cannot_create_article()
+    {
+        $response = $this->assertGuest()
+            ->postJson(route('api.articles.store'), [
+
+            ])
+            ->assertUnauthorized();
+    }
 }
