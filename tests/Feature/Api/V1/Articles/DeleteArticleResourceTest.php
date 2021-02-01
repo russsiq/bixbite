@@ -11,9 +11,9 @@ use Tests\TestCase;
 /**
  * Тестирование удаления ресурса `Article`.
  *
- * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceTest.php
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest.php
  */
-class DeleteArticleResourceTest extends TestCase
+class DeleteArticleResourceByAPITest extends TestCase
 {
     use RefreshDatabase;
 }

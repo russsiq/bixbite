@@ -11,9 +11,9 @@ use Tests\TestCase;
 /**
  * Тестирование создания ресурса `Article`.
  *
- * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceTest.php
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceByAPITest.php
  */
-class CreateArticleResourceTest extends TestCase
+class CreateArticleResourceByAPITest extends TestCase
 {
     use RefreshDatabase;
 }
