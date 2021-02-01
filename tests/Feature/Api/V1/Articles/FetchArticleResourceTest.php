@@ -18,7 +18,7 @@ class FetchArticleResourceTest extends TestCase
     public function test_guest_cannot_fetch_articles()
     {
         $response = $this->assertGuest()
-            ->getJson('api/v1/articles')
+            ->getJson(route('api.articles.index'))
             ->assertUnauthorized();
     }
 }
