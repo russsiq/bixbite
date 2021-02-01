@@ -65,7 +65,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        //
+        return true;
     }
 
     /**
