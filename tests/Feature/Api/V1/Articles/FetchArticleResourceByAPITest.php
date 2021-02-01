@@ -28,15 +28,6 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_guest_cannot_fetch_specific_article()
-    {
-        $article = Article::factory()->create();
-
-        $response = $this->assertGuest()
-            ->getJson(route('api.articles.show', $article))
-            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
-    }
-
     public function test_user_can_fetch_articles()
     {
         Sanctum::actingAs(
@@ -46,6 +37,15 @@ class FetchArticleResourceByAPITest extends TestCase
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_OK);
+    }
+
+    public function test_guest_cannot_fetch_specific_article()
+    {
+        $article = Article::factory()->create();
+
+        $response = $this->assertGuest()
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     public function test_user_can_fetch_specific_article()
