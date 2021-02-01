@@ -90,7 +90,14 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        $article->update(
+            $request->all()
+        );
+
+        $resource = new ArticleResource($article);
+
+        return $resource->response()
+            ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
