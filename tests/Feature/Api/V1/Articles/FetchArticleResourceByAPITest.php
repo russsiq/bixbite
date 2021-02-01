@@ -8,6 +8,7 @@ use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 /**
@@ -23,7 +24,7 @@ class FetchArticleResourceByAPITest extends TestCase
     {
         $response = $this->assertGuest()
             ->getJson(route('api.articles.index'))
-            ->assertUnauthorized();
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     public function test_user_can_fetch_articles()
@@ -34,6 +35,6 @@ class FetchArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.index'))
-            ->assertOk();
+            ->assertStatus(JsonResponse::HTTP_OK);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -28,7 +29,7 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->deleteJson(route('api.articles.destroy', $article), [
 
             ])
-            ->assertUnauthorized();
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     public function test_user_can_delete_article()
@@ -43,6 +44,6 @@ class DeleteArticleResourceByAPITest extends TestCase
            ->deleteJson(route('api.articles.destroy', $article), [
 
             ])
-            ->assertNoContent();
+            ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
     }
 }

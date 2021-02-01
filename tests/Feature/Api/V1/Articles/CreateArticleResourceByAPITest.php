@@ -7,6 +7,7 @@ namespace Tests\Feature\Api\V1\Articles;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -25,7 +26,7 @@ class CreateArticleResourceByAPITest extends TestCase
             ->postJson(route('api.articles.store'), [
 
             ])
-            ->assertUnauthorized();
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     public function test_user_can_create_article()
@@ -38,6 +39,6 @@ class CreateArticleResourceByAPITest extends TestCase
             ->postJson(route('api.articles.store'), [
 
             ])
-            ->assertCreated();
+            ->assertStatus(JsonResponse::HTTP_CREATED);
     }
 }
