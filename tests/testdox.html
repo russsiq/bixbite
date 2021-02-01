@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Test Documentation</title>
+        <style>
+            body {
+                text-rendering: optimizeLegibility;
+                font-variant-ligatures: common-ligatures;
+                font-kerning: normal;
+                margin-left: 2em;
+            }
+
+            body > ul > li {
+                font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
+                font-size: 2em;
+            }
+
+            h2 {
+                font-family: Tahoma, Helvetica, Arial;
+                font-size: 3em;
+            }
+
+            ul {
+                list-style: none;
+                margin-bottom: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 id="Tests\Unit\ExampleTest">Example (Tests\Unit\Example)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Basic test</li>
+        </ul>
+        <h2 id="Tests\Feature\ApiTokenPermissionsTest">Api Token Permissions (Tests\Feature\ApiTokenPermissions)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Api token permissions can be updated</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\Articles\FetchArticleResourceTest">Fetch Article Resource (Tests\Feature\Api\V1\Articles\FetchArticleResource)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Guest cannot fetch articles</li>
+        </ul>
+        <h2 id="Tests\Feature\AuthenticationTest">Authentication (Tests\Feature\Authentication)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Login screen can be rendered</li>
+            <li style="color: #555753;">✓ Users can authenticate using the login screen</li>
+            <li style="color: #555753;">✓ Users can not authenticate with invalid password</li>
+        </ul>
+        <h2 id="Tests\Feature\BrowserSessionsTest">Browser Sessions (Tests\Feature\BrowserSessions)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Other browser sessions can be logged out</li>
+        </ul>
+        <h2 id="Tests\Feature\CreateApiTokenTest">Create Api Token (Tests\Feature\CreateApiToken)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Api tokens can be created</li>
+        </ul>
+        <h2 id="Tests\Feature\CreateTeamTest">Create Team (Tests\Feature\CreateTeam)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Teams can be created</li>
+        </ul>
+        <h2 id="Tests\Feature\DeleteAccountTest">Delete Account (Tests\Feature\DeleteAccount)</h2>
+        <ul>
+            <li style="color: #555753;">✓ User accounts can be deleted</li>
+            <li style="color: #555753;">✓ Correct password must be provided before account can be deleted</li>
+        </ul>
+        <h2 id="Tests\Feature\DeleteApiTokenTest">Delete Api Token (Tests\Feature\DeleteApiToken)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Api tokens can be deleted</li>
+        </ul>
+        <h2 id="Tests\Feature\DeleteTeamTest">Delete Team (Tests\Feature\DeleteTeam)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Teams can be deleted</li>
+            <li style="color: #555753;">✓ Personal teams cant be deleted</li>
+        </ul>
+        <h2 id="Tests\Feature\EmailVerificationTest">Email Verification (Tests\Feature\EmailVerification)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Email verification screen can be rendered</li>
+            <li style="color: #555753;">✓ Email can be verified</li>
+            <li style="color: #555753;">✓ Email can not verified with invalid hash</li>
+        </ul>
+        <h2 id="Tests\Feature\ExampleTest">Example (Tests\Feature\Example)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Basic test</li>
+        </ul>
+        <h2 id="Tests\Feature\InviteTeamMemberTest">Invite Team Member (Tests\Feature\InviteTeamMember)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Team members can be invited to team</li>
+            <li style="color: #555753;">✓ Team member invitations can be cancelled</li>
+        </ul>
+        <h2 id="Tests\Feature\LeaveTeamTest">Leave Team (Tests\Feature\LeaveTeam)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Users can leave teams</li>
+            <li style="color: #555753;">✓ Team owners cant leave their own team</li>
+        </ul>
+        <h2 id="Tests\Feature\PasswordConfirmationTest">Password Confirmation (Tests\Feature\PasswordConfirmation)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Confirm password screen can be rendered</li>
+            <li style="color: #555753;">✓ Password can be confirmed</li>
+            <li style="color: #555753;">✓ Password is not confirmed with invalid password</li>
+        </ul>
+        <h2 id="Tests\Feature\PasswordResetTest">Password Reset (Tests\Feature\PasswordReset)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Reset password link screen can be rendered</li>
+            <li style="color: #555753;">✓ Reset password link can be requested</li>
+            <li style="color: #555753;">✓ Reset password screen can be rendered</li>
+            <li style="color: #555753;">✓ Password can be reset with valid token</li>
+        </ul>
+        <h2 id="Tests\Feature\ProfileInformationTest">Profile Information (Tests\Feature\ProfileInformation)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Current profile information is available</li>
+            <li style="color: #555753;">✓ Profile information can be updated</li>
+        </ul>
+        <h2 id="Tests\Feature\RegistrationTest">Registration (Tests\Feature\Registration)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Registration screen can be rendered</li>
+            <li style="color: #555753;">✓ New users can register</li>
+        </ul>
+        <h2 id="Tests\Feature\RemoveTeamMemberTest">Remove Team Member (Tests\Feature\RemoveTeamMember)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Team members can be removed from teams</li>
+            <li style="color: #555753;">✓ Only team owner can remove team members</li>
+        </ul>
+        <h2 id="Tests\Feature\TwoFactorAuthenticationSettingsTest">Two Factor Authentication Settings (Tests\Feature\TwoFactorAuthenticationSettings)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Two factor authentication can be enabled</li>
+            <li style="color: #555753;">✓ Recovery codes can be regenerated</li>
+            <li style="color: #555753;">✓ Two factor authentication can be disabled</li>
+        </ul>
+        <h2 id="Tests\Feature\UpdatePasswordTest">Update Password (Tests\Feature\UpdatePassword)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Password can be updated</li>
+            <li style="color: #555753;">✓ Current password must be correct</li>
+            <li style="color: #555753;">✓ New passwords must match</li>
+        </ul>
+        <h2 id="Tests\Feature\UpdateTeamMemberRoleTest">Update Team Member Role (Tests\Feature\UpdateTeamMemberRole)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Team member roles can be updated</li>
+            <li style="color: #555753;">✓ Only team owner can update team member roles</li>
+        </ul>
+        <h2 id="Tests\Feature\UpdateTeamNameTest">Update Team Name (Tests\Feature\UpdateTeamName)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Team names can be updated</li>
+        </ul>
+    </body>
+</html>

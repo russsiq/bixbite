@@ -13,4 +13,12 @@ use Tests\TestCase;
  */
 class FetchArticleResourceTest extends TestCase
 {
+    public function test_guest_cannot_fetch_articles()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->assertGuest()
+            ->getJson('api/v1/articles')
+            ->assertForbidden();
+    }
 }
