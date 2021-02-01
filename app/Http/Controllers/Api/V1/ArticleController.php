@@ -49,7 +49,14 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article = Article::create(
+            $request->all()
+        );
+
+        $resource = new ArticleResource($article);
+
+        return $resource->response()
+            ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
