@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Api\V1\Articles;
 
+use App\Models\Article;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,6 +25,15 @@ class FetchArticleResourceByAPITest extends TestCase
     {
         $response = $this->assertGuest()
             ->getJson(route('api.articles.index'))
+            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_guest_cannot_fetch_specific_article()
+    {
+        $article = Article::factory()->create();
+
+        $response = $this->assertGuest()
+            ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
