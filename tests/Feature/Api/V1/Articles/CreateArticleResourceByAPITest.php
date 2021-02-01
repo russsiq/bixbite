@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\V1\Articles;
 
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 /**
