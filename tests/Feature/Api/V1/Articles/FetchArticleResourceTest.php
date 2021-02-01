@@ -6,6 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Тестирование получения ресурса `Article`.
+ *
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\FetchArticleResourceTest.php
+ */
 class FetchArticleResourceTest extends TestCase
 {
     /**
