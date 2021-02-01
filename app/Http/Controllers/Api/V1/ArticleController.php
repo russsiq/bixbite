@@ -108,6 +108,9 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        return response()
+            ->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }
