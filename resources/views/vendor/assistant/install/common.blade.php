@@ -13,6 +13,8 @@
 	    </div>
     @endif
 
+    <input type="hidden" name="SANCTUM_STATEFUL_DOMAINS" value="{{ request()->getHttpHost() }}" />
+
     <fieldset>
         <legend>@lang('assistant::install.forms.legends.enviroments')</legend>
 		<div class="form-group row @error('APP_ENV') is-invalid @enderror">
