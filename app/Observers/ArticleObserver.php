@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Article;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ArticleObserver
 {
@@ -27,6 +27,19 @@ class ArticleObserver
     public function updated(Article $article)
     {
         //
+    }
+
+    /**
+     * Handle the Article "saving" event.
+     *
+     * @param  \App\Models\Article  $article
+     * @return void
+     */
+    public function saving(Article $article)
+    {
+        $article->slug = Str::slug(
+            empty($article->slug) ? $article->title : $article->slug
+        );
     }
 
     /**
