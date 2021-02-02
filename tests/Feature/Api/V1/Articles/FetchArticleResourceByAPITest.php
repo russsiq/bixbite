@@ -60,4 +60,31 @@ class FetchArticleResourceByAPITest extends TestCase
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_OK);
     }
+
+    public function test_separately_received_article_contains_required_fields()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $article = Article::factory()->create();
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.show', $article))
+            ->assertStatus(JsonResponse::HTTP_OK)
+            ->assertJsonStructure([
+                'links' => [
+                    'self',
+                ],
+                'data' => [
+                    'type',
+                    'id',
+                    'attributes' => [
+                        'created_at',
+                        'updated_at',
+                    ],
+                    'relationships',
+                ],
+            ]);
+    }
 }
