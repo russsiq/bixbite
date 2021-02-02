@@ -31,6 +31,8 @@ class StoreArticleRequest extends FormRequest
             'on_mainpage' => ['nullable', 'boolean'],
             'is_favorite' => ['nullable', 'boolean'],
             'is_pinned' => ['nullable', 'boolean'],
+
+            'views' => ['sometimes', 'integer'],
         ];
     }
 }
