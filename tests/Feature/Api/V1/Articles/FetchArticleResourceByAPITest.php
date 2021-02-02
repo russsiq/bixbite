@@ -118,4 +118,17 @@ class FetchArticleResourceByAPITest extends TestCase
                 ],
             ]);
     }
+
+    public function test_not_found_when_attempt_to_fetch_single_non_existent_resource()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $this->assertDatabaseCount('articles', 0);
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.show', 'not.found'))
+            ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    }
 }

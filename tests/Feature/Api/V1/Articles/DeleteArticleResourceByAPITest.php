@@ -46,4 +46,17 @@ class DeleteArticleResourceByAPITest extends TestCase
             ])
             ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
     }
+
+    public function test_not_found_when_attempt_to_delete_non_existent_resource()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $this->assertDatabaseCount('articles', 0);
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.destroy', 'not.found'))
+            ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    }
 }

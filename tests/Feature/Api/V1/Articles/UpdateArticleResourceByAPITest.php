@@ -46,4 +46,17 @@ class UpdateArticleResourceByAPITest extends TestCase
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED);
     }
+
+    public function test_not_found_when_attempt_to_update_non_existent_resource()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $this->assertDatabaseCount('articles', 0);
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.update', 'not.found'))
+            ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    }
 }
