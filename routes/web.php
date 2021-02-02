@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// @NB: Построение маршрутов не должно привязываться к атрибуту `slug` Article.
+
 Route::get('/', function () {
     return view('welcome');
 });
