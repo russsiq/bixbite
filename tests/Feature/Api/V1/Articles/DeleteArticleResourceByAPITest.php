@@ -23,7 +23,9 @@ class DeleteArticleResourceByAPITest extends TestCase
 
     public function test_guest_cannot_delete_article()
     {
-        $article = Article::factory()->create();
+        $article = Article::factory()
+            ->for(User::factory()->create())
+            ->create();
 
         $response = $this->assertGuest()
             ->deleteJson(route('api.articles.destroy', $article), [
@@ -38,7 +40,9 @@ class DeleteArticleResourceByAPITest extends TestCase
             $user = User::factory()->create()
         );
 
-        $article = Article::factory()->create();
+        $article = Article::factory()
+            ->for($user)
+            ->create();
 
         $response = $this->assertAuthenticated()
            ->deleteJson(route('api.articles.destroy', $article), [

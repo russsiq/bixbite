@@ -37,7 +37,7 @@ class CreateArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
             ->postJson(route('api.articles.store'), [
-
+                'title' => 'New article title',
             ])
             ->assertStatus(JsonResponse::HTTP_CREATED);
     }

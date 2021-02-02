@@ -46,6 +46,7 @@ class FetchArticleResourceByAPITest extends TestCase
         );
 
         $articles = Article::factory($countArticles = 5)
+            ->for($user)
             ->create();
 
         $response = $this->assertAuthenticated()
@@ -84,7 +85,9 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_guest_cannot_fetch_specific_article()
     {
-        $article = Article::factory()->create();
+        $article = Article::factory()
+            ->for(User::factory()->create())
+            ->create();
 
         $response = $this->assertGuest()
             ->getJson(route('api.articles.show', $article))
@@ -97,7 +100,9 @@ class FetchArticleResourceByAPITest extends TestCase
             $user = User::factory()->create()
         );
 
-        $article = Article::factory()->create();
+        $article = Article::factory()
+            ->for($user)
+            ->create();
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.show', $article))
@@ -110,7 +115,9 @@ class FetchArticleResourceByAPITest extends TestCase
             $user = User::factory()->create()
         );
 
-        $article = Article::factory()->create();
+        $article = Article::factory()
+            ->for($user)
+            ->create();
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.show', $article))
