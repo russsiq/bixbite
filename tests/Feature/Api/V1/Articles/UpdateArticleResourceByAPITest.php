@@ -43,7 +43,7 @@ class UpdateArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
            ->putJson(route('api.articles.update', $article), [
-
+                'title' => 'New title for old article',
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED);
     }

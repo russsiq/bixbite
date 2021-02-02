@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Api\V1\Article;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateArticleRequest extends FormRequest
+class UpdateArticleRequest extends StoreArticleRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,8 +14,8 @@ class UpdateArticleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
-        ];
+        return array_merge(parent::rules(), [
+            'slug' => ['sometimes', 'string', 'max:255', 'alpha_dash', Rule::unique('articles')->ignore($this->id),],
+        ]);
     }
 }
