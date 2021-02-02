@@ -56,9 +56,11 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        $article = Article::create(
-            $request->validated()
-        );
+        $article = $request->user()
+            ->articles()
+            ->create(
+                $request->validated()
+            );
 
         $resource = new ArticleResource($article);
 
