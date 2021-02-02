@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\AbstractPaginator;
 
 class ArticleCollection extends ResourceCollection
 {
@@ -14,6 +15,21 @@ class ArticleCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+
+        return [
+            'data' => $data,
+
+            'links' => [
+                'self' => $this->when(
+                    $this->resource instanceof AbstractPaginator,
+                    function () {
+                        return route('api.articles.index', [
+                            'page' => $this->resource->currentPage(),
+                        ]);
+                    }
+                ),
+            ],
+        ];
     }
 }

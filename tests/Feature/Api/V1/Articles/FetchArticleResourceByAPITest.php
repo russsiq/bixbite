@@ -39,6 +39,37 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_OK);
     }
 
+    public function test_each_received_article_contains_required_fields()
+    {
+        Sanctum::actingAs(
+            $user = User::factory()->create()
+        );
+
+        $articles = Article::factory($countArticles = 5)
+            ->create();
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.index'))
+            ->assertStatus(JsonResponse::HTTP_OK)
+            ->assertJsonCount($countArticles, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'type',
+                        'id',
+                        'attributes' => [
+                            'created_at',
+                            'updated_at',
+                        ],
+                        'relationships',
+                    ],
+                ],
+                'links' => [
+                    'self',
+                ],
+            ]);
+    }
+
     public function test_guest_cannot_fetch_specific_article()
     {
         $article = Article::factory()->create();
