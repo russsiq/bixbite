@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 /**
@@ -31,9 +30,7 @@ class CreateArticleResourceByAPITest extends TestCase
 
     public function test_user_can_create_article()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
             ->postJson(route('api.articles.store'), [

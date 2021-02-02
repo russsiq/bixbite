@@ -6,7 +6,6 @@ namespace Tests\Feature\Api\V1\Articles;
 
 use App\Models\Article;
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
@@ -30,9 +29,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_user_can_fetch_articles()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.index'))
@@ -41,9 +38,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_each_received_article_contains_required_fields()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $articles = Article::factory($countArticles = 5)
             ->for($user)
@@ -96,9 +91,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_user_can_fetch_specific_article()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $article = Article::factory()
             ->for($user)
@@ -111,9 +104,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_separately_received_article_contains_required_fields()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $article = Article::factory()
             ->for($user)
@@ -152,9 +143,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_not_found_when_attempt_to_fetch_single_non_existent_resource()
     {
-        Sanctum::actingAs(
-            $user = User::factory()->create()
-        );
+        $user = $this->loginSPA();
 
         $this->assertDatabaseCount('articles', 0);
 
