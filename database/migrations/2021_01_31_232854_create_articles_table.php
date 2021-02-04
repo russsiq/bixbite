@@ -19,7 +19,7 @@ class CreateArticlesTable extends Migration
             // Отношения и индексные поля.
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->onDelete('cascade');
+                ->cascadeOnDelete();
 
             // Основное содержимое.
             $table->string('title');
@@ -34,12 +34,12 @@ class CreateArticlesTable extends Migration
                 ->default('all');
 
             // Поля с дополнительной информацией.
-            $table->boolean('on_mainpage')->default(1);
-            $table->boolean('is_favorite')->default(0);
-            $table->boolean('is_pinned')->default(0);
+            $table->boolean('on_mainpage')->default(true);
+            $table->boolean('is_favorite')->default(false);
+            $table->boolean('is_pinned')->default(false);
 
             // Счетчики.
-            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('views')->default(false);
 
             // Временные метки.
             $table->timestamps();
