@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
 use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
 use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
 use App\Http\Resources\ArticleCollection;
@@ -28,9 +29,11 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(IndexArticleRequest $request)
     {
-        $articles = Article::paginate();
+        $articles = Article::with([
+            'user', 'team',
+        ])->paginate();
 
         $collection = new ArticleCollection($articles);
 
