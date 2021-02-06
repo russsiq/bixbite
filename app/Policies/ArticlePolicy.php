@@ -65,7 +65,9 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        return true;
+        return $user->belongsToTeam($article->team) &&
+            $user->hasTeamPermission($article->team, 'article:delete') &&
+            $user->tokenCan('article:delete');
     }
 
     /**
