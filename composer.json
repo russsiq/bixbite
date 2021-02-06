@@ -32,7 +32,7 @@
         "laravel/jetstream": "^2.1",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.6",
-        "livewire/livewire": "^2.0",
+        "livewire/livewire": "^2.3",
         "russsiq/laravel-assistant": "^0.3",
         "russsiq/laravel-dom-manipulator": "^0.1",
         "russsiq/laravel-env-manager": "^0.3",
