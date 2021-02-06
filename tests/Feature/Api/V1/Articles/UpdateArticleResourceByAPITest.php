@@ -22,8 +22,11 @@ class UpdateArticleResourceByAPITest extends TestCase
 
     public function test_guest_cannot_update_article()
     {
+        $user = $this->createUser();
+
         $article = Article::factory()
-            ->for(User::factory()->create())
+            ->for($user)
+            ->for($user->currentTeam)
             ->create();
 
         $response = $this->assertGuest()
@@ -39,6 +42,7 @@ class UpdateArticleResourceByAPITest extends TestCase
 
         $article = Article::factory()
             ->for($user)
+            ->for($user->currentTeam)
             ->create();
 
         $response = $this->assertAuthenticated()
@@ -55,6 +59,7 @@ class UpdateArticleResourceByAPITest extends TestCase
                     'id',
                     'attributes' => [
                         'user_id',
+                        'team_id',
                         'title',
                         'slug',
                         'teaser',

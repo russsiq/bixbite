@@ -56,13 +56,20 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        $article = $request->user()
-            ->articles()
-            ->create(
-                $request->validated()
-            );
+        /** @var \App\Models\User $user */
+        $user = $request->user();
 
-        $resource = new ArticleResource($article);
+        /** @var \App\Models\Article $articleInstance */
+        $articleInstance = $user->articles()
+            ->make($request->validated());
+
+        /** @var \App\Models\Article $article */
+        $article = $user->currentTeam->articles()
+            ->save($articleInstance);
+
+        $resource = new ArticleResource(
+            $article->refresh()
+        );
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
@@ -106,7 +113,9 @@ class ArticleController extends Controller
             $request->validated()
         );
 
-        $resource = new ArticleResource($article);
+        $resource = new ArticleResource(
+            $article->refresh()
+        );
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);

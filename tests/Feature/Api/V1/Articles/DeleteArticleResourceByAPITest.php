@@ -22,8 +22,11 @@ class DeleteArticleResourceByAPITest extends TestCase
 
     public function test_guest_cannot_delete_article()
     {
+        $user = $this->createUser();
+
         $article = Article::factory()
-            ->for(User::factory()->create())
+            ->for($user)
+            ->for($user->currentTeam)
             ->create();
 
         $response = $this->assertGuest()
@@ -39,6 +42,7 @@ class DeleteArticleResourceByAPITest extends TestCase
 
         $article = Article::factory()
             ->for($user)
+            ->for($user->currentTeam)
             ->create();
 
         $response = $this->assertAuthenticated()

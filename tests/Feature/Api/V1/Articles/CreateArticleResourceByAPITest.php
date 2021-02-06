@@ -46,6 +46,7 @@ class CreateArticleResourceByAPITest extends TestCase
                     'id',
                     'attributes' => [
                         'user_id',
+                        'team_id',
                         'title',
                         'slug',
                         'teaser',

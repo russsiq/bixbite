@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +16,7 @@ class Article extends Model
      * @var string[]
      */
     protected $fillable = [
-        // 'user_id',
+        // 'user_id', 'team_id',
         'title', 'slug', 'teaser', 'content',
         'meta_description', 'meta_keywords', 'meta_robots',
         'on_mainpage', 'is_favorite', 'is_pinned',
@@ -30,6 +29,7 @@ class Article extends Model
      */
     protected $casts = [
         'user_id' => 'integer',
+        'team_id' => 'integer',
 
         'title' => 'string',
         'slug' => 'string',
@@ -50,5 +50,10 @@ class Article extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'team_id', 'id', 'team');
     }
 }

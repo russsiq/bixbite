@@ -20,6 +20,9 @@ class CreateArticlesTable extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
+            $table->foreignId('team_id')
+                ->constrained('teams')
+                ->cascadeOnDelete();
 
             // Основное содержимое.
             $table->string('title');
