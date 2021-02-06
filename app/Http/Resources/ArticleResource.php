@@ -20,9 +20,14 @@ class ArticleResource extends JsonResource
         return [
             'type' => 'articles',
             'id' => $attributes['id'],
-            'attributes' => Arr::except($attributes, 'id'),
+            'attributes' => Arr::except($attributes, [
+                'id', 'user',
+            ]),
             'relationships' => [
-
+                'user' => $this->whenLoaded('user', function () use ($request) {
+                    return UserResource::make($this->user)
+                        ->toArray($request);
+                }),
             ],
         ];
     }
