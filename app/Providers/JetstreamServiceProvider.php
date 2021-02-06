@@ -9,6 +9,7 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -49,19 +50,29 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     protected function configurePermissions()
     {
-        Jetstream::defaultApiTokenPermissions(['read']);
+        Jetstream::defaultApiTokenPermissions([
+            'read',
+            'article:read',
+        ]);
 
         Jetstream::role('admin', __('Administrator'), [
             'create',
             'read',
             'update',
             'delete',
+            'article:create',
+            'article:read',
+            'article:update',
+            'article:delete',
         ])->description(__('Administrator users can perform any action.'));
 
         Jetstream::role('editor', __('Editor'), [
             'read',
             'create',
             'update',
+            'article:create',
+            'article:read',
+            'article:update',
         ])->description(__('Editor users have the ability to read, create, and update.'));
     }
 }
