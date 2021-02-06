@@ -45,7 +45,32 @@ class UpdateArticleResourceByAPITest extends TestCase
            ->putJson(route('api.articles.update', $article), [
                 'title' => 'New title for old article',
             ])
-            ->assertStatus(JsonResponse::HTTP_ACCEPTED);
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonStructure([
+                'links' => [
+                    'self',
+                ],
+                'data' => [
+                    'type',
+                    'id',
+                    'attributes' => [
+                        'user_id',
+                        'title',
+                        'slug',
+                        'teaser',
+                        'content',
+                        'meta_description',
+                        'meta_keywords',
+                        'meta_robots',
+                        'on_mainpage',
+                        'is_favorite',
+                        'is_pinned',
+                        'views',
+                        'created_at','updated_at',
+                    ],
+                    'relationships',
+                ],
+            ]);
     }
 
     public function test_not_found_when_attempt_to_update_non_existent_resource()
