@@ -1,102 +1,62 @@
 {
-    "name": "russsiq/bixbite",
-    "description": "Система для оперативного развертывания простейших сайтов на shared хостингах на базе Laravel.",
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
     "keywords": [
-        "bixbite",
-        "cms",
+        "framework",
         "laravel"
     ],
-    "homepage": "https://github.com/russsiq/bixbite",
-    "type": "project",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Рустам Гимранов",
-            "email": "rustam_gimranov@mail.ru",
-            "homepage": "https://github.com/russsiq",
-            "role": "Developer"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/russsiq/bixbite"
-        }
-    ],
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^8.22",
-        "laravel/tinker": "^2.5",
-        "russsiq/laravel-assistant": "^0.2",
-        "russsiq/laravel-dom-manipulator": "^0.1",
-        "russsiq/laravel-env-manager": "^0.3",
-        "russsiq/laravel-grecaptcha": "^0.2",
-        "russsiq/laravel-zipper": "^0.2"
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.12",
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.13",
-        "laravel/ui": "^3.2",
-        "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^5.2",
-        "phpunit/phpunit": "^9.5"
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.3.3"
     },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "app/Support/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
             "dont-discover": []
         }
     },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
-        "test": [
-            "@php artisan config:clear",
-            "vendor/bin/phpunit"
-        ],
-        "test-win": [
-            "@php artisan config:clear",
-            "vendor\\bin\\phpunit"
-        ],
-        "testdox": [
-            "@php artisan config:clear",
-            "vendor\\bin\\phpunit --testdox-html tests/testdox.html"
-        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
         ]
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "prestissimo": {
-            "maxConnections": 10,
-            "minConnections": 3,
-            "pipeline": true
-        },
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

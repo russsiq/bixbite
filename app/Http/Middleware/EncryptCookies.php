@@ -7,12 +7,11 @@ use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 class EncryptCookies extends Middleware
 {
     /**
-     * Имена файлов Cookies, которые не должны быть зашифрованы.
+     * The names of the cookies that should not be encrypted.
      *
      * @var array
      */
     protected $except = [
-        \App\View\Components\ConsentCookie::ACCEPTED_NAME,
-
+        //
     ];
 }

@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'ru'),
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'faker_locale' => 'ru_RU', // По умолчанию было: 'en_US'
+    'faker_locale' => 'en_US',
 
     /*
     |--------------------------------------------------------------------------
@@ -175,9 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        // BBCMS Service Providers
-        App\Providers\BixbiteServiceProvider::class,
-
     ],
 
     /*
@@ -229,10 +226,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
-        // BBCMS Aliases
-        'CacheFile' => App\Support\Facades\CacheFile::class,
-        'PageInfo' => App\Support\Facades\PageInfo::class,
 
     ],
 

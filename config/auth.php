@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 return [
 
     /*
@@ -18,7 +16,6 @@ return [
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
-
     ],
 
     /*
@@ -42,16 +39,13 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-
         ],
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            // 'hash' => true,
-
+            'hash' => false,
         ],
-
     ],
 
     /*
@@ -74,8 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => User::class,
-
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
@@ -105,9 +98,7 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
-
         ],
-
     ],
 
     /*

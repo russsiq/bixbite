@@ -1,24 +1,13 @@
-# remove files and folders
-/resources/themes/bixbite
-/uploads
 /node_modules
 /public/hot
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
-/.vagrant
 .env
 .env.backup
 .phpunit.result.cache
-composer.lock
-laravel-apidoc-generator.md
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
 npm-debug.log
-package-lock.json
 yarn-error.log
-
-!/vendor/.htaccess
-!/storage/app/uploads/avatars/noavatar.png
-resources/themes/default/public/mix-manifest.json
-resources/skins/default/public/mix-manifest.json
