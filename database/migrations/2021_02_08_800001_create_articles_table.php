@@ -19,7 +19,7 @@ class CreateArticlesTable extends Migration
             // Отношения и индексные поля.
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->cascadeOnDelete();
+                ->onDelete('cascade');
 
             // Основное содержимое.
             $table->string('title');
