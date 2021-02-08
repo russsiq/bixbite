@@ -20,7 +20,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->post(route('login'), [
             'email' => $user->email,
@@ -34,7 +34,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $this->post(route('login'), [
             'email' => $user->email,

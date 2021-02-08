@@ -1,12 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Jetstream\Http\Livewire\UpdatePasswordForm;
-use Livewire\Livewire;
 use Tests\TestCase;
 
 class UpdatePasswordTest extends TestCase
@@ -15,7 +13,7 @@ class UpdatePasswordTest extends TestCase
 
     public function test_password_can_be_updated()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->actingAs($user)
             ->put(route('user-password.update', [
@@ -29,7 +27,7 @@ class UpdatePasswordTest extends TestCase
 
     public function test_current_password_must_be_correct()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->actingAs($user)
             ->put(route('user-password.update', [
@@ -45,7 +43,7 @@ class UpdatePasswordTest extends TestCase
 
     public function test_new_passwords_must_match()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->actingAs($user)
             ->put(route('user-password.update', [

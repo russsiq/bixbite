@@ -12,7 +12,7 @@ class ProfileInformationTest extends TestCase
 
     public function test_current_profile_information_is_available()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->actingAs($user)
             ->get(route('profile.show'));
@@ -24,7 +24,7 @@ class ProfileInformationTest extends TestCase
 
     public function test_profile_information_can_be_updated()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         $response = $this->actingAs($user)
             ->put(route('user-profile-information.update', [
