@@ -21,7 +21,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->booting(function () {
+            // Configure Fortify to not register its routes.
+            Fortify::ignoreRoutes();
+        });
     }
 
     /**
