@@ -29,5 +29,12 @@ class AuthServiceProvider extends ServiceProvider
         Sanctum::usePersonalAccessTokenModel(
             \App\Models\Passport\PersonalAccessToken::class
         );
+
+        // Для супер-админа предоставляем все полномочия.
+        Gate::before(function (\App\Models\User $user, string $ability) {
+            if ($user->isSuperAdmin()) {
+                return true;
+            }
+        });
     }
 }
