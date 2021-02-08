@@ -46,6 +46,11 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::namespace('Laravel\Fortify\Http\Controllers')
+                ->domain(config('fortify.domain', null))
+                ->prefix(config('fortify.prefix'))
+                ->group(base_path('routes/fortify.php'));
         });
     }
 
