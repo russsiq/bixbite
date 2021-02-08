@@ -22,7 +22,7 @@
                     @csrf
 
                     <div class="card-body">
-                        @if (config('fortify.username'))
+                        @if ('name' === config('fortify.username'))
                             <div class="form-group mb-3">
                                 <label for="name" class="form-label">@lang('Name')</label>
                                 <input id="name" type="text" name="name" value="{{ old('name') }}" class="form-control"
