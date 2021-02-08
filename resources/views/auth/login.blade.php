@@ -22,14 +22,25 @@
                     @csrf
 
                     <div class="card-body">
-                        <div class="form-group mb-3">
-                            <label for="email" class="form-label">@lang('Email')</label>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control"
-                                autofocus required>
-                            @error('email')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @if (config('fortify.username'))
+                            <div class="form-group mb-3">
+                                <label for="name" class="form-label">@lang('Name')</label>
+                                <input id="name" type="text" name="name" value="{{ old('name') }}" class="form-control"
+                                    autofocus required>
+                                @error('name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @else
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label">@lang('Email')</label>
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control"
+                                    autofocus required>
+                                @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @endif
 
                         <div class="form-group mb-3">
                             <label for="password" class="form-label d-block">
