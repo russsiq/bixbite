@@ -8,18 +8,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Articles</a>
+                    <a href="#" class="nav-link active">Articles</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav mb-2 mb-lg-0">
+                @auth
                 <li class="nav-item dropdown">
                     <a id="navbar-profile-dropdown" href="#" class="nav-link dropdown-toggle" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        @lang('Profile')
+                        {{ Auth::user()->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-profile-dropdown">
-                        @auth
                         <li><a href="{{ route('panel') }}" class="dropdown-item">@lang('Control Panel')</a></li>
                         <!-- Account Management -->
                         {{-- <li><h6 class="dropdown-header">@lang('Manage Account')</h6></li> --}}
@@ -30,12 +30,16 @@
                             @csrf
                             <li><button type="submit" class="dropdown-item">@lang('Logout')</button></li>
                         </form>
-                        @else
-                        <li><a href="{{ route('login') }}" class="dropdown-item">@lang('Login')</a></li>
-                        <li><a href="{{ route('register') }}" class="dropdown-item">@lang('Register')</a></li>
-                        @endauth
                     </ul>
                 </li>
+                @else
+                <li class="nav-item me-3">
+                    <a href="{{ route('login') }}" class="nav-link">@lang('Login')</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('register') }}" class="btn btn-outline-primary">@lang('Register')</a>
+                </li>
+                @endauth
             </ul>
         </div>
     </div>

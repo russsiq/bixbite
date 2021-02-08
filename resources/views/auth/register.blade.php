@@ -3,13 +3,14 @@
 @section('title', __('Register'))
 
 @section('header')
-<h1>@lang('Register')</h1>
+<h1 class="h3 text-center">@lang('Register')</h1>
 @endsection
 
 @section('mainblock')
 <section class="container mb-5">
-    <div class="row">
-        <div class="col col-md-5 col-xxxl-3 ml-auto">
+    <div class="row justify-content-center">
+        <div class="col col-md-5 col-xxxl-3">
+
             <div class="card shadow">
                 <form action="{{ route('register') }}" method="post">
                     @csrf
@@ -69,7 +70,7 @@
                     </div>
 
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="{{ route('login') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('login') }}" class="btn btn-link">
                             @lang('Already registered?')
                         </a>
                         <button type="submit" class="btn btn-outline-success ml-auto">
