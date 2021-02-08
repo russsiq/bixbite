@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -30,7 +31,7 @@ use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
 
 Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])->get('/panel', function () {
