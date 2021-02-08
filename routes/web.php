@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/panel', function () {
+Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])->get('/panel', function () {
     return view('panel');
 })->name('panel');
