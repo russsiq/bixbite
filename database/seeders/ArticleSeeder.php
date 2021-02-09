@@ -28,7 +28,7 @@ class ArticleSeeder extends Seeder
         $users = $this->getUsersCollection()
             ->toArray();
 
-        $article = Article::factory()
+        $articles = Article::factory()
             ->count($countToSeed ?: self::COUNT_TO_SEED)
             ->state(new Sequence(
                 ...$users
