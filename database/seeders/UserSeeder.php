@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -27,15 +28,24 @@ class UserSeeder extends Seeder
             ->create();
     }
 
+    public static function getExistingCollection(array $attributes = ['*']): Collection
+    {
+        self::ensureMinimumSeeding();
+
+        return User::select($attributes)
+            ->take(self::COUNT_TO_SEED)
+            ->get();
+    }
+
     public static function ensureMinimumSeeding()
     {
-        $usersCount = User::count();
+        $count = User::count();
 
-        $missingUsersCount = static::COUNT_TO_SEED - $usersCount;
+        $missingCount = static::COUNT_TO_SEED - $count;
 
-        if ($missingUsersCount > 0) {
+        if ($missingCount > 0) {
             (new static)->callWith(static::class, [
-                'countToSeed' => $missingUsersCount
+                'countToSeed' => $missingCount
             ]);
         }
     }

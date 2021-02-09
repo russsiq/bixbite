@@ -30,17 +30,18 @@ class ArticleFactory extends Factory
             $content .= '<p>'.$this->faker->paragraph.'</p>';
         }
 
-        $date = now()->subDays(mt_rand(1, 720))
-            ->addSeconds(mt_rand(1, 86400))
-            ->format('Y-m-d H:i:s');
-
         return [
             'title' => $title,
             'slug' => Str::slug($title),
             'teaser' => $this->faker->text(mt_rand(120, 255)),
             'content' => $content,
-            'created_at' => $date,
-            'updated_at' => $date,
+
+            'meta_description' => $this->faker->text(mt_rand(120, 255)),
+            'meta_keywords' => implode(',', $this->faker->words(mt_rand(3, 8))),
+            'meta_robots' => $this->faker->randomElement(['all', 'noindex', 'nofollow', 'none']),
+
+            'created_at' => $this->faker->dateTimeBetween(),
+            'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
 }

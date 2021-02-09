@@ -28,7 +28,7 @@ class ArticleSeeder extends Seeder
         $users = $this->getUsersCollection()
             ->toArray();
 
-        $articles = Article::factory()
+        Article::factory()
             ->count($countToSeed ?: self::COUNT_TO_SEED)
             ->state(new Sequence(
                 ...$users
@@ -38,16 +38,34 @@ class ArticleSeeder extends Seeder
 
     protected function getUsersCollection(): Collection
     {
-        UserSeeder::ensureMinimumSeeding();
-
-        return User::select('id')
-            ->take(UserSeeder::COUNT_TO_SEED)
-            ->get()
+        return UserSeeder::getExistingCollection(['id'])
             ->shuffle()
             ->map(function (User $user) {
                 return [
                     'user_id' => $user->id,
                 ];
             });
+    }
+
+    public static function getExistingCollection(array $attributes = ['*']): Collection
+    {
+        self::ensureMinimumSeeding();
+
+        return Article::select($attributes)
+            ->take(self::COUNT_TO_SEED)
+            ->get();
+    }
+
+    public static function ensureMinimumSeeding()
+    {
+        $count = Article::count();
+
+        $missingCount = static::COUNT_TO_SEED - $count;
+
+        if ($missingCount > 0) {
+            (new static)->callWith(static::class, [
+                'countToSeed' => $missingCount
+            ]);
+        }
     }
 }

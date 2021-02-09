@@ -13,12 +13,16 @@ class TestContentSeeder extends Seeder
      */
     public function run()
     {
-        $this->callWith(UserSeeder::class, [
-            'countToSeed' => 50
-        ]);
+        $this->call([
+            UserSeeder::class,
+            CategorySeeder::class,
+            TagSeeder::class,
+            ArticleSeeder::class,
+            CommentSeeder::class,
+            // AtachmentSeeder::class,
 
-        $this->callWith(ArticleSeeder::class, [
-            'countToSeed' => 120
-        ]);
+            ArticleCategoriesSeeder::class,
+            ArticleTagsSeeder::class
+        ], true);
     }
 }
