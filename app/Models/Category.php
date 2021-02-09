@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Collections\CategoryCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -48,6 +49,17 @@ class Category extends Model
         'order_by' => 'string',
         'direction' => 'string',
     ];
+
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param  array  $models
+     * @return CategoryCollection
+     */
+    public function newCollection(array $models = []): CategoryCollection
+    {
+        return new CategoryCollection($models);
+    }
 
     public function articles(): MorphToMany
     {
