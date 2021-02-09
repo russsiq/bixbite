@@ -38,29 +38,16 @@ class ArticleSeeder extends Seeder
 
     protected function getUsersCollection(): Collection
     {
-        $this->prepareUsersTable();
+        UserSeeder::ensureMinimumSeeding();
 
-        return User::inRandomOrder()
-            ->select('id')
+        return User::select('id')
             ->take(UserSeeder::COUNT_TO_SEED)
             ->get()
+            ->shuffle()
             ->map(function (User $user) {
                 return [
                     'user_id' => $user->id,
                 ];
             });
-    }
-
-    public function prepareUsersTable()
-    {
-        $usersCount = User::count();
-
-        $missingUsersCount = UserSeeder::COUNT_TO_SEED - $usersCount;
-
-        if ($missingUsersCount > 0) {
-            $this->callWith(UserSeeder::class, [
-                'countToSeed' => $missingUsersCount
-            ]);
-        }
     }
 }

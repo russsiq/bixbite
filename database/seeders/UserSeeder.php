@@ -26,4 +26,17 @@ class UserSeeder extends Seeder
             ->count($countToSeed ?: self::COUNT_TO_SEED)
             ->create();
     }
+
+    public static function ensureMinimumSeeding()
+    {
+        $usersCount = User::count();
+
+        $missingUsersCount = static::COUNT_TO_SEED - $usersCount;
+
+        if ($missingUsersCount > 0) {
+            (new static)->callWith(static::class, [
+                'countToSeed' => $missingUsersCount
+            ]);
+        }
+    }
 }
