@@ -17,8 +17,8 @@ class CreateCategoriesTable extends Migration
             $table->id();
 
             // Отношения и индексные поля.
-            $table->unsignedBigInteger('parent_id')->default(false);
-            $table->unsignedBigInteger('position')->default(true);
+            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->unsignedBigInteger('position')->default(0);
 
             // Основное содержимое.
             $table->string('title')->unique();
@@ -29,6 +29,8 @@ class CreateCategoriesTable extends Migration
             // SEO-поля для метатегов.
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
+            $table->enum('meta_robots', ['all', 'noindex', 'nofollow', 'none'])
+                ->default('all');
 
             // Поля с дополнительной информацией.
             $table->boolean('show_in_menu')->default(true);
