@@ -36,7 +36,7 @@ class CreateCategoriesTable extends Migration
             $table->boolean('show_in_menu')->default(true);
             $table->unsignedTinyInteger('paginate')->default(15);
             $table->string('template')->nullable();
-            $table->string('order_by')->nullable();
+            $table->string('order_by')->default('id');
             $table->enum('direction', ['desc', 'asc'])->default('desc');
 
             // Временные метки.
