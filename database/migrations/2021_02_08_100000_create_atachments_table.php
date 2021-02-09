@@ -29,9 +29,6 @@ class CreateAtachmentsTable extends Migration
             $table->string('disk')->default('public');
             $table->string('folder')->default('public');
 
-            // Счетчики.
-            $table->unsignedBigInteger('downloads')->default(false);
-
             // Автоматически заполняемые поля.
             $table->string('type'); // ['archive', 'audio', 'doc', 'image', 'video', 'other']
             $table->string('name');
@@ -40,6 +37,9 @@ class CreateAtachmentsTable extends Migration
             $table->unsignedBigInteger('filesize');
             $table->string('checksum', 32)->unique(); // md5_file()
             $table->json('properties'); // json field type. Dimention, duration, etc.
+
+            // Счетчики.
+            $table->unsignedBigInteger('downloads')->default(0);
 
             // Временные метки.
             $table->timestamps();
