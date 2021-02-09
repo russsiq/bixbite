@@ -7,9 +7,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                @foreach ($categories as $category)
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">Articles</a>
+                    <a href="#" class="nav-link active">{{ $category->title }}</a>
                 </li>
+                @endforeach
             </ul>
 
             <ul class="navbar-nav mb-2 mb-lg-0">
