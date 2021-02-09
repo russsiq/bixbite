@@ -12,7 +12,7 @@ class CategorySeeder extends Seeder
      *
      * @const int
      */
-    public const COUNT_TO_SEED = 10;
+    public const COUNT_TO_SEED = 6;
 
     /**
      * Run the database seeds.
