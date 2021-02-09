@@ -42,6 +42,8 @@
         </div>
     </footer>
 
+    <x-consent-cookie />
+
     {{-- Scripts --}}
     <script src="{{ mix('/js/app.js') }}"></script>
     @stack('scripts')
