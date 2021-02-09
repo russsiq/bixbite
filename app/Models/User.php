@@ -50,6 +50,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Article::class, 'user_id', 'id');
     }
 
+    public function atachments(): HasMany
+    {
+        return $this->hasMany(Atachment::class, 'user_id', 'id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'user_id', 'id');
+    }
+
     public function isSuperAdmin(): bool
     {
         return in_array(
