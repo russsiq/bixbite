@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             // Отношения и индексные поля.
             $table->morphs('commentable');
             $table->unsignedBigInteger('parent_id')
-                ->nullable(); // if not replies
+                ->default(0); // if not replies
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
