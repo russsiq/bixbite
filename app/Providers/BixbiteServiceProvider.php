@@ -26,9 +26,9 @@ class BixbiteServiceProvider extends ServiceProvider
     {
         Relation::morphMap([
             'articles' => \App\Models\Article::class,
-            'categories' => \App\Models\Category::class,
-            'comments' => \App\Models\Comment::class,
             'atachments' => \App\Models\Atachment::class,
+            'comments' => \App\Models\Comment::class,
+            'categories' => \App\Models\Category::class,
             'tags' => \App\Models\Tag::class,
             'users' => \App\Models\User::class,
         ], true);
