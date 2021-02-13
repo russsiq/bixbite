@@ -5,18 +5,18 @@ namespace App\View\Components;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\View\Component;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 
 /**
  * Компонент панели, оповещающей пользователя об использовании куков на сайте.
  */
 class ConsentCookie extends Component
 {
-    const COOKIE_NAME = 'consent_cookie';
+    const COOKIE_KEY = 'consent_cookie';
 
-    const COOKIE_VALUE = 'accept';
+    const COOKIE_ACCEPT = 'accept';
 
-    protected ParameterBag $cookies;
+    protected InputBag $cookies;
 
     /**
      * Create a new component instance.
@@ -26,16 +26,6 @@ class ConsentCookie extends Component
     public function __construct(Request $request)
     {
         $this->cookies = $request->cookies;
-    }
-
-    public function cookieName(): string
-    {
-        return self::COOKIE_NAME;
-    }
-
-    public function cookieValue(): string
-    {
-        return self::COOKIE_VALUE;
     }
 
     /**
@@ -55,6 +45,23 @@ class ConsentCookie extends Component
      */
     public function shouldRender(): bool
     {
-        return self::COOKIE_VALUE !== $this->cookies->get(self::COOKIE_NAME);
+        return ! $this->isAccepted();
+    }
+
+    public function cookieKey(): string
+    {
+        return self::COOKIE_KEY;
+    }
+
+    public function cookieAccept(): string
+    {
+        return self::COOKIE_ACCEPT;
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->cookieAccept() === $this->cookies->get(
+            $this->cookieKey()
+        );
     }
 }

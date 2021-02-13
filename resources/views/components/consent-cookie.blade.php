@@ -25,7 +25,7 @@
             const CONSENT_BUTTON = document.getElementById('consent-cookie-accept');
 
             CONSENT_BUTTON && CONSENT_BUTTON.addEventListener('click', function (clickEvent) {
-                document.cookie = "{{ $cookieName }}={{ $cookieValue }} ;path=/ ;expires=0";
+                document.cookie = "{{ $cookieKey }}={{ $cookieAccept }} ;path=/ ;expires=0";
 
                 CONSENT_BLOCK
                     && CONSENT_BLOCK.parentNode

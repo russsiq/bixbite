@@ -25,8 +25,8 @@ class ConsentCookieTest extends TestCase
     {
         $this->disableCookieEncryption()
             ->withCookie(
-                ConsentCookie::COOKIE_NAME,
-                ConsentCookie::COOKIE_VALUE
+                ConsentCookie::COOKIE_KEY,
+                ConsentCookie::COOKIE_ACCEPT
             )
             ->get(route('home'));
 
