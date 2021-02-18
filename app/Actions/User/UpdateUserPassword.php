@@ -2,34 +2,51 @@
 
 namespace App\Actions\User;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
-class UpdateUserPassword implements UpdatesUserPasswords
+class UpdateUserPassword extends UserActionAbstract implements UpdatesUserPasswords
 {
-    use PasswordValidationRulesTrait;
-
     /**
      * Validate and update the user's password.
      *
-     * @param  mixed  $user
+     * @param  User  $user
      * @param  array  $input
      * @return void
      */
-    public function update($user, array $input)
+    public function update($user, array $input): void
     {
-        Validator::make($input, [
-            'current_password' => ['required', 'string'],
-            'password' => $this->passwordRules(),
-        ])->after(function ($validator) use ($user, $input) {
-            if (! isset($input['current_password']) || ! Hash::check($input['current_password'], $user->password)) {
-                $validator->errors()->add('current_password', __('The provided password does not match your current password.'));
-            }
-        })->validateWithBag('updatePassword');
+        $validated = $this->createValidator(
+            $input,
+            $this->rules($user)
+        )->validateWithBag('updatePassword');
 
         $user->forceFill([
-            'password' => Hash::make($input['password']),
+            'password' => $this->makeHash($validated['password']),
         ])->save();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @param  User|null  $user
+     * @return array
+     */
+    protected function rules(?User $user): array
+    {
+        return [
+            'current_password' => [
+                'bail',
+                'required',
+                'string',
+                function ($attribute, $value, $message) use ($user) {
+                    ! $this->checkHash($value, $user->password) && $message(
+                        trans('The provided password does not match your current password.')
+                    );
+                },
+            ],
+            'password' => $this->passwordRules(),
+        ];
     }
 }

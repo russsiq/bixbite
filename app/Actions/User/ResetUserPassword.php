@@ -2,29 +2,40 @@
 
 namespace App\Actions\User;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
-class ResetUserPassword implements ResetsUserPasswords
+class ResetUserPassword extends UserActionAbstract implements ResetsUserPasswords
 {
-    use PasswordValidationRulesTrait;
-
     /**
      * Validate and reset the user's forgotten password.
      *
-     * @param  mixed  $user
+     * @param  User  $user
      * @param  array  $input
      * @return void
      */
-    public function reset($user, array $input)
+    public function reset($user, array $input): void
     {
-        Validator::make($input, [
-            'password' => $this->passwordRules(),
-        ])->validate();
+        $validated = $this->createValidator(
+            $input,
+            $this->rules($user)
+        )->validate();
 
         $user->forceFill([
-            'password' => Hash::make($input['password']),
+            'password' => $this->makeHash($validated['password']),
         ])->save();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @param  User|null  $user
+     * @return array
+     */
+    protected function rules(?User $user): array
+    {
+        return [
+            'password' => $this->passwordRules(),
+        ];
     }
 }

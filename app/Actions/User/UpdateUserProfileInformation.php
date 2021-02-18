@@ -2,34 +2,34 @@
 
 namespace App\Actions\User;
 
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
-class UpdateUserProfileInformation implements UpdatesUserProfileInformation
+class UpdateUserProfileInformation extends UserActionAbstract implements UpdatesUserProfileInformation
 {
     /**
      * Validate and update the given user's profile information.
      *
-     * @param  mixed  $user
+     * @param  User  $user
      * @param  array  $input
      * @return void
      */
-    public function update($user, array $input)
+    public function update($user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-        ])->validateWithBag('updateProfileInformation');
+        $validated = $this->createValidator(
+            $input,
+            $this->rules($user)
+        )->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
+        if ($validated['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
+            $this->updateVerifiedUser($user, $validated);
         } else {
             $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
+                'name' => $validated['name'],
+                'email' => $validated['email'],
             ])->save();
         }
     }
@@ -37,11 +37,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Update the given verified user's profile information.
      *
-     * @param  mixed  $user
+     * @param  User  $user
      * @param  array  $input
      * @return void
      */
-    protected function updateVerifiedUser($user, array $input)
+    protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
             'name' => $input['name'],
@@ -50,5 +50,28 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         $user->sendEmailVerificationNotification();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @param  User|null  $user
+     * @return array
+     */
+    protected function rules(?User $user): array
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+        ];
     }
 }

@@ -3,34 +3,55 @@
 namespace App\Actions\User;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
-class CreateNewUser implements CreatesNewUsers
+class CreateNewUser extends UserActionAbstract implements CreatesNewUsers
 {
-    use PasswordValidationRulesTrait;
-
     /**
      * Validate and create a newly registered user.
      *
      * @param  array  $input
-     * @return \App\Models\User
+     * @return User
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique(User::class),],
-            'password' => $this->passwordRules(),
-            'terms' => ['accepted'],
-        ])->validate();
+        $validated = $this->createValidator(
+            $input,
+            $this->rules(null)
+        )->validate();
 
         return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $this->makeHash($validated['password']),
         ]);
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @param  User|null  $user
+     * @return array
+     */
+    protected function rules(?User $user): array
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'password' => $this->passwordRules(),
+            'terms' => [
+                'accepted',
+            ],
+        ];
     }
 }
