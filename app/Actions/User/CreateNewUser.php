@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace App\Actions\User;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -10,7 +10,7 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    use PasswordValidationRules;
+    use PasswordValidationRulesTrait;
 
     /**
      * Validate and create a newly registered user.
