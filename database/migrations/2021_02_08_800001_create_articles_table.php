@@ -39,7 +39,7 @@ class CreateArticlesTable extends Migration
             $table->boolean('is_pinned')->default(false);
 
             // Счетчики.
-            $table->unsignedInteger('views')->default(false);
+            $table->unsignedInteger('views')->default(0);
 
             // Временные метки.
             $table->timestamps();
