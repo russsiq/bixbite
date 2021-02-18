@@ -40,6 +40,8 @@ class ArticleFactory extends Factory
             'meta_keywords' => implode(',', $this->faker->words(mt_rand(3, 8))),
             'meta_robots' => $this->faker->randomElement(['all', 'noindex', 'nofollow', 'none']),
 
+            'views' => mt_rand(0, 240),
+
             'created_at' => $this->faker->dateTimeBetween(),
             'updated_at' => $this->faker->dateTimeBetween(),
         ];
