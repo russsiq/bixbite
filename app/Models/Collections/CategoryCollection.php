@@ -16,6 +16,7 @@ class CategoryCollection extends Collection
             // Appends children categories if exists.
             if ($collection->firstWhere('parent_id', $category->id)) {
                 $category->children = $collection->where('parent_id', $category->id);
+                    // ->sortBy('position', SORT_NATURAL);
             }
 
             return $category;
