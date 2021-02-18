@@ -5,7 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * Comment model.
+ *
+ * @property int $id
+ * @property string $commentable_type
+ * @property int $commentable_id
+ * @property int $parent_id
+ * @property int $user_id
+ * @property string $content
+ * @property string|null $user_name
+ * @property string|null $user_email
+ * @property string|null $user_ip
+ * @property bool $is_approved
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Comment extends Model
 {
     use HasFactory;

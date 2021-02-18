@@ -6,7 +6,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * Atachment model.
+ *
+ * @property int $id
+ * @property string $attachment_type
+ * @property int $attachment_id
+ * @property int|null $user_id
+ * @property string|null $title
+ * @property string|null $description
+ * @property string $disk
+ * @property string $folder
+ * @property string $type
+ * @property string $name
+ * @property string $extension
+ * @property string $mime_type
+ * @property int $filesize
+ * @property string $checksum
+ * @property array $properties
+ * @property int $downloads
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Atachment extends Model
 {
     use HasFactory;

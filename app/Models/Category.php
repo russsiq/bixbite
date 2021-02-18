@@ -6,7 +6,29 @@ use App\Models\Collections\CategoryCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * Category model.
+ *
+ * @property int $id
+ * @property int $parent_id
+ * @property int $position
+ * @property string $title
+ * @property string $slug
+ * @property string|null $alt_url
+ * @property string|null $info
+ * @property string|null $meta_description
+ * @property string|null $meta_keywords
+ * @property string $meta_robots
+ * @property bool $show_in_menu
+ * @property int $paginate
+ * @property string|null $template
+ * @property string $order_by
+ * @property string $direction
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Category extends Model
 {
     use HasFactory;
@@ -18,7 +40,7 @@ class Category extends Model
      */
     protected $fillable = [
         'parent_id',
-        // 'position',
+        'position',
         'title', 'slug', 'alt_url', 'info',
         'meta_description', 'meta_keywords', 'meta_robots',
         'show_in_menu',

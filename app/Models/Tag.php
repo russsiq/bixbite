@@ -5,7 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * Tag model.
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $info
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Tag extends Model
 {
     use HasFactory;

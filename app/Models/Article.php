@@ -7,7 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * Article model.
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $teaser
+ * @property string|null $content
+ * @property string|null $meta_description
+ * @property string|null $meta_keywords
+ * @property string $meta_robots
+ * @property bool $on_mainpage
+ * @property bool $is_favorite
+ * @property bool $is_pinned
+ * @property int $views
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class Article extends Model
 {
     use HasFactory;
