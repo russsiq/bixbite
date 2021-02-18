@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Actions\User\CreateNewUser;
+use App\Actions\User\ResetUserPassword;
+use App\Actions\User\UpdateUserPassword;
+use App\Actions\User\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -34,10 +34,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Регистрация префикса шаблонов аутентификации для пакета Fortify.
+        // Register the views for Fortify using conventional names under the given prefix.
         Fortify::viewPrefix('auth.');
 
-        // Регистрация классов Действий для пакета Fortify.
+        // Register a class / callback that should be used to Fortify Actions.
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
