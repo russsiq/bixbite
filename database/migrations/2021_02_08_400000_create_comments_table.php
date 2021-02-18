@@ -27,8 +27,8 @@ class CreateCommentsTable extends Migration
 
             // Основное содержимое.
             $table->text('content');
-            $table->string('name')->nullable(); // if guest add comment
-            $table->string('email')->nullable(); // if guest add comment
+            $table->string('user_name')->nullable(); // if guest add comment
+            $table->string('user_email')->nullable(); // if guest add comment
             $table->ipAddress('user_ip')->nullable();
 
             // Поля с дополнительной информацией.

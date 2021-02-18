@@ -19,8 +19,8 @@ class Comment extends Model
         // 'user_id',
         'parent_id',
         'content',
-        'name',
-        'email',
+        'user_name',
+        'user_email',
         'user_ip',
         'is_approved',
     ];
@@ -34,8 +34,8 @@ class Comment extends Model
         'user_id' => 'integer',
         'parent_id' => 'integer',
         'content' => 'string',
-        'name' => 'string',
-        'email' => 'string',
+        'user_name' => 'string',
+        'user_email' => 'string',
         'user_ip' => 'string',
         'is_approved' => 'boolean',
     ];
