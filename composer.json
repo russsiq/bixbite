@@ -31,7 +31,8 @@
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.25",
         "laravel/sanctum": "^2.9",
-        "laravel/tinker": "^2.6"
+        "laravel/tinker": "^2.6",
+        "russsiq/laravel-widget": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
