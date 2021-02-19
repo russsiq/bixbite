@@ -26,7 +26,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer([
-            'components.navigation-menu',
+            'components.navbar',
         ], CategoriesComposer::class);
     }
 }

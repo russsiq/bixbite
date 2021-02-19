@@ -13,7 +13,7 @@
 </head>
 
 <body class="d-flex flex-column h-100 bg-light">
-    <x-navigation-menu container="container" />
+    <x-navbar container="container" />
 
     <header class="mt-4">
         <div class="container">
