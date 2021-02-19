@@ -12,7 +12,7 @@ class CategoriesComposer
     protected static $categories;
 
     /**
-     * Create a new profile composer.
+     * Create a new categories composer.
      *
      * @return void
      */
