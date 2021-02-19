@@ -1,11 +1,13 @@
 <nav {{ $attributes->merge(['class' => 'navbar navbar-expand-lg navbar-light bg-white shadow'])->filter(fn ($value, $key) => 'class' === $key) }}>
     <div class="{{ $container }}">
         <a href="{{ route('home') }}" class="navbar-brand">{{ config('app.name') }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @foreach ($categories as $category)
                 <li class="nav-item">
@@ -19,7 +21,7 @@
                 <li class="nav-item dropdown">
                     <a id="navbar-profile-dropdown" href="#" class="nav-link dropdown-toggle" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        {{ $user->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-profile-dropdown">
                         <li><a href="{{ route('panel') }}" class="dropdown-item">@lang('Control Panel')</a></li>

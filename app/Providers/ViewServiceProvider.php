@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\AuthUserComposer;
 use App\Http\View\Composers\CategoriesComposer;
 use Illuminate\View\Factory as ViewFactory;
 use Illuminate\Support\ServiceProvider;
@@ -29,5 +30,9 @@ class ViewServiceProvider extends ServiceProvider
         $viewFactory->composer([
             'components.navbar',
         ], CategoriesComposer::class);
+
+        $viewFactory->composer([
+            'components.navbar',
+        ], AuthUserComposer::class);
     }
 }
