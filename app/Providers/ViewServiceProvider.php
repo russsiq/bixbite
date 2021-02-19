@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Http\View\Composers\CategoriesComposer;
-use Illuminate\Support\Facades\View;
+use Illuminate\View\Factory as ViewFactory;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class ViewServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
@@ -21,11 +21,12 @@ class ViewServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
+     * @param  ViewFactory  $viewFactory
      * @return void
      */
-    public function boot()
+    public function boot(ViewFactory $viewFactory): void
     {
-        View::composer([
+        $viewFactory->composer([
             'components.navbar',
         ], CategoriesComposer::class);
     }
