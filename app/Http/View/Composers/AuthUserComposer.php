@@ -8,8 +8,8 @@ use Illuminate\Contracts\View\View as ViewContract;
 
 class AuthUserComposer
 {
-    /** @var User */
-    protected $user;
+    /** @var Guard */
+    protected $auth;
 
     /**
      * Create a new auth user composer.
@@ -18,7 +18,7 @@ class AuthUserComposer
      */
     public function __construct(Guard $auth)
     {
-        $this->user = $auth->user();
+        $this->auth = $auth;
     }
 
     /**
@@ -29,6 +29,18 @@ class AuthUserComposer
      */
     public function compose(ViewContract $view): void
     {
-        $view->with('user', $this->user);
+        $view->with('user', $this->authUser());
+    }
+
+    /**
+     * Get the currently authenticated user.
+     *
+     * @NB Don't use any cache with all drivers.
+     *
+     * @return User|null
+     */
+    protected function authUser(): ?User
+    {
+        return $this->auth->user();
     }
 }
