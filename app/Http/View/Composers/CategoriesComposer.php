@@ -9,19 +9,19 @@ use Illuminate\Contracts\View\View as ViewContract;
 class CategoriesComposer
 {
     /** @var Category */
-    protected $categories;
+    protected $categoryModel;
 
     /** @var CategoryCollection */
-    protected static $categoryCollection;
+    protected $categoryCollection;
 
     /**
      * Create a new categories composer.
      *
-     * @param Category $categories
+     * @param Category $categoryModel
      */
-    public function __construct(Category $categories)
+    public function __construct(Category $categoryModel)
     {
-        $this->categories = $categories;
+        $this->categoryModel = $categoryModel;
     }
 
     /**
@@ -44,7 +44,7 @@ class CategoriesComposer
      */
     protected function categoryCollection(): CategoryCollection
     {
-        return self::$categoryCollection
+        return $this->categoryCollection
             ?? $this->resolveCategoryCollection();
     }
 
@@ -55,7 +55,7 @@ class CategoriesComposer
      */
     protected function resolveCategoryCollection(): CategoryCollection
     {
-        return self::$categoryCollection = $this->categories->query()
+        return $this->categoryCollection = $this->categoryModel->query()
             ->orderBy('position')
             ->get()
             ->nested();
