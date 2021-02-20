@@ -15,7 +15,8 @@
 <body class="d-flex flex-column h-100 bg-light">
     <x-navbar container="container" />
 
-    <header class="mt-4">
+    @hasSection('header')
+    <header class="my-4">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -24,8 +25,9 @@
             </div>
         </div>
     </header>
+    @endif
 
-    <main class="flex-shrink-0 mt-4">
+    <main class="flex-shrink-0">
         @yield('mainblock')
     </main>
 
