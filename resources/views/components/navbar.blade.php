@@ -2,12 +2,12 @@
     <div class="{{ $container }}">
         <a href="{{ route('home') }}" class="navbar-brand">{{ config('app.name') }}</a>
 
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#main-navbar"
+            aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+        <div id="main-navbar" class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @foreach ($categories as $category)
                 <li class="nav-item">
