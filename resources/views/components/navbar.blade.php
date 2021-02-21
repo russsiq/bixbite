@@ -1,4 +1,14 @@
-<nav {{ $attributes->merge(['class' => 'navbar navbar-expand-lg navbar-light bg-white shadow'])->filter(fn ($value, $key) => 'class' === $key) }}>
+@props([
+    'container' => 'container',
+])
+
+@php
+    $attributes = $attributes->class([
+        'navbar navbar-expand-lg navbar-light bg-white shadow',
+    ]);
+@endphp
+
+<nav {{ $attributes }}>
     <div class="{{ $container }}">
         <a href="{{ route('home') }}" class="navbar-brand">{{ config('app.name') }}</a>
 
