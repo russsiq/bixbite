@@ -1,23 +1,27 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', __('Dashboard'))
 
-@section('header')
-<h1 class="h2">@lang('Dashboard')</h1>
+@push('styles')
+<link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+@endpush
+
+@section('body')
+<noscript>
+    <main class="container">
+        <x-alert type="warning" class="mt-5">
+            <x-slot name="heading">
+                @lang('Внимание!')
+            </x-slot>
+
+            @lang('В вашем браузере отключен <b>JavaScript</b>. Для работы с административной панелью <b>включите его</b>.')
+        </x-alert>
+    </main>
+</noscript>
+
+<div id="app"></div>
 @endsection
 
-@section('mainblock')
-<section class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
-                <div class="card-header">Header</div>
-                <div class="card-body">
-                    <h5 class="card-title">Light card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+@push('scripts')
+<script src="{{ mix('/js/app.js') }}" charset="utf-8"></script>
+@endpush

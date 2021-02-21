@@ -1,65 +1,44 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-100">
+@extends('layouts.main')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@push('styles')
+<link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+@endpush
 
-    <title>
-        @hasSection('title')
-            @yield('title') –
-        @endif
-        {{ config('app.name') }}
-    </title>
+@push('scripts')
+<script src="{{ mix('/js/app.js') }}" charset="utf-8"></script>
+@endpush
 
-    <link href="{{ asset('favicon.ico') }}" rel="icon" type="image/x-icon" />
+@section('body')
+<x-navbar container="container" />
 
-    {{-- Styles --}}
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
-
-    {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
-    @stack('styles')
-</head>
-
-<body class="d-flex flex-column h-100 bg-light">
-    <x-navbar container="container" />
-
-    @hasSection('header')
-    <header class="my-4">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    @yield('header')
-                </div>
+@hasSection('header')
+<header class="my-4">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                @yield('header')
             </div>
         </div>
-    </header>
-    @endif
+    </div>
+</header>
+@endif
 
-    <main class="flex-shrink-0">
-        @yield('mainblock')
-    </main>
+<main class="flex-shrink-0">
+    @yield('mainblock')
+</main>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <span class="text-muted">Laravel v{{ Illuminate\Foundation\Application::VERSION }}</span>
-                </div>
-                <div class="col text-end">
-                    <span class="text-muted">(PHP v{{ PHP_VERSION }})</span>
-                </div>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <span class="text-muted">Laravel v{{ Illuminate\Foundation\Application::VERSION }}</span>
+            </div>
+            <div class="col text-end">
+                <span class="text-muted">(PHP v{{ PHP_VERSION }})</span>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <x-consent-cookie />
-
-    {{-- Scripts --}}
-    <script src="{{ mix('/js/app.js') }}" charset="utf-8"></script>
-
-    {{-- Скрипты, которые могут быть состыкованы из дочерних шаблонов. --}}
-    @stack('scripts')
-</body>
-
-</html>
+<x-consent-cookie />
+@endsection
