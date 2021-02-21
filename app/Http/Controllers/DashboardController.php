@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PanelController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -14,6 +14,6 @@ class PanelController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('panel');
+        return view('dashboard');
     }
 }

@@ -3,7 +3,7 @@
 @section('title', __('Profile'))
 
 @section('header')
-<h1>@lang('Profile')</h1>
+<h1 class="h2">@lang('Profile')</h1>
 {{-- <p class="mt-3 text-muted"></p> --}}
 @endsection
 

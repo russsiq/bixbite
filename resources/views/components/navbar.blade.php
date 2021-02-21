@@ -24,9 +24,9 @@
                         {{ $user->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbar-profile-dropdown">
-                        <li><a href="{{ route('panel') }}" class="dropdown-item">@lang('Control Panel')</a></li>
+                        <li><a href="{{ route('dashboard') }}" class="dropdown-item">@lang('Dashboard')</a></li>
                         <!-- Account Management -->
-                        {{-- <li><h6 class="dropdown-header">@lang('Manage Account')</h6></li> --}}
+                        <li><span class="dropdown-header">@lang('Manage Account')</span></li>
                         <li><a href="{{ route('profile.show') }}" class="dropdown-item">@lang('Profile')</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <!-- Authentication -->

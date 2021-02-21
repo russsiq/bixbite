@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', __('Control Panel'))
+@section('title', __('Dashboard'))
 
 @section('header')
-<h1>Control Panel</h1>
+<h1 class="h2">@lang('Dashboard')</h1>
 @endsection
 
 @section('mainblock')
