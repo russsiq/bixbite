@@ -12,9 +12,9 @@
     }
 
     $attributes = $attributes->class([
+        'alert alert-'.$type,
         'alert-dismissible fade show' => $dismissible,
     ])->merge([
-        'class' => 'alert alert-'.$type,
         'role' => 'alert',
     ]);
 @endphp
