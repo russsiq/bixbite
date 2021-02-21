@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', __('Home'))
-
 @section('mainblock')
 <x-widget::articles-featured :parameters="[
     'title' => 'Популярные новости',
