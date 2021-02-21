@@ -25,7 +25,7 @@
     @endif
 
     @if ($heading)
-    <h4 class="alert-heading">{{ $heading }}</h4>
+    <h5 class="alert-heading">{{ $heading }}</h5>
     @endif
 
     {{ $message ?: $slot }}
