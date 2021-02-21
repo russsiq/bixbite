@@ -5,7 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title') – {{ config('app.name') }}</title>
+    <title>
+        @hasSection('title')
+            @yield('title') –
+        @endif
+        {{ config('app.name') }}
+    </title>
 
     {{-- Styles --}}
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
