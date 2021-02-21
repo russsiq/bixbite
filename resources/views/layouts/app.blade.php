@@ -14,6 +14,8 @@
 
     {{-- Styles --}}
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+
+    {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
     @stack('styles')
 </head>
 
@@ -52,7 +54,9 @@
     <x-consent-cookie />
 
     {{-- Scripts --}}
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}" charset="utf-8"></script>
+
+    {{-- Скрипты, которые могут быть состыкованы из дочерних шаблонов. --}}
     @stack('scripts')
 </body>
 
