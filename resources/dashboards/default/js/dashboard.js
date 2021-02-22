@@ -2,20 +2,6 @@
 
 require('./bootstrap');
 
-import {
-    Alert,
-    Button,
-    Carousel,
-    Collapse,
-    Dropdown,
-    Modal,
-    Popover,
-    ScrollSpy,
-    Tab,
-    Toast,
-    Tooltip,
-} from 'bootstrap';
-
 import Vue from 'vue';
 
 Vue.config.productionTip = false;
@@ -28,6 +14,11 @@ const app = new Vue({
     el: '#dashboard',
     components: {
         'app': App
+    },
+    data() {
+        return {
+            ...BixBite,
+        }
     },
     router,
     template: '<app></app>',
