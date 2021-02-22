@@ -2,10 +2,11 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/utilities";
 
 // Your variable overrides
 @import 'bootstrap-overrides';
+
+@import "~bootstrap/scss/utilities";
 
 // Layout & components
 @import "~bootstrap/scss/accordion";
