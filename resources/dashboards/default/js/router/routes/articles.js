@@ -1,4 +1,4 @@
-import ArticleIndex from '@/views/articles/index'
+import ArticleIndex from '@/views/articles/index';
 
 export default [{
     path: '/articles',

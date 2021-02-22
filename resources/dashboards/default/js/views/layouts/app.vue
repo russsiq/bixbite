@@ -60,8 +60,6 @@ export default {
       //   header: "BixBite",
       body: "See? Just like this.",
     });
-
-    console.log(this.$router);
   },
 
   methods: {},
