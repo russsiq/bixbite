@@ -17,7 +17,7 @@ class CreateAtachmentsTable extends Migration
             $table->id();
 
             // Отношения и индексные поля.
-            $table->morphs('attachment');
+            $table->morphs('attachable');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
