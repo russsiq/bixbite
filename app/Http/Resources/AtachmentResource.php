@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class ArticleResource extends JsonResource
+class AtachmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,24 +18,12 @@ class ArticleResource extends JsonResource
         $attributes = parent::toArray($request);
 
         return [
-            'type' => 'articles',
+            'type' => 'atachments',
             'id' => $attributes['id'],
             'attributes' => Arr::except($attributes, [
-                'id', 'atachments', 'categories', 'tags', 'user',
+                'id', 'user',
             ]),
             'relationships' => [
-                'atachments' => $this->whenLoaded('atachments', function () use ($request) {
-                    return AtachmentCollection::make($this->atachments)
-                        ->toArray($request);
-                }),
-                'categories' => $this->whenLoaded('categories', function () use ($request) {
-                    return CategoryCollection::make($this->categories)
-                        ->toArray($request);
-                }),
-                'tags' => $this->whenLoaded('tags', function () use ($request) {
-                    return TagCollection::make($this->tags)
-                        ->toArray($request);
-                }),
                 'user' => $this->whenLoaded('user', function () use ($request) {
                     return UserResource::make($this->user)
                         ->toArray($request);
@@ -54,7 +42,7 @@ class ArticleResource extends JsonResource
     {
         return [
             'links' => [
-                'self' => route('api.articles.show', $this->resource),
+                'self' => route('api.atachments.show', $this->resource),
             ],
         ];
     }

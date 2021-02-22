@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
-use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
-use App\Http\Resources\ArticleCollection;
-use App\Http\Resources\ArticleResource;
-use App\Models\Article;
+use App\Http\Requests\Api\V1\Category\IndexCategoryRequest;
+use App\Http\Requests\Api\V1\Category\StoreCategoryRequest;
+use App\Http\Requests\Api\V1\Category\UpdateCategoryRequest;
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Create the controller instance.
@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Article::class, 'article');
+        $this->authorizeResource(Category::class, 'category');
     }
 
     /**
@@ -29,18 +29,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexArticleRequest $request)
+    public function index(IndexCategoryRequest $request)
     {
-        $articles = Article::with([
-            'atachments',
-            'categories',
-            'tags',
-            'user',
-        ])->withCount([
-            'comments',
+        $categories = Category::with([
+            //
         ])->paginate();
 
-        $collection = new ArticleCollection($articles);
+        $collection = new CategoryCollection($categories);
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -59,20 +54,16 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreArticleRequest  $request
+     * @param  StoreCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
-        /** @var \App\Models\User $user */
-        $user = $request->user();
+        /** @var  Category */
+        $category = Category::create($request->validated());
 
-        /** @var \App\Models\Article $articleInstance */
-        $article = $user->articles()
-            ->create($request->validated());
-
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new CategoryResource(
+            $category->refresh()
         );
 
         return $resource->response()
@@ -82,12 +73,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Category $category)
     {
-        $resource = new ArticleResource($article);
+        $resource = new CategoryResource($category);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -96,10 +87,10 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(Category $category)
     {
         //
     }
@@ -107,18 +98,18 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateArticleRequest  $request
-     * @param  \App\Models\Article  $article
+     * @param  UpdateCategoryRequest  $request
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $article->update(
+        $category->update(
             $request->validated()
         );
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new CategoryResource(
+            $category->refresh()
         );
 
         return $resource->response()
@@ -128,12 +119,12 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(Category $category)
     {
-        $article->delete();
+        $category->delete();
 
         return response()
             ->json(null, JsonResponse::HTTP_NO_CONTENT);

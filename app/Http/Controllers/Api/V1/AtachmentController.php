@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
-use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
-use App\Http\Resources\ArticleCollection;
-use App\Http\Resources\ArticleResource;
-use App\Models\Article;
+use App\Http\Requests\Api\V1\Atachment\IndexAtachmentRequest;
+use App\Http\Requests\Api\V1\Atachment\StoreAtachmentRequest;
+use App\Http\Requests\Api\V1\Atachment\UpdateAtachmentRequest;
+use App\Http\Resources\AtachmentCollection;
+use App\Http\Resources\AtachmentResource;
+use App\Models\Atachment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class AtachmentController extends Controller
 {
     /**
      * Create the controller instance.
@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Article::class, 'article');
+        $this->authorizeResource(Atachment::class, 'atachment');
     }
 
     /**
@@ -29,18 +29,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexArticleRequest $request)
+    public function index(IndexAtachmentRequest $request)
     {
-        $articles = Article::with([
-            'atachments',
-            'categories',
-            'tags',
-            'user',
-        ])->withCount([
-            'comments',
+        $atachments = Atachment::with([
+            //
         ])->paginate();
 
-        $collection = new ArticleCollection($articles);
+        $collection = new AtachmentCollection($atachments);
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -59,20 +54,20 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreArticleRequest  $request
+     * @param  StoreAtachmentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(StoreAtachmentRequest $request)
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        /** @var \App\Models\Article $articleInstance */
-        $article = $user->articles()
+        /** @var \App\Models\Atachment $atachmentInstance */
+        $atachment = $user->atachments()
             ->create($request->validated());
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new AtachmentResource(
+            $atachment->refresh()
         );
 
         return $resource->response()
@@ -82,12 +77,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Atachment  $atachment
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Atachment $atachment)
     {
-        $resource = new ArticleResource($article);
+        $resource = new AtachmentResource($atachment);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -96,10 +91,10 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Atachment  $atachment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(Atachment $atachment)
     {
         //
     }
@@ -107,18 +102,18 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateArticleRequest  $request
-     * @param  \App\Models\Article  $article
+     * @param  UpdateAtachmentRequest  $request
+     * @param  \App\Models\Atachment  $atachment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateAtachmentRequest $request, Atachment $atachment)
     {
-        $article->update(
+        $atachment->update(
             $request->validated()
         );
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new AtachmentResource(
+            $atachment->refresh()
         );
 
         return $resource->response()
@@ -128,12 +123,12 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Atachment  $atachment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(Atachment $atachment)
     {
-        $article->delete();
+        $atachment->delete();
 
         return response()
             ->json(null, JsonResponse::HTTP_NO_CONTENT);

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
-use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
-use App\Http\Resources\ArticleCollection;
-use App\Http\Resources\ArticleResource;
-use App\Models\Article;
+use App\Http\Requests\Api\V1\User\IndexUserRequest;
+use App\Http\Requests\Api\V1\User\StoreUserRequest;
+use App\Http\Requests\Api\V1\User\UpdateUserRequest;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class UserController extends Controller
 {
     /**
      * Create the controller instance.
@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Article::class, 'article');
+        $this->authorizeResource(User::class, 'user');
     }
 
     /**
@@ -29,18 +29,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexArticleRequest $request)
+    public function index(IndexUserRequest $request)
     {
-        $articles = Article::with([
-            'atachments',
-            'categories',
-            'tags',
-            'user',
-        ])->withCount([
-            'comments',
+        $users = User::with([
+            //
         ])->paginate();
 
-        $collection = new ArticleCollection($articles);
+        $collection = new UserCollection($users);
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -59,20 +54,16 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreArticleRequest  $request
+     * @param  StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        /** @var \App\Models\User $user */
-        $user = $request->user();
+        /** @var User */
+        $user = User::create($request->validated());
 
-        /** @var \App\Models\Article $articleInstance */
-        $article = $user->articles()
-            ->create($request->validated());
-
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new UserResource(
+            $user->refresh()
         );
 
         return $resource->response()
@@ -82,12 +73,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(User $user)
     {
-        $resource = new ArticleResource($article);
+        $resource = new UserResource($user);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -96,10 +87,10 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(User $user)
     {
         //
     }
@@ -107,18 +98,18 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateArticleRequest  $request
-     * @param  \App\Models\Article  $article
+     * @param  UpdateUserRequest  $request
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $article->update(
+        $user->update(
             $request->validated()
         );
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new UserResource(
+            $user->refresh()
         );
 
         return $resource->response()
@@ -128,12 +119,12 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(User $user)
     {
-        $article->delete();
+        $user->delete();
 
         return response()
             ->json(null, JsonResponse::HTTP_NO_CONTENT);

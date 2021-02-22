@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
-use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\UpdateArticleRequest;
-use App\Http\Resources\ArticleCollection;
-use App\Http\Resources\ArticleResource;
-use App\Models\Article;
+use App\Http\Requests\Api\V1\Comment\IndexCommentRequest;
+use App\Http\Requests\Api\V1\Comment\StoreCommentRequest;
+use App\Http\Requests\Api\V1\Comment\UpdateCommentRequest;
+use App\Http\Resources\CommentCollection;
+use App\Http\Resources\CommentResource;
+use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class CommentController extends Controller
 {
     /**
      * Create the controller instance.
@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Article::class, 'article');
+        $this->authorizeResource(Comment::class, 'comment');
     }
 
     /**
@@ -29,18 +29,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexArticleRequest $request)
+    public function index(IndexCommentRequest $request)
     {
-        $articles = Article::with([
-            'atachments',
-            'categories',
-            'tags',
-            'user',
-        ])->withCount([
-            'comments',
+        $comments = Comment::with([
+            //
         ])->paginate();
 
-        $collection = new ArticleCollection($articles);
+        $collection = new CommentCollection($comments);
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -59,20 +54,20 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreArticleRequest  $request
+     * @param  StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(StoreCommentRequest $request)
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        /** @var \App\Models\Article $articleInstance */
-        $article = $user->articles()
+        /** @var \App\Models\Comment $commentInstance */
+        $comment = $user->comments()
             ->create($request->validated());
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new CommentResource(
+            $comment->refresh()
         );
 
         return $resource->response()
@@ -82,12 +77,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Comment $comment)
     {
-        $resource = new ArticleResource($article);
+        $resource = new CommentResource($comment);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -96,10 +91,10 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -107,18 +102,18 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateArticleRequest  $request
-     * @param  \App\Models\Article  $article
+     * @param  UpdateCommentRequest  $request
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        $article->update(
+        $comment->update(
             $request->validated()
         );
 
-        $resource = new ArticleResource(
-            $article->refresh()
+        $resource = new CommentResource(
+            $comment->refresh()
         );
 
         return $resource->response()
@@ -128,12 +123,12 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Article  $article
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(Comment $comment)
     {
-        $article->delete();
+        $comment->delete();
 
         return response()
             ->json(null, JsonResponse::HTTP_NO_CONTENT);
