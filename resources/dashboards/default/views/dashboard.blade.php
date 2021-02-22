@@ -29,5 +29,8 @@
 @endsection
 
 @push('scripts')
+<script>
+    const BixBite = @json($scriptVariables, JSON_PRETTY_PRINT);
+</script>
 <script src="{{ mix('/js/dashboard.js') }}" charset="utf-8"></script>
 @endpush
