@@ -2,6 +2,10 @@
 
 @section('title', __('Dashboard'))
 
+@push('meta-info')
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+@endpush
+
 @push('styles')
 <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 @endpush
@@ -11,10 +15,12 @@
     <main class="container">
         <x-alert type="warning" class="mt-5">
             <x-slot name="heading">
-                @lang('Внимание!')
+                @lang('Warning!')
             </x-slot>
 
-            @lang('В вашем браузере отключен <b>JavaScript</b>. Для работы с административной панелью <b>включите его</b>.')
+            @lang("We're sorry but :app-name dashboard doesn't work properly without <b>JavaScript enabled</b>. Please enable it to continue.", [
+                'app-name' => config('app.name')
+            ])
         </x-alert>
     </main>
 </noscript>
