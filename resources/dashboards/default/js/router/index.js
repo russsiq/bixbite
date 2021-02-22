@@ -13,7 +13,7 @@ import routes from './routes';
 // Instantiate and exports app router.
 const router = new VueRouter({
     mode: 'history',
-    base: 'dashboard',
+    base: BixBite.dashboard_base_url,
     routes: routes,
     linkActiveClass: 'active',
     pathToRegexOptions: {
