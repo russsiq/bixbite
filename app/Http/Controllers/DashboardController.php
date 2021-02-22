@@ -23,8 +23,10 @@ class DashboardController extends Controller
 
         return $app->view->make('dashboard', [
             'scriptVariables' => [
+                'api_url' => $app->url->to('api/v1'),
                 'app_name' => $app->config->get('app.name'),
                 'app_url' => $app->url->route('home'),
+                'dashboard_base_url' => 'dashboard',
             ],
         ]);
     }
