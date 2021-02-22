@@ -1,8 +1,8 @@
 <template>
 <div class="row">
     <div class="col-12">
-        <div class="card text-center">
-            <h2 class="my-5">404. Не найдено</h2>
+        <div class="card text-center mt-5">
+            <h2 class="my-3">404. Не найдено</h2>
             <p>Извините, но запрашиваемый вами ресурс или страница не найдены.</p>
         </div>
     </div>
