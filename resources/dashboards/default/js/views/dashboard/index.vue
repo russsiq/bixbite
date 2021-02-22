@@ -1,23 +1,25 @@
 <template>
-<h2>Welcome back!</h2>
+  <div class="container">
+    <div class="card mt-5">
+      <div class="card-body">
+        <h2 class="my-0">Welcome back!</h2>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {
-    name: 'dashboard',
+  name: "dashboard",
 
-    data() {
-        return {
-        }
-    },
+  data() {
+    return {};
+  },
 
-    computed: {
-    },
+  computed: {},
 
-    mounted() {
-    },
+  mounted() {},
 
-    methods: {
-    },
-}
+  methods: {},
+};
 </script>
