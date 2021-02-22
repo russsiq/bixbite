@@ -43,7 +43,7 @@ if (isDashboard) {
 //     //
 // ])
 
-mix.inProduction() && mix.version([
+mix.version([
     'public/js/app.js',
     'public/css/app.css',
     'public/js/dashboard.js',
