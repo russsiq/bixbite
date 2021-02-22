@@ -1,3 +1,5 @@
+'use strict';
+
 require('./bootstrap');
 
 import {
