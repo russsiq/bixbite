@@ -20,7 +20,8 @@ Route::get('/', HomeController::class)
     ->name('home');
 
 Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])
-    ->get('/dashboard', DashboardController::class)
+    ->get('/dashboard/{any?}', DashboardController::class)
+    ->where('any', '.*')
     ->name('dashboard');
 
 Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
