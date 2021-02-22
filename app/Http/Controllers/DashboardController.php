@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\BixBiteContract;
-use App\Support\BixBite;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class DashboardController extends Controller
 {
@@ -15,22 +11,21 @@ class DashboardController extends Controller
      * Handle the incoming request.
      *
      * @param  Application  $app
-     * @param  Request  $request
-     * @param  ViewFactory  $viewFactory
-     * @return Response
+     * @return mixed
      */
     public function __invoke(
         Application $app,
-        BixBiteContract $bixbite,
-        Request $request,
-        ViewFactory $viewFactory
+        BixBiteContract $bixbite
     ) {
-        $viewFactory->addLocation(
+        $app->view->addLocation(
             $bixbite->dashboardViewsPath()
         );
 
-        return $viewFactory->make('dashboard', [
-            //
+        return $app->view->make('dashboard', [
+            'scriptVariables' => [
+                'app_name' => $app->config->get('app.name'),
+                'app_url' => $app->url->route('home'),
+            ],
         ]);
     }
 }
