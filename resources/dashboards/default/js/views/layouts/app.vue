@@ -1,34 +1,41 @@
 <template>
-<div class="app__body h-100">
+  <div class="app__body h-100">
+    <nav class="navbar sticky-top navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" :href="$root.app_url">{{ $root.app_name }}</a>
+      </div>
+    </nav>
     <main class="container">
-        <router-view></router-view>
+      <router-view></router-view>
     </main>
-</div>
+    <toast-container />
+  </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
+import ToastContainer from "@/views/components/toast-container";
+import { Bus } from "@/bus.js";
 
 export default {
-    name: 'app',
+  name: "app",
 
-    components: {
+  components: {
+    "toast-container": ToastContainer,
+  },
 
-    },
+  data() {
+    return {};
+  },
 
-    data() {
-        return {}
-    },
+  computed: {},
 
-    computed: {
+  mounted() {
+    Bus.$emit("toastShow", {
+      //   header: "BixBite",
+      body: "See? Just like this.",
+    });
+  },
 
-    },
-
-    created() {
-
-    },
-
-    methods: {
-
-    },
-}
+  methods: {},
+};
 </script>
