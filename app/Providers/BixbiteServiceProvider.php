@@ -2,11 +2,22 @@
 
 namespace App\Providers;
 
+use App\Contracts\BixBiteContract;
+use App\Support\BixBite;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
+    /**
+     * All of the container singletons that should be registered.
+     *
+     * @var array
+     */
+    public $singletons = [
+        BixBiteContract::class => BixBite::class,
+    ];
+
     /**
      * Register any application services.
      *

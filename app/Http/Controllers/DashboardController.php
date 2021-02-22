@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\BixBiteContract;
+use App\Support\BixBite;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\Request;
@@ -17,12 +19,14 @@ class DashboardController extends Controller
      * @param  ViewFactory  $viewFactory
      * @return Response
      */
-    public function __invoke(Application $app, Request $request, ViewFactory $viewFactory)
-    {
+    public function __invoke(
+        Application $app,
+        BixBiteContract $bixbite,
+        Request $request,
+        ViewFactory $viewFactory
+    ) {
         $viewFactory->addLocation(
-            $app->resourcePath(
-                'dashboard/'.config('bixbite.skin').'/views'
-            )
+            $bixbite->dashboardViewsPath()
         );
 
         return $viewFactory->make('dashboard', [

@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\BixBiteContract;
 use App\Http\View\Composers\AuthUserComposer;
 use App\Http\View\Composers\CategoriesComposer;
-use Illuminate\View\Factory as ViewFactory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Factory as ViewFactory;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -25,8 +26,12 @@ class ViewServiceProvider extends ServiceProvider
      * @param  ViewFactory  $viewFactory
      * @return void
      */
-    public function boot(ViewFactory $viewFactory): void
+    public function boot(BixBiteContract $bixbite, ViewFactory $viewFactory): void
     {
+        $viewFactory->addLocation(
+            $bixbite->themeViewsPath()
+        );
+
         $viewFactory->composer([
             'components.navbar',
         ], CategoriesComposer::class);
