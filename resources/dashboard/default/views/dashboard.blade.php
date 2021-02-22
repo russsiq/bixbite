@@ -7,7 +7,7 @@
 @endpush
 
 @push('styles')
-<link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+<link href="{{ mix('/css/dashboard.css') }}" rel="stylesheet">
 @endpush
 
 @section('body')
@@ -25,9 +25,9 @@
     </main>
 </noscript>
 
-<div id="app"></div>
+<div id="dashboard"></div>
 @endsection
 
 @push('scripts')
-<script src="{{ mix('/js/app.js') }}" charset="utf-8"></script>
+<script src="{{ mix('/js/dashboard.js') }}" charset="utf-8"></script>
 @endpush

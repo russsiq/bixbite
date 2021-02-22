@@ -1,22 +1,41 @@
 const mix = require('laravel-mix');
+const isDashboard = process.env.npm_config_skin;
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel applications. By default, we are compiling the CSS
- | file for the application as well as bundling up all the JS files.
- |
- */
+mix.options({
+    processCssUrls: false
+});
 
-mix.js('resources/js/app.js', 'public/js')
-    // .postCss('resources/css/app.css', 'public/css', [
-    //     //
-    // ])
-    .sass('resources/sass/app.scss', 'public/css');
+if (isDashboard) {
+    const SKIN = process.env.APP_SKIN;
+    const SKIN_PATH = `./resources/dashboard/${SKIN}/`;
 
-if (mix.inProduction()) {
-    mix.version();
+    mix.webpackConfig({
+            resolve: {
+                extensions: [
+                    '.js',
+                    '.vue',
+                ],
+
+                alias: {
+                    '@': `${__dirname}/resources/dashboard/${SKIN}/js`
+                }
+            }
+        })
+        .sass(SKIN_PATH+'sass/dashboard.scss', 'public/css')
+        .js(SKIN_PATH+'js/dashboard.js', 'public/js')
+        .vue();
+} else {
+    mix.sass('resources/sass/app.scss', 'public/css')
+        .js('resources/js/app.js', 'public/js');
 }
+
+// mix.postCss('resources/css/app.css', 'public/css', [
+//     //
+// ])
+
+mix.inProduction() && mix.version([
+    'public/js/app.js',
+    'public/css/app.css',
+    'public/js/dashboard.js',
+    'public/css/dashboard.css',
+]);
