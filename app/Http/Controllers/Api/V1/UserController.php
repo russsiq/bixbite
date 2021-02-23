@@ -38,7 +38,7 @@ class UserController extends Controller
         $collection = new UserCollection($users);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**

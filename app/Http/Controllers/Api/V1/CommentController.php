@@ -38,7 +38,7 @@ class CommentController extends Controller
         $collection = new CommentCollection($comments);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**

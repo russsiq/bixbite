@@ -38,7 +38,7 @@ class CategoryController extends Controller
         $collection = new CategoryCollection($categories);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**

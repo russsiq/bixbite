@@ -38,7 +38,7 @@ class TagController extends Controller
         $collection = new TagCollection($tags);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**

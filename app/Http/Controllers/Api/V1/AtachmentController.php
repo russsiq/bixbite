@@ -38,7 +38,7 @@ class AtachmentController extends Controller
         $collection = new AtachmentCollection($atachments);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**

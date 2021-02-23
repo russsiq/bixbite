@@ -43,7 +43,7 @@ class ArticleController extends Controller
         $collection = new ArticleCollection($articles);
 
         return $collection->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
+            ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
