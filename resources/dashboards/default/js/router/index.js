@@ -30,21 +30,15 @@ const router = new VueRouter({
 // В отличие от сторожевых хуков,
 // в глобальные хуки не передаётся функция next,
 // и на навигацию они повлиять не могут.
-router.afterEach((to, from) => {
-    const delimiter = ' – ';
-    const title = 'Панель управления';
+router.afterEach(function (to, from) {
+    const titles = [
+        `Dashboard ${BixBite.app_name}`,
+    ];
 
-    to.meta.title = to.meta.title || title;
+    to.query.page && titles.unshift(`Page ${to.query.page}`);
+    to.meta.title && titles.unshift(to.meta.title);
 
-    if (to.query.page) {
-        to.meta.title = 'Страница ' + to.query.page + delimiter + to.meta.title
-    }
-
-    if (to.meta.title !== title) {
-        to.meta.title += delimiter + title;
-    }
-
-    document.title = to.meta.title + delimiter + BixBite.app_name;
+    document.title = titles.join(' — ');
 });
 
 export default router;
