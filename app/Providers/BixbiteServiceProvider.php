@@ -37,7 +37,7 @@ class BixbiteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->resolving(PaginatorContract::class, function (PaginatorContract $paginator, $app) {
-            $paginator = $paginator->onEachSide(1);
+            $paginator->onEachSide(1);
         });
 
         Relation::morphMap([
