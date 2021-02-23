@@ -38,7 +38,7 @@ router.afterEach(function (to, from) {
     to.query.page && titles.unshift(`Page ${to.query.page}`);
     to.meta.title && titles.unshift(to.meta.title);
 
-    document.title = titles.join(' — ');
+    document.title = titles.join(' · ');
 });
 
 export default router;
