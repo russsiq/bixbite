@@ -1,36 +1,20 @@
 <template>
     <div class="container mt-5">
         <div class="card">
-            <h6 class="card-header">Articles</h6>
+            <h6 class="card-header">Categories</h6>
             <div class="card-body table-responsive">
-                <table v-if="articles.length" class="table table-sm m-0">
+                <table v-if="categories.length" class="table table-sm m-0">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Categories</th>
-                            <th scope="col">Tags</th>
-                            <th scope="col">User</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="article in articles" :key="article.id">
-                            <th scope="row">{{ article.id }}</th>
-                            <td>{{ article.attributes.title }}</td>
-                            <td>
-                                <span
-                                    v-for="category in article.relationships.categories.data"
-                                    :key="category.id"
-                                >{{ category.attributes.title }}</span>
-                            </td>
-                            <td>
-                                <span
-                                    v-for="tag in article.relationships.tags.data"
-                                    :key="tag.id"
-                                >{{ tag.attributes.title }}</span>
-                            </td>
-                            <td>{{ article.relationships.user.attributes.name }}</td>
+                        <tr v-for="category in categories" :key="category.id">
+                            <th scope="row">{{ category.id }}</th>
+                            <td>{{ category.attributes.title }}</td>
                             <td>
                                 <div
                                     class="btn-group btn-group-sm"
@@ -38,14 +22,11 @@
                                     aria-label="Action button groups"
                                 >
                                     <button type="button" class="btn btn-outline-primary">View</button>
-                                    <router-link
-                                        :to="{name: 'articles.edit', params: {id: article.id}}"
-                                        class="btn btn-outline-primary"
-                                    >Edit</router-link>
+                                    <button type="button" class="btn btn-outline-primary">Edit</button>
                                     <button
                                         type="button"
                                         class="btn btn-outline-danger"
-                                        @click="destroy(article)"
+                                        @click="destroy(category)"
                                     >Delete</button>
                                 </div>
                             </td>
@@ -59,7 +40,7 @@
 
 <script>
 export default {
-    name: "articles-index",
+    name: "categories-index",
 
     props: {
         model: {
@@ -70,7 +51,7 @@ export default {
 
     data() {
         return {
-            articles: [],
+            categories: [],
         };
     },
 
@@ -80,27 +61,27 @@ export default {
 
     methods: {
         fillTable(collection) {
-            this.articles = collection;
+            this.categories = collection;
         },
 
-        destroy(article) {
+        destroy(category) {
             // Получаем все данные по конкретной записи.
-            article = this.articles.find((item) => item.id === article.id);
+            category = this.categories.find((item) => item.id === category.id);
 
             const result = confirm(
-                `Do you want to remove this article [${article.attributes.title}]?`
+                `Do you want to remove this category [${category.attributes.title}]?`
             );
 
             result &&
                 this.$props.model
                     .$delete({
                         params: {
-                            id: article.id,
+                            id: category.id,
                         },
                     })
                     .then((response) => {
-                        this.articles = this.articles.filter(
-                            (item) => item.id !== article.id
+                        this.categories = this.categories.filter(
+                            (item) => item.id !== category.id
                         );
                     });
         },
