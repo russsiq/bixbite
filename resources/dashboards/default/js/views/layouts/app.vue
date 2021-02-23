@@ -1,5 +1,5 @@
 <template>
-    <div class="app__body h-100">
+    <div class="app__body">
         <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" :href="$root.app_url">{{ $root.app_name }}</a>
@@ -48,12 +48,6 @@ export default {
     components: {
         "loading-layer": LoadingLayer,
         "toast-container": ToastContainer,
-    },
-
-    mounted() {
-        Toast.info({
-            body: "See? Just like this.",
-        });
     },
 };
 </script>
