@@ -32,11 +32,13 @@
         <main class="container">
             <router-view></router-view>
         </main>
+        <loading-layer />
         <toast-container />
     </div>
 </template>
 
 <script>
+import LoadingLayer from "@/views/components/loading-layer";
 import Toast from "@/helpers/notification";
 import ToastContainer from "@/views/components/toast-container";
 
@@ -44,6 +46,7 @@ export default {
     name: "app",
 
     components: {
+        "loading-layer": LoadingLayer,
         "toast-container": ToastContainer,
     },
 
