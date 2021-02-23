@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-5">
         <div v-if="category && category.id" class="card">
-            <h6 class="card-header">Edit category [{{ category.attributes.title }}]</h6>
+            <h6 class="card-header">{{ $route.meta.title }} [{{ category.attributes.title }}]</h6>
             <div class="card-body"></div>
         </div>
     </div>
@@ -40,7 +40,7 @@ export default {
     },
 
     methods: {
-        fillTable(entity) {
+        fillForm(entity) {
             this.category = entity;
         },
     },

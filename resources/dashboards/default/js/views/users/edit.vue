@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-5">
-        <div v-if="article && article.id" class="card">
-            <h6 class="card-header">{{ $route.meta.title }} [{{ article.attributes.title }}]</h6>
+        <div v-if="user && user.id" class="card">
+            <h6 class="card-header">{{ $route.meta.title }} [{{ user.attributes.name }}]</h6>
             <div class="card-body"></div>
         </div>
     </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: "articles-edit",
+    name: "users-edit",
 
     props: {
         model: {
@@ -25,7 +25,7 @@ export default {
 
     data() {
         return {
-            article: null,
+            user: null,
         };
     },
 
@@ -40,8 +40,8 @@ export default {
     },
 
     methods: {
-        fillForm(article) {
-            this.article = article;
+        fillForm(entity) {
+            this.user = entity;
         },
     },
 };

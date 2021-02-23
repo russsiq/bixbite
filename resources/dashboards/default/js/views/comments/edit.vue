@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-5">
-        <div v-if="article && article.id" class="card">
-            <h6 class="card-header">{{ $route.meta.title }} [{{ article.attributes.title }}]</h6>
+        <div v-if="comment && comment.id" class="card">
+            <h6 class="card-header">{{ $route.meta.title }} [{{ comment.id }}]</h6>
             <div class="card-body"></div>
         </div>
     </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: "articles-edit",
+    name: "comments-edit",
 
     props: {
         model: {
@@ -25,7 +25,7 @@ export default {
 
     data() {
         return {
-            article: null,
+            comment: null,
         };
     },
 
@@ -40,8 +40,8 @@ export default {
     },
 
     methods: {
-        fillForm(article) {
-            this.article = article;
+        fillForm(entity) {
+            this.comment = entity;
         },
     },
 };

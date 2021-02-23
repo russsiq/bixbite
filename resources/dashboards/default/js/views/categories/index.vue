@@ -1,46 +1,57 @@
 <template>
-    <div class="container mt-5">
-        <div class="card">
-            <h6 class="card-header">Categories</h6>
-            <div class="card-body table-responsive">
-                <table v-if="categories.length" class="table table-sm m-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="category in categories" :key="category.id">
-                            <th scope="row">{{ category.id }}</th>
-                            <td>{{ category.attributes.title }}</td>
-                            <td>
-                                <div
-                                    class="btn-group btn-group-sm"
-                                    role="group"
-                                    aria-label="Action button groups"
-                                >
-                                    <button type="button" class="btn btn-outline-primary">View</button>
-                                    <button type="button" class="btn btn-outline-primary">Edit</button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-danger"
-                                        @click="destroy(category)"
-                                    >Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <filterable v-bind="filterable">
+        <template #title>Categories</template>
+
+        <template #first-group></template>
+
+        <template #second-group>
+            <button type="button" class="btn btn-outline-success">Create</button>
+        </template>
+
+        <template #thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col" class="text-end">Actions</th>
+            </tr>
+        </template>
+
+        <template #trow="{row}">
+            <tr :key="row.id">
+                <th scope="row">{{ row.id }}</th>
+                <td>{{ row.attributes.title }}</td>
+                <td class="text-end">
+                    <div
+                        class="btn-group btn-group-sm"
+                        role="group"
+                        aria-label="Action button groups"
+                    >
+                        <button type="button" class="btn btn-outline-primary">View</button>
+                        <router-link
+                            :to="{name: 'categories.edit', params: {id: row.id}}"
+                            class="btn btn-outline-primary"
+                        >Edit</router-link>
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger"
+                            @click="destroy(row)"
+                        >Delete</button>
+                    </div>
+                </td>
+            </tr>
+        </template>
+    </filterable>
 </template>
 
 <script>
+import Filterable from "@/views/components/filterable";
+
 export default {
     name: "categories-index",
+
+    components: {
+        filterable: Filterable,
+    },
 
     props: {
         model: {
@@ -51,23 +62,14 @@ export default {
 
     data() {
         return {
-            categories: [],
+            filterable: {
+                model: this.$props.model,
+            },
         };
     },
 
-    mounted() {
-        this.$props.model.$fetch().then(this.fillTable);
-    },
-
     methods: {
-        fillTable(collection) {
-            this.categories = collection;
-        },
-
         destroy(category) {
-            // Получаем все данные по конкретной записи.
-            category = this.categories.find((item) => item.id === category.id);
-
             const result = confirm(
                 `Do you want to remove this category [${category.attributes.title}]?`
             );

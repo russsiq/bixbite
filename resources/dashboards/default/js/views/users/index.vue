@@ -1,6 +1,6 @@
 <template>
     <filterable v-bind="filterable">
-        <template #title>Articles</template>
+        <template #title>Users</template>
 
         <template #first-group></template>
 
@@ -11,10 +11,7 @@
         <template #thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Categories</th>
-                <th scope="col">Tags</th>
-                <th scope="col">User</th>
+                <th scope="col">Name</th>
                 <th scope="col" class="text-end">Actions</th>
             </tr>
         </template>
@@ -22,20 +19,7 @@
         <template #trow="{row}">
             <tr :key="row.id">
                 <th scope="row">{{ row.id }}</th>
-                <td>{{ row.attributes.title }}</td>
-                <td>
-                    <span
-                        v-for="category in row.relationships.categories.data"
-                        :key="category.id"
-                    >{{ category.attributes.title }}</span>
-                </td>
-                <td>
-                    <span
-                        v-for="tag in row.relationships.tags.data"
-                        :key="tag.id"
-                    >{{ tag.attributes.title }}</span>
-                </td>
-                <td>{{ row.relationships.user.attributes.name }}</td>
+                <td>{{ row.attributes.name }}</td>
                 <td class="text-end">
                     <div
                         class="btn-group btn-group-sm"
@@ -44,7 +28,7 @@
                     >
                         <button type="button" class="btn btn-outline-primary">View</button>
                         <router-link
-                            :to="{name: 'articles.edit', params: {id: row.id}}"
+                            :to="{name: 'users.edit', params: {id: row.id}}"
                             class="btn btn-outline-primary"
                         >Edit</router-link>
                         <button
@@ -63,7 +47,7 @@
 import Filterable from "@/views/components/filterable";
 
 export default {
-    name: "articles-index",
+    name: "users-index",
 
     components: {
         filterable: Filterable,
@@ -85,21 +69,21 @@ export default {
     },
 
     methods: {
-        destroy(article) {
+        destroy(user) {
             const result = confirm(
-                `Do you want to remove this article [${article.attributes.title}]?`
+                `Do you want to remove this user [${user.attributes.name}]?`
             );
 
             result &&
                 this.$props.model
                     .$delete({
                         params: {
-                            id: article.id,
+                            id: user.id,
                         },
                     })
                     .then((response) => {
-                        this.articles = this.articles.filter(
-                            (item) => item.id !== article.id
+                        this.users = this.users.filter(
+                            (item) => item.id !== user.id
                         );
                     });
         },
