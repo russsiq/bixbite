@@ -1,6 +1,6 @@
 <template>
     <nav aria-label="Page navigation" role="navigation">
-        <ul v-if="links.length" class="pagination justify-content-end">
+        <ul v-if="links.length" class="pagination justify-content-end mb-0">
             <li
                 v-for="(link, index) in links"
                 :key="'item-'+index"
