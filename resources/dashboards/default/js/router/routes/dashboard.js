@@ -5,6 +5,6 @@ export default [{
     name: 'dashboard',
     component: Dashboard,
     meta: {
-        title: 'Панель управления'
+        title: 'Dashboard'
     }
 }]
