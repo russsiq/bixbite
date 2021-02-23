@@ -18,7 +18,7 @@ class AtachmentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -30,7 +30,7 @@ class AtachmentPolicy
      */
     public function view(User $user, Atachment $atachment)
     {
-        //
+        return false;
     }
 
     /**
@@ -41,7 +41,7 @@ class AtachmentPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class AtachmentPolicy
      */
     public function update(User $user, Atachment $atachment)
     {
-        //
+        return false;
     }
 
     /**
@@ -65,7 +65,7 @@ class AtachmentPolicy
      */
     public function delete(User $user, Atachment $atachment)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,7 +77,7 @@ class AtachmentPolicy
      */
     public function restore(User $user, Atachment $atachment)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +89,6 @@ class AtachmentPolicy
      */
     public function forceDelete(User $user, Atachment $atachment)
     {
-        //
+        return false;
     }
 }

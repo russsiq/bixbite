@@ -18,7 +18,7 @@ class ArticlePolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -30,7 +30,7 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -41,7 +41,7 @@ class ArticlePolicy
      */
     public function create(User $user)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -53,10 +53,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        return true;
-
-        // return $user->id === $article->user_id &&
-        //     $user->tokenCan('article:delete');
+        return false;
     }
 
     /**
@@ -68,10 +65,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        return true;
-
-        // return $user->id === $article->user_id &&
-        //     $user->tokenCan('article:delete');
+        return false;
     }
 
     /**
@@ -83,7 +77,7 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article)
     {
-        //
+        return false;
     }
 
     /**
@@ -95,6 +89,6 @@ class ArticlePolicy
      */
     public function forceDelete(User $user, Article $article)
     {
-        //
+        return false;
     }
 }
