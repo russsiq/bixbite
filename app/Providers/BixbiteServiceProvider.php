@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\BixBiteContract;
 use App\Support\BixBite;
+use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,6 +36,10 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->resolving(PaginatorContract::class, function (PaginatorContract $paginator, $app) {
+            $paginator = $paginator->onEachSide(1);
+        });
+
         Relation::morphMap([
             'articles' => \App\Models\Article::class,
             'atachments' => \App\Models\Atachment::class,
