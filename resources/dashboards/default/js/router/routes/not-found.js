@@ -1,4 +1,4 @@
-import NotFound from '@/views/errors/404'
+import NotFound from '@/views/errors/http-not-found';
 
 export default [{
 //     path: '/404',
