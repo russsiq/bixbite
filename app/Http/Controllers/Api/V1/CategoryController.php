@@ -33,7 +33,7 @@ class CategoryController extends Controller
     {
         $categories = Category::with([
             //
-        ])->paginate();
+        ])->get();
 
         $collection = new CategoryCollection($categories);
 
