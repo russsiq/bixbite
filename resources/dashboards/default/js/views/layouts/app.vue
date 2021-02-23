@@ -23,7 +23,7 @@
                             <router-link :to="{name: 'articles.index'}" class="nav-link">Articles</router-link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <router-link :to="{name: 'categories.index'}" class="nav-link">Categories</router-link>
                         </li>
                     </ul>
                 </div>
@@ -37,8 +37,8 @@
 </template>
 
 <script>
+import Toast from "@/helpers/notification";
 import ToastContainer from "@/views/components/toast-container";
-import { Bus } from "@/bus.js";
 
 export default {
     name: "app",
@@ -48,8 +48,7 @@ export default {
     },
 
     mounted() {
-        Bus.$emit("toastShow", {
-            //   header: "BixBite",
+        Toast.info({
             body: "See? Just like this.",
         });
     },

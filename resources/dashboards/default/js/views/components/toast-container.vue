@@ -10,7 +10,18 @@
             aria-atomic="true"
         >
             <div class="toast-header">
-                <strong class="me-auto">{{ toast.header || $root.app_name }}</strong>
+                <svg
+                    class="bd-placeholder-img rounded me-2"
+                    width="20"
+                    height="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    preserveAspectRatio="xMidYMid slice"
+                    focusable="false"
+                >
+                    <rect width="100%" height="100%" :fill="`var(--bs-${toast.type})`" />
+                </svg>
+                <strong class="me-auto">{{ toast.header }}</strong>
                 <small>{{ toast.time }}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -21,7 +32,7 @@
 
 <script>
 import { Toast } from "bootstrap";
-import { Bus } from "@/bus.js";
+import { Bus } from "@/store/bus.js";
 
 export default {
     name: "toast-container",
@@ -33,34 +44,25 @@ export default {
     },
 
     mounted() {
-        Bus.$on("toastShow", (toast) => {
-            const id = Math.random().toString(36).slice(2);
-
-            this.toasts.push({
-                id: `toast-${id}`,
-                time: new Date().toLocaleTimeString(),
-                ...toast,
-            });
-        });
-
-        this.$watch("toasts", this.createToast);
+        Bus.$on("toast.show", this.appendToast);
     },
 
     methods: {
-        createToast(newVal, oldVal) {
-            const [current] = newVal.slice(-1);
+        appendToast(toast) {
+            this.toasts.push(toast);
 
             this.$nextTick(() => {
-                const instance = new Toast(
-                    document.getElementById(current.id),
-                    {
-                        animation: true,
-                        autohide: false,
-                        delay: 8000,
-                    }
-                );
+                const toastElement = document.getElementById(toast.id);
+
+                const instance = new Toast(toastElement, toast);
 
                 instance.show();
+
+                toastElement.addEventListener("hidden.bs.toast", (event) => {
+                    this.toasts = this.toasts.filter(
+                        (item) => item.id !== toast.id
+                    );
+                });
             });
         },
     },
