@@ -1,6 +1,6 @@
 <template>
     <div v-if="isActive" class="position-absolute bottom-0 start-0 m-3">
-        <div class="spinner-grow text-danger" role="status">
+        <div class="spinner-grow text-warning" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
