@@ -16,7 +16,7 @@
             </div>
 
             <div class="card-body table-responsive">
-                <table v-if="collection.length" class="table table-sm m-0">
+                <table v-if="collection && collection.length" class="table table-sm m-0">
                     <thead>
                         <slot name="thead"></slot>
                     </thead>
@@ -25,10 +25,10 @@
                     </tbody>
                 </table>
 
-                <div v-else class="alert alert-info mb-0">No content.</div>
+                <div v-else class="alert alert-info mb-0" role="status">No content.</div>
             </div>
 
-            <div v-show="collection.length" class="card-footer text-muted">
+            <div v-show="collection && collection.length" class="card-footer text-muted">
                 <pagination @paginate="changePage" />
             </div>
         </div>
@@ -52,11 +52,14 @@ export default {
             type: Function,
             required: true,
         },
+        collection: {
+            type: Array,
+            required: true,
+        },
     },
 
     data() {
         return {
-            collection: [],
             query: {
                 page: 1,
             },
@@ -82,18 +85,23 @@ export default {
     },
 
     methods: {
-        fillTable(collection) {
-            this.collection = collection;
-        },
-
         changePage(page) {
             this.query.page = parseInt(page, 10);
         },
 
         applyChange() {
-            this.collection = [];
+            this.fetch({
+                // ...this.filters,
+                ...this.query,
+            });
+        },
 
-            this.$props.model.$fetch(this.query).then(this.fillTable);
+        fetch(filter) {
+            this.$props.model.$fetch(filter).then(this.fillTable);
+        },
+
+        fillTable(collection) {
+            this.$emit("update:collection", collection);
         },
     },
 };

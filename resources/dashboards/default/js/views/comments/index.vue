@@ -1,5 +1,5 @@
 <template>
-    <filterable v-bind="filterable">
+    <filterable v-bind="filterable" :collection.sync="collection">
         <template #title>Comments</template>
 
         <template #first-group></template>
@@ -62,6 +62,7 @@ export default {
 
     data() {
         return {
+            collection: [],
             filterable: {
                 model: this.$props.model,
             },
@@ -82,7 +83,7 @@ export default {
                         },
                     })
                     .then((response) => {
-                        this.comments = this.comments.filter(
+                        this.collection = this.collection.filter(
                             (item) => item.id !== comment.id
                         );
                     });
