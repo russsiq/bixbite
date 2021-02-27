@@ -1,6 +1,6 @@
 <template>
-    <div class="filterable">
-        <div class="card my-5">
+    <div class="filterable container my-5">
+        <div class="card">
             <div class="card-header">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <h5 class="card-title d-inline-block lh-base fw-bold m-0 p-1">
