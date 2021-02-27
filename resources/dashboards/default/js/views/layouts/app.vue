@@ -1,7 +1,7 @@
 <template>
     <div class="app__body">
         <navbar />
-        <main class="container">
+        <main>
             <router-view></router-view>
         </main>
         <loading-layer />
