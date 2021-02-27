@@ -15,7 +15,7 @@ class UpdateArticleRequest extends StoreArticleRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('articles')->ignore($this->id)],
+            'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('articles')->ignore($this->route('article'))],
         ]);
     }
 }
