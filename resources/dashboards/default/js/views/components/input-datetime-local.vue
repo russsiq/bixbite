@@ -22,7 +22,7 @@ export default {
         localValue() {
             return (
                 this.$props.value &&
-                    this.$props.value.replace(" ", "T").slice(0, 19)
+                    this.$props.value.replace(" ", "T").slice(0, 16)
             );
         },
     },
