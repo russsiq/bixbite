@@ -24,7 +24,7 @@ class CreateArticlesTable extends Migration
             // Основное содержимое.
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('teaser')->nullable();
+            $table->string('teaser')->nullable();
             $table->text('content')->nullable();
 
             // SEO-поля для метатегов.
