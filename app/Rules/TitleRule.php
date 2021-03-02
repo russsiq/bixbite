@@ -12,6 +12,25 @@ class TitleRule implements Rule, ImplicitRule
     protected $translator;
 
     /**
+     * @see https://www.php.net/manual/ru/regexp.reference.unicode.php
+     * @see http://unicode.org/reports/tr18/#General_Category_Property
+     *
+     * @var string[]
+     */
+    protected $criterias = [
+        '\p{L}',
+        '\p{M}',
+        '\p{Nd}',
+        '\p{Pc}\p{Pd}',
+        '\p{Sc}',
+        '\p{Zs}',
+        '«»:;,\'\!\?\.',
+    ];
+
+    /** @var int[] */
+    protected $length = [3, 255];
+
+    /**
      * Create a new rule instance.
      *
      * @return void
@@ -34,7 +53,7 @@ class TitleRule implements Rule, ImplicitRule
             return false;
         }
 
-        return preg_match('/^[[:alnum:][:space:]\_\-]{3,255}$/u', $value) > 0;
+        return preg_match($this->buildPattern(), $value) > 0;
     }
 
     /**
@@ -52,5 +71,22 @@ class TitleRule implements Rule, ImplicitRule
         ];
 
         return $message[$locale] ?? $message['ru'];
+    }
+
+    /**
+     * Generate a search pattern string.
+     *
+     * @return string
+     */
+    protected function buildPattern(): string
+    {
+        $criterias = array_values($this->criterias);
+
+        return sprintf(
+            '/^[%s]{%d,%d}$/u',
+            implode('', $criterias),
+            $this->length[0],
+            $this->length[1]
+        );
     }
 }
