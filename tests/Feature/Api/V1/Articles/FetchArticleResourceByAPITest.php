@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
+use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
 /**
@@ -48,26 +49,9 @@ class FetchArticleResourceByAPITest extends TestCase
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_OK)
             ->assertJsonCount($countArticles, 'data')
-            ->assertJsonStructure([
-                'data' => [
-                    '*' => [
-                        'type',
-                        'id',
-                        'attributes' => [
-                            'user_id',
-                            'title', 'slug', 'teaser', 'content',
-                            'meta_description', 'meta_keywords', 'meta_robots',
-                            'on_mainpage', 'is_favorite', 'is_pinned',
-                            'views',
-                            'created_at', 'updated_at',
-                        ],
-                        'relationships',
-                    ],
-                ],
-                'links' => [
-                    'self',
-                ],
-            ]);
+            ->assertJsonStructure(
+                ArticleFixtures::collection()
+            );
     }
 
     public function test_guest_cannot_fetch_specific_article()
@@ -107,24 +91,9 @@ class FetchArticleResourceByAPITest extends TestCase
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_OK)
-            ->assertJsonStructure([
-                'links' => [
-                    'self',
-                ],
-                'data' => [
-                    'type',
-                    'id',
-                    'attributes' => [
-                        'user_id',
-                        'title', 'slug', 'teaser', 'content',
-                        'meta_description', 'meta_keywords', 'meta_robots',
-                        'on_mainpage', 'is_favorite', 'is_pinned',
-                        'views',
-                        'created_at', 'updated_at',
-                    ],
-                    'relationships',
-                ],
-            ]);
+            ->assertJsonStructure(
+                ArticleFixtures::collection()
+            );
     }
 
     public function test_not_found_when_attempt_to_fetch_single_non_existent_resource()

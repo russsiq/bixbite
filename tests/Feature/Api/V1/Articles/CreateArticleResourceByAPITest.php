@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
+use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
 /**
@@ -30,7 +31,6 @@ class CreateArticleResourceByAPITest extends TestCase
 
     public function test_user_can_create_article()
     {
-        $this->withoutExceptionHandling();
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
@@ -38,23 +38,8 @@ class CreateArticleResourceByAPITest extends TestCase
                 'title' => 'New article title',
             ])
             ->assertStatus(JsonResponse::HTTP_CREATED)
-            ->assertJsonStructure([
-                'links' => [
-                    'self',
-                ],
-                'data' => [
-                    'type',
-                    'id',
-                    'attributes' => [
-                        'user_id',
-                        'title', 'slug', 'teaser', 'content',
-                        'meta_description', 'meta_keywords', 'meta_robots',
-                        'on_mainpage', 'is_favorite', 'is_pinned',
-                        'views',
-                        'created_at', 'updated_at',
-                    ],
-                    'relationships',
-                ],
-            ]);
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
     }
 }

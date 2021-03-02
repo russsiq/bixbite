@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
+use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
 /**
@@ -48,24 +49,9 @@ class UpdateArticleResourceByAPITest extends TestCase
                 'title' => 'New title for old article',
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
-            ->assertJsonStructure([
-                'links' => [
-                    'self',
-                ],
-                'data' => [
-                    'type',
-                    'id',
-                    'attributes' => [
-                        'user_id',
-                        'title', 'slug', 'teaser', 'content',
-                        'meta_description', 'meta_keywords', 'meta_robots',
-                        'on_mainpage', 'is_favorite', 'is_pinned',
-                        'views',
-                        'created_at', 'updated_at',
-                    ],
-                    'relationships',
-                ],
-            ]);
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
     }
 
     public function test_not_found_when_attempt_to_update_non_existent_resource()
