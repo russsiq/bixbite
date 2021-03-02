@@ -61,7 +61,7 @@ class TitleRule implements Rule, ImplicitRule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
         $locale = $this->translator->getLocale();
 
