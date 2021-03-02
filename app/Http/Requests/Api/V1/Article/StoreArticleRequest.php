@@ -32,7 +32,7 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         $titleRule = $this->container->make(TitleRule::class);
-        $sqlTextLength = $this->container->make(SqlTextLength::class);
+        $sqlTextLengthRule = $this->container->make(SqlTextLength::class);
 
         return [
             // Не валидируем эти поля, оставляем управление
@@ -42,7 +42,7 @@ class StoreArticleRequest extends FormRequest
             'title' => ['required', $titleRule],
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('articles')],
             'teaser' => ['nullable', 'string', 'max:255'],
-            'content' => ['nullable', $sqlTextLength],
+            'content' => ['nullable', $sqlTextLengthRule],
 
             'meta_description' => ['nullable', 'string', 'max:255'],
             'meta_keywords' => ['nullable', 'string', 'max:255'],
