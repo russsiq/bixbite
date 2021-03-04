@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@popperjs/core": "^2.8",
+        "@popperjs/core": "^2.9",
         "axios": "^0.21",
         "bootstrap": "^5.0.0-beta2",
         "laravel-mix": "^6.0",
