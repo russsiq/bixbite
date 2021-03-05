@@ -51,6 +51,24 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
+    public function test_super_admin_can_update_article()
+    {
+        $super_admin = $this->loginSuperAdminSPA();
+
+        $article = Article::factory()
+            ->for($super_admin)
+            ->create();
+
+        $response = $this->assertAuthenticated()
+           ->putJson(route('api.articles.update', $article), [
+                'title' => 'New title for old article',
+            ])
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
+    }
+
     public function test_not_found_when_attempt_to_update_non_existent_resource()
     {
         $user = $this->loginSPA();

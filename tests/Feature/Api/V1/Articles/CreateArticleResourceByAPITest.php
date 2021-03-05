@@ -39,4 +39,18 @@ class CreateArticleResourceByAPITest extends TestCase
             ])
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
+
+    public function test_super_admin_can_create_article()
+    {
+        $super_admin = $this->loginSuperAdminSPA();
+
+        $response = $this->assertAuthenticated()
+            ->postJson(route('api.articles.store'), [
+                'title' => 'New article title',
+            ])
+            ->assertStatus(JsonResponse::HTTP_CREATED)
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
+    }
 }

@@ -65,10 +65,10 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_each_received_article_contains_required_fields()
     {
-        $user = $this->loginSPA();
+        $super_admin = $this->loginSuperAdminSPA();
 
         $articles = Article::factory($countArticles = 5)
-            ->for($user)
+            ->for($super_admin)
             ->create();
 
         $response = $this->assertAuthenticated()
@@ -82,10 +82,10 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public function test_single_received_article_contains_required_fields()
     {
-        $user = $this->loginSPA();
+        $super_admin = $this->loginSuperAdminSPA();
 
         $article = Article::factory()
-            ->for($user)
+            ->for($super_admin)
             ->create();
 
         $response = $this->assertAuthenticated()

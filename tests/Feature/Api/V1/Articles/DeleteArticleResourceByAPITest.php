@@ -50,6 +50,21 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
+    public function test_super_admin_can_delete_article()
+    {
+        $super_admin = $this->loginSuperAdminSPA();
+
+        $article = Article::factory()
+            ->for($super_admin)
+            ->create();
+
+        $response = $this->assertAuthenticated()
+           ->deleteJson(route('api.articles.destroy', $article), [
+
+            ])
+            ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
+    }
+
     public function test_not_found_when_attempt_to_delete_non_existent_resource()
     {
         $user = $this->loginSPA();
