@@ -54,6 +54,9 @@ class StoreArticleRequest extends FormRequest
             'is_pinned' => ['nullable', 'boolean'],
 
             'views' => ['sometimes', 'integer'],
+
+            'created_at' => ['sometimes', 'date'],
+            'updated_at' => ['sometimes', 'date'],
         ];
     }
 }
