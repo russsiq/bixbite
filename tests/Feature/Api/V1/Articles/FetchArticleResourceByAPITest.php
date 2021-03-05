@@ -37,23 +37,6 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
-    public function test_each_received_article_contains_required_fields()
-    {
-        $user = $this->loginSPA();
-
-        $articles = Article::factory($countArticles = 5)
-            ->for($user)
-            ->create();
-
-        $response = $this->assertAuthenticated()
-            ->getJson(route('api.articles.index'))
-            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
-            ->assertJsonCount($countArticles, 'data')
-            ->assertJsonStructure(
-                ArticleFixtures::collection()
-            );
-    }
-
     public function test_guest_cannot_fetch_specific_article()
     {
         $user = $this->createUser();
@@ -78,6 +61,23 @@ class FetchArticleResourceByAPITest extends TestCase
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    public function test_each_received_article_contains_required_fields()
+    {
+        $user = $this->loginSPA();
+
+        $articles = Article::factory($countArticles = 5)
+            ->for($user)
+            ->create();
+
+        $response = $this->assertAuthenticated()
+            ->getJson(route('api.articles.index'))
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
+            ->assertJsonCount($countArticles, 'data')
+            ->assertJsonStructure(
+                ArticleFixtures::collection()
+            );
     }
 
     public function test_single_received_article_contains_required_fields()
