@@ -80,7 +80,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_OK);
     }
 
-    public function test_separately_received_article_contains_required_fields()
+    public function test_single_received_article_contains_required_fields()
     {
         $user = $this->loginSPA();
 
@@ -92,7 +92,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_OK)
             ->assertJsonStructure(
-                ArticleFixtures::collection()
+                ArticleFixtures::resource()
             );
     }
 
