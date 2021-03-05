@@ -6,9 +6,11 @@ namespace Tests\Feature\Api\V1\Articles;
 
 use App\Models\Article;
 use App\Models\User;
+use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
+use Mockery\MockInterface;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
@@ -36,8 +38,14 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_cannot_update_article()
+    public function test_user_without_permission_cannot_update_article()
     {
+        $this->partialMock(ArticlePolicy::class, function (MockInterface $mock) {
+            return $mock->shouldReceive('update')
+                ->once()
+                ->andReturn(false);
+        });
+
         $user = $this->loginSPA();
 
         $article = Article::factory()
