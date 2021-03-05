@@ -29,17 +29,14 @@ class CreateArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_can_create_article()
+    public function test_user_cannot_create_article()
     {
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
             ->postJson(route('api.articles.store'), [
-                'title' => 'New article title',
+
             ])
-            ->assertStatus(JsonResponse::HTTP_CREATED)
-            ->assertJsonStructure(
-                ArticleFixtures::resource()
-            );
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 }

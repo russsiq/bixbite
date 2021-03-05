@@ -28,13 +28,13 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_can_fetch_articles()
+    public function test_user_cannot_fetch_articles()
     {
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.index'))
-            ->assertStatus(JsonResponse::HTTP_OK);
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
     public function test_each_received_article_contains_required_fields()
@@ -47,7 +47,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.index'))
-            ->assertStatus(JsonResponse::HTTP_OK)
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
             ->assertJsonCount($countArticles, 'data')
             ->assertJsonStructure(
                 ArticleFixtures::collection()
@@ -67,7 +67,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_can_fetch_specific_article()
+    public function test_user_cannot_fetch_specific_article()
     {
         $user = $this->loginSPA();
 
@@ -77,7 +77,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
             ->getJson(route('api.articles.show', $article))
-            ->assertStatus(JsonResponse::HTTP_OK);
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
     public function test_single_received_article_contains_required_fields()

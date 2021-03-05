@@ -36,7 +36,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_can_update_article()
+    public function test_user_cannot_update_article()
     {
         $user = $this->loginSPA();
 
@@ -46,12 +46,9 @@ class UpdateArticleResourceByAPITest extends TestCase
 
         $response = $this->assertAuthenticated()
            ->putJson(route('api.articles.update', $article), [
-                'title' => 'New title for old article',
+
             ])
-            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
-            ->assertJsonStructure(
-                ArticleFixtures::resource()
-            );
+            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
     public function test_not_found_when_attempt_to_update_non_existent_resource()
