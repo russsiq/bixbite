@@ -10,7 +10,7 @@ use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
-use Mockery\MockInterface;
+use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
@@ -21,6 +21,7 @@ use Tests\TestCase;
  */
 class UpdateArticleResourceByAPITest extends TestCase
 {
+    use InteractsWithPolicy;
     use RefreshDatabase;
 
     public function test_guest_cannot_update_article()
@@ -38,13 +39,9 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_without_permission_cannot_update_article()
+    public function test_user_without_ability_cannot_update_article()
     {
-        $this->partialMock(ArticlePolicy::class, function (MockInterface $mock) {
-            return $mock->shouldReceive('update')
-                ->once()
-                ->andReturn(false);
-        });
+        $this->denyPolicyAbility(ArticlePolicy::class, ['update']);
 
         $user = $this->loginSPA();
 

@@ -10,7 +10,7 @@ use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
-use Mockery\MockInterface;
+use Tests\Concerns\InteractsWithPolicy;
 use Tests\TestCase;
 
 /**
@@ -20,6 +20,7 @@ use Tests\TestCase;
  */
 class DeleteArticleResourceByAPITest extends TestCase
 {
+    use InteractsWithPolicy;
     use RefreshDatabase;
 
     public function test_guest_cannot_delete_article()
@@ -37,13 +38,9 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_without_permission_cannot_delete_article()
+    public function test_user_without_ability_cannot_delete_article()
     {
-        $this->partialMock(ArticlePolicy::class, function (MockInterface $mock) {
-            return $mock->shouldReceive('delete')
-                ->once()
-                ->andReturn(false);
-        });
+        $this->denyPolicyAbility(ArticlePolicy::class, ['delete']);
 
         $user = $this->loginSPA();
 

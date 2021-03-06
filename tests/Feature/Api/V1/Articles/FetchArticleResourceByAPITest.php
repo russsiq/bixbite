@@ -10,7 +10,7 @@ use App\Policies\ArticlePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
-use Mockery\MockInterface;
+use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
@@ -21,6 +21,7 @@ use Tests\TestCase;
  */
 class FetchArticleResourceByAPITest extends TestCase
 {
+    use InteractsWithPolicy;
     use RefreshDatabase;
 
     public function test_guest_cannot_fetch_articles()
@@ -30,13 +31,9 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_without_permission_cannot_fetch_articles()
+    public function test_user_without_ability_cannot_fetch_articles()
     {
-        $this->partialMock(ArticlePolicy::class, function (MockInterface $mock) {
-            return $mock->shouldReceive('viewAny')
-                ->once()
-                ->andReturn(false);
-        });
+        $this->denyPolicyAbility(ArticlePolicy::class, ['viewAny']);
 
         $user = $this->loginSPA();
 
@@ -58,13 +55,9 @@ class FetchArticleResourceByAPITest extends TestCase
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_without_permission_cannot_fetch_specific_article()
+    public function test_user_without_ability_cannot_fetch_specific_article()
     {
-        $this->partialMock(ArticlePolicy::class, function (MockInterface $mock) {
-            return $mock->shouldReceive('view')
-                ->once()
-                ->andReturn(false);
-        });
+        $this->denyPolicyAbility(ArticlePolicy::class, ['view']);
 
         $user = $this->loginSPA();
 
