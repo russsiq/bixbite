@@ -24,7 +24,7 @@ class TitleRule implements Rule, ImplicitRule
         '\p{Pc}\p{Pd}',
         '\p{Sc}',
         '\p{Zs}',
-        '«»:;,\'\!\?\.',
+        '«»:;,·\'\!\?\.',
     ];
 
     /** @var int[] */
