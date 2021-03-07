@@ -193,7 +193,7 @@ const http = {
      * @param {object} error
      */
     onUnauthorised(error) {
-        Router.replace('unauthorized');
+        Router.replace({ name: 'unauthorized' });
     },
 
     /**
@@ -202,7 +202,7 @@ const http = {
      * @param {object} error
      */
     onForbidden(error) {
-        Router.replace('forbidden');
+        Router.replace({ name: 'forbidden' });
     },
 
     /**
@@ -211,7 +211,7 @@ const http = {
      * @param {object} error
      */
     onNotFound(error) {
-        Router.replace('not-found');
+        Router.replace({ name: 'not-found' });
     },
 
     /**
@@ -221,10 +221,7 @@ const http = {
      * @param {object} error
      */
     onAuthTimeout(error) {
-        Toast.error({
-            title: '419. Authentication timeout',
-            message: 'Срок действия страницы истек из-за неактивности. Пожалуйста, обновите страницу и повторите попытку.'
-        });
+        Router.replace({ name: 'expired' });
     },
 
     /**
@@ -250,10 +247,7 @@ const http = {
      * @param {object} error
      */
     onTooManyRequests(error) {
-        Toast.error({
-            title: '429. Too Many Requests',
-            message: 'Пожалуйста, повторите попытку позже.'
-        });
+        Router.replace({ name: 'many-requests' });
     },
 
     /**
@@ -264,7 +258,7 @@ const http = {
     onServerError(error) {
         Toast.error({
             title: '500. Server Error',
-            message: 'Пожалуйста, повторите попытку позже.'
+            message: "The server encountered an unexpected condition that doesn't allow it to complete the request."
         });
     },
 
@@ -276,7 +270,7 @@ const http = {
     onServiceUnavailable(error) {
         Toast.error({
             title: '503. Service Unavailable',
-            message: 'Пожалуйста, повторите попытку позже.'
+            message: 'An error occurred due to temporary overload or disconnection for server maintenance.'
         });
     },
 
