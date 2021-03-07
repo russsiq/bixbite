@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1\Article;
 
+use App\Rules\MetaRobotsRule;
 use App\Rules\SqlTextLength;
 use App\Rules\TitleRule;
 use Illuminate\Foundation\Http\FormRequest;
