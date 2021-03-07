@@ -35,6 +35,22 @@ class Atachment extends Model
     use HasFactory;
 
     /**
+    * The model's attributes.
+    *
+    * @var array
+    */
+   protected $attributes = [
+        'title' => '',
+        'description' => '',
+        'disk' => 'public',
+        'folder' => 'public',
+        'type' => 'other',
+        'filesize' => 0,
+        'properties' => [],
+        'downloads' => 0,
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
@@ -66,7 +82,7 @@ class Atachment extends Model
         'extension' => 'string',
         'mime_type' => 'string',
         'filesize' => 'integer',
-        'checksum' => 'boolean',
+        'checksum' => 'string',
         'properties' => 'array',
 
         'downloads' => 'integer',

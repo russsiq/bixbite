@@ -36,6 +36,24 @@ class Article extends Model
     use HasFactory;
 
     /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'position' => 0,
+        'teaser' => null,
+        'content' => null,
+        'meta_description' => null,
+        'meta_keywords' => null,
+        'meta_robots' => 'all',
+        'on_mainpage' => true,
+        'is_favorite' => false,
+        'is_pinned' => false,
+        'views' => 0,
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]

@@ -28,6 +28,16 @@ class Comment extends Model
     use HasFactory;
 
     /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'parent_id' => 0,
+        'is_approved' => false,
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]

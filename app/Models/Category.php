@@ -34,13 +34,32 @@ class Category extends Model
     use HasFactory;
 
     /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'parent_id' => 0,
+        'position' => 0,
+        'alt_url' => null,
+        'info' => null,
+        'meta_description' => null,
+        'meta_keywords' => null,
+        'meta_robots' => 'all',
+        'show_in_menu' => true,
+        'paginate' => 15,
+        'template' => null,
+        'order_by' => 'id',
+        'direction' => 'desc',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'parent_id',
-        'position',
+        'parent_id', 'position',
         'title', 'slug', 'alt_url', 'info',
         'meta_description', 'meta_keywords', 'meta_robots',
         'show_in_menu',
@@ -55,16 +74,13 @@ class Category extends Model
     protected $casts = [
         'parent_id' => 'integer',
         'position' => 'integer',
-
         'title' => 'string',
         'slug' => 'string',
         'alt_url' => 'string',
         'info' => 'string',
-
         'meta_description' => 'string',
         'meta_keywords' => 'string',
         'meta_robots' => 'string',
-
         'show_in_menu' => 'boolean',
         'paginate' => 'integer',
         'template' => 'string',
