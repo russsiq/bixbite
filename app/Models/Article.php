@@ -41,7 +41,6 @@ class Article extends Model
      * @var array
      */
     protected $attributes = [
-        'position' => 0,
         'teaser' => null,
         'content' => null,
         'meta_description' => null,
