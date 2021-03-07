@@ -58,6 +58,21 @@ class BixBite implements BixBiteContract
         return $this->themePath('views');
     }
 
+    public function locale(): string
+    {
+        return $this->app->getLocale();
+    }
+
+    public function fakerLocale(): string
+    {
+        return $this->config->get('app.faker_locale', 'en_US');
+    }
+
+    public function fallbackLocale(): string
+    {
+        return $this->config->get('app.fallback_locale', 'en');
+    }
+
     protected function completePathFragment(string $path): string
     {
         $path = trim($path, DIRECTORY_SEPARATOR);

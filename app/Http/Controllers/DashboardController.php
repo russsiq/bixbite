@@ -27,6 +27,7 @@ class DashboardController extends Controller
                 'app_name' => $app->config->get('app.name'),
                 'app_url' => $app->url->route('home'),
                 'dashboard_base_url' => 'dashboard',
+                'locale' => $bixbite->locale(),
             ],
         ]);
     }
