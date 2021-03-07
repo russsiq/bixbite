@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api\V1\Article;
 
-use App\Models\Article;
 use App\Rules\SqlTextLength;
 use App\Rules\TitleRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -32,8 +31,9 @@ class StoreArticleRequest extends FormRequest
      */
     public function rules()
     {
-        $titleRule = $this->container->make(TitleRule::class);
+        $metaRobotsRule = $this->container->make(MetaRobotsRule::class);
         $sqlTextLengthRule = $this->container->make(SqlTextLength::class);
+        $titleRule = $this->container->make(TitleRule::class);
 
         return [
             // Не валидируем эти поля, оставляем управление
@@ -47,11 +47,11 @@ class StoreArticleRequest extends FormRequest
 
             'meta_description' => ['nullable', 'string', 'max:255'],
             'meta_keywords' => ['nullable', 'string', 'max:255'],
-            'meta_robots' => ['nullable', 'string', 'max:255', Rule::in(Article::META_ROBOTS)],
+            'meta_robots' => ['sometimes', 'string', 'max:255', $metaRobotsRule],
 
-            'on_mainpage' => ['nullable', 'boolean'],
-            'is_favorite' => ['nullable', 'boolean'],
-            'is_pinned' => ['nullable', 'boolean'],
+            'on_mainpage' => ['sometimes', 'boolean'],
+            'is_favorite' => ['sometimes', 'boolean'],
+            'is_pinned' => ['sometimes', 'boolean'],
 
             'views' => ['sometimes', 'integer'],
 

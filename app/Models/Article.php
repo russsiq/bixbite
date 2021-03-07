@@ -36,15 +36,6 @@ class Article extends Model
     use HasFactory;
 
     /**
-     * Valid indexing directives for the robots meta tag.
-     *
-     * @const string[]
-     * */
-    public const META_ROBOTS = [
-        'all', 'noindex', 'nofollow', 'none',
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var string[]

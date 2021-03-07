@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -35,7 +36,7 @@ class CategoryFactory extends Factory
 
             'meta_description' => $this->faker->text(mt_rand(120, 255)),
             'meta_keywords' => implode(',', $this->faker->words(mt_rand(3, 8))),
-            'meta_robots' => $this->faker->randomElement(['all', 'noindex', 'nofollow', 'none']),
+            'meta_robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
 
             'show_in_menu' => mt_rand(0, 1),
             'paginate' => mt_rand(5, 20),

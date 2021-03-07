@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -38,7 +39,7 @@ class ArticleFactory extends Factory
 
             'meta_description' => $this->faker->text(mt_rand(120, 255)),
             'meta_keywords' => implode(',', $this->faker->words(mt_rand(3, 8))),
-            'meta_robots' => $this->faker->randomElement(Article::META_ROBOTS),
+            'meta_robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
 
             'views' => mt_rand(0, 240),
 

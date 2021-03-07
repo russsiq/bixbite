@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Article;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +31,7 @@ class CreateArticlesTable extends Migration
             // SEO-поля для метатегов.
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
-            $table->enum('meta_robots', Article::META_ROBOTS)
+            $table->enum('meta_robots', MetaRobotsRule::DIRECTIVES)
                 ->default('all');
 
             // Поля с дополнительной информацией.
