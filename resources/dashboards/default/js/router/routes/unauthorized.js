@@ -5,6 +5,6 @@ export default [{
     name: 'unauthorized',
     component: Unauthorized,
     meta: {
-        title: '403. Unauthorized'
+        title: '401. Unauthorized'
     },
 }]
