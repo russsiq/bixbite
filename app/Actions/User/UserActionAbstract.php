@@ -3,6 +3,7 @@
 namespace App\Actions\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Hashing\HashManager;
@@ -13,6 +14,9 @@ abstract class UserActionAbstract
     /** @var HashManager */
     protected $hashManager;
 
+    /** @var Translator */
+    protected $translator;
+
     /** @var ValidationFactory */
     protected $validationFactory;
 
@@ -20,13 +24,16 @@ abstract class UserActionAbstract
      * Create a new Action instance.
      *
      * @param HashManager  $hashManager
+     * @param Translator  $translator
      * @param ValidationFactory  $validationFactory
      */
     public function __construct(
         HashManager $hashManager,
+        Translator $translator,
         ValidationFactory $validationFactory
     ) {
         $this->hashManager = $hashManager;
+        $this->translator = $translator;
         $this->validationFactory = $validationFactory;
     }
 

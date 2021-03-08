@@ -41,7 +41,9 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
                 'string',
                 function ($attribute, $value, $message) use ($user) {
                     ! $this->checkHash($value, $user->password) && $message(
-                        trans('The provided password does not match your current password.')
+                        $this->translator->get(
+                            'The provided password does not match your current password.'
+                        )
                     );
                 },
             ],
