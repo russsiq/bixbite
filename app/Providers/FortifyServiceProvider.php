@@ -39,9 +39,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         // Register a class / callback that should be used to Fortify Actions.
         Fortify::createUsersUsing(CreateNewUserAction::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformationAction::class);
-        Fortify::updateUserPasswordsUsing(UpdateUserPasswordAction::class);
         Fortify::resetUserPasswordsUsing(ResetUserPasswordAction::class);
+        Fortify::updateUserPasswordsUsing(UpdateUserPasswordAction::class);
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformationAction::class);
 
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->email.$request->ip());
