@@ -16,7 +16,7 @@ class SqlTextLength implements Rule
     /**
      * Create a new rule instance.
      *
-     * @return void
+     * @param Translator  $translator
      */
     public function __construct(Translator $translator)
     {

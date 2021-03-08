@@ -33,7 +33,7 @@ class TitleRule implements Rule, ImplicitRule
     /**
      * Create a new rule instance.
      *
-     * @return void
+     * @param Translator  $translator
      */
     public function __construct(Translator $translator)
     {
