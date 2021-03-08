@@ -3,16 +3,16 @@
 namespace App\Actions\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Hashing\HashManager;
 use Laravel\Fortify\Rules\Password;
 
 abstract class UserActionAbstract
 {
-    /** @var HashManager */
-    protected $hashManager;
+    /** @var Hasher */
+    protected $hasher;
 
     /** @var Translator */
     protected $translator;
@@ -23,16 +23,16 @@ abstract class UserActionAbstract
     /**
      * Create a new Action instance.
      *
-     * @param HashManager  $hashManager
+     * @param Hasher  $hasher
      * @param Translator  $translator
      * @param ValidationFactory  $validationFactory
      */
     public function __construct(
-        HashManager $hashManager,
+        Hasher $hasher,
         Translator $translator,
         ValidationFactory $validationFactory
     ) {
-        $this->hashManager = $hashManager;
+        $this->hasher = $hasher;
         $this->translator = $translator;
         $this->validationFactory = $validationFactory;
     }
@@ -76,7 +76,7 @@ abstract class UserActionAbstract
      */
     protected function makeHash(string $value): string
     {
-        return $this->hashManager->make($value);
+        return $this->hasher->make($value);
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class UserActionAbstract
         string $hashedValue,
         array $options = []
     ): bool {
-        return $this->hashManager->check($value, $hashedValue, $options);
+        return $this->hasher->check($value, $hashedValue, $options);
     }
 
     /**
