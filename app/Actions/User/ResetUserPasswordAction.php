@@ -5,7 +5,7 @@ namespace App\Actions\User;
 use App\Models\User;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
-class ResetUserPassword extends UserActionAbstract implements ResetsUserPasswords
+class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPasswords
 {
     /**
      * Validate and reset the user's forgotten password.

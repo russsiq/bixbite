@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
-class CreateNewUser extends UserActionAbstract implements CreatesNewUsers
+class CreateNewUserAction extends UserActionAbstract implements CreatesNewUsers
 {
     /**
      * Validate and create a newly registered user.

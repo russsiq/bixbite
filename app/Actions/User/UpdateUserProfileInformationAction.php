@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
-class UpdateUserProfileInformation extends UserActionAbstract implements UpdatesUserProfileInformation
+class UpdateUserProfileInformationAction extends UserActionAbstract implements UpdatesUserProfileInformation
 {
     /**
      * Validate and update the given user's profile information.

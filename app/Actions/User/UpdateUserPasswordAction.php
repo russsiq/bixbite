@@ -3,10 +3,9 @@
 namespace App\Actions\User;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
-class UpdateUserPassword extends UserActionAbstract implements UpdatesUserPasswords
+class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUserPasswords
 {
     /**
      * Validate and update the user's password.
