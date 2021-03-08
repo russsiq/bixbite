@@ -87,7 +87,7 @@ abstract class UserActionAbstract
      * @param  array  $options
      * @return bool
      */
-    public function checkHash(
+    protected function checkHash(
         string $value,
         string $hashedValue,
         array $options = []
