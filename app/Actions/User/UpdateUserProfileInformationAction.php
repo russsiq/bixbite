@@ -25,32 +25,42 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
             $this->rules()
         )->validateWithBag('updateProfileInformation');
 
-        if ($validated['email'] !== $this->user->email &&
-            $this->user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($validated);
+        $this->user->forceFill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        if ($this->mustVerifyEmail($validated['email'])) {
+            $this->updateVerifiedUser();
         } else {
-            $this->user->forceFill([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-            ])->save();
+            $this->user->save();
         }
     }
 
     /**
      * Update the given verified user's profile information.
      *
-     * @param  array  $input
      * @return void
      */
-    protected function updateVerifiedUser(array $input): void
+    protected function updateVerifiedUser(): void
     {
-        $this->user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-        ])->save();
+        $this->user->email_verified_at = null;
+
+        $this->user->save();
 
         $this->user->sendEmailVerificationNotification();
+    }
+
+    /**
+     * Determine if the user needs to verify their email.
+     *
+     * @param  string  $email
+     * @return boolean
+     */
+    protected function mustVerifyEmail(string $email): bool
+    {
+        return $email !== $this->user->email
+            && $this->user instanceof MustVerifyEmail;
     }
 
     /**
