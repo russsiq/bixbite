@@ -30,7 +30,7 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
             'email' => $validated['email'],
         ]);
 
-        if ($this->mustVerifyEmail($validated['email'])) {
+        if ($this->mustVerifyEmail()) {
             $this->updateVerifiedUser();
         } else {
             $this->user->save();
@@ -54,13 +54,12 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
     /**
      * Determine if the user needs to verify their email.
      *
-     * @param  string  $email
      * @return boolean
      */
-    protected function mustVerifyEmail(string $email): bool
+    protected function mustVerifyEmail(): bool
     {
-        return $email !== $this->user->email
-            && $this->user instanceof MustVerifyEmail;
+        return $this->user instanceof MustVerifyEmail
+            && $this->user->isDirty('email');
     }
 
     /**
