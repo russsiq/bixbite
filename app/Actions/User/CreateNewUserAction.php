@@ -50,9 +50,7 @@ class CreateNewUserAction extends UserActionAbstract implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
-            'terms' => [
-                'accepted',
-            ],
+            'terms' => 'accepted',
         ];
     }
 }
