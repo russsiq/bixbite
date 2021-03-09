@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Actions\User\CreateNewUserAction;
+use App\Actions\User\CreateUserAction;
 use App\Actions\User\ResetUserPasswordAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::viewPrefix('auth.');
 
         // Register a class / callback that should be used to Fortify Actions.
-        Fortify::createUsersUsing(CreateNewUserAction::class);
+        Fortify::createUsersUsing(CreateUserAction::class);
         Fortify::resetUserPasswordsUsing(ResetUserPasswordAction::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPasswordAction::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformationAction::class);

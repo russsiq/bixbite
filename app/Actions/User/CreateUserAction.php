@@ -2,11 +2,11 @@
 
 namespace App\Actions\User;
 
-use App\Contracts\Actions\User\CreatesNewUsers;
+use App\Contracts\Actions\User\CreatesUsers;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 
-class CreateNewUserAction extends UserActionAbstract implements CreatesNewUsers
+class CreateUserAction extends UserActionAbstract implements CreatesUsers
 {
     /**
      * Validate and create a newly registered user.
