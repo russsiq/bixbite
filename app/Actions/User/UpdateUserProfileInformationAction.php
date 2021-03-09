@@ -18,16 +18,18 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
      */
     public function update($user, array $input): void
     {
+        $this->user = $user->fresh();
+
         $validated = $this->createValidator(
             $input,
-            $this->rules($user)
+            $this->rules()
         )->validateWithBag('updateProfileInformation');
 
-        if ($validated['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $validated);
+        if ($validated['email'] !== $this->user->email &&
+            $this->user instanceof MustVerifyEmail) {
+            $this->updateVerifiedUser($validated);
         } else {
-            $user->forceFill([
+            $this->user->forceFill([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
             ])->save();
@@ -37,28 +39,26 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
     /**
      * Update the given verified user's profile information.
      *
-     * @param  User  $user
      * @param  array  $input
      * @return void
      */
-    protected function updateVerifiedUser(User $user, array $input): void
+    protected function updateVerifiedUser(array $input): void
     {
-        $user->forceFill([
+        $this->user->forceFill([
             'name' => $input['name'],
             'email' => $input['email'],
             'email_verified_at' => null,
         ])->save();
 
-        $user->sendEmailVerificationNotification();
+        $this->user->sendEmailVerificationNotification();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param  User|null  $user
      * @return array
      */
-    protected function rules(?User $user): array
+    protected function rules(): array
     {
         return [
             'name' => [
@@ -70,7 +70,7 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore($this->user->id),
             ],
         ];
     }

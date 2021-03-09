@@ -16,9 +16,11 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
      */
     public function update($user, array $input): void
     {
+        $this->user = $user->fresh();
+
         $validated = $this->createValidator(
             $input,
-            $this->rules($user)
+            $this->rules()
         )->validateWithBag('updatePassword');
 
         $user->forceFill([
@@ -29,18 +31,17 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param  User|null  $user
      * @return array
      */
-    protected function rules(?User $user): array
+    protected function rules(): array
     {
         return [
             'current_password' => [
                 'bail',
                 'required',
                 'string',
-                function ($attribute, $value, $message) use ($user) {
-                    ! $this->checkHash($value, $user->password) && $message(
+                function ($attribute, $value, $message) {
+                    ! $this->checkHash($value, $this->user->password) && $message(
                         $this->translator->get(
                             'The provided password does not match your current password.'
                         )

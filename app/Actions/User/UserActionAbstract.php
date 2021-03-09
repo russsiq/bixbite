@@ -17,6 +17,9 @@ abstract class UserActionAbstract
     /** @var Translator */
     protected $translator;
 
+    /** @var User|null */
+    protected $user;
+
     /** @var ValidationFactory */
     protected $validationFactory;
 
@@ -40,10 +43,9 @@ abstract class UserActionAbstract
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param  User|null  $user
      * @return array
      */
-    abstract protected function rules(?User $user): array;
+    abstract protected function rules(): array;
 
     /**
      * Create a new Validator instance.

@@ -18,23 +18,24 @@ class CreateNewUserAction extends UserActionAbstract implements CreatesNewUsers
     {
         $validated = $this->createValidator(
             $input,
-            $this->rules(null)
+            $this->rules()
         )->validate();
 
-        return User::create([
+        $this->user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $this->makeHash($validated['password']),
         ]);
+
+        return $this->user;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param  User|null  $user
      * @return array
      */
-    protected function rules(?User $user): array
+    protected function rules(): array
     {
         return [
             'name' => [

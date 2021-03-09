@@ -16,9 +16,11 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
      */
     public function reset($user, array $input): void
     {
+        $this->user = $user->fresh();
+
         $validated = $this->createValidator(
             $input,
-            $this->rules($user)
+            $this->rules()
         )->validate();
 
         $user->forceFill([
@@ -29,10 +31,9 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param  User|null  $user
      * @return array
      */
-    protected function rules(?User $user): array
+    protected function rules(): array
     {
         return [
             'password' => $this->passwordRules(),
