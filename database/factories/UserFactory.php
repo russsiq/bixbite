@@ -30,4 +30,18 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     *
+     * @return Factory
+     */
+    public function unverified(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
+    }
 }
