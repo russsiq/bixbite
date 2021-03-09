@@ -2,9 +2,9 @@
 
 namespace App\Actions\User;
 
+use App\Contracts\Actions\User\CreatesNewUsers;
 use App\Models\User;
 use Illuminate\Validation\Rule;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUserAction extends UserActionAbstract implements CreatesNewUsers
 {

@@ -2,8 +2,8 @@
 
 namespace App\Actions\User;
 
+use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Models\User;
-use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
 class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUserPasswords
 {

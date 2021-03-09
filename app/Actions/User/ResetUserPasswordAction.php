@@ -2,8 +2,8 @@
 
 namespace App\Actions\User;
 
+use App\Contracts\Actions\User\ResetsUserPasswords;
 use App\Models\User;
-use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
 class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPasswords
 {
