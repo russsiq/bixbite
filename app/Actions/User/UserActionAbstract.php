@@ -7,6 +7,8 @@ use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Rules\Password;
 
 abstract class UserActionAbstract
@@ -20,11 +22,22 @@ abstract class UserActionAbstract
     /** @var User|null */
     protected $user;
 
-    /** @var string|null */
-    protected $validationErrorBag;
-
     /** @var ValidationFactory */
     protected $validationFactory;
+
+    /**
+     * The key to be used for the view error bag.
+     *
+     * @var string|null
+     */
+    protected $validationErrorBag;
+
+    /**
+     * Indicates whether validation should stop after the first rule failure.
+     *
+     * @var bool
+     */
+    protected $stopOnFirstFailure = false;
 
     /**
      * Create a new Action instance.
@@ -83,7 +96,7 @@ abstract class UserActionAbstract
             $this->rules(),
             $this->messages(),
             $this->attributes()
-        );
+        )->stopOnFirstFailure($this->stopOnFirstFailure);
     }
 
     /**
@@ -131,17 +144,92 @@ abstract class UserActionAbstract
     }
 
     /**
-     * Get the validation rules used to validate password.
+     * Get the validation rules used to validate `name` field.
+     *
+     * @return array
+     */
+    protected function nameRules(): array
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ];
+    }
+
+    /**
+     * Get the validation rules used to validate `email` field.
+     *
+     * @return array
+     */
+    protected function emailRules(): array
+    {
+        return [
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique(User::class, 'email')
+                    ->where(function (Builder $query) {
+                        if ($this->user instanceof User) {
+                            $query->where('email', '<>', $this->user->email);
+                        }
+                    }),
+            ],
+        ];
+    }
+
+    /**
+     * Get the validation rules used to validate `password` field.
      *
      * @return array
      */
     protected function passwordRules(): array
     {
         return [
-            'required',
-            'string',
-            'confirmed',
-            new Password,
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                new Password,
+            ],
+        ];
+    }
+
+    /**
+     * Get the validation rules used to validate `current_password` field.
+     *
+     * @return array
+     */
+    protected function currentPasswordRules(): array
+    {
+        return [
+            'current_password' => [
+                'bail',
+                'required',
+                'string',
+                function ($attribute, $value, $message) {
+                    ! $this->checkHash($value, $this->user->password) && $message(
+                        $this->translator->get(
+                            'The provided password does not match your current password.'
+                        )
+                    );
+                },
+            ],
+        ];
+    }
+
+    /**
+     * Get the validation rules used to validate `terms` field.
+     *
+     * @return array
+     */
+    protected function termsRules(): array
+    {
+        return [
+            'terms' => 'accepted',
         ];
     }
 }

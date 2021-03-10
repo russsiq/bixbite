@@ -32,8 +32,6 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
      */
     protected function rules(): array
     {
-        return [
-            'password' => $this->passwordRules(),
-        ];
+        return $this->passwordRules();
     }
 }

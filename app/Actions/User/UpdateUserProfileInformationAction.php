@@ -5,7 +5,6 @@ namespace App\Actions\User;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Validation\Rule;
 
 class UpdateUserProfileInformationAction extends UserActionAbstract implements UpdatesUserProfileInformation
 {
@@ -69,19 +68,9 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
      */
     protected function rules(): array
     {
-        return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($this->user->id),
-            ],
-        ];
+        return array_merge(
+            $this->nameRules(),
+            $this->emailRules(),
+        );
     }
 }

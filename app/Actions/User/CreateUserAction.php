@@ -4,7 +4,6 @@ namespace App\Actions\User;
 
 use App\Contracts\Actions\User\CreatesUsers;
 use App\Models\User;
-use Illuminate\Validation\Rule;
 
 class CreateUserAction extends UserActionAbstract implements CreatesUsers
 {
@@ -34,23 +33,11 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
      */
     protected function rules(): array
     {
-        return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
-
-            'password' => $this->passwordRules(),
-
-            'terms' => 'accepted',
-        ];
+        return array_merge(
+            $this->nameRules(),
+            $this->emailRules(),
+            $this->passwordRules(),
+            $this->termsRules(),
+        );
     }
 }

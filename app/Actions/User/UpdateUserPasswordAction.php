@@ -10,6 +10,9 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
     /** @var string|null */
     protected $validationErrorBag = 'updatePassword';
 
+    /** @var bool */
+    protected $stopOnFirstFailure = true;
+
     /**
      * Validate and update the user's password.
      *
@@ -35,21 +38,9 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
      */
     protected function rules(): array
     {
-        return [
-            'current_password' => [
-                'bail',
-                'required',
-                'string',
-                function ($attribute, $value, $message) {
-                    ! $this->checkHash($value, $this->user->password) && $message(
-                        $this->translator->get(
-                            'The provided password does not match your current password.'
-                        )
-                    );
-                },
-            ],
-
-            'password' => $this->passwordRules(),
-        ];
+        return array_merge(
+            $this->currentPasswordRules(),
+            $this->passwordRules(),
+        );
     }
 }
