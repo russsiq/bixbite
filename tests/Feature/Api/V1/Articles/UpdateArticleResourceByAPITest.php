@@ -65,8 +65,9 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-           ->putJson(route('api.articles.update', $article), [
+            ->putJson(route('api.articles.update', $article), [
                 'title' => 'New title for old article',
+                'relationships' => [],
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
             ->assertJsonStructure(
