@@ -131,7 +131,7 @@ abstract class UserActionAbstract
     }
 
     /**
-     * Get the validation rules used to validate passwords.
+     * Get the validation rules used to validate password.
      *
      * @return array
      */
