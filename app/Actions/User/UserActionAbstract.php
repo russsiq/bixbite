@@ -23,6 +23,9 @@ abstract class UserActionAbstract
     /** @var ValidationFactory */
     protected $validationFactory;
 
+    /** @var string|null */
+    protected $validationErrorBag;
+
     /**
      * Create a new Action instance.
      *
@@ -48,26 +51,56 @@ abstract class UserActionAbstract
     abstract protected function rules(): array;
 
     /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    protected function messages(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    protected function attributes(): array
+    {
+        return [];
+    }
+
+    /**
      * Create a new Validator instance.
      *
      * @param  array  $input
-     * @param  array  $rules
-     * @param  array  $messages
-     * @param  array  $customAttributes
      * @return Validator
      */
-    protected function createValidator(
-        array $input,
-        array $rules,
-        array $messages = [],
-        array $customAttributes = []
-    ): Validator {
+    protected function createValidator(array $input): Validator
+    {
         return $this->validationFactory->make(
             $input,
-            $rules,
-            $messages,
-            $customAttributes
+            $this->rules(),
+            $this->messages(),
+            $this->attributes()
         );
+    }
+
+    /**
+     * Run the validator's rules against its data.
+     *
+     * @param  array  $input
+     * @return array
+     *
+     * @throws ValidationException
+     */
+    protected function validate(array $input): array
+    {
+        $validator = $this->createValidator($input);
+
+        return $this->validationErrorBag
+            ? $validator->validateWithBag($this->validationErrorBag)
+            : $validator->validate();
     }
 
     /**

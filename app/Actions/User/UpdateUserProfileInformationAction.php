@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 
 class UpdateUserProfileInformationAction extends UserActionAbstract implements UpdatesUserProfileInformation
 {
+    /** @var string|null */
+    protected $validationErrorBag = 'updateProfileInformation';
+
     /**
      * Validate and update the given user's profile information.
      *
@@ -20,10 +23,7 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
     {
         $this->user = $user->fresh();
 
-        $validated = $this->createValidator(
-            $input,
-            $this->rules()
-        )->validateWithBag('updateProfileInformation');
+        $validated = $this->validate($input);
 
         $this->user->forceFill([
             'name' => $validated['name'],
@@ -75,6 +75,7 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
                 'string',
                 'max:255',
             ],
+
             'email' => [
                 'required',
                 'email',

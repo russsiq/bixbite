@@ -16,10 +16,7 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
      */
     public function create(array $input): User
     {
-        $validated = $this->createValidator(
-            $input,
-            $this->rules()
-        )->validate();
+        $validated = $this->validate($input);
 
         $this->user = User::create([
             'name' => $validated['name'],
@@ -43,13 +40,16 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
                 'string',
                 'max:255',
             ],
+
             'email' => [
                 'required',
                 'email',
                 'max:255',
                 Rule::unique(User::class),
             ],
+
             'password' => $this->passwordRules(),
+
             'terms' => 'accepted',
         ];
     }

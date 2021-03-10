@@ -7,6 +7,9 @@ use App\Models\User;
 
 class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUserPasswords
 {
+    /** @var string|null */
+    protected $validationErrorBag = 'updatePassword';
+
     /**
      * Validate and update the user's password.
      *
@@ -18,12 +21,9 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
     {
         $this->user = $user->fresh();
 
-        $validated = $this->createValidator(
-            $input,
-            $this->rules()
-        )->validateWithBag('updatePassword');
+        $validated = $this->validate($input);
 
-        $user->forceFill([
+        $this->user->forceFill([
             'password' => $this->makeHash($validated['password']),
         ])->save();
     }
@@ -48,6 +48,7 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
                     );
                 },
             ],
+
             'password' => $this->passwordRules(),
         ];
     }

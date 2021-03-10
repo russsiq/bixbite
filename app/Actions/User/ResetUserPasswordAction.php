@@ -18,12 +18,9 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
     {
         $this->user = $user->fresh();
 
-        $validated = $this->createValidator(
-            $input,
-            $this->rules()
-        )->validate();
+        $validated = $this->validate($input);
 
-        $user->forceFill([
+        $this->user->forceFill([
             'password' => $this->makeHash($validated['password']),
         ])->save();
     }
