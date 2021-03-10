@@ -22,11 +22,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function loginSuperAdminSPA(array $attributes = [], array $abilities = []): User
     {
-        $this->withServerVariables([
-            'APP_SUPER_ADMINS' => 'super_admin@test.com',
-        ]);
-
-        [$first_email] = explode(',', $_ENV['APP_SUPER_ADMINS'], 2);
+        [$first_email] = explode(',', env('APP_SUPER_ADMINS'), 2);
 
         $attributes['email'] = $first_email;
 
