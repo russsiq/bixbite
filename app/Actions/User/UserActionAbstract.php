@@ -20,11 +20,11 @@ abstract class UserActionAbstract
     /** @var User|null */
     protected $user;
 
-    /** @var ValidationFactory */
-    protected $validationFactory;
-
     /** @var string|null */
     protected $validationErrorBag;
+
+    /** @var ValidationFactory */
+    protected $validationFactory;
 
     /**
      * Create a new Action instance.
