@@ -21,7 +21,7 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $this->makeHash($validated['password']),
-        ]);
+        ])->fresh();
 
         return $this->user;
     }
