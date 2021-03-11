@@ -29,6 +29,32 @@ class UserObserver
     }
 
     /**
+     * Handle the User "saving" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function saving(User $user)
+    {
+        if ($user->mustVerifyEmail()) {
+            $user->email_verified_at = null;
+        }
+    }
+
+    /**
+     * Handle the User "saved" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function saved(User $user)
+    {
+        if ($user->mustVerifyEmail()) {
+            $user->sendEmailVerificationNotification();
+        }
+    }
+
+    /**
      * Handle the User "deleted" event.
      *
      * @param  \App\Models\User  $user

@@ -86,4 +86,26 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->email, (array) config('bixbite.super_admins')
         );
     }
+
+    /**
+     * Determine if the user needs to verify their email address.
+     *
+     * @return bool
+     */
+    public function mustVerifyEmail(): bool
+    {
+        if ($this instanceof MustVerifyEmail) {
+            // If the model was already saved and the email address was changed.
+            if ($this->exists && ! $this->originalIsEquivalent('email')) {
+                return true;
+            }
+
+            // If the user has not yet verified the email address.
+            if (! $this->hasVerifiedEmail()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
