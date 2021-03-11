@@ -21,14 +21,15 @@ class EmailVerificationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->get(route('verification.notice'));
-
-        $response->assertStatus(200);
+            ->get(route('verification.notice'))
+            ->assertStatus(200);
     }
 
     public function test_email_can_be_verified()
     {
-        Event::fake();
+        Event::fake([
+            Verified::class,
+        ]);
 
         $user = $this->createUser([
             'email_verified_at' => null,
@@ -40,13 +41,17 @@ class EmailVerificationTest extends TestCase
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
 
-        $response = $this->actingAs($user)->get($verificationUrl);
+        $response = $this->actingAs($user)
+            ->get($verificationUrl)
+            ->assertRedirect(
+                RouteServiceProvider::HOME.'?verified=1'
+            );
+
+        $user = $user->fresh();
+
+        $this->assertTrue($user->hasVerifiedEmail());
 
         Event::assertDispatched(Verified::class);
-
-        $this->assertTrue($user->fresh()->hasVerifiedEmail());
-
-        $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
     }
 
     public function test_email_can_not_verified_with_invalid_hash()
@@ -61,8 +66,12 @@ class EmailVerificationTest extends TestCase
             ['id' => $user->id, 'hash' => sha1('wrong-email')]
         );
 
-        $this->actingAs($user)->get($verificationUrl);
+        $response = $this->actingAs($user)
+            ->get($verificationUrl)
+            ->assertForbidden();
 
-        $this->assertFalse($user->fresh()->hasVerifiedEmail());
+        $user = $user->fresh();
+
+        $this->assertFalse($user->hasVerifiedEmail());
     }
 }
