@@ -36,4 +36,9 @@ abstract class TestCase extends BaseTestCase
 
             ], $attributes));
     }
+
+    protected function currentAuthenticatedUser($guard = null): User
+    {
+        return $this->app->make('auth')->guard($guard)->user();
+    }
 }
