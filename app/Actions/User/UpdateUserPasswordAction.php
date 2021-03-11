@@ -32,7 +32,7 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the action.
      *
      * @return array
      */

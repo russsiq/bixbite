@@ -26,7 +26,7 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the action.
      *
      * @return array
      */

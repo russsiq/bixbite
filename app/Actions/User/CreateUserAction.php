@@ -27,7 +27,7 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the action.
      *
      * @return array
      */
