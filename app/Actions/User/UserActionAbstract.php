@@ -46,6 +46,13 @@ abstract class UserActionAbstract
     protected $stopOnFirstFailure = false;
 
     /**
+     * Get the validation rules that apply to the action.
+     *
+     * @return array
+     */
+    abstract protected function rules(): array;
+
+    /**
      * Create a new Action instance.
      *
      * @param Gate  $gate
@@ -78,13 +85,6 @@ abstract class UserActionAbstract
     {
         return $this->gate->authorize($ability, $arguments);
     }
-
-    /**
-     * Get the validation rules that apply to the action.
-     *
-     * @return array
-     */
-    abstract protected function rules(): array;
 
     /**
      * Get custom messages for validator errors.
