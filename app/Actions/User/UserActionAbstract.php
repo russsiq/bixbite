@@ -210,13 +210,7 @@ abstract class UserActionAbstract
                 'bail',
                 'required',
                 'string',
-                function ($attribute, $value, $message) {
-                    ! $this->checkHash($value, $this->user->password) && $message(
-                        $this->translator->get(
-                            'The provided password does not match your current password.'
-                        )
-                    );
-                },
+                'password',
             ],
         ];
     }
