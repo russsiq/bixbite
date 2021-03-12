@@ -15,6 +15,8 @@ class CreateUserAction extends UserActionAbstract implements CreatesUsers
      */
     public function create(array $input): User
     {
+        $this->authorize('create', User::class);
+
         $validated = $this->validate($input);
 
         $this->user = User::create([

@@ -52,7 +52,9 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return false;
+        if ($user->id === $model->id) {
+           return true;
+        }
     }
 
     /**

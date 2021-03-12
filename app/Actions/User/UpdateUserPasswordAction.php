@@ -22,7 +22,10 @@ class UpdateUserPasswordAction extends UserActionAbstract implements UpdatesUser
      */
     public function update($user, array $input): void
     {
-        $this->user = $user->fresh();
+        $this->authorize(
+            'update',
+            $this->user = $user->fresh()
+        );
 
         $validated = $this->validate($input);
 

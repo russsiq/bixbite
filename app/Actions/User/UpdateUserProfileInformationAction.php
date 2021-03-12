@@ -19,7 +19,10 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
      */
     public function update($user, array $input): void
     {
-        $this->user = $user->fresh();
+        $this->authorize(
+            'update',
+            $this->user = $user->fresh()
+        );
 
         $validated = $this->validate($input);
 

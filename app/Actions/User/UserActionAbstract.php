@@ -3,6 +3,9 @@
 namespace App\Actions\User;
 
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Response as AccessResponse;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -13,6 +16,9 @@ use Laravel\Fortify\Rules\Password;
 
 abstract class UserActionAbstract
 {
+    /** @var Gate */
+    protected $gate;
+
     /** @var Hasher */
     protected $hasher;
 
@@ -42,18 +48,35 @@ abstract class UserActionAbstract
     /**
      * Create a new Action instance.
      *
+     * @param Gate  $gate
      * @param Hasher  $hasher
      * @param Translator  $translator
      * @param ValidationFactory  $validationFactory
      */
     public function __construct(
+        Gate $gate,
         Hasher $hasher,
         Translator $translator,
         ValidationFactory $validationFactory
     ) {
+        $this->gate = $gate;
         $this->hasher = $hasher;
         $this->translator = $translator;
         $this->validationFactory = $validationFactory;
+    }
+
+    /**
+     * Authorize a given action for the current user.
+     *
+     * @param  string  $ability
+     * @param  mixed  $arguments
+     * @return AccessResponse
+     *
+     * @throws AuthorizationException
+     */
+    protected function authorize(string $ability, mixed $arguments): AccessResponse
+    {
+        return $this->gate->authorize($ability, $arguments);
     }
 
     /**
