@@ -12,6 +12,7 @@ use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use Laravel\Fortify\Rules\Password;
 
 abstract class UserActionAbstract
@@ -175,6 +176,7 @@ abstract class UserActionAbstract
     {
         return [
             'name' => [
+                'bail',
                 'required',
                 'string',
                 'max:255',
@@ -191,15 +193,16 @@ abstract class UserActionAbstract
     {
         return [
             'email' => [
+                'bail',
                 'required',
                 'email',
                 'max:255',
-                Rule::unique(User::class, 'email')
-                    ->where(function (Builder $query) {
-                        if ($this->user instanceof User) {
-                            $query->where('email', '<>', $this->user->email);
-                        }
-                    }),
+                with(
+                    Rule::unique(User::TABLE, 'email'),
+                    fn (Unique $unique) => $this->user instanceof User
+                        ? $unique->ignore($this->user->id, 'id')
+                        : $unique
+                ),
             ],
         ];
     }
@@ -213,6 +216,7 @@ abstract class UserActionAbstract
     {
         return [
             'password' => [
+                'bail',
                 'required',
                 'string',
                 'confirmed',
