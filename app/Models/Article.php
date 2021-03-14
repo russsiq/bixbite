@@ -35,6 +35,15 @@ class Article extends Model
 {
     use HasFactory;
 
+    const TABLE = 'articles';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
     /**
      * The model's attributes.
      *

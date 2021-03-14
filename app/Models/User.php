@@ -32,6 +32,15 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    const TABLE = 'users';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
     /**
      * The attributes that are mass assignable.
      *

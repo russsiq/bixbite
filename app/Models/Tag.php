@@ -21,6 +21,15 @@ class Tag extends Model
 {
     use HasFactory;
 
+    const TABLE = 'tags';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
     /**
      * The attributes that are mass assignable.
      *

@@ -33,6 +33,15 @@ class Category extends Model
 {
     use HasFactory;
 
+    const TABLE = 'categories';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
     /**
      * The model's attributes.
      *

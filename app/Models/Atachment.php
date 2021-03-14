@@ -34,12 +34,21 @@ class Atachment extends Model
 {
     use HasFactory;
 
+    const TABLE = 'atachments';
+
     /**
-    * The model's attributes.
-    *
-    * @var array
-    */
-   protected $attributes = [
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
+    /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
         'title' => '',
         'description' => '',
         'disk' => 'public',

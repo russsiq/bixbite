@@ -27,6 +27,15 @@ class Comment extends Model
 {
     use HasFactory;
 
+    const TABLE = 'comments';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = self::TABLE;
+
     /**
      * The model's attributes.
      *
