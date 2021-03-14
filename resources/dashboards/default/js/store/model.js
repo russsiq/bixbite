@@ -10,6 +10,7 @@ export default class {
         return this.api()
             .get(this.entity, {
                 params,
+                data: {},
             });
     }
 
