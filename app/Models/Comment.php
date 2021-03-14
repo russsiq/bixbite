@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 
@@ -14,7 +15,7 @@ use Illuminate\Support\Carbon;
  * @property string $commentable_type
  * @property int $commentable_id
  * @property int $parent_id
- * @property int $user_id
+ * @property int|null $user_id
  * @property string $content
  * @property string|null $user_name
  * @property string|null $user_email
@@ -79,5 +80,14 @@ class Comment extends Model
     public function commentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id', 'user')
+            ->withDefault(function (User $user, Comment $comment) {
+                $user->name = $comment->user_name;
+                $user->email = $comment->user_email;
+            });
     }
 }
