@@ -45,7 +45,14 @@ Route::group([
         ];
 
         Route::apiResources($resources, [
-            //
+            'only' => 'index',
+            'middleware' => [
+                'json-api.parse',
+            ],
+        ]);
+
+        Route::apiResources($resources, [
+            'except' => 'index',
         ]);
     });
 });
