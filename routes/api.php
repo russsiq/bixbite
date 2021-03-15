@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'as' => 'api.',
-    'prefix' => 'v1',
 ], function () {
     Route::group([
+        'as' => RouteServiceProvider::API_VERSION.'.',
+        'prefix' => RouteServiceProvider::API_VERSION,
         'middleware' => [
             'auth:sanctum',
         ],
