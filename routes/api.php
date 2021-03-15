@@ -35,13 +35,17 @@ Route::group([
             'auth:sanctum',
         ],
     ], function () {
-        Route::apiResources([
+        $resources = [
             'articles' => ArticleController::class,
             'atachments' => AtachmentController::class,
             'categories' => CategoryController::class,
             'comments' => CommentController::class,
             'tags' => TagController::class,
             'users' => UserController::class,
+        ];
+
+        Route::apiResources($resources, [
+            //
         ]);
     });
 });
