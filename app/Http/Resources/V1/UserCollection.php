@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\AbstractPaginator;
@@ -24,7 +24,7 @@ class UserCollection extends ResourceCollection
                 'self' => $this->when(
                     $this->resource instanceof AbstractPaginator,
                     function () {
-                        return route('api.users.index', [
+                        return route('api.v1.users.index', [
                             'page' => $this->resource->currentPage(),
                         ]);
                     }

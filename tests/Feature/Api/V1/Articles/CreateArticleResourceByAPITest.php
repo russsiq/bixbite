@@ -27,7 +27,7 @@ class CreateArticleResourceByAPITest extends TestCase
     public function test_guest_cannot_create_article()
     {
         $response = $this->assertGuest()
-            ->postJson(route('api.articles.store'), [
+            ->postJson(route('api.v1.articles.store'), [
 
             ])
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -40,7 +40,7 @@ class CreateArticleResourceByAPITest extends TestCase
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
-            ->postJson(route('api.articles.store'), [
+            ->postJson(route('api.v1.articles.store'), [
 
             ])
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -51,7 +51,7 @@ class CreateArticleResourceByAPITest extends TestCase
         $super_admin = $this->loginSuperAdminSPA();
 
         $response = $this->assertAuthenticated()
-            ->postJson(route('api.articles.store'), [
+            ->postJson(route('api.v1.articles.store'), [
                 'title' => 'New article title',
                 'relationships' => [],
             ])

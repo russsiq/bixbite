@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class CommentResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class CommentResource extends JsonResource
         $attributes = parent::toArray($request);
 
         return [
-            'type' => 'comments',
+            'type' => 'categories',
             'id' => $attributes['id'],
             'attributes' => Arr::except($attributes, [
                 'id',
@@ -39,7 +39,7 @@ class CommentResource extends JsonResource
     {
         return [
             'links' => [
-                'self' => route('api.comments.show', $this->resource),
+                'self' => route('api.v1.categories.show', $this->resource),
             ],
         ];
     }

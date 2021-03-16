@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class CategoryResource extends JsonResource
+class AtachmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,13 +18,16 @@ class CategoryResource extends JsonResource
         $attributes = parent::toArray($request);
 
         return [
-            'type' => 'categories',
+            'type' => 'atachments',
             'id' => $attributes['id'],
             'attributes' => Arr::except($attributes, [
-                'id',
+                'id', 'user',
             ]),
             'relationships' => [
-                //
+                'user' => $this->whenLoaded('user', function () use ($request) {
+                    return UserResource::make($this->user)
+                        ->toArray($request);
+                }),
             ],
         ];
     }
@@ -39,7 +42,7 @@ class CategoryResource extends JsonResource
     {
         return [
             'links' => [
-                'self' => route('api.categories.show', $this->resource),
+                'self' => route('api.v1.atachments.show', $this->resource),
             ],
         ];
     }

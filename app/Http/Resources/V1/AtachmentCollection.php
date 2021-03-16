@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\AbstractPaginator;
 
-class ArticleCollection extends ResourceCollection
+class AtachmentCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -24,7 +24,7 @@ class ArticleCollection extends ResourceCollection
                 'self' => $this->when(
                     $this->resource instanceof AbstractPaginator,
                     function () {
-                        return route('api.articles.index', [
+                        return route('api.v1.atachments.index', [
                             'page' => $this->resource->currentPage(),
                         ]);
                     }

@@ -33,7 +33,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertGuest()
-            ->putJson(route('api.articles.update', $article), [
+            ->putJson(route('api.v1.articles.update', $article), [
 
             ])
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -50,7 +50,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-           ->putJson(route('api.articles.update', $article), [
+           ->putJson(route('api.v1.articles.update', $article), [
 
             ])
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -65,7 +65,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-            ->putJson(route('api.articles.update', $article), [
+            ->putJson(route('api.v1.articles.update', $article), [
                 'title' => 'New title for old article',
                 'relationships' => [],
             ])
@@ -82,7 +82,7 @@ class UpdateArticleResourceByAPITest extends TestCase
         $this->assertDatabaseCount('articles', 0);
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.articles.update', 'not.found'))
+            ->getJson(route('api.v1.articles.update', 'not.found'))
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
@@ -54,7 +54,7 @@ class ArticleResource extends JsonResource
     {
         return [
             'links' => [
-                'self' => route('api.articles.show', $this->resource),
+                'self' => route('api.v1.articles.show', $this->resource),
             ],
         ];
     }

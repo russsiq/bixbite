@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class UserResource extends JsonResource
+class TagResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,14 @@ class UserResource extends JsonResource
         $attributes = parent::toArray($request);
 
         return [
-            'type' => 'users',
+            'type' => 'tags',
             'id' => $attributes['id'],
             'attributes' => Arr::except($attributes, [
                 'id',
             ]),
+            'relationships' => [
+                //
+            ],
         ];
     }
 
@@ -36,7 +39,7 @@ class UserResource extends JsonResource
     {
         return [
             'links' => [
-                'self' => route('api.users.show', $this->resource),
+                'self' => route('api.v1.tags.show', $this->resource),
             ],
         ];
     }
