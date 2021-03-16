@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\BixBiteContract;
 use App\Support\BixBite;
-use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\ServiceProvider;
@@ -38,8 +38,8 @@ class BixbiteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->resolving(
-            PaginatorContract::class,
-            function (PaginatorContract $paginator, $app) {
+            LengthAwarePaginatorContract::class,
+            function (LengthAwarePaginatorContract $paginator, $app) {
                 /** @var AbstractPaginator $paginator */
                 $paginator->onEachSide(1);
             }
