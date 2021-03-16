@@ -6,6 +6,7 @@ use App\Contracts\BixBiteContract;
 use App\Support\BixBite;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\ServiceProvider;
 
 class BixbiteServiceProvider extends ServiceProvider
@@ -39,6 +40,7 @@ class BixbiteServiceProvider extends ServiceProvider
         $this->app->resolving(
             PaginatorContract::class,
             function (PaginatorContract $paginator, $app) {
+                /** @var AbstractPaginator $paginator */
                 $paginator->onEachSide(1);
             }
         );
