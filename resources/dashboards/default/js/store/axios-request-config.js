@@ -182,8 +182,13 @@ const http = {
      * @param {object} error
      */
     onGenericError(error) {
-        Toast.error({
-            message: error.message
+        const errors = error.response.data.errors;
+
+        errors.forEach(function(message) {
+            Toast.warning({
+                ...message,
+                title: `${message.status} ${message.title}`,
+            });
         });
     },
 
@@ -232,13 +237,12 @@ const http = {
     onValidationError(error) {
         const errors = error.response.data.errors;
 
-        for (const field in errors) {
-            errors[field].forEach(function(message) {
-                Toast.warning({
-                    message: message
-                });
+        errors.forEach(function(message) {
+            Toast.warning({
+                ...message,
+                title: `${message.status} ${message.title}`,
             });
-        }
+        });
     },
 
     /**

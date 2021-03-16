@@ -8,7 +8,7 @@ export default new class {
             id: `toast-${id}`,
             time: new Date().toLocaleTimeString(),
             header: params.header || params.title || BixBite.app_name,
-            body: params.body || params.message || 'Empty message',
+            body: params.detail || params.body || params.message || 'The description is unavailable.',
             animation: params.animation || true,
             autohide: params.autohide || true,
             delay: params.delay || 8000,
