@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TransformsRequest;
 
-class ParseJsonApiMiddleware extends TransformsRequest
+class JsonApiParseMiddleware extends TransformsRequest
 {
     /**
      * Transform the given value.
