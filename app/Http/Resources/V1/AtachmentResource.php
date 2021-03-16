@@ -29,18 +29,6 @@ class AtachmentResource extends JsonResource
                         ->toArray($request);
                 }),
             ],
-        ];
-    }
-
-    /**
-     * Get any additional data that should be returned with the resource array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
             'links' => [
                 'self' => route('api.v1.atachments.show', $this->resource),
             ],

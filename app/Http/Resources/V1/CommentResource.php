@@ -26,18 +26,6 @@ class CommentResource extends JsonResource
             'relationships' => [
                 //
             ],
-        ];
-    }
-
-    /**
-     * Get any additional data that should be returned with the resource array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
             'links' => [
                 'self' => route('api.v1.comments.show', $this->resource),
             ],

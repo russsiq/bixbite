@@ -23,18 +23,9 @@ class UserResource extends JsonResource
             'attributes' => Arr::except($attributes, [
                 'id',
             ]),
-        ];
-    }
-
-    /**
-     * Get any additional data that should be returned with the resource array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
+            'relationships' => [
+                //
+            ],
             'links' => [
                 'self' => route('api.v1.users.show', $this->resource),
             ],

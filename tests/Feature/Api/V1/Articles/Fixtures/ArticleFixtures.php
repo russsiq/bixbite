@@ -7,9 +7,6 @@ class ArticleFixtures
     public static function resource(): array
     {
         return [
-            'links' => [
-                'self',
-            ],
             'data' => [
                 'type',
                 'id',
@@ -22,6 +19,9 @@ class ArticleFixtures
                     'created_at', 'updated_at',
                 ],
                 'relationships',
+                'links' => [
+                    'self',
+                ],
             ],
         ];
     }
@@ -42,6 +42,9 @@ class ArticleFixtures
                         'created_at', 'updated_at',
                     ],
                     'relationships',
+                    'links' => [
+                        'self',
+                    ],
                 ],
             ],
             'links' => [
