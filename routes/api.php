@@ -48,6 +48,7 @@ Route::group([
             'only' => 'index',
             'middleware' => [
                 'json-api.parse',
+                'json-api.validate',
             ],
         ]);
 
