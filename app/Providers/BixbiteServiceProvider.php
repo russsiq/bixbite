@@ -52,8 +52,6 @@ class BixbiteServiceProvider extends ServiceProvider
             }
         );
 
-        Relation::morphMap([
-            $jsonApi::RESORCE_TO_MODEL_MAP
-        ], true);
+        Relation::morphMap($jsonApi::RESORCE_TO_MODEL_MAP, true);
     }
 }
