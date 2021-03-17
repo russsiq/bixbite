@@ -30,11 +30,11 @@ export default class {
             });
     }
 
-    static $create({ data }) {
+    static $create({ params = {}, data }) {
         return this.api()
             .post(this.entity, data, {
+                ...params.headers,
                 headers: {
-                    ...params.headers,
                     'X-JSON-API-RESOURCE': this.entity,
                 }
             });
@@ -53,6 +53,7 @@ export default class {
     static $delete({ params }) {
         return this.api()
             .delete(`${this.entity}/${params.id}`, {
+                data: {},
                 headers: {
                     ...params.headers,
                     'X-JSON-API-RESOURCE': this.entity,
