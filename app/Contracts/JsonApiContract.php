@@ -20,4 +20,8 @@ interface JsonApiContract
     public const SPEC_VERSION = '1.1';
 
     public function isApiUrl(): bool;
+
+    public function resourceName(): string;
+
+    public function resourceModelName(): string;
 }

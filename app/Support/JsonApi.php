@@ -19,4 +19,16 @@ class JsonApi implements JsonApiContract
     {
         return $this->request->is(self::API_URL.'/*');
     }
+
+    public function resourceName(): string
+    {
+        return $this->request->header(self::HEADER_RESOURCE);
+    }
+
+    public function resourceModelName(): string
+    {
+        return self::RESORCE_TO_MODEL_MAP[
+            $this->resourceName()
+        ];
+    }
 }
