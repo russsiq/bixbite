@@ -59,7 +59,10 @@ export default {
                 url.replace(this.path, "")
             );
 
-            this.$emit("paginate", searchParams.get("page"));
+            this.$emit("paginate", {
+                number: searchParams.get("page[number]"),
+                size: searchParams.get("page[size]"),
+            });
         },
     },
 };

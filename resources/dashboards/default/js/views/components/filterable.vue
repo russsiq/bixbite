@@ -61,13 +61,17 @@ export default {
     data() {
         return {
             query: {
-                page: 1,
+                'page[number]': 1,
+                'page[size]': 8,
             },
         };
     },
 
     mounted() {
-        this.changePage(this.$route.query.page || 1);
+        this.changePage({
+            number: this.$route.query['page[number]'] || this.query['page[number]'],
+            size: this.$route.query['page[size]'] || this.query['page[size]'],
+        });
 
         /**
          * Instead of constantly calling the filter function,
@@ -85,8 +89,12 @@ export default {
     },
 
     methods: {
-        changePage(page) {
-            this.query.page = parseInt(page, 10);
+        changePage({ number, size }) {
+            this.query = {
+                ...this.query,
+                'page[number]': parseInt(number, 10),
+                'page[size]': parseInt(size, 10),
+            }
         },
 
         applyChange() {
@@ -96,8 +104,8 @@ export default {
             });
         },
 
-        fetch(filter) {
-            this.$props.model.$fetch(filter).then(this.fillTable);
+        fetch(params) {
+            this.$props.model.$fetch({params}).then(this.fillTable);
         },
 
         fillTable(collection) {

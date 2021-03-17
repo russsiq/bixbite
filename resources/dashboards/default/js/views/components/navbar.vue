@@ -20,19 +20,19 @@
                         <router-link to="/" class="nav-link" exact>Home</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'articles.index'}" class="nav-link">Articles</router-link>
+                        <router-link :to="indexPage('articles')" class="nav-link">Articles</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'categories.index'}" class="nav-link">Categories</router-link>
+                        <router-link :to="indexPage('categories')" class="nav-link">Categories</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'comments.index'}" class="nav-link">Comments</router-link>
+                        <router-link :to="indexPage('comments')" class="nav-link">Comments</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'tags.index'}" class="nav-link">Tags</router-link>
+                        <router-link :to="indexPage('tags')" class="nav-link">Tags</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'users.index'}" class="nav-link">Users</router-link>
+                        <router-link :to="indexPage('users')" class="nav-link">Users</router-link>
                     </li>
                 </ul>
             </div>
@@ -49,6 +49,18 @@ export default {
             appUrl: this.$root.app_url,
             appName: this.$root.app_name,
         };
+    },
+
+    computed: {
+        indexPage() {
+            return (entity) => ({
+                name: `${entity}.index`,
+                query: {
+                    'page[number]': 1,
+                    'page[size]': 8,
+                },
+            });
+        },
     },
 };
 </script>

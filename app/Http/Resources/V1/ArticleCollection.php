@@ -25,7 +25,8 @@ class ArticleCollection extends ResourceCollection
                     $this->resource instanceof AbstractPaginator,
                     function () {
                         return route('api.v1.articles.index', [
-                            'page' => $this->resource->currentPage(),
+                            'page[number]' => $this->resource->currentPage(),
+                            'page[size]' => $this->resource->perPage(),
                         ]);
                     }
                 ),

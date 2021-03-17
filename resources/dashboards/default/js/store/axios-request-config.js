@@ -135,7 +135,8 @@ const http = {
                     query: {
                         // Сохраняем параметры текущей страницы.
                         ...Router.currentRoute.query,
-                        page: parseInt(meta.current_page, 10)
+                        'page[number]': parseInt(meta.current_page, 10),
+                        'page[size]': parseInt(meta.per_page, 10),
                     }
                 },
                 function onComplete(route) {},

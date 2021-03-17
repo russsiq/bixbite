@@ -6,7 +6,7 @@ export default class {
         return http;
     }
 
-    static $fetch(params) {
+    static $fetch({ params }) {
         return this.api()
             .get(this.entity, {
                 params,
