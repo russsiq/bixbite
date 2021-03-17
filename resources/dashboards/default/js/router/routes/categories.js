@@ -1,6 +1,7 @@
 import Category from '@/store/models/category';
 
 import CategoryIndex from '@/views/categories/index';
+import CategoryCreate from '@/views/categories/create';
 import CategoryEdit from '@/views/categories/edit';
 
 export default [{
@@ -9,6 +10,16 @@ export default [{
     component: CategoryIndex,
     meta: {
         title: 'Categories'
+    },
+    props: route => ({
+        model: Category,
+    }),
+}, {
+    path: '/categories/create',
+    name: 'categories.create',
+    component: CategoryCreate,
+    meta: {
+        title: 'Create category'
     },
     props: route => ({
         model: Category,

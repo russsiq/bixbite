@@ -1,6 +1,7 @@
 import Comment from '@/store/models/comment';
 
 import CommentIndex from '@/views/comments/index';
+import CommentCreate from '@/views/comments/create';
 import CommentEdit from '@/views/comments/edit';
 
 export default [{
@@ -9,6 +10,16 @@ export default [{
     component: CommentIndex,
     meta: {
         title: 'Comment'
+    },
+    props: route => ({
+        model: Comment,
+    }),
+}, {
+    path: '/comments/create',
+    name: 'comments.create',
+    component: CommentCreate,
+    meta: {
+        title: 'Create comment'
     },
     props: route => ({
         model: Comment,

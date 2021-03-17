@@ -1,6 +1,7 @@
 import Article from '@/store/models/article';
 
 import ArticleIndex from '@/views/articles/index';
+import ArticleCreate from '@/views/articles/create';
 import ArticleEdit from '@/views/articles/edit';
 
 export default [{
@@ -9,6 +10,16 @@ export default [{
     component: ArticleIndex,
     meta: {
         title: 'Articles'
+    },
+    props: route => ({
+        model: Article,
+    }),
+}, {
+    path: '/articles/create',
+    name: 'articles.create',
+    component: ArticleCreate,
+    meta: {
+        title: 'Create article'
     },
     props: route => ({
         model: Article,
