@@ -38,15 +38,15 @@ class BixbiteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(JsonApiContract $jsonApi)
     {
         $this->app->resolving(
             LengthAwarePaginatorContract::class,
-            function (LengthAwarePaginatorContract $paginator, $app) {
+            function (LengthAwarePaginatorContract $paginator, $app) use ($jsonApi) {
                 /** @var AbstractPaginator $paginator */
                 $paginator->onEachSide(1);
 
-                if ($app->request->is(JsonApi::API_URL.'/*')) {
+                if ($jsonApi->isApiUrl()) {
                     $paginator->setPageName('page[number]');
                 }
             }

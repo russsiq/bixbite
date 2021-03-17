@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Contracts\JsonApiContract;
 use App\Exceptions\JsonApiException;
 use App\Support\JsonApi;
 use Closure;
@@ -10,8 +11,16 @@ use Illuminate\Http\Request;
 
 class JsonApiHeaderMiddleware
 {
+    /** @var JsonApiContract */
+    protected $jsonApi;
+
     /** @var Request */
     protected $request;
+
+    public function __construct(JsonApiContract $jsonApi)
+    {
+        $this->jsonApi = $jsonApi;
+    }
 
     /**
      * Handle an incoming request.
@@ -63,7 +72,7 @@ class JsonApiHeaderMiddleware
 
     protected function isApiRoute(): bool
     {
-        return $this->request->is(JsonApi::API_URL.'/*');
+        return $this->jsonApi->isApiUrl();
     }
 
     protected function isSupportedContentType(): bool

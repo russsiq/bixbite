@@ -18,4 +18,6 @@ interface JsonApiContract
         'users' => \App\Models\User::class,
     ];
     public const SPEC_VERSION = '1.1';
+
+    public function isApiUrl(): bool;
 }

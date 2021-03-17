@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Contracts\JsonApiContract;
 use App\Support\JsonApi;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
@@ -36,12 +37,15 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        /** @var JsonApi */
+        $jsonApi = $this->container->make(JsonApiContract::class);
+
         $this->reportable(function (Throwable $e) {
             //
         });
 
-        $this->renderable(function (ValidationException $e, Request $request) {
-            if ($request->is(JsonApi::API_URL.'/*')) {
+        $this->renderable(function (ValidationException $e, Request $request) use ($jsonApi) {
+            if ($jsonApi->isApiUrl()) {
                 throw JsonApiException::makeFromValidator($e->validator);
             }
         });
