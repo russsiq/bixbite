@@ -32,7 +32,7 @@ Route::group([
         'as' => JsonApi::ROUTE_API_VERSION.'.',
         'prefix' => JsonApi::ROUTE_API_VERSION,
         'middleware' => [
-            'json-api.header',
+            'json-api.headers',
             'auth:sanctum',
         ],
     ], function () {
