@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Support\JsonApi;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -35,6 +38,12 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (ValidationException $e, Request $request) {
+            if ($request->is(JsonApi::API_URL.'/*')) {
+                throw JsonApiException::makeFromValidator($e->validator);
+            }
         });
     }
 }
