@@ -53,12 +53,7 @@ class BixbiteServiceProvider extends ServiceProvider
         );
 
         Relation::morphMap([
-            'articles' => \App\Models\Article::class,
-            'atachments' => \App\Models\Atachment::class,
-            'comments' => \App\Models\Comment::class,
-            'categories' => \App\Models\Category::class,
-            'tags' => \App\Models\Tag::class,
-            'users' => \App\Models\User::class,
+            $jsonApi::RESORCE_TO_MODEL_MAP
         ], true);
     }
 }
