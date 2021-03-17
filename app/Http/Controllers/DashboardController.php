@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\BixBiteContract;
-use App\Providers\RouteServiceProvider;
+use App\Support\JsonApi;
 use Illuminate\Contracts\Foundation\Application;
 
 class DashboardController extends Controller
@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
         return $app->view->make('dashboard', [
             'scriptVariables' => [
-                'api_url' => $app->url->to('api/'.RouteServiceProvider::API_VERSION),
+                'api_url' => $app->url->to(JsonApi::API_URL),
                 'app_name' => $app->config->get('app.name'),
                 'app_url' => $app->url->route('home'),
                 'dashboard_base_url' => 'dashboard',

@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public const API_VERSION = 'v1';
-
     /**
      * The path to the "home" route for your application.
      *

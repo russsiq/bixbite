@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Contracts\BixBiteContract;
+use App\Contracts\JsonApiContract;
 use App\Support\BixBite;
+use App\Support\JsonApi;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\AbstractPaginator;
@@ -18,6 +20,7 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public $singletons = [
         BixBiteContract::class => BixBite::class,
+        JsonApiContract::class => JsonApi::class,
     ];
 
     /**

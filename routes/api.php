@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\UserController;
-use App\Providers\RouteServiceProvider;
+use App\Support\JsonApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +29,10 @@ Route::group([
     'as' => 'api.',
 ], function () {
     Route::group([
-        'as' => RouteServiceProvider::API_VERSION.'.',
-        'prefix' => RouteServiceProvider::API_VERSION,
+        'as' => JsonApi::ROUTE_API_VERSION.'.',
+        'prefix' => JsonApi::ROUTE_API_VERSION,
         'middleware' => [
+            'json-api.header',
             'auth:sanctum',
         ],
     ], function () {
