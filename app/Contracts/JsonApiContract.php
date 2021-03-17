@@ -6,7 +6,8 @@ interface JsonApiContract
 {
     public const API_URL = 'api/'.self::ROUTE_API_VERSION;
     public const HEADER_ACCEPT = 'application/vnd.api+json';
-    public const HEADER_CONTENT_TYPE = 'application/vnd.api+json';
+    public const HEADER_CONTENT_TYPE = self::HEADER_ACCEPT;
+    public const HEADER_RESOURCE = 'X-JSON-API-RESOURCE';
     public const ROUTE_API_VERSION = 'v1';
     public const RESORCE_TO_MODEL_MAP = [
         'articles' => \App\Models\Article::class,

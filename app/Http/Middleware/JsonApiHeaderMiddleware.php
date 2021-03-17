@@ -24,7 +24,9 @@ class JsonApiHeaderMiddleware
     {
         $this->request = $request;
 
-        $this->ensureIsApiRoute()->ensureIsSupportedHeaders();
+        $this->ensureIsApiRoute()
+            ->ensureIsSupportedHeaders()
+            ->resourceHeaderIsDefined();
 
         return $next($request);
     }
@@ -45,6 +47,18 @@ class JsonApiHeaderMiddleware
         }
 
         throw JsonApiException::make(JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    protected function resourceHeaderIsDefined(): self
+    {
+        if (array_key_exists(
+            $this->request->header(JsonApi::HEADER_RESOURCE),
+            JsonApi::RESORCE_TO_MODEL_MAP
+        )) {
+            return $this;
+        }
+
+        throw JsonApiException::make(JsonResponse::HTTP_NOT_ACCEPTABLE);
     }
 
     protected function isApiRoute(): bool
