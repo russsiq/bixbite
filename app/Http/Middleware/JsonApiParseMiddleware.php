@@ -19,20 +19,20 @@ class JsonApiParseMiddleware extends TransformsRequest
             return $this->parseFields($value);
         }
 
-        if (str_starts_with($key, 'filter')) {
-            return $this->parseFilter($value);
-        }
-
         if ('include' === $key) {
             return $this->parseInclude($value);
         }
 
-        if (str_starts_with($key, 'page')) {
-            return $this->parsePage($value);
+        if (str_starts_with($key, 'filter')) {
+            return $this->parseFilter($value);
         }
 
         if ('sort' === $key) {
             return $this->parseSort($value);
+        }
+
+        if (str_starts_with($key, 'page')) {
+            return $this->parsePage($value);
         }
 
         return $value;
@@ -43,17 +43,12 @@ class JsonApiParseMiddleware extends TransformsRequest
         return $this->splitStringByComma($value);
     }
 
-    protected function parseFilter(?string $value): string
-    {
-        return $value;
-    }
-
     protected function parseInclude(?string $value): array
     {
         return $this->splitStringByComma($value);
     }
 
-    protected function parsePage(?string $value): string
+    protected function parseFilter(?string $value): string
     {
         return $value;
     }
@@ -61,6 +56,11 @@ class JsonApiParseMiddleware extends TransformsRequest
     protected function parseSort(?string $value): array
     {
         return $this->splitStringByComma($value);
+    }
+
+    protected function parsePage(?string $value): string
+    {
+        return $value;
     }
 
     protected function splitStringByComma(?string $value): array
