@@ -61,8 +61,8 @@ class JsonApiHeaderMiddleware
     protected function resourceHeaderIsDefined(): self
     {
         if (array_key_exists(
-            $this->request->header(JsonApi::HEADER_RESOURCE),
-            JsonApi::RESORCE_TO_MODEL_MAP
+            $this->request->header($this->jsonApi::HEADER_RESOURCE),
+            $this->jsonApi::RESORCE_TO_MODEL_MAP
         )) {
             return $this;
         }
@@ -77,11 +77,11 @@ class JsonApiHeaderMiddleware
 
     protected function isSupportedContentType(): bool
     {
-        return $this->request->header('CONTENT_TYPE') === JsonApi::HEADER_CONTENT_TYPE;
+        return $this->request->header('CONTENT_TYPE') === $this->jsonApi::HEADER_CONTENT_TYPE;
     }
 
     protected function isSupportedAccept(): bool
     {
-        return $this->request->header('ACCEPT') === JsonApi::HEADER_ACCEPT;
+        return $this->request->header('ACCEPT') === $this->jsonApi::HEADER_ACCEPT;
     }
 }
