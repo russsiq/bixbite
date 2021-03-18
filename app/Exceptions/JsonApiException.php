@@ -23,13 +23,9 @@ class JsonApiException extends HttpResponseException
         array $headers = []
     ): HttpResponseException {
 
-        if (empty($errors)) {
-            $errors = [
-                [
-                    'status' => $status,
-                    'title' => JsonResponse::$statusTexts[$status],
-                ],
-            ];
+        foreach ($errors as $key => $error) {
+            $errors[$key]['status'] = $error['status'] ?? $status;
+            $errors[$key]['title'] = $error['title'] ?? JsonResponse::$statusTexts[$status];
         }
 
         return new static(
@@ -58,10 +54,9 @@ class JsonApiException extends HttpResponseException
     public static function makeFromValidator(
         Validator $validator,
         string $sourceMember = 'pointer',
-        int $status = null,
+        int $status = JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
         string $statusText = null
     ): HttpResponseException {
-        $status = $status ?: JsonResponse::HTTP_BAD_REQUEST;
         $statusText = $statusText ?: JsonResponse::$statusTexts[$status];
 
         $errors = [];
