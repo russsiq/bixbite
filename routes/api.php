@@ -38,9 +38,6 @@ Route::group([
             'auth:sanctum',
         ],
     ], function () {
-        // dd(
-        //     Article::select('id', 'title')->with('comments.user.atachments')->first()
-        // );
         $resources = [
             'articles' => ArticleController::class,
             'atachments' => AtachmentController::class,
