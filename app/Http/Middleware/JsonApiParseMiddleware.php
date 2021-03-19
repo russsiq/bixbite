@@ -58,9 +58,9 @@ class JsonApiParseMiddleware extends TransformsRequest
         return $this->splitStringByComma($value);
     }
 
-    protected function parsePage(?string $value): string
+    protected function parsePage($value): int
     {
-        return $value;
+        return (int) $value;
     }
 
     protected function splitStringByComma(?string $value): array
