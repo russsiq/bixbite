@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Models\Article;
 use App\Support\JsonApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,9 +34,13 @@ Route::group([
         'prefix' => JsonApi::ROUTE_API_VERSION,
         'middleware' => [
             'json-api.headers',
+            'json-api.response',
             'auth:sanctum',
         ],
     ], function () {
+        // dd(
+        //     Article::select('id', 'title')->with('comments.user.atachments')->first()
+        // );
         $resources = [
             'articles' => ArticleController::class,
             'atachments' => AtachmentController::class,

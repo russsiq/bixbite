@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'json-api.headers' => \App\Http\Middleware\JsonApiHeaderMiddleware::class,
         'json-api.parse' => \App\Http\Middleware\JsonApiParseMiddleware::class,
         'json-api.validate' => \App\Http\Middleware\JsonApiValidateMiddleware::class,
+        'json-api.response' => \App\Http\Middleware\JsonApiResponseMiddleware::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
