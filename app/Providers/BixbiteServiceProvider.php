@@ -38,20 +38,20 @@ class BixbiteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(JsonApiContract $jsonApi)
+    public function boot()
     {
         $this->app->resolving(
             LengthAwarePaginatorContract::class,
-            function (LengthAwarePaginatorContract $paginator, $app) use ($jsonApi) {
+            function (LengthAwarePaginatorContract $paginator, $app) {
                 /** @var AbstractPaginator $paginator */
                 $paginator->onEachSide(1);
 
-                if ($jsonApi->isApiUrl()) {
+                if ($app->make(JsonApiContract::class)->isApiUrl()) {
                     $paginator->setPageName('page[number]');
                 }
             }
         );
 
-        Relation::morphMap($jsonApi::RESORCE_TO_MODEL_MAP, true);
+        Relation::morphMap(JsonApiContract::RESORCE_TO_MODEL_MAP, true);
     }
 }
