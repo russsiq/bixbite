@@ -20,7 +20,7 @@ class JsonApiParseMiddlewareTest extends TestCase
             '?include=user,comments.user, comments . user . atachments , null'.
             '&fields[articles]=title, body&fields[user]=name'.
             '&filter[0][column]= title&filter[0][operator]=contains&filter[0][query_1]=ipsum'.
-            '&filter[match]=or'.
+            '&filter[match]= or'.
             '&sort=-created, title , user . name'.
             '&page[number]=1&page[size]=8'
         );

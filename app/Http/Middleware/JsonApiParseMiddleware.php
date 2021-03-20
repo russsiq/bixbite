@@ -24,7 +24,9 @@ class JsonApiParseMiddleware extends TransformsRequest
         }
 
         if (str_starts_with($key, 'filter') &&
-            (str_ends_with($key, 'column') || str_ends_with($key, 'operator'))
+            (
+                str_ends_with($key, 'column') || str_ends_with($key, 'operator') || str_ends_with($key, 'match')
+            )
         ) {
             return $this->parseFilter($value);
         }
