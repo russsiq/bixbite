@@ -31,4 +31,11 @@ class JsonApi implements JsonApiContract
             $this->resourceName()
         ];
     }
+
+    public function setRequest(Request $request): static
+    {
+        $this->request = $request;
+
+        return $this;
+    }
 }
