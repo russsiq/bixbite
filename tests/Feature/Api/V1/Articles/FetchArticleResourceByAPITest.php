@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
+use Tests\Feature\Api\V1\JsonApiTrait;
 use Tests\TestCase;
 
 /**
@@ -21,13 +22,16 @@ use Tests\TestCase;
  */
 class FetchArticleResourceByAPITest extends TestCase
 {
+    use JsonApiTrait;
     use InteractsWithPolicy;
     use RefreshDatabase;
+
+    public const JSON_API_RESOURCE = 'articles';
 
     public function test_guest_cannot_fetch_articles()
     {
         $response = $this->assertGuest()
-            ->getJson(route('api.v1.articles.index'))
+            ->getJsonApi('index')
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
@@ -38,7 +42,7 @@ class FetchArticleResourceByAPITest extends TestCase
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.index'))
+            ->getJsonApi('index')
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
@@ -51,7 +55,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertGuest()
-            ->getJson(route('api.v1.articles.show', $article))
+            ->getJsonApi('show', $article)
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
@@ -66,7 +70,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.show', $article))
+            ->getJsonApi('show', $article)
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
@@ -79,7 +83,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.index'))
+            ->getJsonApi('index')
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
             ->assertJsonCount($countArticles, 'data')
             ->assertJsonStructure(
@@ -96,7 +100,7 @@ class FetchArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.show', $article))
+            ->getJsonApi('show', $article)
             ->assertStatus(JsonResponse::HTTP_OK)
             ->assertJsonStructure(
                 ArticleFixtures::resource()
@@ -110,7 +114,7 @@ class FetchArticleResourceByAPITest extends TestCase
         $this->assertDatabaseCount('articles', 0);
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.show', 'not.found'))
+            ->getJsonApi('show', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }

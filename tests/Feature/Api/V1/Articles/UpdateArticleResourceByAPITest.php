@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
+use Tests\Feature\Api\V1\JsonApiTrait;
 use Tests\TestCase;
 
 /**
@@ -21,8 +22,11 @@ use Tests\TestCase;
  */
 class UpdateArticleResourceByAPITest extends TestCase
 {
+    use JsonApiTrait;
     use InteractsWithPolicy;
     use RefreshDatabase;
+
+    public const JSON_API_RESOURCE = 'articles';
 
     public function test_guest_cannot_update_article()
     {
@@ -33,7 +37,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertGuest()
-            ->putJson(route('api.v1.articles.update', $article), [
+            ->putJsonApi('update', $article, [
 
             ])
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -50,7 +54,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-           ->putJson(route('api.v1.articles.update', $article), [
+            ->putJsonApi('update', $article, [
 
             ])
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -65,7 +69,7 @@ class UpdateArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-            ->putJson(route('api.v1.articles.update', $article), [
+            ->putJsonApi('update', $article, [
                 'title' => 'New title for old article',
                 'relationships' => [],
             ])
@@ -82,7 +86,7 @@ class UpdateArticleResourceByAPITest extends TestCase
         $this->assertDatabaseCount('articles', 0);
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.update', 'not.found'))
+            ->putJsonApi('update', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }

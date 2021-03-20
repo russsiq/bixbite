@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
+use Tests\Feature\Api\V1\JsonApiTrait;
 use Tests\TestCase;
 
 /**
@@ -21,13 +22,16 @@ use Tests\TestCase;
  */
 class CreateArticleResourceByAPITest extends TestCase
 {
+    use JsonApiTrait;
     use InteractsWithPolicy;
     use RefreshDatabase;
+
+    public const JSON_API_RESOURCE = 'articles';
 
     public function test_guest_cannot_create_article()
     {
         $response = $this->assertGuest()
-            ->postJson(route('api.v1.articles.store'), [
+            ->postJsonApi('store', [], [
 
             ])
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -40,7 +44,7 @@ class CreateArticleResourceByAPITest extends TestCase
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
-            ->postJson(route('api.v1.articles.store'), [
+            ->postJsonApi('store', [], [
 
             ])
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -51,7 +55,7 @@ class CreateArticleResourceByAPITest extends TestCase
         $super_admin = $this->loginSuperAdminSPA();
 
         $response = $this->assertAuthenticated()
-            ->postJson(route('api.v1.articles.store'), [
+            ->postJsonApi('store', [], [
                 'title' => 'New article title',
                 'relationships' => [],
             ])

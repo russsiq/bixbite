@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
+use Tests\Feature\Api\V1\JsonApiTrait;
 use Tests\TestCase;
 
 /**
@@ -20,8 +21,11 @@ use Tests\TestCase;
  */
 class DeleteArticleResourceByAPITest extends TestCase
 {
+    use JsonApiTrait;
     use InteractsWithPolicy;
     use RefreshDatabase;
+
+    public const JSON_API_RESOURCE = 'articles';
 
     public function test_guest_cannot_delete_article()
     {
@@ -32,9 +36,7 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertGuest()
-            ->deleteJson(route('api.v1.articles.destroy', $article), [
-
-            ])
+            ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
@@ -49,9 +51,7 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-           ->deleteJson(route('api.v1.articles.destroy', $article), [
-
-            ])
+            ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
@@ -64,9 +64,7 @@ class DeleteArticleResourceByAPITest extends TestCase
             ->create();
 
         $response = $this->assertAuthenticated()
-           ->deleteJson(route('api.v1.articles.destroy', $article), [
-
-            ])
+            ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
     }
 
@@ -77,7 +75,7 @@ class DeleteArticleResourceByAPITest extends TestCase
         $this->assertDatabaseCount('articles', 0);
 
         $response = $this->assertAuthenticated()
-            ->getJson(route('api.v1.articles.destroy', 'not.found'))
+            ->deleteJsonApi('destroy', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }
