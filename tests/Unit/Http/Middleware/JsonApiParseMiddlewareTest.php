@@ -29,8 +29,8 @@ class JsonApiParseMiddlewareTest extends TestCase
             'CONTENT_TYPE', JsonApiContract::HEADER_CONTENT_TYPE,
         );
 
-        $response = (new JsonApiParseMiddleware)->handle($request, function (Request $expectedRequest) {
-            $this->assertEquals($expectedRequest->all(), [
+        $response = (new JsonApiParseMiddleware)->handle($request, function (Request $actualRequest) {
+            $this->assertEquals([
                 'include' => ['user', 'comments.user', 'comments.user.atachments', 'null'],
                 'fields' => [
                     'articles' => ['title', 'body'],
@@ -45,7 +45,7 @@ class JsonApiParseMiddlewareTest extends TestCase
                     'number' => 1,
                     'size' => 8,
                 ],
-            ]);
+            ], $actualRequest->all());
         });
 
         $this->assertEquals($response, null);
