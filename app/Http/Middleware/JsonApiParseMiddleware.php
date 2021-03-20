@@ -23,7 +23,9 @@ class JsonApiParseMiddleware extends TransformsRequest
             return $this->parseInclude($value);
         }
 
-        if (str_starts_with($key, 'filter')) {
+        if (str_starts_with($key, 'filter') &&
+            (str_ends_with($key, 'column') || str_ends_with($key, 'operator'))
+        ) {
             return $this->parseFilter($value);
         }
 
@@ -50,7 +52,7 @@ class JsonApiParseMiddleware extends TransformsRequest
 
     protected function parseFilter(?string $value): string
     {
-        return $value;
+        return trim($value);
     }
 
     protected function parseSort(?string $value): array
@@ -71,6 +73,9 @@ class JsonApiParseMiddleware extends TransformsRequest
 
         // У каждого из вновь созданных значений не должно быть боковых пробелов.
         // Метод не должен возвращать пустые вновь созданные значения.
+
+        $value = str_replace(' ', '', $value);
+
         return preg_split(
             '/\s*,\s*/', $value, flags: PREG_SPLIT_NO_EMPTY
         );
