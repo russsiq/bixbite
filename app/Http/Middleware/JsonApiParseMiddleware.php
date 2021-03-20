@@ -24,9 +24,7 @@ class JsonApiParseMiddleware extends TransformsRequest
         }
 
         if (str_starts_with($key, 'filter') &&
-            (
-                str_ends_with($key, 'column') || str_ends_with($key, 'operator') || str_ends_with($key, 'match')
-            )
+            ! str_contains($key, 'query_')
         ) {
             return $this->parseFilter($value);
         }
@@ -54,7 +52,7 @@ class JsonApiParseMiddleware extends TransformsRequest
 
     protected function parseFilter(?string $value): string
     {
-        return trim($value);
+        return str_replace(' ', '', $value);
     }
 
     protected function parseSort(?string $value): array
