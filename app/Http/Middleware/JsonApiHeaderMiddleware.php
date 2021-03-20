@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class JsonApiHeaderMiddleware
 {
-    /** @var JsonApiContract */
+    /** @var JsonApi */
     protected $jsonApi;
 
     /** @var Request */
