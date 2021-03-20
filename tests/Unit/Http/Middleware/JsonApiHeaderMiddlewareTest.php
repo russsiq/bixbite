@@ -54,6 +54,6 @@ class JsonApiHeaderMiddlewareTest extends TestCase
 
         $response = $middleware->handle($request, function () {});
 
-        $this->assertEquals($response, null);
+        $this->assertNull($response);
     }
 }

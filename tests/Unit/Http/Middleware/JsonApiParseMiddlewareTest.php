@@ -48,6 +48,6 @@ class JsonApiParseMiddlewareTest extends TestCase
             ], $actualRequest->all());
         });
 
-        $this->assertEquals($response, null);
+        $this->assertNull($response);
     }
 }
