@@ -31,7 +31,9 @@ class JsonApiHeaderMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->request = $request;
+        $this->jsonApi->setRequest(
+            $this->request = $request
+        );
 
         $this->ensureIsApiRoute()
             ->ensureIsSupportedHeaders()
