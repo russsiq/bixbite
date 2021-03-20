@@ -33,9 +33,9 @@ Route::group([
         'as' => JsonApi::ROUTE_API_VERSION.'.',
         'prefix' => JsonApi::ROUTE_API_VERSION,
         'middleware' => [
+            'auth:sanctum',
             'json-api.headers',
             'json-api.response',
-            'auth:sanctum',
         ],
     ], function () {
         $resources = [
