@@ -2,6 +2,8 @@
 
 namespace App\Contracts;
 
+use Illuminate\Http\Request;
+
 interface JsonApiContract
 {
     public const API_URL = 'api/'.self::ROUTE_API_VERSION;
@@ -24,4 +26,6 @@ interface JsonApiContract
     public function resourceName(): string;
 
     public function resourceModelName(): string;
+
+    public function setRequest(Request $request): static;
 }
