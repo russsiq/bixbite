@@ -6,9 +6,11 @@ use App\Contracts\JsonApiContract;
 use App\Http\Middleware\JsonApiValidateMiddleware;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidationContract;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Mockery;
+use Mockery\Matcher\AnyArgs as AnyArgsMatcher;
 use Tests\TestCase;
 
 /**
@@ -38,7 +40,6 @@ class JsonApiValidateMiddlewareTest extends TestCase
         $jsonApi = Mockery::mock(JsonApiContract::class)->makePartial();
         $jsonApi->expects()
             ->setRequest($request)
-            ->once()
             ->andReturnSelf();
 
         $translator = Mockery::mock(Translator::class)->makePartial();
@@ -47,6 +48,16 @@ class JsonApiValidateMiddlewareTest extends TestCase
         $middleware = new JsonApiValidateMiddleware(
             $jsonApi, $translator, $validationFactory
         );
+
+        $validator = Mockery::mock(ValidationContract::class)->makePartial();
+        $validator->expects()->after(new AnyArgsMatcher)->andReturnSelf();
+        $validator->expects()->fails()->andReturnFalse();
+        $validator->expects()->validated()->andReturn([]);
+
+        $validationFactory->expects()->make(
+            $request->all(), $middleware->rules(),
+            $middleware->messages(), $middleware->attributes()
+        )->andReturn($validator);
 
         $response = $middleware->handle($request, function (Request $expectedRequest) {
             //

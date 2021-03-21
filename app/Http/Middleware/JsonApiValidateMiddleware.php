@@ -6,8 +6,9 @@ use App\Contracts\JsonApiContract;
 use Closure;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class JsonApiValidateMiddleware
 {
@@ -22,6 +23,9 @@ class JsonApiValidateMiddleware
 
     /** @var ValidationFactory */
     protected $validationFactory;
+
+    // /** @var bool */
+    // protected $stopOnFirstFailure = true;
 
     /**
      * Create a new middleware instance.
@@ -49,7 +53,7 @@ class JsonApiValidateMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->setRequest($request);
+        $this->setRequest($request)->validate();
 
         return $next($request);
     }
@@ -67,5 +71,76 @@ class JsonApiValidateMiddleware
         );
 
         return $this;
+    }
+
+    /**
+     * Run the validator's rules against its data.
+     *
+     * @return array
+     *
+     * @throws ValidationException
+     */
+    public function validate(): array
+    {
+        $validator = $this->createValidator()
+            // ->stopOnFirstFailure($this->stopOnFirstFailure)
+            ->after(function (ValidatorContract $validator) {
+                //
+            });
+
+        if ($validator->fails()) {
+            //
+        }
+
+        return $validator->validated();
+    }
+
+    /**
+     * Create a new Validator instance.
+     *
+     * @return ValidatorContract
+     */
+    protected function createValidator(): ValidatorContract
+    {
+        return $this->validationFactory->make(
+            $this->request->all(), $this->rules(),
+            $this->messages(), $this->attributes()
+        );
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            //
+        ];
     }
 }
