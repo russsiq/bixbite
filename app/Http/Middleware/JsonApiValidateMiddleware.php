@@ -2,18 +2,42 @@
 
 namespace App\Http\Middleware;
 
+use App\Contracts\JsonApiContract;
 use Closure;
+use Illuminate\Contracts\Translation\Translator;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 
 class JsonApiValidateMiddleware
 {
+    /** @var JsonApiContract */
+    protected $jsonApi;
+
+    /** @var Request */
+    protected $request;
+
+    /** @var Translator */
+    protected $translator;
+
+    /** @var ValidationFactory */
+    protected $validationFactory;
+
     /**
      * Create a new middleware instance.
      *
-     * @return void
+     * @param JsonApiContract  $jsonApi
+     * @param Translator  $translator
+     * @param ValidationFactory  $validationFactory
      */
-    public function __construct()
-    {
+    public function __construct(
+        JsonApiContract $jsonApi,
+        Translator $translator,
+        ValidationFactory $validationFactory
+    ) {
+        $this->jsonApi = $jsonApi;
+        $this->translator = $translator;
+        $this->validationFactory = $validationFactory;
     }
 
     /**
