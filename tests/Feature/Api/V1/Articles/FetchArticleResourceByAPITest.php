@@ -7,9 +7,11 @@ namespace Tests\Feature\Api\V1\Articles;
 use App\Models\Article;
 use App\Models\User;
 use App\Policies\ArticlePolicy;
+use Database\Seeders\TestContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\Feature\Api\V1\JsonApiTrait;
@@ -116,5 +118,57 @@ class FetchArticleResourceByAPITest extends TestCase
         $response = $this->assertAuthenticated()
             ->getJsonApi('show', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    }
+
+    public function test_fetching_data_by_json_api_specification_v1_1()
+    {
+        // $this->expectException(ValidationException::class);
+        // $this->withoutExceptionHandling([ValidationException::class]);
+
+        $this->seed(TestContentSeeder::class)
+            ->loginSuperAdminSPA();
+
+        Article::whereId($id = 8)->update([
+            'title' => $title = 'Quo unde sint praesentium.',
+        ]);
+
+        $response = $this->assertAuthenticated()
+            ->getJsonApi('index', [
+                'include' => ['attachments', 'categories', 'comments.user', 'tags', 'user'],
+                'fields' => [
+                    'articles' => ['title', 'content'],
+                    'user' => ['name', 'email'],
+                ],
+                'filter' => [
+                    ['column' => 'title', 'operator' => 'contains', 'query_1' => substr($title, 4, 8)],
+                    'match' => 'or',
+                ],
+                'sort' => ['-created_at', 'title'],
+                'page' => [
+                    'number' => 1,
+                    'size' => 8,
+                ],
+            ])
+            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => 8,
+                        'type' => 'articles',
+                        'attributes' => [
+                            'title' => $title,
+                        ],
+                        'relationships' => [
+                            //
+                        ],
+                        'links' => [
+                            //
+                        ],
+                    ],
+                ],
+                'links' => [
+                    //
+                ],
+            ]);
     }
 }
