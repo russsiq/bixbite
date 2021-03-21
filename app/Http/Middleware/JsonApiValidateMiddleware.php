@@ -54,6 +54,12 @@ class JsonApiValidateMiddleware
         return $next($request);
     }
 
+    /**
+     * Set the Request instance.
+     *
+     * @param  Request  $request
+     * @return $this
+     */
     public function setRequest(Request $request): self
     {
         $this->jsonApi->setRequest(
