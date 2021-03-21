@@ -36,6 +36,11 @@ class JsonApiValidateMiddlewareTest extends TestCase
         // $validationFactory = $this->app->make(ValidationFactory::class);
 
         $jsonApi = Mockery::mock(JsonApiContract::class)->makePartial();
+        $jsonApi->expects()
+            ->setRequest($request)
+            ->once()
+            ->andReturnSelf();
+
         $translator = Mockery::mock(Translator::class)->makePartial();
         $validationFactory = Mockery::mock(ValidationFactory::class)->makePartial();
 

@@ -49,6 +49,17 @@ class JsonApiValidateMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $this->setRequest($request);
+
         return $next($request);
+    }
+
+    public function setRequest(Request $request): self
+    {
+        $this->jsonApi->setRequest(
+            $this->request = $request
+        );
+
+        return $this;
     }
 }
