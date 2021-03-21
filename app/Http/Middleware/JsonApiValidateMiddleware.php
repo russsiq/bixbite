@@ -92,7 +92,7 @@ class JsonApiValidateMiddleware
             //
         }
 
-        return $validator->validated();
+        return $validator->validate();
     }
 
     /**

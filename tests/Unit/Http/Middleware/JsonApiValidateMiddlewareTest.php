@@ -54,7 +54,7 @@ class JsonApiValidateMiddlewareTest extends TestCase
         $validator = Mockery::mock(ValidationContract::class)->makePartial();
         $validator->expects()->after(Mockery::on(fn ($validator) => true))->andReturnSelf();
         $validator->expects()->fails()->andReturnFalse();
-        $validator->expects()->validated()->andReturn([]);
+        $validator->expects()->validate()->andReturn([]);
 
         $validationFactory->expects()->make(
             $request->all(), $middleware->rules(),
