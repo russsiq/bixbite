@@ -61,8 +61,8 @@ class JsonApiValidateMiddlewareTest extends TestCase
             $middleware->messages(), $middleware->attributes()
         )->andReturn($validator);
 
-        $response = $middleware->handle($request, function (Request $expectedRequest) {
-            //
+        $response = $middleware->handle($request, function (Request $actualRequest) {
+            $this->assertEquals([], $actualRequest->all());
         });
 
         $this->assertNull($response);
