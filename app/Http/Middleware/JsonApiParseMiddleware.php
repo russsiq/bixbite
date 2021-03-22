@@ -42,7 +42,9 @@ class JsonApiParseMiddleware extends TransformsRequest
 
     protected function parseFields(?string $value): array
     {
-        return $this->splitStringByComma($value);
+        return [
+            'id', ...$this->splitStringByComma($value)
+        ];
     }
 
     protected function parseInclude(?string $value): array
