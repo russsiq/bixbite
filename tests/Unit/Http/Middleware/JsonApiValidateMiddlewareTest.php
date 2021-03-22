@@ -35,10 +35,6 @@ class JsonApiValidateMiddlewareTest extends TestCase
             'CONTENT_TYPE', JsonApiContract::HEADER_CONTENT_TYPE,
         );
 
-        // $jsonApi = $this->app->make(JsonApi::class);
-        // $translator = $this->app->make(Translator::class);
-        // $validationFactory = $this->app->make(ValidationFactory::class);
-
         $jsonApi = Mockery::mock(JsonApiContract::class)->makePartial();
         $jsonApi->expects()
             ->setRequest($request)
