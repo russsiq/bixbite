@@ -103,7 +103,7 @@ class JsonApiValidateMiddleware
     protected function createValidator(): ValidatorContract
     {
         return $this->validationFactory->make(
-            $this->request->all(), $this->rules(),
+            $this->request->query(), $this->rules(),
             $this->messages(), $this->attributes()
         );
     }
