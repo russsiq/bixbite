@@ -53,7 +53,7 @@ class JsonApiValidateMiddlewareTest extends TestCase
         $validator->expects()->validate()->andReturn([]);
 
         $validationFactory->expects()->make(
-            $request->all(), $middleware->rules(),
+            $request->query(), $middleware->rules(),
             $middleware->messages(), $middleware->attributes()
         )->andReturn($validator);
 
