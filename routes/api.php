@@ -48,7 +48,7 @@ Route::group([
         ];
 
         Route::apiResources($resources, [
-            'only' => 'index',
+            'only' => ['index', 'show'],
             'middleware' => [
                 'json-api.parse',
                 'json-api.validate',
@@ -56,7 +56,7 @@ Route::group([
         ]);
 
         Route::apiResources($resources, [
-            'except' => 'index',
+            'except' => ['index', 'show'],
         ]);
     });
 });
