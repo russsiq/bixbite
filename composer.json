@@ -27,9 +27,9 @@
         "php": "^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.3",
         "laravel/fortify": "^1.7",
-        "laravel/framework": "^8.32",
+        "laravel/framework": "^8.34",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.6",
         "russsiq/laravel-widget": "dev-master"
@@ -37,7 +37,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
         "brianium/paratest": "^6.1",
-        "facade/ignition": "^2.5",
+        "facade/ignition": "^2.6",
         "fakerphp/faker": "^1.13",
         "laravel/sail": "^1.4",
         "mockery/mockery": "^1.4",
