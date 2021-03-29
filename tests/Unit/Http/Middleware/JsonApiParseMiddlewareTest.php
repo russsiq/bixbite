@@ -21,7 +21,7 @@ class JsonApiParseMiddlewareTest extends TestCase
         $request = Request::create(
             '?include=user,comments.user, comments . user . atachments , null'.
             '&fields[articles]=title,created_at, something, ,,&fields[user]=name'.
-            '&filter[0][column]= title&filter[0][operator]=contains&filter[0][query_1]= lorem ipsum'.
+            '&filter[0][field]= title&filter[0][operator]=contains&filter[0][query_1]= lorem ipsum'.
             '&filter[match]= or'.
             '&sort=-created_at, title , user . name'.
             '&page[number]=1&page[size]=8'
@@ -39,7 +39,7 @@ class JsonApiParseMiddlewareTest extends TestCase
                     'user' => ['id', 'name'],
                 ],
                 'filter' => [
-                    ['column' => 'title', 'operator' => 'contains', 'query_1' => ' lorem ipsum'],
+                    ['field' => 'title', 'operator' => 'contains', 'query_1' => ' lorem ipsum'],
                     'match' => 'or',
                 ],
                 'sort' => ['-created_at', 'title', 'user.name'],
