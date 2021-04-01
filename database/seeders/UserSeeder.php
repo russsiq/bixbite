@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Mail;
 
 class UserSeeder extends Seeder
 {
@@ -23,6 +24,8 @@ class UserSeeder extends Seeder
      */
     public function run(int $countToSeed = null): void
     {
+        Mail::fake();
+
         User::factory()
             ->count($countToSeed ?: self::COUNT_TO_SEED)
             ->create();
