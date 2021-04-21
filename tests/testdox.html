@@ -106,5 +106,46 @@
         <ul>
             <li style="color: #555753;">✓ User can view empty tags cloud</li>
         </ul>
+        <h2 id="Tests\Feature\Auth\AuthenticationTest">Authentication (Tests\Feature\Auth\Authentication)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Login screen can be rendered</li>
+            <li style="color: #ef2929;">❌ Users can authenticate using the login screen</li>
+            <li style="color: #555753;">✓ Users can not authenticate with invalid password</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\EmailVerificationTest">Email Verification (Tests\Feature\Auth\EmailVerification)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Email verification screen can be rendered</li>
+            <li style="color: #555753;">✓ Email can be verified</li>
+            <li style="color: #555753;">✓ Email can not verified with invalid hash</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\PasswordConfirmationTest">Password Confirmation (Tests\Feature\Auth\PasswordConfirmation)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Confirm password screen can be rendered</li>
+            <li style="color: #ef2929;">❌ Password can be confirmed</li>
+            <li style="color: #555753;">✓ Password is not confirmed with invalid password</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\PasswordResetTest">Password Reset (Tests\Feature\Auth\PasswordReset)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Reset password link screen can be rendered</li>
+            <li style="color: #555753;">✓ Reset password link can be requested</li>
+            <li style="color: #ef2929;">❌ Reset password screen can be rendered</li>
+            <li style="color: #555753;">✓ Password can be reset with valid token</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\ProfileInformationTest">Profile Information (Tests\Feature\Auth\ProfileInformation)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Current profile information is available</li>
+            <li style="color: #ef2929;">❌ Profile information can be updated</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\RegistrationTest">Registration (Tests\Feature\Auth\Registration)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Registration screen can be rendered</li>
+            <li style="color: #ef2929;">❌ New users can register</li>
+        </ul>
+        <h2 id="Tests\Feature\Auth\UpdatePasswordTest">Update Password (Tests\Feature\Auth\UpdatePassword)</h2>
+        <ul>
+            <li style="color: #ef2929;">❌ Password can be updated</li>
+            <li style="color: #ef2929;">❌ Current password must be correct</li>
+            <li style="color: #ef2929;">❌ New passwords must match</li>
+        </ul>
     </body>
 </html>
