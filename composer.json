@@ -28,6 +28,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel/fortify": "^1.7",
         "laravel/framework": "^8.22",
         "laravel/tinker": "^2.5",
         "russsiq/laravel-assistant": "^0.2",
