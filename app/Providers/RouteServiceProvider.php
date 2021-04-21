@@ -44,24 +44,16 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-        $this->configureRoutePatterns();
+        $this->configureRoutes();
+    }
 
+    protected function configureRoutes()
+    {
         // Для новостей , статей не надо этого. Для пользователей не знаю
         // Route::model('article', \App\Models\Article::class);
         // Route::model('category', \App\Models\Category::class);
         // Route::model('users', App\Models\User::class);
 
-        $this->routes(function () {
-            $this->mapRssRoutes();
-            $this->mapApiRoutes();
-            $this->mapAdminRoutes();
-            $this->mapFrontRoutes();
-            $this->mapWebRoutes();
-        });
-    }
-
-    public function configureRoutePatterns()
-    {
         Route::patterns([
             'any' => $this->routePattern('any'),
             'id' => $this->routePattern('id'),
@@ -82,81 +74,35 @@ class RouteServiceProvider extends ServiceProvider
             'model' => '^[a-zA-Z_]+$',
             'attribute' => '^[a-zA-Z_]+$',
         ]);
+
+        $this->routes(function () {
+            Route::middleware([])
+                ->group(base_path('routes/web/rss.php'));
+
+            Route::prefix('api/v1')
+                ->middleware(['api'])
+                ->group(base_path('routes/api.php'));
+
+            Route::middleware(['web'])
+                ->group(base_path('routes/web/admin.php'));
+
+            Route::middleware(['web'])
+                ->group(base_path('routes/web/front.php'));
+
+            Route::namespace('Laravel\Fortify\Http\Controllers')
+                ->domain(config('fortify.domain', null))
+                ->prefix(config('fortify.prefix'))
+                ->group(base_path('routes/fortify.php'));
+
+            // Always last.
+            Route::middleware(['web'])
+                ->group(base_path('routes/web.php'));
+        });
     }
 
-    public function routePattern(string $type): string
+    protected function routePattern(string $type): string
     {
         return $this->routePatterns[$type];
-    }
-
-    /**
-     * Попробуем отключить посредников для rss лент.
-     */
-    protected function mapRssRoutes()
-    {
-        Route::middleware([
-                // 'web',
-
-            ])
-            ->group(base_path('routes/web/rss.php'));
-    }
-
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api/v1')
-            ->middleware([
-                'api',
-
-            ])
-            ->group(base_path('routes/api.php'));
-    }
-
-    /**
-     * Определить маршруты «админ» для приложения.
-     *
-     * @return void
-     */
-    protected function mapAdminRoutes()
-    {
-        Route::middleware([
-                'web',
-
-            ])
-            ->group(base_path('routes/web/admin.php'));
-    }
-
-    /**
-     * Определить маршруты «фронтенда» для приложения.
-     *
-     * @return void
-     */
-    protected function mapFrontRoutes()
-    {
-        Route::middleware([
-                'web',
-
-            ])
-            ->group(base_path('routes/web/front.php'));
-    }
-
-    /**
-     * Define the "web" routes for the application.
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapWebRoutes()
-    {
-        Route::namespace('Laravel\Fortify\Http\Controllers')
-            ->domain(config('fortify.domain', null))
-            ->prefix(config('fortify.prefix'))
-            ->group(base_path('routes/fortify.php'));
-
-        Route::middleware([
-                'web',
-
-            ])
-            ->group(base_path('routes/web.php'));
     }
 
     /**
