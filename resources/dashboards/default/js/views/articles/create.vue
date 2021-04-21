@@ -1,9 +1,9 @@
 <template>
     <div class="container my-5">
-        <div v-if="article && article.id" class="card">
+        <div v-if="article" class="card">
             <h6 class="card-header">{{ $route.meta.title }} [{{ article.attributes.title }}]</h6>
             <div class="card-body">
-                <article-form :article="article" @update="update" />
+                <article-form :article="article" @create="create" />
             </div>
         </div>
     </div>
@@ -13,7 +13,7 @@
 import ArticleForm from "@/views/articles/form";
 
 export default {
-    name: "article-edit",
+    name: "article-create",
 
     components: {
         "article-form": ArticleForm,
@@ -22,11 +22,6 @@ export default {
     props: {
         model: {
             type: Function,
-            required: true,
-        },
-
-        id: {
-            type: Number,
             required: true,
         },
     },
@@ -44,35 +39,15 @@ export default {
         };
     },
 
-    mounted() {
-        this.$props.model
-            .$get({
-                params: {
-                    id: this.$props.id,
-                },
-            })
-            .then(this.fillForm);
-    },
-
     methods: {
-        fillForm(article) {
-            this.article = Object.assign({}, this.article, {
-                ...article,
-            });
-        },
-
-        update({ attributes, relationships }) {
+        create({ attributes, relationships }) {
             this.$props.model
-                .$update({
-                    params: {
-                        id: this.$props.id,
-                    },
+                .$create({
                     data: {
                         ...attributes,
                         relationships,
                     },
-                })
-                .then(this.fillForm);
+                });
         },
     },
 };

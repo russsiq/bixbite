@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Api\V1\Article;
 
+use App\Models\Article;
 use App\Rules\MetaRobotsRule;
 use App\Rules\SqlTextLength;
 use App\Rules\TitleRule;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -16,7 +19,7 @@ class StoreArticleRequest extends FormRequest
      *
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'slug' => Str::slug(
@@ -30,19 +33,32 @@ class StoreArticleRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        $metaRobotsRule = $this->container->make(MetaRobotsRule::class);
-        $sqlTextLengthRule = $this->container->make(SqlTextLength::class);
-        $titleRule = $this->container->make(TitleRule::class);
+    public function rules(
+        MetaRobotsRule $metaRobotsRule,
+        SqlTextLength $sqlTextLengthRule,
+        TitleRule $titleRule
+    ): array {
+        $article = $this->route('article', null);
 
         return [
             // Не валидируем эти поля, оставляем управление
             // наблюдателям, контроллерам и другой нечисти.
             // 'user_id' => [],
 
-            'title' => ['required', $titleRule],
-            'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('articles')],
+            'title' => ['bail', 'required', $titleRule],
+            'slug' => [
+                'bail',
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                with(
+                    Rule::unique(Article::TABLE, 'slug'),
+                    fn (Unique $unique) => $article instanceof Article
+                        ? $unique->ignore($article->id, 'id')
+                        : $unique
+                ),
+            ],
             'teaser' => ['nullable', 'string', 'max:255'],
             'content' => ['nullable', $sqlTextLengthRule],
 
@@ -58,6 +74,11 @@ class StoreArticleRequest extends FormRequest
 
             'created_at' => ['sometimes', 'date'],
             'updated_at' => ['sometimes', 'date'],
+
+            // 'relationships' => ['present', 'array'],
+            // 'relationships.categories' => ['sometimes', 'array'],
+            // 'relationships.categories.data' => ['sometimes', 'array'],
+            // 'relationships.categories.data.*.id' => ['bail', 'required', 'integer', 'numeric', 'distinct', 'min:1', 'exists:categories,id'],
         ];
     }
 }

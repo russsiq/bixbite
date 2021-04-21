@@ -5,7 +5,7 @@
         <template #first-group></template>
 
         <template #second-group>
-            <button type="button" class="btn btn-outline-success">Create</button>
+            <router-link :to="{name: 'comments.create'}" class="btn btn-outline-success">Create</router-link>
         </template>
 
         <template #thead>

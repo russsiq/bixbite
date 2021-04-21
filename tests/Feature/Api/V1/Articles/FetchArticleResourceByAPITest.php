@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Api\V1\Articles;
 
+use App\Exceptions\JsonApiException;
 use App\Models\Article;
 use App\Models\User;
 use App\Policies\ArticlePolicy;
@@ -30,127 +31,128 @@ class FetchArticleResourceByAPITest extends TestCase
 
     public const JSON_API_RESOURCE = 'articles';
 
-    public function test_guest_cannot_fetch_articles()
-    {
-        $response = $this->assertGuest()
-            ->getJsonApi('index')
-            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
-    }
+    // public function test_guest_cannot_fetch_articles()
+    // {
+    //     $response = $this->assertGuest()
+    //         ->getJsonApi('index')
+    //         ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    // }
 
-    public function test_user_without_ability_cannot_fetch_articles()
-    {
-        $this->denyPolicyAbility(ArticlePolicy::class, ['viewAny']);
+    // public function test_user_without_ability_cannot_fetch_articles()
+    // {
+    //     $this->denyPolicyAbility(ArticlePolicy::class, ['viewAny']);
 
-        $user = $this->loginSPA();
+    //     $user = $this->loginSPA();
 
-        $response = $this->assertAuthenticated()
-            ->getJsonApi('index')
-            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
-    }
+    //     $response = $this->assertAuthenticated()
+    //         ->getJsonApi('index')
+    //         ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    // }
 
-    public function test_guest_cannot_fetch_specific_article()
-    {
-        $user = $this->createUser();
+    // public function test_guest_cannot_fetch_specific_article()
+    // {
+    //     $user = $this->createUser();
 
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+    //     $article = Article::factory()
+    //         ->for($user)
+    //         ->create();
 
-        $response = $this->assertGuest()
-            ->getJsonApi('show', $article)
-            ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
-    }
+    //     $response = $this->assertGuest()
+    //         ->getJsonApi('show', $article)
+    //         ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
+    // }
 
-    public function test_user_without_ability_cannot_fetch_specific_article()
-    {
-        $this->denyPolicyAbility(ArticlePolicy::class, ['view']);
+    // public function test_user_without_ability_cannot_fetch_specific_article()
+    // {
+    //     $this->denyPolicyAbility(ArticlePolicy::class, ['view']);
 
-        $user = $this->loginSPA();
+    //     $user = $this->loginSPA();
 
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+    //     $article = Article::factory()
+    //         ->for($user)
+    //         ->create();
 
-        $response = $this->assertAuthenticated()
-            ->getJsonApi('show', $article)
-            ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
-    }
+    //     $response = $this->assertAuthenticated()
+    //         ->getJsonApi('show', $article)
+    //         ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
+    // }
 
-    public function test_each_received_article_contains_required_fields()
-    {
-        $super_admin = $this->loginSuperAdminSPA();
+    // public function test_each_received_article_contains_required_fields()
+    // {
+    //     $super_admin = $this->loginSuperAdminSPA();
 
-        $articles = Article::factory($countArticles = 5)
-            ->for($super_admin)
-            ->create();
+    //     $articles = Article::factory($countArticles = 5)
+    //         ->for($super_admin)
+    //         ->create();
 
-        $response = $this->assertAuthenticated()
-            ->getJsonApi('index')
-            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
-            ->assertJsonCount($countArticles, 'data')
-            ->assertJsonStructure(
-                ArticleFixtures::collection()
-            );
-    }
+    //     $response = $this->assertAuthenticated()
+    //         ->getJsonApi('index')
+    //         ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
+    //         ->assertJsonCount($countArticles, 'data')
+    //         ->assertJsonStructure(
+    //             ArticleFixtures::collection()
+    //         );
+    // }
 
-    public function test_single_received_article_contains_required_fields()
-    {
-        $super_admin = $this->loginSuperAdminSPA();
+    // public function test_single_received_article_contains_required_fields()
+    // {
+    //     $super_admin = $this->loginSuperAdminSPA();
 
-        $article = Article::factory()
-            ->for($super_admin)
-            ->create();
+    //     $article = Article::factory()
+    //         ->for($super_admin)
+    //         ->create();
 
-        $response = $this->assertAuthenticated()
-            ->getJsonApi('show', $article)
-            ->assertStatus(JsonResponse::HTTP_OK)
-            ->assertJsonStructure(
-                ArticleFixtures::resource()
-            );
-    }
+    //     $response = $this->assertAuthenticated()
+    //         ->getJsonApi('show', $article)
+    //         ->assertStatus(JsonResponse::HTTP_OK)
+    //         ->assertJsonStructure(
+    //             ArticleFixtures::resource()
+    //         );
+    // }
 
-    public function test_not_found_when_attempt_to_fetch_single_non_existent_resource()
-    {
-        $user = $this->loginSPA();
+    // public function test_not_found_when_attempt_to_fetch_single_non_existent_resource()
+    // {
+    //     $user = $this->loginSPA();
 
-        $this->assertDatabaseCount('articles', 0);
+    //     $this->assertDatabaseCount('articles', 0);
 
-        $response = $this->assertAuthenticated()
-            ->getJsonApi('show', 'not.found')
-            ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
-    }
+    //     $response = $this->assertAuthenticated()
+    //         ->getJsonApi('show', 'not.found')
+    //         ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+    // }
 
     public function test_fetching_data_by_json_api_specification_v1_1()
     {
         // $this->expectException(ValidationException::class);
-        // $this->withoutExceptionHandling([ValidationException::class]);
+        // $this->withoutExceptionHandling([ValidationException::class,JsonApiException::class]);
 
-        $this->seed(TestContentSeeder::class)
-            ->loginSuperAdminSPA();
+        $this->seed(TestContentSeeder::class);
 
-        Article::whereId($id = 8)->update([
-            'title' => $title = 'Quo unde sint praesentium.',
-        ]);
+        $this->loginSuperAdminSPA();
+
+        $title = 'Quo unde sint praesentium.';
+
+        // Article::whereId($id = 8)->update([
+        //     'title' => $title,
+        // ]);
+
+        // dd(Article::with(['user' => fn($query) => $query->addSelect(['id','name','email'])])->whereId($id = 8)->get());
 
         $response = $this->assertAuthenticated()
             ->getJsonApi('index', [
-                'include' => ['attachments', 'categories', 'comments.user', 'tags', 'user'],
-                'fields' => [
-                    'articles' => ['title', 'content'],
-                    'user' => ['name', 'email'],
-                ],
-                'filter' => [
-                    ['column' => 'title', 'operator' => 'contains', 'query_1' => substr($title, 4, 8)],
-                    'match' => 'or',
-                ],
-                'sort' => ['-created_at', 'title'],
-                'page' => [
-                    'number' => 1,
-                    'size' => 8,
-                ],
-            ])
-            ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
-            ->assertJson([
+                'include=atachments, categories, comments.user, tags, user'.
+                '&fields[articles]=title,user_id'.
+                // '&fields[user]=email'.
+                '&filter[0][field]=content&filter[0][operator]=contains&filter[0][query_1]='.substr($title, 4, 8).
+                '&filter_match=or'.
+                '&sort=-created_at,user.name'.
+                '&page[number]=1&page[size]=8'
+            ]);
+
+        ! empty($response->original['errors']) && dd($response->original['errors']);
+
+        $response->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT);
+        $response->assertJson([
                 'data' => [
                     [
                         'id' => 8,
@@ -169,6 +171,7 @@ class FetchArticleResourceByAPITest extends TestCase
                 'links' => [
                     //
                 ],
-            ]);
+            ])
+            ;
     }
 }

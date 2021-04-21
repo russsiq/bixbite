@@ -35,7 +35,14 @@ class Article extends Model
 {
     use HasFactory;
 
-    const TABLE = 'articles';
+    public const TABLE = 'articles';
+
+    public const JSON_API_ALLOWED = [
+        'fields' => ['*'],
+        'inclides' => ['attachments', 'categories', 'comments', 'comments.user', 'tags', 'user'],
+        'filters' => ['*'],
+        'sorts' => ['*'],
+    ];
 
     /**
      * The table associated with the model.

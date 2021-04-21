@@ -1,15 +1,23 @@
 <template>
-    <div class="container mt-5">
+    <div class="container my-5">
         <div v-if="tag && tag.id" class="card">
             <h6 class="card-header">{{ $route.meta.title }} [{{ tag.attributes.title }}]</h6>
-            <div class="card-body"></div>
+            <div class="card-body">
+                <tag-form :tag="tag" @update="update" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import TagForm from "@/views/tags/form";
+
 export default {
-    name: "tags-edit",
+    name: "tag-edit",
+
+    components: {
+        "tag-form": TagForm,
+    },
 
     props: {
         model: {
@@ -25,7 +33,9 @@ export default {
 
     data() {
         return {
-            tag: null,
+            tag: {
+                attributes: {},
+            },
         };
     },
 
@@ -40,8 +50,23 @@ export default {
     },
 
     methods: {
-        fillForm(entity) {
-            this.tag = entity;
+        fillForm(tag) {
+            this.tag = Object.assign({}, this.tag, {
+                ...tag,
+            });
+        },
+
+        update({ attributes }) {
+            this.$props.model
+                .$update({
+                    params: {
+                        id: this.$props.id,
+                    },
+                    data: {
+                        ...attributes,
+                    },
+                })
+                .then(this.fillForm);
         },
     },
 };

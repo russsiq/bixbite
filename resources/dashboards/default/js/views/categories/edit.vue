@@ -1,15 +1,23 @@
 <template>
-    <div class="container mt-5">
+    <div class="container my-5">
         <div v-if="category && category.id" class="card">
             <h6 class="card-header">{{ $route.meta.title }} [{{ category.attributes.title }}]</h6>
-            <div class="card-body"></div>
+            <div class="card-body">
+                <category-form :category="category" @update="update" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import CategoryForm from "@/views/categories/form";
+
 export default {
-    name: "categories-edit",
+    name: "category-edit",
+
+    components: {
+        "category-form": CategoryForm,
+    },
 
     props: {
         model: {
@@ -25,7 +33,9 @@ export default {
 
     data() {
         return {
-            category: null,
+            category: {
+                attributes: {},
+            },
         };
     },
 
@@ -40,8 +50,23 @@ export default {
     },
 
     methods: {
-        fillForm(entity) {
-            this.category = entity;
+        fillForm(category) {
+            this.category = Object.assign({}, this.category, {
+                ...category,
+            });
+        },
+
+        update({ attributes }) {
+            this.$props.model
+                .$update({
+                    params: {
+                        id: this.$props.id,
+                    },
+                    data: {
+                        ...attributes,
+                    },
+                })
+                .then(this.fillForm);
         },
     },
 };

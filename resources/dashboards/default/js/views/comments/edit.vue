@@ -1,15 +1,23 @@
 <template>
-    <div class="container mt-5">
+    <div class="container my-5">
         <div v-if="comment && comment.id" class="card">
-            <h6 class="card-header">{{ $route.meta.title }} [{{ comment.id }}]</h6>
-            <div class="card-body"></div>
+            <h6 class="card-header">{{ $route.meta.title }} [{{ comment.attributes.title }}]</h6>
+            <div class="card-body">
+                <comment-form :comment="comment" @update="update" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import CommentForm from "@/views/comments/form";
+
 export default {
-    name: "comments-edit",
+    name: "comment-edit",
+
+    components: {
+        "comment-form": CommentForm,
+    },
 
     props: {
         model: {
@@ -25,7 +33,9 @@ export default {
 
     data() {
         return {
-            comment: null,
+            comment: {
+                attributes: {},
+            },
         };
     },
 
@@ -40,8 +50,23 @@ export default {
     },
 
     methods: {
-        fillForm(entity) {
-            this.comment = entity;
+        fillForm(comment) {
+            this.comment = Object.assign({}, this.comment, {
+                ...comment,
+            });
+        },
+
+        update({ attributes }) {
+            this.$props.model
+                .$update({
+                    params: {
+                        id: this.$props.id,
+                    },
+                    data: {
+                        ...attributes,
+                    },
+                })
+                .then(this.fillForm);
         },
     },
 };

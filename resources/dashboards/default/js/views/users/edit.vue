@@ -1,15 +1,23 @@
 <template>
-    <div class="container mt-5">
+    <div class="container my-5">
         <div v-if="user && user.id" class="card">
-            <h6 class="card-header">{{ $route.meta.title }} [{{ user.attributes.name }}]</h6>
-            <div class="card-body"></div>
+            <h6 class="card-header">{{ $route.meta.title }} [{{ user.attributes.title }}]</h6>
+            <div class="card-body">
+                <user-form :user="user" @update="update" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import UserForm from "@/views/users/form";
+
 export default {
-    name: "users-edit",
+    name: "user-edit",
+
+    components: {
+        "user-form": UserForm,
+    },
 
     props: {
         model: {
@@ -25,7 +33,9 @@ export default {
 
     data() {
         return {
-            user: null,
+            user: {
+                attributes: {},
+            },
         };
     },
 
@@ -40,8 +50,23 @@ export default {
     },
 
     methods: {
-        fillForm(entity) {
-            this.user = entity;
+        fillForm(user) {
+            this.user = Object.assign({}, this.user, {
+                ...user,
+            });
+        },
+
+        update({ attributes }) {
+            this.$props.model
+                .$update({
+                    params: {
+                        id: this.$props.id,
+                    },
+                    data: {
+                        ...attributes,
+                    },
+                })
+                .then(this.fillForm);
         },
     },
 };

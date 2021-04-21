@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
+use App\Actions\Article\FetchingArticleCollectionAction;
+use App\Actions\Article\FetchingArticleResourceAction;
+use App\Contracts\Actions\Article\FetchingArticleCollection;
+use App\Contracts\Actions\Article\FetchingArticleResource;
 use App\Contracts\BixBiteContract;
 use App\Contracts\JsonApiContract;
 use App\Support\BixBite;
+// use Illuminate\Pagination\Paginator;
 use App\Support\JsonApi;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -13,6 +18,16 @@ use Illuminate\Support\ServiceProvider;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
+        FetchingArticleResource::class => FetchingArticleResourceAction::class,
+        FetchingArticleCollection::class => FetchingArticleCollectionAction::class,
+    ];
+
     /**
      * All of the container singletons that should be registered.
      *
@@ -53,5 +68,9 @@ class BixbiteServiceProvider extends ServiceProvider
         );
 
         Relation::morphMap(JsonApiContract::RESORCE_TO_MODEL_MAP, true);
+
+        // Paginator::queryStringResolver(function () {
+        //     return $this->app['request']->query();
+        // });
     }
 }

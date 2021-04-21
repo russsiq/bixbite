@@ -105,6 +105,30 @@ export default {
         },
 
         fetch(params) {
+            // // console.log(params);
+            params = {
+                'include': 'user, comments.user,tags,comments.user.atachments,comments. cadabra',
+                'fields[articles]': 'title,created_at,',
+                'fields[user]': 'name',
+
+                // 'fields': ['articles', 'people'],
+                // 'fields': [
+                //     {'articles': 'title,body'},
+                //     {'people': 'name'},
+                // ],
+
+                'filter[0][column]': 'title',
+                'filter[0][operator]': 'contains',
+                'filter[0][query_1]': 'ipsum',
+
+                'sort': '-created_at,title',
+
+                ...params,
+            };
+
+            // params[`fields['articles']`] = 'title,body';
+            // params['fields']['people'] = 'name';
+
             this.$props.model.$fetch({params}).then(this.fillTable);
         },
 

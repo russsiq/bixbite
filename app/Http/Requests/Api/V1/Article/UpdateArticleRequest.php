@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Api\V1\Article;
 
 use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
-use Illuminate\Validation\Rule;
+use App\Rules\MetaRobotsRule;
+use App\Rules\SqlTextLength;
+use App\Rules\TitleRule;
 
 class UpdateArticleRequest extends StoreArticleRequest
 {
@@ -12,18 +14,13 @@ class UpdateArticleRequest extends StoreArticleRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return array_merge(parent::rules(), [
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                'alpha_dash',
-                Rule::unique('articles')->ignore(
-                    $this->route('article')
-                ),
-            ],
+    public function rules(
+        MetaRobotsRule $metaRobotsRule,
+        SqlTextLength $sqlTextLengthRule,
+        TitleRule $titleRule
+    ): array {
+        return array_merge(parent::rules(...func_get_args()), [
+            //
         ]);
     }
 }

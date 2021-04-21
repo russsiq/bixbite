@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\Actions\Article\FetchingArticleCollection;
+use App\Contracts\Actions\Article\FetchingArticleResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Article\IndexArticleRequest;
 use App\Http\Requests\Api\V1\Article\StoreArticleRequest;
@@ -11,6 +13,7 @@ use App\Http\Resources\V1\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ArticleController extends Controller
 {
@@ -29,16 +32,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexArticleRequest $request)
+    public function index(Request $request, FetchingArticleCollection $fetcher)
     {
-        $articles = Article::with([
-            'atachments',
-            'categories',
-            'tags',
-            'user',
-        ])->withCount([
-            'comments',
-        ])->paginate();
+        $articles = $fetcher->fetchCollection($request->query());
 
         $collection = new ArticleCollection($articles);
 
@@ -87,6 +83,15 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        $article->load([
+            'atachments',
+            'categories',
+            'tags',
+            'user',
+        ])->withCount([
+            'comments',
+        ]);
+
         $resource = new ArticleResource($article);
 
         return $resource->response()
@@ -114,11 +119,20 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $article->update(
-            $request->validated()
+            $validated = $request->validated()
+        );
+
+        ! empty($validated['relationships']['categories']['data']) && $article->categories()->sync(
+            new Collection($validated['relationships']['categories']['data'])
         );
 
         $resource = new ArticleResource(
-            $article->refresh()
+            $article->fresh([
+                'atachments',
+                'categories',
+                'tags',
+                'user',
+            ])
         );
 
         return $resource->response()
