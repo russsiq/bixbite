@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Actions\User\CreateUserAction;
+use App\Actions\User\ResetUserPasswordAction;
+use App\Actions\User\UpdateUserPasswordAction;
+use App\Actions\User\UpdateUserProfileInformationAction;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -21,7 +21,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->booting(function () {
+            // Configure Fortify to not register its routes.
+            Fortify::ignoreRoutes();
+        });
     }
 
     /**
@@ -31,10 +34,14 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
-        Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        // Register the views for Fortify using conventional names under the given prefix.
+        Fortify::viewPrefix('auth.');
+
+        // Register a class / callback that should be used to Fortify Actions.
+        Fortify::createUsersUsing(CreateUserAction::class);
+        Fortify::resetUserPasswordsUsing(ResetUserPasswordAction::class);
+        Fortify::updateUserPasswordsUsing(UpdateUserPasswordAction::class);
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformationAction::class);
 
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->email.$request->ip());
