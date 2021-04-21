@@ -149,6 +149,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
+        Route::namespace('Laravel\Fortify\Http\Controllers')
+            ->domain(config('fortify.domain', null))
+            ->prefix(config('fortify.prefix'))
+            ->group(base_path('routes/fortify.php'));
+
         Route::middleware([
                 'web',
 
