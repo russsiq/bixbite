@@ -3,22 +3,24 @@
 namespace App\Providers;
 
 // Зарегистрированные фасады приложения.
+use App\Contracts\BixBiteContract;
+use App\Mixins\ArrMixin;
+use App\Mixins\FileMixin;
+use App\Mixins\LangMixin;
+
+// Сторонние зависимости.
+use App\Mixins\StrMixin;
+use App\Support\BixBite;
+use App\Support\CacheFile;
+use App\Support\PageInfo;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
-
-// Сторонние зависимости.
-use App\Mixins\ArrMixin;
-use App\Mixins\FileMixin;
-use App\Mixins\LangMixin;
-use App\Mixins\StrMixin;
-use App\Support\PageInfo;
-use App\Support\CacheFile;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Str;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public $singletons = [
         'pageinfo' => PageInfo::class,
+        BixBiteContract::class => BixBite::class,
 
     ];
 
