@@ -12,7 +12,7 @@ class AddBixbiteColumnsToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->string('role', 20)->default('user');
             $table->string('avatar', 100)->nullable();
             $table->text('info')->length(500)->nullable();
