@@ -35,7 +35,6 @@ class UserFactory extends Factory
 
             ]),
             'password' => $name.$name,
-            'api_token' => null,
             'remember_token' => Str::random(10),
 
         ];

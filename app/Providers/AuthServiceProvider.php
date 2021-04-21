@@ -2,15 +2,11 @@
 
 namespace App\Providers;
 
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Gate;
-
-// Сторонние зависимости.
+use App\Models\Sanctum\PersonalAccessToken;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Sanctum\Sanctum;
 
-/**
- * Поставщик аутентификационных / авторизационных служб.
- */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -43,6 +39,8 @@ class AuthServiceProvider extends ServiceProvider
 
         // Регистрация глобальных политик.
         $this->registerGlobalPolicies();
+
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 
     /**

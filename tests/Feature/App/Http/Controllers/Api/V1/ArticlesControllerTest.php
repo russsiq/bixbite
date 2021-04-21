@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 /**
@@ -74,7 +75,7 @@ class ArticlesControllerTest extends TestCase
     {
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -176,7 +177,7 @@ class ArticlesControllerTest extends TestCase
     {
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->postJson(route('api.articles.store'))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -281,7 +282,7 @@ class ArticlesControllerTest extends TestCase
 
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
@@ -368,7 +369,7 @@ class ArticlesControllerTest extends TestCase
 
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->putJson(route('api.articles.update', $article->id), [
                 'title' => 'New title'
@@ -448,7 +449,7 @@ class ArticlesControllerTest extends TestCase
     {
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->putJson(route('api.articles.massUpdate'), [
                 'articles' => [1,2,3]
@@ -565,7 +566,7 @@ class ArticlesControllerTest extends TestCase
 
         $this->actingAs($user = $this->createImprovisedUser())
             ->withHeaders([
-                'Authorization' => 'Bearer '.$user->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
             ->deleteJson(route('api.articles.destroy', $article))
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
