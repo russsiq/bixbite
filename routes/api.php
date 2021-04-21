@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ArticlesController;
-use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoriesController;
 use App\Http\Controllers\Api\V1\CommentsController;
 use App\Http\Controllers\Api\V1\FilesController;
@@ -15,8 +14,6 @@ use App\Http\Controllers\Api\V1\XFieldsController;
 use App\Http\Middleware\TransformApiData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::post('auth/login', [AuthController::class, 'login'])->name('api.auth.login');
 
 /**
  * Данная группа маршрутов имеет общие:
@@ -32,7 +29,6 @@ Route::group([
         'as' => 'api.'
 
     ], function () {
-        Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
         Route::get('notes/form', [NotesController::class, 'form'])->name('notes.form');
         Route::get('settings/{module}', [SettingsController::class, 'getModule'])->name('settings.getModule');
         Route::put('settings/{module}', [SettingsController::class, 'updateModule'])->name('settings.updateModule');

@@ -16,25 +16,7 @@ use Illuminate\Support\Facades\Route;
  * Дополнительная информация:
  *      - App\Http\Kernel - middleware.
  *      - App\Providers\RouteServiceProvider
- *      - Laravel\Ui\AuthRouteMethods
  */
-
-
-Auth::routes([
-    // Использовать посредника middleware('password.confirm'),
-    // запрашивающего подтверждение пароля от пользователя.
-    'confirm' => true,
-
-    // Разрешить регистрацию на сайте.
-    'register' => true,
-
-    // Разрешить сброс пароля.
-    'reset' => true,
-
-    // Подтверждение адреса электронной почты.
-    'verify' => true,
-
-]);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

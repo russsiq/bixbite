@@ -40,7 +40,6 @@
         "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.13",
-        "laravel/ui": "^3.2",
         "mockery/mockery": "^1.4",
         "nunomaduro/collision": "^5.2",
         "phpunit/phpunit": "^9.5"
