@@ -18,7 +18,6 @@ npm-debug.log
 package-lock.json
 yarn-error.log
 
-!/vendor/.htaccess
 !/storage/app/uploads/avatars/noavatar.png
 resources/themes/default/public/mix-manifest.json
-resources/skins/default/public/mix-manifest.json
+resources/dashboards/default/public/mix-manifest.json
