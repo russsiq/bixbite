@@ -5,7 +5,7 @@
 
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                @each('components.partials.navigation', pageinfo('categories')->filter->show_in_menu->nested(), 'category')
+                @each('components.partials.navigation', $categories->filter->show_in_menu->nested(), 'category')
             </ul>
 
             <!-- Authentication Links -->
@@ -18,15 +18,16 @@
                             <a href="{{ route('register') }}" class="dropdown-item">@lang('auth.btn.register')</a>
                         </div>
                     @else
-                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ user('name') }} </a>
+                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ $user->name }} </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             @can ('global.panel')
                                 <a href="{{ route('panel') }}" class="dropdown-item">@lang('auth.dashboard')</a>
                             @endcan
-                            <a href="{{ user('profile') }}" class="dropdown-item">@lang('auth.profile')</a>
+                            <a href="{{ $user->profile }}" class="dropdown-item">@lang('auth.profile')</a>
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="post">
-                                <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="dropdown-item">@lang('auth.logout')</button>
+                                @csrf
+                                <button type="submit" class="dropdown-item">@lang('auth.logout')</button>
                             </form>
                         </div>
                     @endguest
