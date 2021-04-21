@@ -44,28 +44,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
-        Route::pattern('any', $this->routePattern('any'));
-        Route::pattern('id', $this->routePattern('id'));
-        Route::pattern('slug', $this->routePattern('slug'));
-
-        Route::pattern('category_slug', $this->routePattern('slug'));
-        Route::pattern('article_id', $this->routePattern('id'));
-        Route::pattern('article_slug', $this->routePattern('slug'));
-
-        Route::pattern('commentable_id', $this->routePattern('id'));
-        Route::pattern('commentable_type', $this->routePattern('alpha_dash'));
-
-        Route::pattern('tag', $this->routePattern('encoded'));
-
-        // Backend
-        Route::pattern('module', $this->routePattern('alpha_dash'));
-        Route::pattern('module_id', $this->routePattern('id'));
-        Route::pattern('setting_id', $this->routePattern('id'));
-
-        // Common
-        Route::pattern('model', '^[a-zA-Z_]+$');
-        Route::pattern('attribute', '^[a-zA-Z_]+$');
+        $this->configureRoutePatterns();
 
         // Для новостей , статей не надо этого. Для пользователей не знаю
         // Route::model('article', \App\Models\Article::class);
@@ -81,9 +60,28 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    public function routePatterns(): array
+    public function configureRoutePatterns()
     {
-        return $this->routePatterns;
+        Route::patterns([
+            'any' => $this->routePattern('any'),
+            'id' => $this->routePattern('id'),
+            'slug' => $this->routePattern('slug'),
+            'category_slug' => $this->routePattern('slug'),
+            'article_id' => $this->routePattern('id'),
+            'article_slug' => $this->routePattern('slug'),
+            'commentable_id' => $this->routePattern('id'),
+            'commentable_type' => $this->routePattern('alpha_dash'),
+            'tag' => $this->routePattern('encoded'),
+
+            // Backend
+            'module' => $this->routePattern('alpha_dash'),
+            'module_id' => $this->routePattern('id'),
+            'setting_id' => $this->routePattern('id'),
+
+            // Common
+            'model' => '^[a-zA-Z_]+$',
+            'attribute' => '^[a-zA-Z_]+$',
+        ]);
     }
 
     public function routePattern(string $type): string
