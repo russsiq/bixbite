@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TagsController;
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])
+    ->get('/dashboard/{any?}', DashboardController::class)
+    ->where('any', '.*')
+    ->name('dashboard');
 
 // Вначале располагаем группу маршрутов, где не нужны регулярные выражения.
 

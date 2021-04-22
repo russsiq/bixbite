@@ -84,9 +84,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware(['web'])
-                ->group(base_path('routes/web/admin.php'));
-
-            Route::middleware(['web'])
                 ->group(base_path('routes/web/front.php'));
 
             Route::namespace('Laravel\Fortify\Http\Controllers')
