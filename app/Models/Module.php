@@ -28,7 +28,7 @@ class Module extends BaseModel
 
     public static function loadLang(string $module_name)
     {
-        \Lang::addJsonPath(skin_path('lang' . DS . $module_name));
+        \Lang::addJsonPath(dashboard_path('lang' . DS . $module_name));
     }
 
     public static function loadView(string $module_name)

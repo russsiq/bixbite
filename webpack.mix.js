@@ -1,5 +1,12 @@
+/**
+ * @cmd `npm run prod`
+ * @cmd `npm run prod --dashboard`
+ * @cmd `npm run watch`
+ * @cmd `npm run watch --dashboard`
+ */
+
 const mix = require('laravel-mix');
-const isPanel = process.argv.includes('--skin');
+const isDashboard = process.env.npm_config_dashboard;
 
 mix.options({
     processCssUrls: false
@@ -8,9 +15,9 @@ mix.options({
 /**
  * Skin.
  */
-if (isPanel) {
-    const SKIN = process.env.APP_SKIN;
-    const SKIN_PATH = './resources/skins/' + SKIN;
+if (isDashboard) {
+    const DASHBOARD = process.env.APP_DASHBOARD;
+    const DASHBOARD_PATH = `./resources/dashboards/${DASHBOARD}`;
 
     mix.webpackConfig({
             resolve: {
@@ -18,20 +25,19 @@ if (isPanel) {
                     '.js',
                     '.vue',
                 ],
-
                 alias: {
-                    '@': __dirname + '/resources/skins/'+SKIN+'/assets/js'
+                    '@': __dirname + '/resources/dashboards/'+DASHBOARD+'/assets/js'
                 }
             }
         })
-        .setPublicPath(SKIN_PATH + '/public/')
-        .js(SKIN_PATH + '/assets/js/app.js', 'js')
-        .sass(SKIN_PATH + '/assets/sass/app.scss', 'css')
-        .js(SKIN_PATH + '/assets/js/code-editor.js', 'js')
-        .sass(SKIN_PATH + '/assets/sass/code-editor.scss', 'css')
-        .sass(SKIN_PATH + '/assets/sass/login.scss', 'css')
+        .setPublicPath(DASHBOARD_PATH + '/public/')
+        .js(DASHBOARD_PATH + '/assets/js/app.js', 'js')
+        .sass(DASHBOARD_PATH + '/assets/sass/app.scss', 'css')
+        .js(DASHBOARD_PATH + '/assets/js/code-editor.js', 'js')
+        .sass(DASHBOARD_PATH + '/assets/sass/code-editor.scss', 'css')
+        .sass(DASHBOARD_PATH + '/assets/sass/login.scss', 'css')
         .copyDirectory('node_modules/font-awesome/fonts',
-            SKIN_PATH + '/public/css/fonts/font-awesome');
+            DASHBOARD_PATH + '/public/css/fonts/font-awesome');
 } else {
     /**
      * Theme.

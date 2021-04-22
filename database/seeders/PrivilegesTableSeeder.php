@@ -30,7 +30,7 @@ class PrivilegesTableSeeder extends Seeder
             'global.locked',
 
             // Доступ в административную панель.
-            'global.panel',
+            'global.dashboard',
 
             // Возможно там будет статистика.
             // Сейчас идет запрос последних заметок.

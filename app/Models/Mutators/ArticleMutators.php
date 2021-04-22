@@ -23,7 +23,7 @@ trait ArticleMutators
 
     public function getEditPageAttribute()
     {
-        return $this->id ? route('panel')."/$this->table/$this->id/edit" : null;
+        return $this->id ? route('dashboard')."/$this->table/$this->id/edit" : null;
     }
 
     /**

@@ -86,7 +86,7 @@ class SettingsController extends ApiController
                 'meta' => [
                     'fonts' => select_file('fonts'),
                     'lang' => select_dir(resource_path('lang')),
-                    'skins' => select_dir(resource_path('skins')),
+                    'dashboards' => select_dir(resource_path('dashboards')),
                     'themes' => select_dir(resource_path('themes')),
 
                 ],

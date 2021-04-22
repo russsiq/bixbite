@@ -1,0 +1,36 @@
+/*!
+ * Quill Editor v1.3.7
+ * https://quilljs.com/
+ * Copyright (c) 2014, Jason Chen
+ * Copyright (c) 2013, salesforce.com
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/**
+ * Get the index to use for pluralization.
+ * The plural rules are derived from code of the Zend Framework.
+ *
+ * @category    Zend
+ * @package     Zend_Locale
+ * @public      https://github.com/zendframework/zf1/blob/master/library/Zend/Translate/Plural.php
+ * @copyright   2005-2015 Zend Technologies USA Inc. http://www.zend.com
+ * @license     http://framework.zend.com/license     New BSD License
+ *
+ * @param  {String}  locale
+ * @param  {Number}  number
+ * @return {Number}
+ */

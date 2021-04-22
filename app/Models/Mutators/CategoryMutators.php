@@ -11,7 +11,7 @@ trait CategoryMutators
 
     public function getEditPageAttribute()
     {
-        return $this->id ? url('/panel/categories/'.$this->id.'/edit') : null;
+        return $this->id ? url('/dashboard/categories/'.$this->id.'/edit') : null;
     }
 
     public function getRootAttribute()

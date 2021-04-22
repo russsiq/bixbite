@@ -4,7 +4,7 @@ use App\Services\Assistant\BeforeInstalled;
 
 return [
     // Имя маршрута для выхода из Ассистента приложения.
-    'exit_route' => 'panel',
+    'exit_route' => 'dashboard',
 
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
@@ -175,7 +175,7 @@ return [
         // Создание ссылок на директории: target => link.
         'symlinks' => [
             storage_path('app/public') => public_path('storage'),
-            resource_path('skins/default/public') => public_path('skins/default'),
+            resource_path('dashboards/default/public') => public_path('dashboards/default'),
             resource_path('themes/default/public') => public_path('themes/default'),
 
         ],

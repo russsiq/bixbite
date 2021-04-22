@@ -24,11 +24,11 @@ class PageInfo
             'csrf_token' => csrf_token(),
             'page' => request('page') ?? null,
             'app_name' => setting('system.app_name', 'BixBite'),
-            'app_skin' => setting('system.app_skin', 'default'),
+            'app_dashboard' => setting('system.app_dashboard', 'default'),
             'app_theme' => setting('system.app_theme', 'default'),
             'app_url' => setting('system.app_url', url()->to('/')),
             'api_url' => url()->to('/api/v1'),
-            'panel' => route('panel'),
+            'dashboard' => route('dashboard'),
         ]);
     }
 
@@ -68,11 +68,11 @@ class PageInfo
             'locale' => $this->get('locale'),
             'csrf_token' => $this->get('csrf_token'),
             'app_name' => $this->get('app_name'),
-            'app_skin' => $this->get('app_skin'),
+            'app_dashboard' => $this->get('app_dashboard'),
             'app_theme' => $this->get('app_theme'),
             'app_url' => $this->get('app_url'),
             'api_url' => $this->get('api_url'),
-            'panel' => $this->get('panel'),
+            'dashboard' => $this->get('dashboard'),
         ]);
 
         if (JSON_ERROR_NONE !== json_last_error()) {

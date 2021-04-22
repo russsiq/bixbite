@@ -11,8 +11,8 @@ define('DS', DIRECTORY_SEPARATOR);
  * select_dir (optional: `custom_views`, and folder in resource_path($path))
  * select_file - Get all name of the files within a given directory. Used function glob().
  * setting - Get a config with user setting from 'config\settings\*.php'.
- * skin - Generate a url to asset for current skin of application.
- * skin_path - Get path to `resources/skins/{skin}/{path}` folder.
+ * dashboard - Generate a url to asset for current dashboard of application.
+ * dashboard_path - Get path to `resources/dashboards/{dashboard}/{path}` folder.
  * theme - Generate a url to asset for current theme of application.
  * theme_path - Get path to `resources\themes\\{theme-from-setting}\\{path}` resources $directory.
  * theme_version - Obtaining info about theme from version file.
@@ -206,31 +206,31 @@ if (! function_exists('setting')) {
     }
 }
 
-if (! function_exists('skin')) {
+if (! function_exists('dashboard')) {
     /**
-     * Generate a url to asset for current skin of application.
-     * Ex.: `http://site.com/skins/{skin-from-setting}/css/app.css`.
+     * Generate a url to asset for current dashboard of application.
+     * Ex.: `http://site.com/dashboards/{dashboard-from-setting}/css/app.css`.
      *
      * @param  string  $path
      * @param  bool    $secure
      * @return string
      */
-    function skin($path, $secure = null)
+    function dashboard($path, $secure = null)
     {
-        return asset('skins/' . setting('system.app_skin', 'default') . '/' . $path, $secure);
+        return asset('dashboards/' . setting('system.app_dashboard', 'default') . '/' . $path, $secure);
     }
 }
 
-if (! function_exists('skin_path')) {
+if (! function_exists('dashboard_path')) {
     /**
-     * Get path to `resources/skins/{skin}/{path}` folder.
+     * Get path to `resources/dashboards/{dashboard}/{path}` folder.
      *
      * @param  string $path
      * @return string
      */
-    function skin_path(string $path = null)
+    function dashboard_path(string $path = null)
     {
-        $directory = resource_path('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
+        $directory = resource_path('dashboards' . DS . setting('system.app_dashboard', 'default')) . ($path ? DS . $path : $path);
 
         return is_dir($directory) ? $directory : null;
     }
@@ -297,16 +297,16 @@ if (! function_exists('theme_version')) {
     }
 }
 
-if (! function_exists('skin_path')) {
+if (! function_exists('dashboard_path')) {
     /**
-     * Get path to `resources/skins/{skin}/{path}` folder.
+     * Get path to `resources/dashboards/{dashboard}/{path}` folder.
      *
      * @param  string $path
      * @return string
      */
-    function skin_path(string $path = null)
+    function dashboard_path(string $path = null)
     {
-        $directory = resource_path('skins' . DS . setting('system.app_skin', 'default')) . ($path ? DS . $path : $path);
+        $directory = resource_path('dashboards' . DS . setting('system.app_dashboard', 'default')) . ($path ? DS . $path : $path);
 
         return is_dir($directory) ? $directory : null;
     }

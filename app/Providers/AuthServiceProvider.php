@@ -67,8 +67,8 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         // Доступ в административную панель.
-        Gate::define('global.panel', function ($user) {
-            return $user->canDo('global.panel');
+        Gate::define('global.dashboard', function ($user) {
+            return $user->canDo('global.dashboard');
         });
 
         // Просмотр главной страницы админ. панели.

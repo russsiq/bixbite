@@ -52,7 +52,7 @@ class SettingObserver extends BaseObserver
      */
     protected function langUpdate(Setting $setting)
     {
-        $path = skin_path('lang'.DS.$setting->module->name).DS.app_locale().'.json';
+        $path = dashboard_path('lang'.DS.$setting->module->name).DS.app_locale().'.json';
         $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
 
         $data = array_filter(array_merge($data, [
