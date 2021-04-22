@@ -16,10 +16,7 @@ class ResetUserPasswordAction extends UserActionAbstract implements ResetsUserPa
      */
     public function reset($user, array $input): void
     {
-        $this->authorize(
-            'update',
-            $this->user = $user->fresh()
-        );
+        $this->user = $user->fresh();
 
         $validated = $this->validate($input);
 
