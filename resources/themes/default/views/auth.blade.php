@@ -10,7 +10,7 @@
 @endsection
 
 @section('mainblock')
-    {{ $mainblock }}
+    @yield('action_page')
 @endsection
 
 @section('sidebar_right')
