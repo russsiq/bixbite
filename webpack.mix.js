@@ -37,7 +37,8 @@ if (isDashboard) {
         .sass(DASHBOARD_PATH + '/assets/sass/code-editor.scss', 'css')
         .sass(DASHBOARD_PATH + '/assets/sass/login.scss', 'css')
         .copyDirectory('node_modules/font-awesome/fonts',
-            DASHBOARD_PATH + '/public/css/fonts/font-awesome');
+            DASHBOARD_PATH + '/public/css/fonts/font-awesome')
+        .vue();
 } else {
     /**
      * Theme.
