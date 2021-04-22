@@ -2,32 +2,26 @@
 
 namespace App\Models\Collections;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
-class CategoryCollection extends Collection
+class CategoryCollection extends EloquentCollection
 {
-    public function treated(bool $nested = false, array $related = [])
+    public function nested(): EloquentCollection
     {
         $collection = $this;
 
-        return $collection->transform(function ($category) use ($collection, $nested, $related) {
-            // Formatting of a category tree, if this need.
-            if ($nested and $collection->firstWhere('parent_id', $category->id)) {
+        return $collection->map(function (Category $category) use ($collection) {
+            // Appending child of category.
+            if ($collection->firstWhere('parent_id', $category->id)) {
                 $category->children = $collection->where('parent_id', $category->id);
             }
 
             return $category;
         })
-        ->when($nested, function($collection) {
-            // Finish stage formatting of a category tree, return only root category.
-            return $collection->reject(function ($category) {
-                return $category->parent_id !== null and $category->parent_id !== 0;
-            });
+        ->reject(function (Category $category) {
+            // Return only root category.
+            return $category->parent_id > 0;
         });
-    }
-
-    public function nested()
-    {
-        return $this->treated(true);
     }
 }
