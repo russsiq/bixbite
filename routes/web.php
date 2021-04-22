@@ -42,7 +42,7 @@ Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.t
 
 Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
 
-Route::group(['middleware' => ['web', 'auth', 'verified', 'own_profile']], function () {
+Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
     // User & Profile...
     Route::get('/user/profile', [UserProfileController::class, 'show'])
         ->name('profile.show');
