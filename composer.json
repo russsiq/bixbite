@@ -32,9 +32,9 @@
         "laravel/framework": "^8.22",
         "laravel/sanctum": "^2.10",
         "laravel/tinker": "^2.5",
-        "russsiq/laravel-assistant": "^0.2",
+        "russsiq/laravel-assistant": "^0.3",
         "russsiq/laravel-dom-manipulator": "^0.1",
-        "russsiq/laravel-env-manager": "^0.3",
+        "russsiq/laravel-env-manager": "^0.4",
         "russsiq/laravel-grecaptcha": "^0.2",
         "russsiq/laravel-zipper": "^0.2"
     },
