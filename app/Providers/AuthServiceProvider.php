@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Sanctum\PersonalAccessToken;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Sanctum\Sanctum;
@@ -34,11 +35,20 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Регистрация политик, описанных в свойстве `$policies`.
         $this->registerPolicies();
-
-        // Регистрация глобальных политик.
         $this->registerGlobalPolicies();
+
+        // Хуки `before` и `after` в текущем определении
+        // будут применены только к зарегистрированным пользователям.
+        Gate::before(function (\App\Models\User $user, $ability) {
+            if ($user->isSuperAdmin()) {
+                return true;
+            }
+        });
+
+        Gate::after(function (\App\Models\User $user, $ability, $result, $arguments) {
+            return false;
+        });
 
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
