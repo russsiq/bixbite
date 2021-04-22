@@ -9,15 +9,6 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    // public function before(User $user, $ability)
-    // {
-    //     dd($user);
-    //     if ($user->isAdministrator()) {
-    //         return true;
-    //     }
-    // }
-
-
     /**
      * Determine whether the user can view any models.
      *
