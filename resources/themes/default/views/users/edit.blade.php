@@ -4,57 +4,61 @@
             <h2 class="action_page__title">@lang('users.edit_page')</h2>
         </header>
 
-        <form action="{{ route('profile.update', $user) }}" method="post" enctype="multipart/form-data" class="action_page__content">
-            <input type="hidden" name="_method" value="PUT" />
+        <form action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data" class="action_page__content">
+            @csrf
+            @method('PUT')
 
-            <div class="mb-3 row{{ $errors->has('name') ? ' has-error' : '' }}">
-    			<label for="name" class="col-sm-4 col-form-label">@lang('auth.name')</label>
+            <div class="mb-3 row">
+    			<label for="name" class="col-sm-4 col-form-label">@lang('Name')</label>
     			<div class="col-sm-6">
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" required autofocus />
-                    @if ($errors->has('name'))
-                        <span class="invalid-feedback">{{ $errors->first('name') }}</span>
-                    @endif
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" required />
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
 
-            <div class="mb-3 row{{ $errors->has('email') ? ' has-error' : '' }}">
-    			<label for="email" class="col-sm-4 col-form-label">@lang('auth.email')</label>
+            <div class="mb-3 row">
+    			<label for="email" class="col-sm-4 col-form-label">@lang('Email')</label>
     			<div class="col-sm-6">
-                    <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required />
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback">{{ $errors->first('email') }}</span>
-                    @endif
+                    <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required />
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
 
-            <div class="mb-3 row{{ $errors->has('where_from') ? ' has-error' : '' }}">
-    			<label for="where_from" class="col-sm-4 col-form-label">@lang('users.where_from')</label>
+            <div class="mb-3 row">
+    			<label for="where_from" class="col-sm-4 col-form-label">@lang('Where from')</label>
     			<div class="col-sm-6">
-                    <input type="text" name="where_from" value="{{ old('where_from', $user->where_from) }}" class="form-control{{ $errors->has('where_from') ? ' is-invalid' : '' }}" />
-                    @if ($errors->has('where_from'))
-                        <span class="invalid-feedback">{{ $errors->first('where_from') }}</span>
-                    @endif
+                    <input type="text" name="where_from" value="{{ old('where_from', $user->where_from) }}" class="form-control" />
+                    @error('where_from')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
 
-            <div class="mb-3 row{{ $errors->has('info') ? ' has-error' : '' }}">
-    			<label for="info" class="col-sm-4 col-form-label">@lang('users.info')</label>
+            <div class="mb-3 row">
+    			<label for="info" class="col-sm-4 col-form-label">@lang('Info')</label>
     			<div class="col-sm-6">
-                    <textarea name="info" rows="4" class="form-control{{ $errors->has('info') ? ' is-invalid' : '' }}">{{ old('info', $user->info) }}</textarea>
-                    @if ($errors->has('info'))
-                        <span class="invalid-feedback">{{ $errors->first('info') }}</span>
-                    @endif
+                    <textarea id="info" name="info" rows="4" class="form-control">{{ old('info', $user->info) }}</textarea>
+                    @error('info')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
 
-    		<div class="mb-3 row{{ $errors->has('avatar') ? ' has-error' : '' }}">
-    			<label for="avatar" class="col-sm-4">@lang('users.avatar')</label>
+    		<div class="mb-3 row">
+    			<label for="avatar" class="col-sm-4">@lang('Avatar')</label>
     			<div class="col-sm-6">
     				@if (optional($user)->getRawOriginal('avatar'))
     					<br><img src="{{ $user->avatar }}" alt="avatar_{{ $user->id }}" />
     					<label class="form-text text-muted"><input type="checkbox" name="delete_avatar" value="1" /> @lang('users.delete_avatar')</label>
     				@endif
-    				<input type="file" name="avatar" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}" />
+    				<input type="file" name="avatar" class="form-control" />
+                    @error('avatar')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
     			</div>
     		</div>
 
@@ -68,29 +72,30 @@
                 <hr>
             @endif
 
-    		<div class="mb-3 row{{ $errors->has('password') ? ' has-error' : '' }}">
-    			<label for="password" class="col-sm-4 col-form-label">@lang('auth.password')</label>
+    		<div class="mb-3 row">
+    			<label for="password" class="col-sm-4 col-form-label">@lang('Password')</label>
     			<div class="col-sm-6">
-                    <input type="password" name="password" value="" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" autocomplete="new-password" />
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback">{{ $errors->first('password') }}</span>
-                    @endif
+                    <input type="password" name="password" value="" class="form-control" autocomplete="new-password" />
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
+
     		<div class="mb-3 row{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-    			<label for="password_confirmation" class="col-sm-4 col-form-label">@lang('auth.password_confirmation')</label>
+    			<label for="password_confirmation" class="col-sm-4 col-form-label">@lang('Confirm Password')</label>
     			<div class="col-sm-6">
-                    <input type="password" name="password_confirmation" value="" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" autocomplete="off" />
-                    @if ($errors->has('password_confirmation'))
-                        <span class="invalid-feedback">{{ $errors->first('password_confirmation') }}</span>
-                    @endif
+                    <input type="password" name="password_confirmation" value="" class="form-control" autocomplete="new-password" />
+                    @error('password_confirmation')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
     		</div>
 
             <div class="mb-3 row">
-                <div class="col-md-6 offset-md-4 d-flex">
-                    <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-primary">@lang('common.btn.save')</button>
-                    <a href="{{ $user->profile }}" class="btn btn-outline-dark ml-auto">@lang('common.btn.cancel')</a>
+                <div class="col-md-6 offset-md-4">
+                    <button type="submit" class="btn btn-primary">@lang('Save')</button>
+                    <a href="{{ $user->profile }}" class="btn btn-outline-dark pull-right">@lang('Cancel')</a>
                 </div>
             </div>
         </form>

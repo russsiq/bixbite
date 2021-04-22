@@ -16,7 +16,7 @@
                 <div class="profile_page__action">
                     @if (user('id') == $user->id)
                         {{-- Если это профиль текущего пользователя. --}}
-                        <a href="{{ route('profile.edit', $user) }}" class="btn btn-outline-primary">@lang('users.btn.profile.edit')</a>
+                        <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary">@lang('users.btn.profile.edit')</a>
                     @elseif (user())
                         {{-- Если профиль просматривает зарегистрированный пользватель. --}}
                         <div class="dropdown">

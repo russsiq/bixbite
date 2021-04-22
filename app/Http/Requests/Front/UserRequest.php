@@ -66,15 +66,15 @@ class UserRequest extends BaseFormRequest
                 'required',
                 'email',
                 'between:6,255',
-                Rule::unique('users')->ignore($this->user),
+                Rule::unique('users')->ignore($this->user(), 'id'),
 
             ],
 
             'password' => [
+                'nullable',
                 'string',
                 'between:6,255',
                 'confirmed',
-                isset($this->user->id) ? 'nullable' : 'required',
 
             ],
 

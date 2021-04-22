@@ -43,17 +43,16 @@ Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.t
 Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
 
 Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
-    // User & Profile...
-    Route::get('/user/profile', [UserProfileController::class, 'show'])
-        ->name('profile.show');
+    Route::get('profile', [UserProfileController::class, 'show'])->name('profile.show');
+    Route::get('profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('follow/{user:id}', [UsersController::class, 'follow'])->name('follow');
+    Route::get('unfollow/{user:id}', [UsersController::class, 'unfollow'])->name('unfollow');
 });
 
 Route::get('users', [UsersController::class, 'index'])->name('users.index');
-Route::get('follow/{user:id}', [UsersController::class, 'follow'])->name('follow');
-Route::get('unfollow/{user:id}', [UsersController::class, 'unfollow'])->name('unfollow');
 Route::get('@{user:id}', [UsersController::class, 'profile'])->name('profile');
-Route::get('profile/{user:id}/edit', [UsersController::class, 'edit'])->name('profile.edit')->middleware(['own_profile']);
-Route::put('profile/{user:id}', [UsersController::class, 'update'])->name('profile.update')->middleware(['own_profile']);
 
 // Данные маршруты всегда должны располагаться последними.
 Route::get('{category:slug}', [ArticlesController::class, 'category'])->name('articles.category');

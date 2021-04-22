@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\XField;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 /**
  * Контроллер, управляющий Пользователями сайта.
@@ -67,43 +68,6 @@ class UsersController extends SiteController
         ]);
 
         return $this->makeResponse('index', compact('users'));
-    }
-
-    /**
-     * [edit description].
-     *
-     * @param  User  $user
-     * @return Renderable
-     */
-    public function edit(User $user)
-    {
-        $x_fields = $user->x_fields;
-
-        pageinfo([
-            'title' => trans('users.edit_page'),
-            'robots' => 'noindex, follow',
-
-        ]);
-
-        return $this->makeResponse('edit', compact('user', 'x_fields'));
-    }
-
-    /**
-     * [update description].
-     *
-     * @param  UserRequest  $request
-     * @param  User  $user
-     * @return RedirectResponse
-     */
-    public function update(UserRequest $request, User $user)
-    {
-        $user->update($request->all());
-
-        return redirect()
-            ->route('profile', $user)
-            ->withStatus(
-                trans('users.msg.profile_updated')
-            );
     }
 
     /**
