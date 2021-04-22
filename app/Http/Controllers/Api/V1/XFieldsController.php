@@ -8,6 +8,7 @@ use App\Http\Resources\XFieldCollection;
 use App\Http\Resources\XFieldResource;
 use App\Models\XField;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class XFieldsController extends ApiController
 {
@@ -94,13 +95,14 @@ class XFieldsController extends ApiController
     /**
      * Удалить сущность из хранилища.
      *
+     * @param  Request  $request
      * @param  XField  $x_field
      * @return JsonResponse
      */
-    public function destroy(XField $x_field)
+    public function destroy(Request $request, XField $x_field)
     {
         // Check if currently authenticated user has owner role.
-        if (auth('api')->user()->hasRole('owner')) {
+        if ($request->user()->hasRole('owner')) {
             $x_field->delete();
 
             return response()->json(null, JsonResponse::HTTP_NO_CONTENT);

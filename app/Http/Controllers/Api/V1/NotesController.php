@@ -8,6 +8,7 @@ use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Models\Note;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class NotesController extends ApiController
 {
@@ -45,15 +46,16 @@ class NotesController extends ApiController
      * Отобразить весь список сущностей,
      * включая связанные сущности.
      *
+     * @param Request  $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $notes = Note::with([
             'files',
             'user:users.id,users.name',
         ])
-            ->where('user_id', auth('api')->user()->id)
+            ->where('user_id', $request->user()->id)
             ->get()
             ->append('image');
 
@@ -68,13 +70,13 @@ class NotesController extends ApiController
      * Позволяет передавать мета-данные и
      * связи с другими сущностями.
      *
-     * @param  Note  $note
+     * @param Request  $request
      * @return JsonResponse
      */
-    public function form()
+    public function form(Request $request)
     {
         $note = new Note();
-        $note->user = auth('api')->user();
+        $note->user = $request->user();
         $note->user_id = $note->user->id;
 
         $resource = new NoteResource($note);

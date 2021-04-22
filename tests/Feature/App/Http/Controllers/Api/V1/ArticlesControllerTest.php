@@ -223,7 +223,7 @@ class ArticlesControllerTest extends TestCase
     {
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ])
             ->postJson(route('api.articles.store'), [
                 'title' => 'Draft'
@@ -626,6 +626,20 @@ class ArticlesControllerTest extends TestCase
     }
 
     /**
+     * Set the currently logged in user for the application.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  string|null  $guard
+     * @return $this
+     */
+    public function actingAs(UserContract $user, $abilities = [])
+    {
+        Sanctum::actingAs($user, $abilities);
+
+        return $this;
+    }
+
+    /**
      * Выполнять дальнейшие действия
      * от имени собственника сайта
      * с передачей заголовка аутентификации.
@@ -635,7 +649,7 @@ class ArticlesControllerTest extends TestCase
     {
         return $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->withHeaders([
-                'Authorization' => 'Bearer '.$owner->generateApiToken(),
+                // 'Authorization' => 'Bearer '.$owner->generateApiToken(),
             ]);
     }
 }

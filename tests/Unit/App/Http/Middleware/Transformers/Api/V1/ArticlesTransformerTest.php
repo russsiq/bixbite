@@ -190,7 +190,7 @@ class ArticlesTransformerTest extends TestCase
         $transformed = $transformer->default();
 
         foreach ($fields as $field) {
-            $this->assertLessThanOrEqual(255, $transformed[$field]);
+            $this->assertLessThanOrEqual(255, mb_strlen($transformed[$field]));
         }
     }
 

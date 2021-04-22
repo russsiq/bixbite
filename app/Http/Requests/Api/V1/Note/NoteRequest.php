@@ -74,7 +74,7 @@ class NoteRequest extends BaseFormRequest
             // Relations types.
             'user_id' => [
                 'required',
-                Rule::in(auth('api')->user()->id),
+                Rule::in($this->user()->id),
 
             ],
 
