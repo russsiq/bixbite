@@ -104,7 +104,7 @@ class UsersController extends SiteController
         pageinfo([
             'title' => $user->name,
             'description' => $user->info,
-            'robots' => $user->robots ?? 'all',
+            'robots' => 'noindex, follow',
             'url' => $user->profile,
             'section' => [
                 'title' => $this->settings->meta_title ?? trans('users.title'),
