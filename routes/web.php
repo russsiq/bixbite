@@ -26,6 +26,12 @@ Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])
     ->where('any', '.*')
     ->name('dashboard');
 
+Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
+    // User & Profile...
+    Route::get('/user/profile', [UserProfileController::class, 'show'])
+        ->name('profile.show');
+});
+
 // Вначале располагаем группу маршрутов, где не нужны регулярные выражения.
 
 // Route::get('{commentable_type}/{commentable_id}/comments/{comment}', function ($postId, $commentId) {});
