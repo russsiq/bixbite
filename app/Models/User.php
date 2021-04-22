@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -30,8 +31,11 @@ class User extends Authenticatable implements MustVerifyEmail
         HasApiTokens,
         HasFactory,
         Notifiable;
+    use TwoFactorAuthenticatable;
 
     // use Commentable; user not commentable, Wall Profile is commentable !!!
+
+    const TABLE = 'users';
 
     /**
      * Таблица БД, ассоциированная с моделью.
@@ -166,6 +170,13 @@ class User extends Authenticatable implements MustVerifyEmail
             'commentable_type',
             'commentable_id',
             'id'
+        );
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return in_array(
+            $this->email, (array) config('bixbite.super_admins')
         );
     }
 }
