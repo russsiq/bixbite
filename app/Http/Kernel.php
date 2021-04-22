@@ -70,7 +70,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'debugbar.disable' => \App\Http\Middleware\DebugbarDisable::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'own_profile' => \App\Http\Middleware\OwnProfile::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
