@@ -29,7 +29,7 @@
                     </li>
                     <!-- <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" title="Создать" data-toggle="dropdown"><i class="fa fa-plus"></i> </a>
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <router-link :to="{name:'articles.create'}" class="dropdown-item">Запись</router-link>
                             <router-link :to="{name:'categories.create'}" class="dropdown-item">Категория</router-link>
                             <router-link :to="{name:'notes.create'}" class="dropdown-item">Заметка</router-link>

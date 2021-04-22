@@ -13,13 +13,13 @@
                 <li class="nav-item dropdown">
                     @guest
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">@lang('Profile') </a>
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <a href="{{ route('login') }}" class="dropdown-item">@lang('Login')</a>
                             <a href="{{ route('register') }}" class="dropdown-item">@lang('Register')</a>
                         </div>
                     @else
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle text-uppercase">{{ $user->name }} </a>
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-end">
                             @can ('global.dashboard')
                                 <a href="{{ route('dashboard') }}" class="dropdown-item">@lang('Dashboard')</a>
                             @endcan
