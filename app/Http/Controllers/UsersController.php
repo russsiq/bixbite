@@ -117,32 +117,4 @@ class UsersController extends SiteController
 
         return $this->makeResponse('profile', compact('user', 'x_fields'));
     }
-
-    /**
-     * Добавить пользователя в закладки.
-     *
-     * @param  User  $user
-     * @return RedirectResponse
-     */
-    public function follow(User $user)
-    {
-        auth()->user()->follow($user);
-
-        return redirect()->back()
-            ->withStatus(trans('users.msg.followed'));
-    }
-
-    /**
-     * Убрать пользователя из закладок.
-     *
-     * @param  User  $user
-     * @return RedirectResponse
-     */
-    public function unfollow(User $user)
-    {
-        auth()->user()->unfollow($user);
-
-        return redirect()->back()
-            ->withStatus(trans('users.msg.unfollowed'));
-    }
 }

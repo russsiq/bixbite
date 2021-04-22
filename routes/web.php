@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadsController;
+use App\Http\Controllers\FollowedUsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfileController;
@@ -42,13 +43,13 @@ Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.t
 
 Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
 
-Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [UserProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('follow/{user:id}', [UsersController::class, 'follow'])->name('follow');
-    Route::get('unfollow/{user:id}', [UsersController::class, 'unfollow'])->name('unfollow');
+    Route::post('users/follow/{user:id}', [FollowedUsersController::class, 'store'])->name('follow');
+    Route::delete('users/unfollow/{user:id}', [FollowedUsersController::class, 'destroy'])->name('unfollow');
 });
 
 Route::get('users', [UsersController::class, 'index'])->name('users.index');

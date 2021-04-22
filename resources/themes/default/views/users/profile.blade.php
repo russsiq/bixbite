@@ -17,18 +17,24 @@
                     @if (user('id') == $user->id)
                         {{-- Если это профиль текущего пользователя. --}}
                         <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary">@lang('users.btn.profile.edit')</a>
-                    @elseif (user())
+                    @endif
+                    @auth
                         {{-- Если профиль просматривает зарегистрированный пользватель. --}}
                         <div class="dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-outline-primary dropdown-toggle">Following</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="{{ route('follow', $user) }}" class="dropdown-item">Follow</a>
-                                <a href="#" class="dropdown-item">Private message</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="{{ route('unfollow', $user) }}" class="dropdown-item">Unfollow</a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <form method="post">
+                                    @csrf
+                                    {{-- <a href="#" class="dropdown-item">Private message</a>
+                                        <div class="dropdown-divider"></div> --}}
+                                    <button type="submit" formaction="{{ route('follow', $user) }}"
+                                        class="dropdown-item">@lang('Follow')</button>
+                                    <button type="submit" formaction="{{ route('unfollow', $user) }}" name="_method"
+                                        value="delete" class="dropdown-item">@lang('Unfollow')</button>
+                                </form>
                             </div>
                         </div>
-                    @endif
+                    @endauth
                 </div>
             </div>
         </header>
