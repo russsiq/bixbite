@@ -14,11 +14,11 @@
                 </div>
 
                 <div class="profile_page__action">
-                    @if (user('id') == $user->id)
+                    @auth
+                        @if (user('id') == $user->id)
                         {{-- Если это профиль текущего пользователя. --}}
                         <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary">@lang('users.btn.profile.edit')</a>
-                    @endif
-                    @auth
+                        @else
                         {{-- Если профиль просматривает зарегистрированный пользватель. --}}
                         <div class="dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-outline-primary dropdown-toggle">Following</a>
@@ -34,6 +34,7 @@
                                 </form>
                             </div>
                         </div>
+                        @endif
                     @endauth
                 </div>
             </div>
