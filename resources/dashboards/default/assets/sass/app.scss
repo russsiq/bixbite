@@ -20,11 +20,6 @@
 @import "node_modules/quill/dist/quill.bubble";
 @import "node_modules/quill/dist/quill.snow";
 
-body {
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: 100;
-}
-
 body main.container {
     min-height: calc(100vh + 54px);
     padding-top: calc(1.25rem + 54px);
@@ -58,8 +53,6 @@ body main.container {
     color: #222;
     text-align: left;
     background-color: #f5f8fa;
-    font-family: "Ubuntu", sans-serif;
-    font-weight: 100;
 }
 
 .h1,

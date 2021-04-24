@@ -41,15 +41,12 @@ export default {
         this.$scrolling.show();
 
         this.authInitialize()
-            .then(() => {
+            .finally(() => {
                 if (!this.isLogged && 'login' !== this.$router.currentRoute.name) {
-                    // this.$router.push({
-                    //     name: 'login'
-                    // });
+                    this.$router.push({
+                        name: 'login'
+                    });
                 }
-            })
-            .catch(error => {
-                console.error(error);
             });
     },
 

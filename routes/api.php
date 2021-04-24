@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\PrivilegesController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\TagsController;
 use App\Http\Controllers\Api\V1\TemplatesController;
+use App\Http\Controllers\Api\V1\UserProfileController;
 use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\Api\V1\XFieldsController;
 use App\Http\Middleware\TransformApiData;
@@ -29,6 +30,7 @@ Route::group([
         'as' => 'api.'
 
     ], function () {
+        Route::get('profile', UserProfileController::class)->name('profile');
         Route::get('notes/form', [NotesController::class, 'form'])->name('notes.form');
         Route::get('settings/{module}', [SettingsController::class, 'getModule'])->name('settings.getModule');
         Route::put('settings/{module}', [SettingsController::class, 'updateModule'])->name('settings.updateModule');

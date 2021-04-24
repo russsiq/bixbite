@@ -7,27 +7,17 @@
             <a :href="url('/')" target="_blank">{{ app_name }}</a>
         </h2>
         <hr>
-        <form v-if="!isLogged" @submit.prevent="signIn" class="form-horizontal" @input="resetErrors">
+        <form v-if="! isLogged" @submit.prevent="signIn" class="form-horizontal" @input="resetErrors">
             <fieldset>
                 <div class="mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fa fa-user"></i></span>
-                        <input type="email" v-model="form.email" class="form-control" placeholder="Email" required />
-                    </div>
-                    <small v-for="error in errors.email" class="error__control" v-html="error"></small>
-                </div>
-                <div class="mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                        <input type="password" v-model="form.password" class="form-control" placeholder="Password" required />
-                    </div>
-                    <small v-for="error in errors.password" class="error__control">{{ error }}</small>
+                    <h4>{{ title }}</h4>
+                    <p v-html="message"></p>
                 </div>
                 <hr>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-outline-secondary pull-right" :disabled="isProcessing">Войти</button>
                 </div>
-                <p class="copyright">2018-2019 © <a href="https://github.com/russsiq/bixbite" target="_blank">BixBite CMS</a></p>
+                <p class="copyright">2018-{{ copyrightAt }} © <a href="https://github.com/russsiq/bixbite" target="_blank">BixBite CMS</a></p>
             </fieldset>
         </form>
     </div>
@@ -60,14 +50,13 @@ export default {
     computed: {
         ...mapGetters({
             isLogged: 'auth/isLogged'
-        })
+        }),
+        copyrightAt() {
+            return (new Date()).getFullYear();
+        }
     },
 
     created() {
-        this.$notification.info({
-            title: this.title,
-            message: this.message
-        });
 
         // Если пользователь сразу зашел на страницу авторизации,
         // например, набрал адрес в браузере, но есть вероятность,
@@ -75,9 +64,6 @@ export default {
         this.authInitialize()
             .then(() => {
                 this.isLogged && this.$router.push('/');
-            })
-            .catch(error => {
-                console.error(error);
             });
     },
 

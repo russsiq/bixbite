@@ -1,6 +1,7 @@
 // NEED TO REFRESH TOKKEN
 
 import {
+    get,
     post
 } from '@/helpers/api';
 
@@ -10,13 +11,12 @@ const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const AUTH_ERROR = 'AUTH_ERROR';
 const AUTH_RESET = 'AUTH_RESET';
 
-const BASE_URL = `${Pageinfo.api_url}/auth/`;
+const BASE_URL = `${Pageinfo.api_url}/`;
 const ALLOWED_ATTRIBUTE = [
     'id',
     'name',
     'avatar',
     'role',
-    'api_token',
 ];
 
 export default {
@@ -30,9 +30,8 @@ export default {
 
     getters: {
         user: state => state.user,
-        api_token: state => state.user && state.user.api_token,
         authStatus: state => state.status,
-        isLogged: state => Boolean(state.user && state.user.api_token),
+        isLogged: state => Boolean(state.user && state.user.id > 0),
     },
 
     mutations: {
@@ -80,17 +79,20 @@ export default {
         initialize(context) {
             return new Promise(function(resolve, reject) {
                 try {
-                    context.commit(
-                        AUTH_INITIALIZE,
-                        JSON.parse(localStorage.getItem('user'))
-                    );
+                    const user = JSON.parse(localStorage.getItem('user'));
+
+                    if (! user) {
+                        throw new Error('User data not found in local storage.');
+                    }
+
+                    context.commit(AUTH_INITIALIZE, user);
 
                     resolve();
                 } catch (error) {
                     context.dispatch('_reset');
                     context.commit(AUTH_ERROR);
 
-                    reject(error.message);
+                    reject(error);
                 }
             })
         },
@@ -107,17 +109,10 @@ export default {
             context.dispatch('_reset');
             context.commit(AUTH_REQUEST);
 
-            return post(context.state.base_url + 'login', credentials)
+            return get(context.state.base_url + 'profile')
                 .then(response => {
 
-                    // Когда пользователю успешно присваивается новый `api_token`,
-                    // возвращается 202 статус.
-                    if (202 != response.status) {
-                        throw new Error(response.data.message);
-                    }
-
                     const user = response.data.data;
-                    user.api_token = response.headers.api_token;
 
                     for (let attribute in user) {
                         // Запрещенные свойства будут удалены и в `response.data.user`.
@@ -136,7 +131,6 @@ export default {
                     context.commit(AUTH_ERROR);
 
                     return Promise.reject(error);
-                    // throw error;
                 });
         },
     },

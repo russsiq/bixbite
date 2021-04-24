@@ -27,7 +27,7 @@
     <div id="app"></div>
 
     {{-- Список всех скриптов шаблона. --}}
-    <script type="text/javascript">
+    <script>
         window.Pageinfo = {!! pageinfo()->scriptVariables() !!}
     </script>
     <script src="{{ dashboard('js/manifest.js') }}" charset="utf-8"></script>

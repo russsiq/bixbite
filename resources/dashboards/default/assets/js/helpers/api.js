@@ -1,12 +1,6 @@
 import axios from 'axios'
 import store from '@/store';
 
-function accessToken() {
-    return {
-        // 'Authorization': 'Bearer ' + store.getters['auth/api_token']
-    };
-}
-
 export function get(url, params = {}) {
     return axios({
         url: url,
@@ -15,8 +9,7 @@ export function get(url, params = {}) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            //'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
-        	...accessToken()
+            'X-Requested-With': 'XMLHttpRequest',
         }
     })
 }
@@ -27,7 +20,9 @@ export function post(url, data) {
         data: data,
         method: 'POST',
         headers: {
-        	...accessToken()
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         }
     })
 }
@@ -38,7 +33,9 @@ export function put(url, data) {
         data: data,
         method: 'PUT',
         headers: {
-        	...accessToken()
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         }
     })
 }
@@ -49,7 +46,9 @@ export function update(url, data) {
         data: data,
         method: 'PUT',
         headers: {
-        	...accessToken()
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         }
     })
 }
@@ -61,7 +60,9 @@ export function destroy(url, params = {}) {
         params: params,
         method: 'DELETE',
         headers: {
-            ...accessToken()
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         }
     })
 }

@@ -28,16 +28,7 @@ const http = {
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': `${Pageinfo.csrf_token}`,
         'X-Requested-With': 'XMLHttpRequest',
-    },
-
-    /**
-     * Access token variable.
-     * Sending header: 'Authorization': 'Bearer access_token',
-     */
-    access_token() {
-        return store.getters['auth/api_token'];
     },
 
     /**
@@ -314,8 +305,6 @@ const http = {
 };
 
 const instance = axios.create(http);
-
-// instance.defaults.headers.common['Authorization'] = `Bearer ${http.access_token()}`;
 
 instance.interceptors.request.use(
     config => http.onRequest(config, instance),
