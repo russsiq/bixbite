@@ -26,8 +26,6 @@ class CommentFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->select('id')->first() ?: User::factory(),
             // 'parent_id' => 0,
-            'commentable_type' => 'articles',
-            'commentable_id' => Article::inRandomOrder()->select('id')->first() ?: Article::factory(),
             'content' => $this->faker->paragraph(mt_rand(1, 4)),
             'is_approved' => mt_rand(0, 1),
             'created_at' => $this->faker->dateTimeBetween(),
