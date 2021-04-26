@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link href="{{ dashboard('css/app.css') }}" rel="stylesheet" />
+    <link href="{{ mix('css/app.css', 'dashboards/default') }}" rel="stylesheet" />
     <link href="{{ asset('favicon.ico') }}" rel="icon" type="image/x-icon" />
     {{-- Стили, которые могут быть состыкованы из дочерних шаблонов. --}}
     @stack('styles')
@@ -30,9 +30,9 @@
     <script>
         window.Pageinfo = {!! pageinfo()->scriptVariables() !!}
     </script>
-    <script src="{{ dashboard('js/manifest.js') }}" charset="utf-8"></script>
-    <script src="{{ dashboard('js/vendor.js') }}" charset="utf-8"></script>
-    <script src="{{ dashboard('js/app.js') }}" charset="utf-8"></script>
+    <script src="{{ mix('js/manifest.js', 'dashboards/default') }}" charset="utf-8"></script>
+    <script src="{{ mix('js/vendor.js', 'dashboards/default') }}" charset="utf-8"></script>
+    <script src="{{ mix('js/app.js', 'dashboards/default') }}" charset="utf-8"></script>
 
     {{-- Скрипты, которые могут быть состыкованы из дочерних шаблонов. --}}
     @stack('scripts')

@@ -175,8 +175,6 @@ return [
         // Создание ссылок на директории: target => link.
         'symlinks' => [
             storage_path('app/public') => public_path('storage'),
-            resource_path('dashboards/default/public') => public_path('dashboards/default'),
-            resource_path('themes/default/public') => public_path('themes/default'),
 
         ],
 

@@ -54,3 +54,5 @@ const app = new Vue({
 // Make some vue plugins methods to global.
 // window.LoadingLayer = app.$loading;
 window.Notification = app.$notification;
+
+require('./script');
