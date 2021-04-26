@@ -8,16 +8,22 @@ use Illuminate\Database\Seeder;
 class CategoriesTableSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * The number of models that should be generated.
      *
+     * @const int
+     */
+    public const COUNT_TO_SEED = 6;
+
+    /**
+     * Run the database seeds.
+     *
+     * @param  int  $countToSeed
      * @return void
      */
-    public function run()
+    public function run(int $countToSeed = null): void
     {
-        // Truncate used tables.
-        // Category::truncate();
-
-        // Seeding used table.
-        Category::factory()->count(8)->create();
+        $categories = Category::factory()
+            ->count($countToSeed ?: self::COUNT_TO_SEED)
+            ->create();
     }
 }

@@ -16,12 +16,13 @@ class TestContentSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             ArticlesTableSeeder::class,
-            CommentsTableSeeder::class,
             CategoriesTableSeeder::class,
-            CategoryablesTableSeeder::class,
             TagsTableSeeder::class,
-            TaggablesTableSeeder::class,
+            // AtachmentsTableSeeder::class,
 
+            ArticleCategoriesSeeder::class,
+            ArticleCommentsSeeder::class,
+            ArticleTagsSeeder::class
         ]);
     }
 }

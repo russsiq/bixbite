@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class TagFactory extends Factory
 {
@@ -21,9 +22,13 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'title' => $this->faker->unique()->word,
+        $title = $this->faker->unique()->words(mt_rand(1, 3), true);
 
+        return [
+            'title' => Str::ucfirst($title),
+            'slug' => Str::slug($title),
+            'created_at' => $this->faker->dateTimeBetween(),
+            'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
 }

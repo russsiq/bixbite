@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
-use App\Models\User;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,39 +23,30 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {
-        $title = $this->faker->unique()->sentence(mt_rand(4, 12));
-
-        $content = '';
-
-        foreach (range(1, mt_rand(8, 20)) as $step) {
-            $content .= '<p>'.$this->faker->paragraph.'</p>';
-        }
-
-        // Если нет пользователей, то создадим нового.
-        $user = User::inRandomOrder()->select('id')->first()
-            ?? User::factory()->create();
-
-        $date = now()
-            ->subDays(mt_rand(1, 720))
-            ->addSeconds(mt_rand(1, 86400))
-            ->format('Y-m-d H:i:s');
+        $title = $this->faker->unique()->sentence(mt_rand(4, 8));
 
         return [
-            'title' => $title,
-            'slug' => Str::slug($title),
-            'teaser' => $this->faker->text(mt_rand(120, 255)),
-            'content' => $content,
-            'user_id' => $user->id,
-            // 'img' => $this->faker->randomElement($images),
             'state' => $this->faker->randomElement([
                 'published',
                 'unpublished',
                 'draft',
-
             ]),
-            'created_at' => $date,
-            'updated_at' => $date,
 
+            'title' => $title,
+            'slug' => Str::slug($title),
+            'teaser' => $this->faker->text(mt_rand(120, 255)),
+            'content' => implode(',', array_map(function () {
+                    return '<p>'.$this->faker->paragraph().'</p>';
+                }, range(1, mt_rand(8, 20)))),
+
+            'description' => $this->faker->text(mt_rand(120, 255)),
+            'keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
+            'robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
+
+            'views' => mt_rand(0, 240),
+
+            'created_at' => $this->faker->dateTimeBetween(),
+            'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
 }

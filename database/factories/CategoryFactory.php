@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,21 +23,25 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        // $title = $faker->sentence(mt_rand(1, 2));
-        $title = $this->faker->unique()->word;
-
-        $date = now()
-            ->subDays(mt_rand(1, 720))
-            ->addSeconds(mt_rand(1, 86400))
-            ->format('Y-m-d H:i:s');
+        $title = $this->faker->unique()->words(mt_rand(1, 3), true);
 
         return [
             'title' => Str::ucfirst($title),
             'slug' => Str::slug($title),
-            'info' => $this->faker->text(mt_rand(120, 255)),
-            'created_at' => $date,
-            'updated_at' => $date,
+            'info' => '<p>'.$this->faker->paragraph().'</p>',
 
+            'description' => $this->faker->text(mt_rand(120, 255)),
+            'keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
+            'robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
+
+            'show_in_menu' => mt_rand(0, 1),
+            'paginate' => mt_rand(5, 20),
+            // 'template' => 'string',
+            'order_by' => 'id',
+            'direction' => $this->faker->randomElement(['desc', 'asc']),
+
+            'created_at' => $this->faker->dateTimeBetween(),
+            'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
 }

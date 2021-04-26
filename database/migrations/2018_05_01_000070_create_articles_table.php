@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateArticlesTable extends Migration
 {
@@ -33,7 +34,7 @@ class CreateArticlesTable extends Migration
             // Мета поля.
             $table->string('description')->nullable();
             $table->string('keywords')->nullable();
-            $table->enum('robots', ['noindex', 'nofollow', 'none'])->nullable(); // null - content="all"
+            $table->enum('robots', MetaRobotsRule::DIRECTIVES)->nullable(); // null - content="all"
 
             // Дополнительная информация.
             $table->boolean('on_mainpage')->nullable()->default(1);

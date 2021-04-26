@@ -8,16 +8,22 @@ use Illuminate\Database\Seeder;
 class TagsTableSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * The number of models that should be generated.
      *
+     * @const int
+     */
+    public const COUNT_TO_SEED = 20;
+
+    /**
+     * Run the database seeds.
+     *
+     * @param  int  $countToSeed
      * @return void
      */
-    public function run()
+    public function run(int $countToSeed = null): void
     {
-        // Truncate used tables.
-        // Tag::truncate();
-
-        // Seeding used table.
-        Tag::factory()->count(15)->create();
+        $tags = Tag::factory()
+            ->count($countToSeed ?: self::COUNT_TO_SEED)
+            ->create();
     }
 }
