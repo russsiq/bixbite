@@ -35,7 +35,7 @@ class ArticleFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'teaser' => $this->faker->text(mt_rand(120, 255)),
-            'content' => implode(',', array_map(function () {
+            'content' => implode('', array_map(function () {
                     return '<p>'.$this->faker->paragraph().'</p>';
                 }, range(1, mt_rand(8, 20)))),
 
