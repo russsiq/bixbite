@@ -5,6 +5,8 @@ namespace App\Http\Requests\Api\V1\Article;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use App\Models\XField;
+use App\Rules\MetaRobotsRule;
+use Illuminate\Validation\Rule;
 
 /**
  * @NB В связи с тем, что Записи идентифицируются по ID,
@@ -156,9 +158,9 @@ class ArticleRequest extends BaseFormRequest
             ],
 
             'robots' => [
-                'nullable',
+                'nullable', // null - content="all"
                 'string',
-                'in:noindex,nofollow,none', // null - content="all"
+                Rule::in(MetaRobotsRule::DIRECTIVES),
 
             ],
 
