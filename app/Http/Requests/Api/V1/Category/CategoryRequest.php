@@ -5,7 +5,9 @@ namespace App\Http\Requests\Api\V1\Category;
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use App\Models\XField;
+use App\Rules\MetaRobotsRule;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 class CategoryRequest extends BaseFormRequest
@@ -119,6 +121,13 @@ class CategoryRequest extends BaseFormRequest
                 'nullable',
                 'string',
                 'max:255',
+
+            ],
+
+            'robots' => [
+                'nullable', // null - content="all"
+                'string',
+                Rule::in(MetaRobotsRule::DIRECTIVES),
 
             ],
 
