@@ -90,7 +90,7 @@
                             </div>
                             <div class="mb-3 has-float-label">
                                 <label class="control-label">Инструкции для поисковых роботов</label>
-                                <select v-model="article.robots" class="form-control">
+                                <select class="form-select" v-model="article.robots">
                                     <option :value="null">По умолчанию</option>
                                     <option value="noindex">noindex</option>
                                     <option value="nofollow">nofollow</option>
@@ -131,7 +131,7 @@
                                     <input type="checkbox" v-model="article[field.name]" />
                                 </template>
                                 <template v-else-if="'array' === field.type">
-                                    <select v-model="article[field.name]" class="form-control">
+                                    <select class="form-select" v-model="article[field.name]">
                                         <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
                                     </select>
                                 </template>
@@ -206,7 +206,7 @@
             <div class="card card-default">
                 <div class="card-header">Комментирование</div>
                 <div class="card-body">
-                    <select v-model.number="article.allow_com" class="form-control">
+                    <select class="form-select" v-model.number="article.allow_com">
                         <option value="2">По умолчанию</option>
                         <option value="1">Разрешить</option>
                         <option value="0">Запретить</option>

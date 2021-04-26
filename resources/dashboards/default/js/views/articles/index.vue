@@ -2,12 +2,12 @@
 <filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
         <button type="button" class="btn btn-outline-dark" @click="create"><i class="fa fa-plus"></i> Создать</button>
-        <div class="btn-group d-flex ml-auto">
+        <div class="btn-group d-flex ms-auto">
             <router-link :to="{name: 'categories'}" class="btn btn-outline-dark" title="Категории"><i class="fa fa-folder-open-o"></i></router-link>
             <router-link :to="{name: 'x_fields'}" class="btn btn-outline-dark" title="Дополнительные поля"><span class="as-icon">χφ</span></router-link>
             <router-link :to="{name: 'articles.settings'}" class="btn btn-outline-dark" title="Настройки"><i class="fa fa-cogs"></i></router-link>
         </div>
-        <div class="btn-group ml-auto">
+        <div class="btn-group ms-auto">
             <button type="button" class="btn btn-outline-dark" @click="toggleFilter"><i class="fa fa-filter"></i></button>
             <button type="button" class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
         </div>
@@ -82,7 +82,7 @@
 
     <template #action>
         <div class="input-group">
-            <select v-model="massAction" class="form-control">
+            <select class="form-select" v-model="massAction">
                 <option value="" disabled selected>Выберите действие</option>
                 <optgroup label="Статус">
                     <option value="published">Опубликовать</option>

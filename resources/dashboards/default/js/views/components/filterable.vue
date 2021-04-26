@@ -12,7 +12,7 @@
         <!-- <div class="card-header">
             <div class="card-title">
                 <span>Customers match</span>
-                <select v-model="query.filter_match">
+                <select class="form-select" v-model="query.filter_match">
                     <option value="and">{{ 'All' | trans }}</option>
                     <option value="or">{{ 'Any' | trans }}</option>
                 </select>
@@ -24,7 +24,7 @@
             <div v-for="(filter, index) in filterCandidates" class="row">
                 <div class="col col-md-4 mb-3 filter-column">
                     <div class="input-group">
-                        <select v-model="filter.column" @change="selectColumn(index)" class="form-control">
+                        <select class="form-select" v-model="filter.column" @change="selectColumn(index)">
                             <option value="" disabled selected>{{ 'Select a filter' | trans }}</option>
                             <optgroup v-for="(table, tableName) in allowedFilters" :label="tableName | title | trans">
                                 <option v-for="(column, columnName) in table" :value="columnName">{{ columnName | title | trans }}</option>
@@ -36,7 +36,7 @@
 
                 <div class="col col-md-4 mb-3 filter-operator">
                     <template v-if="filter.column">
-                        <select v-model="filter.operator" @change="selectOperator(index)" class="form-control">
+                        <select class="form-select" v-model="filter.operator" @change="selectOperator(index)">
                             <option v-for="operator in fetchOperators(filter)" :value="operator.name">{{ operator.title | trans }}</option>
                         </select>
                     </template>
@@ -53,19 +53,19 @@
                             <input type="text" v-model="filter.query_2" class="form-control" />
                         </template>
                         <template v-if="filter.component === 'enum'">
-                            <select v-model="filter.query_1" class="form-control">
+                            <select class="form-select" v-model="filter.query_1">
                                 <option v-for="enumValue in filter.values" :value="enumValue">{{ enumValue | trans }}</option>
                             </select>
                         </template>
                         <template v-if="filter.component === 'boolean'">
-                            <select v-model="filter.query_1" class="form-control">
+                            <select class="form-select" v-model="filter.query_1">
                                 <option value="0">Нет</option>
                                 <option value="1">Да</option>
                             </select>
                         </template>
                         <template v-if="filter.component === 'datetime_1'">
                             <input type="text" v-model="filter.query_1" class="form-control">
-                            <select v-model="filter.query_2" class="form-control">
+                            <select class="form-select" v-model="filter.query_2">
                                 <option value="hours">{{ 'hours' | trans }}</option>
                                 <option value="days">{{ 'days' | trans }}</option>
                                 <option value="months">{{ 'months' | trans }}</option>
@@ -73,7 +73,7 @@
                             </select>
                         </template>
                         <template v-if="filter.component === 'datetime_2'">
-                            <select v-model="filter.query_1" class="form-control">
+                            <select class="form-select" v-model="filter.query_1">
                                 <option value="yesterday">{{ 'yesterday' | trans }}</option>
                                 <option value="today">{{ 'today' | trans }}</option>
                                 <option value="tomorrow">{{ 'tomorrow' | trans }}</option>
@@ -90,7 +90,7 @@
             </div>
 
             <div class="filter-controls mb-3 d-flex">
-                <button type="button" @click="addFilter" class="btn btn-outline-primary mr-auto">{{ 'Add filter' | trans }}</button>
+                <button type="button" @click="addFilter" class="btn btn-outline-primary me-auto">{{ 'Add filter' | trans }}</button>
                 <template v-if="filterCandidates.length && filterCandidates[0].query_1">
                     <button type="button" @click="applyFilter" class="btn btn-outline-success">{{ 'Apply' | trans }}</button>
                 </template>
@@ -107,9 +107,9 @@
                 </div>
                 <div class="col col-md-6">
                     <div class="d-flex">
-                        <div class="has-float-label ml-auto mr-2">
+                        <div class="has-float-label ms-auto mr-2">
                             <label>{{ 'Count' | trans }}</label>
-                            <select v-model="query.limit" @input="changePage(1)" :disabled="loading" class="form-control">
+                            <select class="form-select" v-model="query.limit" @input="changePage(1)" :disabled="loading">
                                 <option v-for="limit in limits" :value="limit">{{ limit }}</option>
                             </select>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="has-float-label">
                             <label>{{ 'Order by' | trans }}</label>
                             <div class="input-group">
-                                <select v-model="query.order_column" @input="changePage(1)" :disabled="loading" class="form-control">
+                                <select class="form-select" v-model="query.order_column" @input="changePage(1)" :disabled="loading">
                                     <template v-for="column in orderableColumns">
                                         <option :value="column">{{ column | title | trans }}</option>
                                     </template>
@@ -151,7 +151,7 @@
                 </div>
                 <div v-if="massAction" class="col col-md-6">
                     <div class="d-flex d-print-none">
-                        <div class="has-float-label ml-auto">
+                        <div class="has-float-label ms-auto">
                             <label for="">{{ 'Mass action' | trans }}</label>
                             <slot name="action"></slot>
                         </div>

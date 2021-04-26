@@ -106,7 +106,7 @@
                     <label class="control-label">Сортировка записей на странице</label>
                 </div>
                 <div class="col-sm-5">
-                    <select v-model="category.order_by" class="form-control">
+                    <select class="form-select" v-model="category.order_by">
                         <option value="id">По умолчанию</option>
                         <option value="title">Заголовок</option>
                         <!-- <option value="votes">Количество голосов</option> -->
@@ -124,7 +124,7 @@
                     <label class="control-label">Порядок сортировки</label>
                 </div>
                 <div class="col-sm-5">
-                    <select v-model="category.direction" class="form-control">
+                    <select class="form-select" v-model="category.direction">
                         <option value="desc">По убыванию</option>
                         <option value="asc">По возрастанию</option>
                     </select>
@@ -137,7 +137,7 @@
                     <small class="form-text text-muted">Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.</small>
                 </div>
                 <div class="col-sm-5">
-                    <select v-model="category.template" class="form-control">
+                    <select class="form-select" v-model="category.template">
                         <option :value="null">По умолчанию</option>
                         <option v-for="(template, key) in template_list" :value="key">{{ template }}</option>
                     </select>
@@ -165,7 +165,7 @@
                         <input type="checkbox" v-model="category[field.name]" />
                     </template>
                     <template v-else-if="'array' === field.type">
-                        <select v-model="category[field.name]" class="form-control">
+                        <select class="form-select" v-model="category[field.name]">
                             <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
                         </select>
                     </template>
@@ -191,7 +191,7 @@
                             <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                             <span class="d-none d-md-inline">Сохранить</span>
                         </button>
-                        <router-link :to="{name: 'categories'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                        <router-link :to="{name: 'categories'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                             <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                             <span class="d-none d-lg-inline">Отменить</span>
                         </router-link>

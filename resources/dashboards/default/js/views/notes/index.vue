@@ -3,7 +3,7 @@
     <div class="card d-print-none">
         <div class="card-header d-flex">
             <router-link :to="{name: 'notes.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
-            <div class="btn-group ml-auto">
+            <div class="btn-group ms-auto">
                 <button class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
             </div>
         </div>

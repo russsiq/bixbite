@@ -23,7 +23,7 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item d-sm-block d-md-none">
                         <router-link :to="{name:'dashboard'}" class="nav-link"><i class="fa fa-home"></i></router-link>
                     </li>
@@ -67,7 +67,7 @@
 
         <template slot="modal__footer">
             <router-link :to="{name: 'user.edit', params: {id: currentUser.id}}" class="btn btn-outline-success" @click.native="closeModal">Профиль</router-link>
-            <button type="button" class="btn btn-secondary ml-auto" @click="logout">Выход</button>
+            <button type="button" class="btn btn-secondary ms-auto" @click="logout">Выход</button>
         </template>
     </modal>
 </header>

@@ -222,7 +222,7 @@
                                     <label class="control-label">Семейство шрифтов</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.captcha_font_family" class="form-control" readonly>
+                                    <select class="form-select" v-model="form.captcha_font_family" readonly>
                                         <option v-for="font in meta.fonts" :value="font">{{ font }}</option>
                                     </select>
                                 </div>
@@ -253,7 +253,7 @@
                                     <small class="form-text text-muted"><a href="https://www.sitemaps.org/ru/protocol.html" target="_blank">Подробнее</a></small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.home_changefreq" class="form-control">
+                                    <select class="form-select" v-model="form.home_changefreq">
                                         <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
@@ -281,7 +281,7 @@
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.categories_changefreq" class="form-control">
+                                    <select class="form-select" v-model="form.categories_changefreq">
                                         <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
@@ -309,7 +309,7 @@
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.articles_changefreq" class="form-control">
+                                    <select class="form-select" v-model="form.articles_changefreq">
                                         <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
@@ -337,7 +337,7 @@
                                     <label class="control-label">Вероятная частота изменения страниц</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.amp_articles_changefreq" class="form-control">
+                                    <select class="form-select" v-model="form.amp_articles_changefreq">
                                         <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
@@ -355,7 +355,7 @@
                                     <label class="control-label">Шаблон сайта</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.app_theme" class="form-control">
+                                    <select class="form-select" v-model="form.app_theme">
                                         <option v-for="theme in meta.themes" :value="theme">{{ theme }}</option>
                                     </select>
                                 </div>
@@ -366,7 +366,7 @@
                                     <label class="control-label">Шаблон админ. панели</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.app_dashboard" class="form-control">
+                                    <select class="form-select" v-model="form.app_dashboard">
                                         <option v-for="dashboard in meta.dashboards" :value="dashboard">{{ dashboard }}</option>
                                     </select>
                                 </div>
@@ -378,7 +378,7 @@
                                     <small class="form-text text-muted">В текущей версии CMS не влияет на шаблон админ. панели.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.app_locale" class="form-control">
+                                    <select class="form-select" v-model="form.app_locale">
                                         <option v-for="lang in meta.lang" :value="lang">{{ lang }}</option>
                                     </select>
                                 </div>
@@ -390,7 +390,7 @@
                                     <small class="form-text text-muted">Данное правило будет применено при автоматической транслитерации дружественных фрагментов URL-адресов Категорий и Записей.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.translite_code" class="form-control">
+                                    <select class="form-select" v-model="form.translite_code">
                                         <option value="en">en</option>
                                         <option value="ru">ru</option>
                                         <option value="ru__passport_2013">ru__passport_2013</option>
@@ -422,7 +422,7 @@
                                     <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                                     <span class="d-none d-md-inline">Сохранить</span>
                                 </button>
-                                <router-link :to="{name: 'dashboard'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                                <router-link :to="{name: 'dashboard'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                                     <span class="d-none d-lg-inline">Отменить</span>
                                 </router-link>

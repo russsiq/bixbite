@@ -3,7 +3,7 @@
     <div class="card d-print-none">
         <div class="card-header d-flex">
             <router-link :to="{name: 'categories.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
-            <div class="btn-group d-flex ml-auto">
+            <div class="btn-group d-flex ms-auto">
                 <a :href="url('app_common/clearcache/categories|navigation')" :title="'Clear' | trans" class="btn btn-outline-dark">
                     <i class="fa fa-recycle"></i>
                 </a>
@@ -11,7 +11,7 @@
                     <span class="as-icon">χφ</span>
                 </router-link>
             </div>
-            <div class="btn-group ml-auto">
+            <div class="btn-group ms-auto">
                 <button type="button" class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
             </div>
         </div>

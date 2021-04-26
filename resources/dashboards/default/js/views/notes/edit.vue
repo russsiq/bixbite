@@ -39,7 +39,7 @@
                             <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                             <span class="d-none d-md-inline">Сохранить</span>
                         </button>
-                        <router-link :to="{name: 'notes'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                        <router-link :to="{name: 'notes'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                             <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                             <span class="d-none d-lg-inline">Отменить</span>
                         </router-link>

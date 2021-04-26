@@ -1,5 +1,5 @@
 <template>
-    <select class="form-control" size="8" style="height: 163px;" v-model="localValue" @change="handleChange" multiple>
+    <select class="form-select" size="8" style="height: 163px;" v-model="localValue" @change="handleChange" multiple>
         <option v-for="(item, index) in flattenItems" :value="item.id" :selected="item.selected" :disabled="item.disabled">{{ '&ndash;'.repeat(item.depth) }} {{ item.title }}</option>
     </select>
 </template>

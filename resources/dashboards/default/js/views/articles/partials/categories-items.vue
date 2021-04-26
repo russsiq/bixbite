@@ -1,5 +1,5 @@
 <template>
-<select class="form-control" @change="handleChange" multiple>
+<select class="form-select" @change="handleChange" multiple>
     <template v-for="(item, index) in nestedCategories">
         <option :value="item.id" :selected="item.selected" :disabled="item.disabled">{{ item.title }}</option>
     </template>

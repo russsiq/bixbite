@@ -1,10 +1,10 @@
 <template>
 <filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
-        <div class="btn-group d-flex ml-auto">
+        <div class="btn-group d-flex ms-auto">
             <router-link :to="{name: 'comments.settings'}" class="btn btn-outline-dark"><i class="fa fa-cogs"></i></router-link>
         </div>
-        <div class="btn-group ml-auto">
+        <div class="btn-group ms-auto">
             <button class="btn btn-outline-dark" @click="toggleFilter"><i class="fa fa-filter"></i></button>
             <button class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
         </div>
@@ -57,7 +57,7 @@
 
     <template #action>
         <div class="input-group">
-            <select v-model="massAction" class="form-control">
+            <select class="form-select" v-model="massAction">
                 <option value="" disabled selected>Выберите действие</option>
                 <optgroup label="Статус">
                     <option value="published">Опубликовать</option>

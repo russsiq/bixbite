@@ -1,10 +1,10 @@
 <template>
 <div class="card card-table">
     <div class="card-header d-flex d-print-none">
-        <div class="btn-group d-flex ml-auto">
+        <div class="btn-group d-flex ms-auto">
             <a :href="url('app_common/clearcache/roles|privileges')" title="Очистить кэш" class="btn btn-outline-dark"><i class="fa fa-recycle"></i></a>
         </div>
-        <div class="btn-group d-flex ml-auto"></div>
+        <div class="btn-group d-flex ms-auto"></div>
     </div>
 
     <form action="#" @submit.prevent="save">
@@ -47,7 +47,7 @@
                 <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                 <span class="d-none d-md-inline">Сохранить</span>
             </button>
-            <router-link :to="{name: 'users'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+            <router-link :to="{name: 'users'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                 <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                 <span class="d-none d-lg-inline">Отменить</span>
             </router-link>

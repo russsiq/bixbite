@@ -12,7 +12,7 @@
                     <div v-html="file.message" class=""></div>
                 </td>
                 <td style="white-space: nowrap;" class="text-right">
-                    <div class="btn-group ml-auto">
+                    <div class="btn-group ms-auto">
                         <span v-if="file.id > 0">
                             <button type="button" class="btn btn-link text-danger" @click="deleteFile(file.id)"><i class="fa fa-trash"></i></button>
                         </span>

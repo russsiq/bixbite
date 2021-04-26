@@ -31,7 +31,7 @@
                                     <small class="form-text text-muted">Укажите, что для входа на сайт помимо пароля требуется ввести пользователю.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.auth_username" class="form-control">
+                                    <select class="form-select" v-model="form.auth_username">
                                         <option value="name">Псевдоним</option>
                                         <option value="email">Почта</option>
                                     </select>
@@ -83,7 +83,7 @@
                                     <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                                     <span class="d-none d-md-inline">Сохранить</span>
                                 </button>
-                                <router-link :to="{name: entity}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                                <router-link :to="{name: entity}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                                     <span class="d-none d-lg-inline">Отменить</span>
                                 </router-link>

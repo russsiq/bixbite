@@ -2,10 +2,10 @@
 <filterable v-bind="filterable">
     <template #preaction>
         <router-link :to="{name: 'settings.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
-        <div class="btn-group d-flex ml-auto">
+        <div class="btn-group d-flex ms-auto">
             <a :href="url('app_common/clearcache/settings')" title="Очистить кэш" class="btn btn-outline-dark"><i class="fa fa-recycle"></i></a>
         </div>
-        <div class="btn-group ml-auto">
+        <div class="btn-group ms-auto">
             <a href="#" title="Печать" class="btn btn-outline-dark" onclick="window.print(); return false;"><i class="fa fa-print"></i></a>
         </div>
     </template>

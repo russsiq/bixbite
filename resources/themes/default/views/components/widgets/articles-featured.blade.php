@@ -20,7 +20,7 @@
                             <header class="widget_item__header widget_featured-item__header">
                                 <h5 class="widget_item__title">{{ $article->title }}</h5>
                                 <p class="widget_item__subtitle">
-                                    <span class="mr-auto">{{ $article->updated ?? $article->created }}</span>
+                                    <span class="me-auto">{{ $article->updated ?? $article->created }}</span>
                                     @if ($article->views)
                                         <span><i class="fa fa-eye"></i> {{ $article->views }} •&nbsp;</span>
                                     @endif

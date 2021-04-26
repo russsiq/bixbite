@@ -6,7 +6,7 @@
         <a href="#" class="navbar-brand">{{ theme }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar"><span class="navbar-toggler-icon"></span></button>
         <div id="bs-navbar" class="collapse navbar-collapse">
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a href="#" class="nav-link" title="Создать шаблон" @click.prevent="createTemplate"><i class="fa fa-plus"></i></a>
                 </li>
@@ -42,7 +42,7 @@
 
                         <div v-if="template && template.exists" class="status d-flex" style="background-color: #f7f7f7; border-top: 1px solid #ddd;">
                             <small class="template__title p-2"><span class="text-muted">Дата изменения:</span> {{ template.modified }}</small>
-                            <small class="template__title p-2 ml-auto"><span class="text-muted">Размер:</span> {{ template.size }}</small>
+                            <small class="template__title p-2 ms-auto"><span class="text-muted">Размер:</span> {{ template.size }}</small>
                         </div>
                     </div>
 

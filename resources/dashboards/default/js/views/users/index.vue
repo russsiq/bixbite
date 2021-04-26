@@ -1,7 +1,7 @@
 <template>
 <filterable v-bind="filterable" :value="collection" @apply:change="fetch">
     <template #preaction>
-        <div class="btn-group d-flex ml-auto mr-auto">
+        <div class="btn-group d-flex ms-auto me-auto">
             <router-link :to="{name: 'privileges'}" class="btn btn-outline-dark" title="Привилегии"><i class="fa fa-user-secret"></i></router-link>
             <router-link :to="{name: 'x_fields'}" class="btn btn-outline-dark" title="Дополнительные поля"><i class="as-icon">χφ</i></router-link>
             <router-link :to="{ name: 'users.settings'}" class="btn btn-outline-dark" title="Настройки"><i class="fa fa-cogs"></i></router-link>

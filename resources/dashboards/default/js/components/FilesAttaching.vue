@@ -35,7 +35,7 @@
                     </span>
                 </td>
                 <td style="white-space: nowrap;" class="text-right">
-                    <div class="btn-group ml-auto">
+                    <div class="btn-group ms-auto">
                         <div v-if="file.id > 0">
                             <button type="button" class="btn btn-link text-primary" @click="editFileModal(file, key)"><i class="fa fa-pencil"></i></button>
                             <button type="button" class="btn btn-link text-danger" @click="deleteFile(key)"><i class="fa fa-trash"></i></button>

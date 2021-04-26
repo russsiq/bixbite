@@ -84,7 +84,7 @@
                                     <small class="form-text text-muted">Сортировка записей при отображении на одной отдельно взятой странице или виджете.</small>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.order_by" class="form-control">
+                                    <select class="form-select" v-model="form.order_by">
                                         <option value="id">Идентификатор</option>
                                         <option value="title">Заголовок</option>
                                         <option value="created_at">Создание</option>
@@ -102,7 +102,7 @@
                                     <label class="control-label">Порядок сортировки</label>
                                 </div>
                                 <div class="col-sm-5">
-                                    <select v-model="form.direction" class="form-control">
+                                    <select class="form-select" v-model="form.direction">
                                         <option value="desc">По убыванию</option>
                                         <option value="asc">По возрастанию</option>
                                     </select>
@@ -169,7 +169,7 @@
                                     <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                                     <span class="d-none d-md-inline">Сохранить</span>
                                 </button>
-                                <router-link :to="{name: entity}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                                <router-link :to="{name: entity}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                                     <span class="d-none d-lg-inline">Отменить</span>
                                 </router-link>

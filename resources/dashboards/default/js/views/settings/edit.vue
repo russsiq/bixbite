@@ -13,7 +13,7 @@
                                 <input type="text" v-model="form.extensible" class="form-control" required readonly />
                             </template>
                             <template v-else>
-                                <select v-model="form.extensible" class="form-control" required>
+                                <select class="form-select" v-model="form.extensible" required>
                                     <option v-for="extensible in extensibles" :value="extensible">{{ extensible }}</option>
                                 </select>
                             </template>
@@ -31,7 +31,7 @@
                                     <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                                     <span class="d-none d-md-inline">Сохранить</span>
                                 </button>
-                                <router-link :to="{ name: 'settings'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                                <router-link :to="{ name: 'settings'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                                     <span class="d-none d-lg-inline">Отменить</span>
                                 </router-link>

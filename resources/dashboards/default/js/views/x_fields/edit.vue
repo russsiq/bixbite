@@ -11,7 +11,7 @@
                         <input type="text" v-model="form.extensible" class="form-control" required readonly />
                     </template>
                     <template v-else>
-                        <select v-model="form.extensible" class="form-control" required>
+                        <select class="form-select" v-model="form.extensible" required>
                             <option v-for="extensible in extensibles" :value="extensible">{{ extensible }}</option>
                         </select>
                     </template>
@@ -32,7 +32,7 @@
                         <input type="text" v-model="form.type" class="form-control" required readonly />
                     </template>
                     <template v-else>
-                        <select v-model="form.type" class="form-control" required>
+                        <select class="form-select" v-model="form.type" required>
                             <option v-for="type in fieldTypes" :value="type">{{ type }}</option>
                         </select>
                     </template>
@@ -68,7 +68,7 @@
                     <small class="form-text text-muted">Так будет выглядеть дополнительное поле, т.е. в форме выпадающего списка.</small>
                 </label>
                 <div class="col-sm-5">
-                    <select class="form-control">
+                    <select class="form-select">
                         <option v-for="(param, index) in form.params" :value="param.key">{{ param.value }}</option>
                     </select>
                 </div>
@@ -112,7 +112,7 @@
                             <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                             <span class="d-none d-md-inline">Сохранить</span>
                         </button>
-                        <router-link :to="{ name: 'x_fields'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                        <router-link :to="{ name: 'x_fields'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                             <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                             <span class="d-none d-lg-inline">Отменить</span>
                         </router-link>

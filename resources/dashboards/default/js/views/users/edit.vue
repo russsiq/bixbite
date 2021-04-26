@@ -18,7 +18,7 @@
                     <div class="mb-3 row">
                         <label class="col-sm-5">Группа</label>
                         <div class="col-sm-7">
-                            <select v-model="form.role" class="form-control">
+                            <select class="form-select" v-model="form.role">
                                 <option v-for="role in roles" :value="role">{{ role | trans }}</option>
                             </select>
                         </div>
@@ -55,7 +55,7 @@
                                     <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
                                     <span class="d-none d-md-inline">Сохранить</span>
                                 </button>
-                                <router-link :to="{name: 'users'}" class="btn btn-outline-dark btn-bg-white ml-auto" exact>
+                                <router-link :to="{name: 'users'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                                     <span class="d-lg-none"><i class="fa fa-ban"></i></span>
                                     <span class="d-none d-lg-inline">Отменить</span>
                                 </router-link>
