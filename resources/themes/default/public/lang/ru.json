@@ -35,6 +35,15 @@
     "Latest Comments": "Обсуждения",
     "Tags Cloud": "Облако меток",
 
+    "Edit profile": "Редактировать профиль",
+    "Avatar": "Аватар",
+    "Info": "Информация",
+    "Where from": "Откуда",
+    "Update password": "Обновить пароль",
+    "Update profile": "Обновить профиль",
+    "Profile updated successfully.": "Профиль успешно обновлен.",
+    "Password changed successfully.": "Пароль успешно изменен.",
+
     "articles": "Новости",
     "msg.theme_not_found": ""
 }
