@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\EmailVerificationTest.php */
 class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
