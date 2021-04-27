@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\PasswordConfirmationTest.php */
 class PasswordConfirmationTest extends TestCase
 {
     use RefreshDatabase;
