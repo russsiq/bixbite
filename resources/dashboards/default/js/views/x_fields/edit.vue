@@ -5,7 +5,7 @@
         <div class="card-body">
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Расширяемая таблица<small class="form-text text-muted">К этой таблице в БД будет добавлено поле.</small></label>
+                <label class="col-sm-7 control-label">Расширяемая таблица<small class="form-text d-block text-muted">К этой таблице в БД будет добавлено поле.</small></label>
                 <div class="col-sm-5">
                     <template v-if="isEditMode">
                         <input type="text" v-model="form.extensible" class="form-control" required readonly />
@@ -19,14 +19,14 @@
             </div>
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Идентификатор<small class="form-text text-muted">Заполняется по схеме <code>/^[a-z_]+$/</code>. В БД к полю будет добавлен префикс <code>x_</code>.</small></label>
+                <label class="col-sm-7 control-label">Идентификатор<small class="form-text d-block text-muted">Заполняется по схеме <code>/^[a-z_]+$/</code>. В БД к полю будет добавлен префикс <code>x_</code>.</small></label>
                 <div class="col-sm-5">
                     <input type="text" v-model="form.name" class="form-control" required :readonly="isEditMode" />
                 </div>
             </div>
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Тип<small class="form-text text-muted">Тип данных, хранимых в текущем поле.</small></label>
+                <label class="col-sm-7 control-label">Тип<small class="form-text d-block text-muted">Тип данных, хранимых в текущем поле.</small></label>
                 <div class="col-sm-5">
                     <template v-if="isEditMode">
                         <input type="text" v-model="form.type" class="form-control" required readonly />
@@ -40,7 +40,7 @@
             </div>
 
             <div v-if="isArrayType" class="mb-3 row">
-                <label class="col-sm-7 control-label">Список пар <small class="form-text text-muted">Список пар <u>ключ => значение</u> для доп. поля типа <b>array</b>.</small></label>
+                <label class="col-sm-7 control-label">Список пар <small class="form-text d-block text-muted">Список пар <u>ключ => значение</u> для доп. поля типа <b>array</b>.</small></label>
                 <div class="col-sm-5">
                     <table v-if="form.params.length" class="table table-sm">
                         <thead>
@@ -65,7 +65,7 @@
 
             <div v-if="isArrayType" class="mb-3 row">
                 <label class="col-sm-7 control-label">Предварительный просмотр
-                    <small class="form-text text-muted">Так будет выглядеть дополнительное поле, т.е. в форме выпадающего списка.</small>
+                    <small class="form-text d-block text-muted">Так будет выглядеть дополнительное поле, т.е. в форме выпадающего списка.</small>
                 </label>
                 <div class="col-sm-5">
                     <select class="form-select">
@@ -95,7 +95,7 @@
             </div>
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Атрибуты <small class="form-text text-muted">Например, <code><b>required</b></code>, <code>disabled</code>, <code>placeholder</code>, <code>onclick</code>, <code>autocomplete="off"</code>, <code>style</code>, <code>rows</code> и т.д.<br>Записываются в одну строку. Валидацию на правильность написания не проходят, передаются как есть.</small></label>
+                <label class="col-sm-7 control-label">Атрибуты <small class="form-text d-block text-muted">Например, <code><b>required</b></code>, <code>disabled</code>, <code>placeholder</code>, <code>onclick</code>, <code>autocomplete="off"</code>, <code>style</code>, <code>rows</code> и т.д.<br>Записываются в одну строку. Валидацию на правильность написания не проходят, передаются как есть.</small></label>
                 <div class="col-sm-5">
                     <textarea v-model="form.html_flags" rows="4" class="form-control"></textarea>
                 </div>

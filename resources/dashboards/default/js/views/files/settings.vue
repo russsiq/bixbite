@@ -14,7 +14,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Конвертировать изображения</label>
-                            <small class="form-text text-muted">Конвертировать загружаемые изображения в формат <code>*.jpeg</code>.</small>
+                            <small class="form-text d-block text-muted">Конвертировать загружаемые изображения в формат <code>*.jpeg</code>.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="checkbox" v-model="form.images_is_convert" />
@@ -40,7 +40,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
-                            <small class="form-text text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
+                            <small class="form-text d-block text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="number" v-model.number="form.images_thumb_width" min="20" max="240" class="form-control" />
@@ -50,7 +50,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
-                            <small class="form-text text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
+                            <small class="form-text d-block text-muted">При создании миниатюры будет задана эта величина с соблюдением пропорциий.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="number" v-model.number="form.images_thumb_height" min="20" max="240" class="form-control" />
@@ -111,7 +111,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная ширина</label>
-                            <small class="form-text text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>
+                            <small class="form-text d-block text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="number" v-model.number="form.images_max_width" min="993" max="3840" class="form-control" />
@@ -121,7 +121,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Максимальная высота</label>
-                            <small class="form-text text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>
+                            <small class="form-text d-block text-muted">Оригинал изображения будет уменьшен до этой величины с соблюдением пропорциий.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="number" v-model.number="form.images_max_height" min="993" max="2160" class="form-control" />

@@ -21,7 +21,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Прикрепленное изображение</label>
-                    <small class="form-text text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>
+                    <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>
                 </div>
                 <div class="col-sm-5">
                     <image-uploader :value="note.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>

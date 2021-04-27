@@ -16,7 +16,7 @@
                         <div class="card-header"><i class="fa fa-th-list"></i> Блок настроек</div>
                         <div class="card-body">
                             <div class="mb-3 row">
-                                <label class="col-sm-7 control-label">Пример настройки <small class="form-text text-muted">Описание настройки.</small></label>
+                                <label class="col-sm-7 control-label">Пример настройки <small class="form-text d-block text-muted">Описание настройки.</small></label>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.example" class="form-control" />
                                 </div>

@@ -27,7 +27,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Название сайта</label>
-                                    <small class="form-text text-muted">Например: BixBite.</small>
+                                    <small class="form-text d-block text-muted">Например: BixBite.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.app_name" class="form-control" />
@@ -37,7 +37,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Домашняя страница</label>
-                                    <small class="form-text text-muted">Например: http://server.com.</small>
+                                    <small class="form-text d-block text-muted">Например: http://server.com.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.app_url" class="form-control" readonly />
@@ -52,7 +52,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Заголовок домашней страницы</label>
-                                    <small class="form-text text-muted">Нет тайтла — нет поискового трафика.</small>
+                                    <small class="form-text d-block text-muted">Нет тайтла — нет поискового трафика.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.meta_title" class="form-control" />
@@ -62,7 +62,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Разделитель при формировании заголовка</label>
-                                    <small class="form-text text-muted">Общие правила для всех страниц.</small>
+                                    <small class="form-text d-block text-muted">Общие правила для всех страниц.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.meta_title_delimiter" class="form-control" />
@@ -72,7 +72,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Обратить порядок формирования заголовка</label>
-                                    <small class="form-text text-muted">Меняет местами Заголовок сайта и Заголовок целевой страницы. Общие правила для всех страниц.</small>
+                                    <small class="form-text d-block text-muted">Меняет местами Заголовок сайта и Заголовок целевой страницы. Общие правила для всех страниц.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="checkbox" v-model="form.meta_title_reverse" />
@@ -158,7 +158,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Заблокировать сайт</label>
-                                    <small class="form-text text-muted">Сайт делается неактивным.</small>
+                                    <small class="form-text d-block text-muted">Сайт делается неактивным.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="checkbox" v-model="form.lock" />
@@ -168,7 +168,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Причина блокировки сайта</label>
-                                    <small class="form-text text-muted">Укажите причину по которой сайт был заблокирован. Например: <code>Технические работы</code>.</small>
+                                    <small class="form-text d-block text-muted">Укажите причину по которой сайт был заблокирован. Например: <code>Технические работы</code>.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" v-model="form.reason" class="form-control" />
@@ -178,7 +178,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Повторить попытку</label>
-                                    <small class="form-text text-muted">Укажите через какое время боту поисковой системы необходимо повторно вернуться на сайт.<br>По умолчанию: <b>3600</b> сек.</small>
+                                    <small class="form-text d-block text-muted">Укажите через какое время боту поисковой системы необходимо повторно вернуться на сайт.<br>По умолчанию: <b>3600</b> сек.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="number" v-model="form.retry" class="form-control" />
@@ -250,7 +250,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Вероятная частота изменения домашней страницы</label>
-                                    <small class="form-text text-muted"><a href="https://www.sitemaps.org/ru/protocol.html" target="_blank">Подробнее</a></small>
+                                    <small class="form-text d-block text-muted"><a href="https://www.sitemaps.org/ru/protocol.html" target="_blank">Подробнее</a></small>
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.home_changefreq">
@@ -375,7 +375,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Язык интерфейса</label>
-                                    <small class="form-text text-muted">В текущей версии CMS не влияет на шаблон админ. панели.</small>
+                                    <small class="form-text d-block text-muted">В текущей версии CMS не влияет на шаблон админ. панели.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.app_locale">
@@ -387,7 +387,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Правила транслитерации ярлыков</label>
-                                    <small class="form-text text-muted">Данное правило будет применено при автоматической транслитерации дружественных фрагментов URL-адресов Категорий и Записей.</small>
+                                    <small class="form-text d-block text-muted">Данное правило будет применено при автоматической транслитерации дружественных фрагментов URL-адресов Категорий и Записей.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.translite_code">
@@ -402,7 +402,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Использовать персонализированную домашнюю страницу</label>
-                                    <small class="form-text text-muted">Нет - на главной странице будет выведен список последних записей.</small>
+                                    <small class="form-text d-block text-muted">Нет - на главной странице будет выведен список последних записей.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="checkbox" v-model="form.homepage_personalized" />

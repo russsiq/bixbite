@@ -118,7 +118,7 @@
                         <div v-for="field in x_fields" class="mb-3 row">
                             <div class="col-sm-5">
                                 <label class="control-label">{{ field.title }}</label>
-                                <small class="form-text text-muted">{{ field.descr }}</small>
+                                <small class="form-text d-block text-muted">{{ field.descr }}</small>
                             </div>
                             <div class="col-sm-7">
                                 <template v-if="'string' === field.type">

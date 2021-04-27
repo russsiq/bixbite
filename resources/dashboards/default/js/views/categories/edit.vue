@@ -24,7 +24,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class=" control-label">Дружественный фрагмент URL-адреса веб-страницы</label>
-                    <small class="form-text text-muted">Оставьте пустым для автоматического создания.</small>
+                    <small class="form-text d-block text-muted">Оставьте пустым для автоматического создания.</small>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" v-model="category.slug" class="form-control" />
@@ -34,7 +34,7 @@
             <div v-if="!category.articles_count" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Ссылка на внешний ресурс</label>
-                    <small class="form-text text-warning">В категорию, для которой прописана данная ссылка, добавлять записи нельзя!</small>
+                    <small class="form-text d-block text-warning">В категорию, для которой прописана данная ссылка, добавлять записи нельзя!</small>
                 </div>
                 <div class="col-sm-5">
                     <input type="text" v-model="category.alt_url" class="form-control" />
@@ -49,7 +49,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Прикрепленное изображение</label>
-                    <small class="form-text text-muted">Вы можете прикрепить изображение непосредственно к категории.</small>
+                    <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к категории.</small>
                 </div>
                 <div class="col-sm-5">
                     <image-uploader :value.number="category.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
@@ -59,7 +59,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Информация</label>
-                    <small class="form-text text-muted">Информационный блок, отображаемый на странице категории сайта.</small>
+                    <small class="form-text d-block text-muted">Информационный блок, отображаемый на странице категории сайта.</small>
                 </div>
                 <div class="col-sm-5">
                     <textarea v-model="category.info" rows="4" max="500" class="form-control" @keydown.enter.prevent></textarea>
@@ -69,7 +69,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Описание</label>
-                    <small class="form-text text-muted">Мета тег description. Формируется только для главной страницы категории.</small>
+                    <small class="form-text d-block text-muted">Мета тег description. Формируется только для главной страницы категории.</small>
                 </div>
                 <div class="col-sm-5">
                     <textarea v-model="category.description" rows="1" class="form-control" @keydown.enter.prevent></textarea>
@@ -79,7 +79,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Ключевые слова</label>
-                    <small class="form-text text-muted">Мета тег keywords. Формируется только для главной страницы категории. Заполняется через запятую.</small>
+                    <small class="form-text d-block text-muted">Мета тег keywords. Формируется только для главной страницы категории. Заполняется через запятую.</small>
                 </div>
                 <div class="col-sm-5">
                     <textarea v-model="category.keywords" rows="1" class="form-control" @keydown.enter.prevent></textarea>
@@ -94,7 +94,7 @@
             <div class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Количество записей на странице</label>
-                    <small class="form-text text-muted">Если оставить поле пустым, то число будет взято из общих настроек сайта.</small>
+                    <small class="form-text d-block text-muted">Если оставить поле пустым, то число будет взято из общих настроек сайта.</small>
                 </div>
                 <div class="col-sm-5">
                     <input type="number" v-model.number="category.paginate" class="form-control" />
@@ -134,7 +134,7 @@
             <div v-if="category.id" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Активный шаблон</label>
-                    <small class="form-text text-muted">Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.</small>
+                    <small class="form-text d-block text-muted">Индивидуальные шаблоны для каждой категории, а также записей и комментариев к этим записям.<br>Должны быть расположены в папке <code>resources/themes/{theme}/views/custom_views/{category_slug}</code>.</small>
                 </div>
                 <div class="col-sm-5">
                     <select class="form-select" v-model="category.template">
@@ -152,7 +152,7 @@
             <div v-for="field in x_fields" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">{{ field.title }}</label>
-                    <small class="form-text text-muted">{{ field.descr }}</small>
+                    <small class="form-text d-block text-muted">{{ field.descr }}</small>
                 </div>
                 <div class="col-sm-5">
                     <template v-if="'string' === field.type">

@@ -18,7 +18,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Разрешить регистрацию</label>
-                                    <small class="form-text text-muted">Разрешить новым пользователям регистрироваться на сайте.</small>
+                                    <small class="form-text d-block text-muted">Разрешить новым пользователям регистрироваться на сайте.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="checkbox" v-model="form.auth_allow_register" />
@@ -28,7 +28,7 @@
                             <div class="mb-3 row">
                                 <div class="col-sm-7">
                                     <label class="control-label">Идентификация пользователя</label>
-                                    <small class="form-text text-muted">Укажите, что для входа на сайт помимо пароля требуется ввести пользователю.</small>
+                                    <small class="form-text d-block text-muted">Укажите, что для входа на сайт помимо пароля требуется ввести пользователю.</small>
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.auth_username">

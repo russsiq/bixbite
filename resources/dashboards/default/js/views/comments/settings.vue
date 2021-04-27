@@ -14,7 +14,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Только для зарегистрированных</label>
-                            <small class="form-text text-muted">Да - комментирование доступно только для зарегистрированных пользователей.</small>
+                            <small class="form-text d-block text-muted">Да - комментирование доступно только для зарегистрированных пользователей.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="checkbox" v-model="form.regonly" />
@@ -24,7 +24,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Модерация комментариев</label>
-                            <small class="form-text text-muted">Опубликовывать комментарии только после одобрения.</small>
+                            <small class="form-text d-block text-muted">Опубликовывать комментарии только после одобрения.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="checkbox" v-model="form.moderate" />
@@ -39,7 +39,7 @@
                     <div class="mb-3 row">
                         <div class="col-sm-7">
                             <label class="control-label">Вывод древовидных комментариев</label>
-                            <small class="form-text text-muted">Да - постраничная навигация будет недоступна.</small>
+                            <small class="form-text d-block text-muted">Да - постраничная навигация будет недоступна.</small>
                         </div>
                         <div class="col-sm-5">
                             <input type="checkbox" v-model="form.nested" />
