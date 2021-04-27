@@ -2,10 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api\V1;
 
-// Тестируемый класс.
 use App\Http\Controllers\Api\V1\ArticlesController;
-
-// Сторонние зависимости.
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -38,28 +35,25 @@ class ArticlesControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test
      * @covers ::index
-     *
-     * Ошибка аутентификации при просмотре списка записей гостем.
-     * @return void
+     * @cmd vendor\bin\phpunit --filter '::test_authentication_failed_while_guest_listing_articles'
      */
-    public function testAuthenticationFailedWhileGuestListingArticles(): void
+    public function test_authentication_failed_while_guest_listing_articles(): void
     {
         $this->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     /**
-     * @test
      * @covers ::index
-     *
-     * Ошибка аутентификации при просмотре списка записей пользователем.
-     * @return void
+     * @cmd vendor\bin\phpunit --filter '::test_authentication_failed_while_user_listing_articles'
      */
-    public function testAuthenticationFailedWhileUserListingArticles(): void
+    public function test_authentication_failed_while_user_listing_articles(): void
     {
-        $this->actingAs($user = $this->createImprovisedUser())
+        $user = $this->createImprovisedUser();
+        $articles = Article::factory()->count(4)->for($user)->create();
+
+        $this->actingAs($user)
             ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
@@ -91,7 +85,7 @@ class ArticlesControllerTest extends TestCase
     public function testAuthenticationFailedWhileOwnerListingArticles(): void
     {
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
-            ->postJson(route('api.articles.index'))
+            ->getJson(route('api.articles.index'))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
@@ -120,10 +114,11 @@ class ArticlesControllerTest extends TestCase
     {
         $articlesCount = mt_rand(4, 12);
 
-        $articles = Article::factory()->count($articlesCount)->create();
+        $user = $this->actingAsOwner()->currentAuthenticatedUser();
 
-        $this->actingAsOwner()
-            ->getJson(route('api.articles.index', [
+        $articles = Article::factory()->count($articlesCount)->for($user)->create();
+
+        $this->getJson(route('api.articles.index', [
                 'limit' => $articlesCount
             ]))
             ->assertStatus(JsonResponse::HTTP_PARTIAL_CONTENT)
@@ -247,7 +242,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileGuestShowArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -262,9 +257,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileUserShowArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->getJson(route('api.articles.show', $article))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
@@ -278,9 +273,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testForbiddenWhileUserShowArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->withHeaders([
                 // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
@@ -297,7 +292,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testForbiddenWhileOwnerShowArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->getJson(route('api.articles.show', $article))
@@ -313,7 +308,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerRecivesArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAsOwner()
             ->getJson(route('api.articles.show', $article))
@@ -342,7 +337,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileGuestUpdateArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->putJson(route('api.articles.update', $article->id), [
                 'title' => 'New title'
@@ -359,15 +354,15 @@ class ArticlesControllerTest extends TestCase
      */
     public function testForbiddenWhileUserUpdateArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->putJson(route('api.articles.update', $article->id), [
                 'title' => 'New title'
             ])
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->withHeaders([
                 // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
@@ -388,7 +383,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanNotUpdateArticleWithoutDataProvided(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAsOwner()
             ->putJson(route('api.articles.update', $article->id))
@@ -404,7 +399,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanUpdateArticleWithMinimalDataProvided(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAsOwner()
             ->putJson(route('api.articles.update', $article->id), [
@@ -430,7 +425,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileGuestMassUpdateArticle(): void
     {
-        $articles = Article::factory()->count(3)->create();
+        $articles = Article::factory()->count(3)->for($user = $this->createImprovisedUser())->create();
 
         $this->putJson(route('api.articles.massUpdate'), [
                 'articles' => $articles->modelKeys()
@@ -467,7 +462,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerCanNotMassUpdateArticleWithoutDataProvided(): void
     {
-        $articles = Article::factory()->count(3)->create();
+        $articles = Article::factory()->count(3)->for($user = $this->createImprovisedUser())->create();
 
         // Собственник сайта не указал никаких данных.
         $this->actingAsOwner()
@@ -502,7 +497,7 @@ class ArticlesControllerTest extends TestCase
     {
         $articlesCount = mt_rand(4, 8);
 
-        $articles = Article::factory()->count($articlesCount)->create();
+        $articles = Article::factory()->count($articlesCount)->for($user = $this->createImprovisedUser())->create();
 
         $this->actingAsOwner()
             ->putJson(route('api.articles.massUpdate'), [
@@ -531,7 +526,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileGuestDestroyArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->deleteJson(route('api.articles.destroy', $article))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
@@ -546,9 +541,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAuthenticationFailedWhileUserDestroyArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->deleteJson(route('api.articles.destroy', $article))
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
@@ -562,9 +557,9 @@ class ArticlesControllerTest extends TestCase
      */
     public function testForbiddenWhileUserDestroyArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
-        $this->actingAs($user = $this->createImprovisedUser())
+        $this->actingAs($user)
             ->withHeaders([
                 // 'Authorization' => 'Bearer '.$user->generateApiToken(),
             ])
@@ -581,7 +576,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testForbiddenWhileOwnerDestroyArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAs($owner = $this->createImprovisedUser('owner'))
             ->deleteJson(route('api.articles.destroy', $article))
@@ -597,7 +592,7 @@ class ArticlesControllerTest extends TestCase
      */
     public function testOwnerDestroyArticle(): void
     {
-        $article = Article::factory()->createOne();
+        $article = Article::factory()->for($user = $this->createImprovisedUser())->createOne();
 
         $this->actingAsOwner()
             ->deleteJson(route('api.articles.destroy', $article))
