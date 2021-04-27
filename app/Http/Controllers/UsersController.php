@@ -15,13 +15,6 @@ use Illuminate\Http\Request;
 class UsersController extends SiteController
 {
     /**
-     * Модель Пользователь.
-     *
-     * @var User
-     */
-    protected $model;
-
-    /**
      * Настройки модели Комментарий.
      *
      * @var object
@@ -37,14 +30,10 @@ class UsersController extends SiteController
 
     /**
      * Создать экземпляр контроллера.
-     *
-     * @param  User  $model
      */
-    public function __construct(User $model)
+    public function __construct()
     {
-        $this->model = $model;
-
-        $this->settings = (object) setting($model->getTable());
+        $this->settings = (object) setting(User::TABLE);
     }
 
     /**
@@ -54,8 +43,10 @@ class UsersController extends SiteController
      */
     public function index()
     {
-        $users = $this->model->latest()
-            ->paginate($this->settings->paginate ?? 15);
+        $users = User::latest()
+            ->paginate(
+                $this->settings->paginate ?? 15
+            );
 
         pageinfo([
             'title' => $this->settings->meta_title ?? trans('users.title'),
@@ -68,53 +59,5 @@ class UsersController extends SiteController
         ]);
 
         return $this->makeResponse('index', compact('users'));
-    }
-
-    /**
-     * Показать профиль пользователя.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
-    public function profile(int $id)
-    {
-        $user = $this->model
-            ->where('id', $id)
-            ->withCount([
-                'articles',
-                'comments',
-                'posts',
-                'follows',
-
-            ])
-            ->firstOrFail();
-
-        $user->posts = $user->posts_count
-            ? $user->posts()
-                ->with([
-                    'user:users.id,users.name,users.email,users.avatar',
-
-                ])->latest()
-                ->get()
-                ->treated(true)
-            : [];
-
-        $x_fields = $user->x_fields;
-
-        pageinfo([
-            'title' => $user->name,
-            'description' => $user->info,
-            'robots' => 'noindex, follow',
-            'url' => $user->profile,
-            'section' => [
-                'title' => $this->settings->meta_title ?? trans('users.title'),
-            ],
-            'is_profile' => true,
-            'is_own_profile' => $user->id === user('id'),
-            'user' => $user,
-
-        ]);
-
-        return $this->makeResponse('profile', compact('user', 'x_fields'));
     }
 }

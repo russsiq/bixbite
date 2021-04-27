@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 class UserProfileController extends SiteController
 {
     /**
-     * Модель Пользователь.
-     *
-     * @var User
-     */
-    protected $model;
-
-    /**
      * Настройки модели Комментарий.
      *
      * @var object
@@ -30,31 +23,47 @@ class UserProfileController extends SiteController
      */
     protected $template = 'users';
 
-    /**
-     * Создать экземпляр контроллера.
-     *
-     * @param  User  $model
-     */
-    public function __construct(User $model)
+    public function __construct()
     {
-        $this->model = $model;
-
-        $this->settings = (object) setting($model->getTable());
+        $this->settings = (object) setting(User::TABLE);
     }
 
     /**
      * Show the user profile screen.
      *
-     * @param  \Illuminate\Http\ContainerContract  $container
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $user_id
      * @return \Illuminate\View\View
      */
-    public function show(ContainerContract $container, Request $request)
+    public function show(Request $request, int $user_id = null)
     {
-        return $container->makeWith(UsersController::class)
-            ->profile(
-                $request->user()->id
-            );
+        $user = is_null($user_id)
+            ? $request->user()
+            : User::where('id', $user_id)
+                ->firstOrFail();
+
+        $user->loadCount([
+            'articles',
+            'comments',
+        ]);
+
+        $x_fields = $user->x_fields;
+
+        pageinfo([
+            'title' => $user->name,
+            'description' => $user->info,
+            'robots' => 'noindex, follow',
+            'url' => $user->profile,
+            'section' => [
+                'title' => $this->settings->meta_title ?? trans('users.title'),
+            ],
+            'is_profile' => true,
+            'is_own_profile' => $user->id === user('id'),
+            'user' => $user,
+
+        ]);
+
+        return $this->makeResponse('profile', compact('user', 'x_fields'));
     }
 
     /**
@@ -91,7 +100,7 @@ class UserProfileController extends SiteController
         $user->update($request->all());
 
         return redirect()
-            ->route('profile', $user)
+            ->route('profile.show', $user)
             ->withStatus(
                 trans('users.msg.profile_updated')
             );

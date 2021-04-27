@@ -35,13 +35,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     // use Commentable; user not commentable, Wall Profile is commentable !!!
 
-    const TABLE = 'users';
+    public const TABLE = 'users';
 
     /**
      * Таблица БД, ассоциированная с моделью.
      * @var string
      */
-    protected $table = 'users';
+    protected $table = self::TABLE;
 
     /**
      * Первичный ключ таблицы БД.
@@ -151,26 +151,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
-    }
-
-    // public function profile()
-    // {
-    //    return $this->hasOne(Profile::class);
-    // }
-
-    /**
-     * Комментарии на стене профиля пользователя.
-     * @return MorphMany
-     */
-    public function posts(): MorphMany
-    {
-        return $this->morphMany(
-            Comment::class,
-            'commentable',
-            'commentable_type',
-            'commentable_id',
-            'id'
-        );
     }
 
     public function isSuperAdmin(): bool

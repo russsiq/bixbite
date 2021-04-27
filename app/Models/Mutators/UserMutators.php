@@ -8,7 +8,7 @@ trait UserMutators
 {
     public function getProfileAttribute()
     {
-        return route('profile', $this);
+        return route('profile.show', $this);
     }
 
     public function getUrlAttribute()

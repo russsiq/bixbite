@@ -4,12 +4,10 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadsController;
-use App\Http\Controllers\FollowedUsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -43,17 +41,14 @@ Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.t
 
 Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
 
+// User & Profile...
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('profile', [UserProfileController::class, 'show'])->name('profile.show');
-    Route::get('profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('profile', [UserProfileController::class, 'update'])->name('profile.update');
+    Route::get('users', [UsersController::class, 'index'])->name('users.index');
 
-    Route::post('users/follow/{user:id}', [FollowedUsersController::class, 'store'])->name('follow');
-    Route::delete('users/unfollow/{user:id}', [FollowedUsersController::class, 'destroy'])->name('unfollow');
+    Route::get('user/profile/{id?}', [UserProfileController::class, 'show'])->name('profile.show');
+    Route::get('user/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('user/profile', [UserProfileController::class, 'update'])->name('profile.update');
 });
-
-Route::get('users', [UsersController::class, 'index'])->name('users.index');
-Route::get('@{user:id}', [UsersController::class, 'profile'])->name('profile');
 
 // Данные маршруты всегда должны располагаться последними.
 Route::get('{category:slug}', [ArticlesController::class, 'category'])->name('articles.category');
