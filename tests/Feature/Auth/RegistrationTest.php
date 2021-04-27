@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\RegistrationTest.php */
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
