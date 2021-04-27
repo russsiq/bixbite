@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\UpdatePasswordTest.php */
 class UpdatePasswordTest extends TestCase
 {
     use RefreshDatabase;
@@ -22,7 +22,8 @@ class UpdatePasswordTest extends TestCase
                 'password_confirmation' => 'new-password',
             ]))
             ->assertStatus(302)
-            ->assertSessionHas('status', 'password-updated');
+            ->assertSessionHas('status', 'Password changed successfully.')
+            ->assertSessionHasNoErrors();
 
         $user = $user->fresh();
 
