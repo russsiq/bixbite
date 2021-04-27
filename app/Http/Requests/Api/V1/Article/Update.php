@@ -17,9 +17,8 @@ class Update extends ArticleRequest
         unset($rules['user_id']);
 
         return array_merge($rules, [
-            // При обновлении Записи, обязательно должна быть указана дата создания.
             'created_at' => array_merge([
-                'required',
+                'nullable',
 
             ], $rules['created_at']),
 
