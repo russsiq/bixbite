@@ -14,11 +14,7 @@ use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
 use Tests\TestCase;
 
-/**
- * Тестирование удаления ресурса `Article`.
- *
- * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest.php
- */
+/** @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest.php */
 class DeleteArticleResourceByAPITest extends TestCase
 {
     use JsonApiTrait;
