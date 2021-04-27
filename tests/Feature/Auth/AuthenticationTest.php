@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\AuthenticationTest.php */
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
