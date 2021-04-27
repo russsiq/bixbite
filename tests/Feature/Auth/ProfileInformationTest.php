@@ -40,6 +40,7 @@ class ProfileInformationTest extends TestCase
                 'email' => $expectedEmail = 'second@example.com',
             ]))
             ->assertStatus(302)
+            ->assertSessionHas('status', 'Profile updated successfully.')
             ->assertSessionHasNoErrors();
 
         $user = $user->fresh();
