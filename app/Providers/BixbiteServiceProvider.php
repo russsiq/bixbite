@@ -2,13 +2,14 @@
 
 namespace App\Providers;
 
-// Зарегистрированные фасады приложения.
+use App\Actions\User\UpdateUserPasswordAction;
+use App\Actions\User\UpdateUserProfileInformationAction;
+use App\Contracts\Actions\User\UpdatesUserPasswords;
+use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Contracts\BixBiteContract;
 use App\Mixins\ArrMixin;
 use App\Mixins\FileMixin;
 use App\Mixins\LangMixin;
-
-// Сторонние зависимости.
 use App\Mixins\StrMixin;
 use App\Support\BixBite;
 use App\Support\CacheFile;
@@ -32,7 +33,9 @@ class BixbiteServiceProvider extends ServiceProvider
     public $singletons = [
         'pageinfo' => PageInfo::class,
         BixBiteContract::class => BixBite::class,
-
+        // BixBite Actions ...
+        UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
+        UpdatesUserPasswords::class => UpdateUserPasswordAction::class,
     ];
 
     /**

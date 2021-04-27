@@ -6,8 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TagsController;
+use App\Http\Controllers\UserPasswordController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -41,11 +41,13 @@ Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.t
 
 Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
 
-// User & Profile...
+// User, Profile, Passwords...
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user/profile/{id?}', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('user/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
     Route::put('user/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+    Route::put('user/password', [UserPasswordController::class, 'update'])->name('user-password.update');
 });
 
 // Данные маршруты всегда должны располагаться последними.

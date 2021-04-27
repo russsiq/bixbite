@@ -1,7 +1,8 @@
 <section class="action_page">
     <div class="action_page__inner">
         <header class="action_page__header">
-            <h2 class="action_page__title">@lang('users.edit_page')</h2>
+            <h2 class="mb-3 action_page__title">@lang('Profile Information')</h2>
+            <p class="mb-0 text-muted">@lang("Update your account's profile information and email address.")</p>
         </header>
 
         <form action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data" class="action_page__content">
@@ -28,7 +29,7 @@
                 </div>
     		</div>
 
-            <div class="mb-3 row">
+            {{-- <div class="mb-3 row">
     			<label for="where_from" class="col-sm-4 col-form-label">@lang('Where from')</label>
     			<div class="col-sm-6">
                     <input type="text" name="where_from" value="{{ old('where_from', $user->where_from) }}" class="form-control" />
@@ -62,39 +63,19 @@
     			</div>
     		</div>
 
-            <hr>
+            <hr> --}}
 
-            @if (count($x_fields))
+            {{-- @if (count($x_fields))
                 @foreach ($x_fields as $x_field)
-                    {{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
-                    @include('users.partials.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
+                    DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work
+                    @include('profile.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
                 @endforeach
                 <hr>
-            @endif
-
-    		<div class="mb-3 row">
-    			<label for="password" class="col-sm-4 col-form-label">@lang('Password')</label>
-    			<div class="col-sm-6">
-                    <input type="password" name="password" value="" class="form-control" autocomplete="new-password" />
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                    @enderror
-                </div>
-    		</div>
-
-    		<div class="mb-3 row{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-    			<label for="password_confirmation" class="col-sm-4 col-form-label">@lang('Confirm Password')</label>
-    			<div class="col-sm-6">
-                    <input type="password" name="password_confirmation" value="" class="form-control" autocomplete="new-password" />
-                    @error('password_confirmation')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                    @enderror
-                </div>
-    		</div>
+            @endif --}}
 
             <div class="mb-3 row">
                 <div class="col-md-6 offset-md-4">
-                    <button type="submit" class="btn btn-primary">@lang('Save')</button>
+                    <button type="submit" class="btn btn-primary">@lang('Update profile')</button>
                     <a href="{{ $user->profile }}" class="btn btn-outline-dark pull-right">@lang('Cancel')</a>
                 </div>
             </div>

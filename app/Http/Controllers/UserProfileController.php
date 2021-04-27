@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Http\Requests\Front\UserRequest;
 use App\Models\User;
-use Illuminate\Contracts\Container\Container as ContainerContract;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 
-class UserProfileController extends SiteController
+class UserProfileController extends Controller
 {
-    /**
-     * Настройки модели Комментарий.
-     *
-     * @var object
-     */
+    /** @var object */
     protected $settings;
-
-    /**
-     * Макет шаблонов контроллера.
-     *
-     * @var string
-     */
-    protected $template = 'users';
 
     public function __construct()
     {
@@ -31,9 +23,9 @@ class UserProfileController extends SiteController
     /**
      * Show the user profile screen.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $user_id
-     * @return \Illuminate\View\View
+     * @return Renderable
      */
     public function show(Request $request, int $user_id = null)
     {
@@ -63,11 +55,11 @@ class UserProfileController extends SiteController
 
         ]);
 
-        return $this->makeResponse('profile', compact('user', 'x_fields'));
+        return view('profile.show', compact('user', 'x_fields'));
     }
 
     /**
-     * [edit description].
+     * Show the user profile screen.
      *
      * @param  Request  $request
      * @return Renderable
@@ -84,25 +76,24 @@ class UserProfileController extends SiteController
 
         ]);
 
-        return $this->makeResponse('edit', compact('user', 'x_fields'));
+        return view('profile.edit', compact('user', 'x_fields'));
     }
 
     /**
-     * [update description].
+     * Update the user's profile information.
      *
-     * @param  UserRequest  $request
+     * @param  Request  $request
+     * @param  UpdatesUserProfileInformation  $updater
      * @return RedirectResponse
      */
-    public function update(UserRequest $request)
-    {
-        $user = $request->user();
+    public function update(
+        Request $request,
+        UpdatesUserProfileInformation $updater
+    ): RedirectResponse {
+        $updater->update($request->user(), $request->all());
 
-        $user->update($request->all());
-
-        return redirect()
-            ->route('profile.show', $user)
-            ->withStatus(
-                trans('users.msg.profile_updated')
-            );
+        return back()->withStatus(
+            'Profile updated successfully.'
+        );
     }
 }
