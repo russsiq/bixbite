@@ -15,11 +15,7 @@ use Tests\Concerns\JsonApiTrait;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
-/**
- * Тестирование создания ресурса `Article`.
- *
- * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceByAPITest.php
- */
+/** @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceByAPITest.php */
 class CreateArticleResourceByAPITest extends TestCase
 {
     use JsonApiTrait;
