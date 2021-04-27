@@ -43,8 +43,6 @@ Route::get('downloads/{file:id}', DownloadsController::class)->name('file.downlo
 
 // User & Profile...
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('users', [UsersController::class, 'index'])->name('users.index');
-
     Route::get('user/profile/{id?}', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('user/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
     Route::put('user/profile', [UserProfileController::class, 'update'])->name('profile.update');
