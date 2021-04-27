@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\ProfileInformationTest.php */
 class ProfileInformationTest extends TestCase
 {
     use RefreshDatabase;
@@ -21,7 +21,7 @@ class ProfileInformationTest extends TestCase
             ->get(route('profile.show'))
             ->assertStatus(200)
             ->assertViewHasAll([
-                'user' => $user
+                'user' => $user,
             ]);
     }
 
@@ -35,7 +35,7 @@ class ProfileInformationTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->put(route('user-profile-information.update', [
+            ->put(route('profile.update', [
                 'name' => $expectedName = 'Second Test Name',
                 'email' => $expectedEmail = 'second@example.com',
             ]))
