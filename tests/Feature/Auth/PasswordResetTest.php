@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
+/** @cmd vendor\bin\phpunit Tests\Feature\Auth\PasswordResetTest.php */
 class PasswordResetTest extends TestCase
 {
     use RefreshDatabase;
