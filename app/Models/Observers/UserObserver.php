@@ -4,6 +4,7 @@ namespace App\Models\Observers;
 
 // Сторонние зависимости.
 use App\Models\User;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -44,16 +45,29 @@ class UserObserver extends BaseObserver
                 $this->attachAvatar($user, $avatar);
             }
         }
+
+        if (array_key_exists('email', $dirty)
+            && $user instanceof MustVerifyEmail
+        ) {
+            $user->email_verified_at = null;
+        }
     }
 
     /**
-     * Обработать событие `saving` модели.
+     * Обработать событие `saved` модели.
      * @param  User  $user
      * @return void
      */
-    public function saving(User $user): void
+    public function saved(User $user): void
     {
+        $dirty = $user->getDirty();
 
+        if (array_key_exists('email', $dirty)
+            && $user instanceof MustVerifyEmail
+            && ! $user->hasVerifiedEmail()
+        ) {
+            $user->sendEmailVerificationNotification();
+        }
     }
 
     /**
