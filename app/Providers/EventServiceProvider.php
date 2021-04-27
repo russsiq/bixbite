@@ -25,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
 
         // From https://laravel.com/docs/5.7/upgrade Email Verification
         \Illuminate\Auth\Events\Registered::class => [
-            \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
+            // \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
 
         ],
 
