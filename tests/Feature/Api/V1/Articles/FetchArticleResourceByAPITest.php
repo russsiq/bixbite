@@ -136,8 +136,8 @@ class FetchArticleResourceByAPITest extends TestCase
      */
     public function test_super_admin_can_fetch_specific_article()
     {
-        $user = $this->createUser();
         $super_admin = $this->loginSuperAdminSPA();
+        $user = $this->createUser();
         $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertAuthenticated()
