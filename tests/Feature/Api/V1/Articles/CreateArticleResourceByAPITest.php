@@ -55,6 +55,21 @@ class CreateArticleResourceByAPITest extends TestCase
     }
 
     /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_cannot_create_article_without_minimal_provided_data'
+     */
+    public function test_user_with_ability_cannot_create_article_without_minimal_provided_data()
+    {
+        $this->allowPolicyAbility(ArticlePolicy::class, ['create']);
+
+        $user = $this->loginSPA();
+
+        $response = $this->assertAuthenticated()
+            ->postJsonApi('store')
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    /**
      * @covers ::store
      * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_can_create_article_with_minimal_provided_data'
      */
