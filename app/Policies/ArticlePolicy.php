@@ -57,6 +57,17 @@ class ArticlePolicy
     }
 
     /**
+     * Determine whether the user can mass update any models.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function massUpdate(User $user)
+    {
+        //
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
