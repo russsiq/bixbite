@@ -65,11 +65,15 @@
         <ul>
             <li style="color: #555753;">✓ Guest cannot fetch articles</li>
             <li style="color: #555753;">✓ User without ability cannot fetch articles</li>
+            <li style="color: #555753;">✓ User with ability can fetch articles</li>
+            <li style="color: #555753;">✓ Super admin can fetch articles</li>
             <li style="color: #555753;">✓ Guest cannot fetch specific article</li>
             <li style="color: #555753;">✓ User without ability cannot fetch specific article</li>
+            <li style="color: #555753;">✓ User with ability can fetch specific article</li>
+            <li style="color: #555753;">✓ Super admin can fetch specific article</li>
             <li style="color: #555753;">✓ Each received article contains required fields</li>
             <li style="color: #555753;">✓ Single received article contains required fields</li>
-            <li style="color: #555753;">✓ Not found when attempt to fetch single non existent resource</li>
+            <li style="color: #555753;">✓ Not found when attempt to fetch single non existent article</li>
         </ul>
         <h2 id="Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPITest">Update Article Resource By API (Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPI)</h2>
         <ul>
@@ -80,34 +84,28 @@
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest">Articles Controller (Tests\Feature\App\Http\Controllers\Api\V1\ArticlesController)</h2>
         <ul>
-            <li style="color: #555753;">✓ Authentication failed while guest listing articles</li>
-            <li style="color: #ef2929;">❌ Authentication failed while user listing articles</li>
-            <li style="color: #555753;">✓ Forbidden while user listing articles</li>
-            <li style="color: #ef2929;">❌ Authentication failed while owner listing articles</li>
-            <li style="color: #ef2929;">❌ Owner recives empty articles list</li>
-            <li style="color: #ef2929;">❌ Owner recives articles</li>
             <li style="color: #555753;">✓ Authentication failed while guest create article</li>
             <li style="color: #ef2929;">❌ Authentication failed while user create article</li>
             <li style="color: #555753;">✓ Forbidden while user create article</li>
             <li style="color: #ef2929;">❌ Authentication failed while owner create article</li>
             <li style="color: #ef2929;">❌ Owner can not create article</li>
             <li style="color: #ef2929;">❌ Owner can create article with minimal data provided</li>
-            <li style="color: #ef2929;">❌ Authentication failed while guest show article</li>
+            <li style="color: #555753;">✓ Authentication failed while guest show article</li>
             <li style="color: #ef2929;">❌ Authentication failed while user show article</li>
-            <li style="color: #ef2929;">❌ Forbidden while user show article</li>
+            <li style="color: #555753;">✓ Forbidden while user show article</li>
             <li style="color: #ef2929;">❌ Forbidden while owner show article</li>
             <li style="color: #ef2929;">❌ Owner recives article</li>
-            <li style="color: #ef2929;">❌ Authentication failed while guest update article</li>
+            <li style="color: #555753;">✓ Authentication failed while guest update article</li>
             <li style="color: #ef2929;">❌ Forbidden while user update article</li>
             <li style="color: #ef2929;">❌ Owner can not update article without data provided</li>
             <li style="color: #ef2929;">❌ Owner can update article with minimal data provided</li>
-            <li style="color: #ef2929;">❌ Authentication failed while guest mass update article</li>
+            <li style="color: #555753;">✓ Authentication failed while guest mass update article</li>
             <li style="color: #555753;">✓ Forbidden while user mass update article</li>
             <li style="color: #ef2929;">❌ Owner can not mass update article without data provided</li>
             <li style="color: #ef2929;">❌ Owner mass can update article with minimal data provided</li>
-            <li style="color: #ef2929;">❌ Authentication failed while guest destroy article</li>
+            <li style="color: #555753;">✓ Authentication failed while guest destroy article</li>
             <li style="color: #ef2929;">❌ Authentication failed while user destroy article</li>
-            <li style="color: #ef2929;">❌ Forbidden while user destroy article</li>
+            <li style="color: #555753;">✓ Forbidden while user destroy article</li>
             <li style="color: #ef2929;">❌ Forbidden while owner destroy article</li>
             <li style="color: #ef2929;">❌ Owner destroy article</li>
         </ul>
