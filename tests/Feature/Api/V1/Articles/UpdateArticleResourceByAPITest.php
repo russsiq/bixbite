@@ -15,7 +15,11 @@ use Tests\Concerns\JsonApiTrait;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
-/** @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPITest.php */
+/**
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\ArticlesController
+ *
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPITest.php
+ */
 class UpdateArticleResourceByAPITest extends TestCase
 {
     use JsonApiTrait;
@@ -24,63 +28,117 @@ class UpdateArticleResourceByAPITest extends TestCase
 
     public const JSON_API_PREFIX = 'articles';
 
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_guest_cannot_update_article'
+     */
     public function test_guest_cannot_update_article()
     {
         $user = $this->createUser();
-
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertGuest()
-            ->putJsonApi('update', $article, [
-
-            ])
+            ->putJsonApi('update', $article)
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_user_without_ability_cannot_update_article'
+     */
     public function test_user_without_ability_cannot_update_article()
     {
         $this->denyPolicyAbility(ArticlePolicy::class, ['update']);
 
         $user = $this->loginSPA();
-
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertAuthenticated()
-            ->putJsonApi('update', $article, [
-
-            ])
+            ->putJsonApi('update', $article)
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
-    public function test_super_admin_can_update_article()
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_cannot_update_article_without_minimal_provided_data'
+     *
+     * @NB  Ничего общего с ситуацией автосохранения – **нет**.
+     */
+    public function test_user_with_ability_cannot_update_article_without_minimal_provided_data()
     {
-        $super_admin = $this->loginSuperAdminSPA();
+        $this->allowPolicyAbility(ArticlePolicy::class, ['update']);
 
-        $article = Article::factory()
-            ->for($super_admin)
-            ->create();
+        $user = $this->loginSPA();
+        $article = Article::factory()->for($user)->createOne();
+
+        $response = $this->assertAuthenticated()
+            ->putJsonApi('update', $article)
+            ->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_can_update_article_with_minimal_provided_data'
+     */
+    public function test_user_with_ability_can_update_article_with_minimal_provided_data()
+    {
+        $this->allowPolicyAbility(ArticlePolicy::class, ['update']);
+
+        $user = $this->loginSPA();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertAuthenticated()
             ->putJsonApi('update', $article, [
                 'title' => 'New title for old article',
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonPath('data.title', 'New title for old article')
             ->assertJsonStructure(
                 ArticleFixtures::resource()
             );
+
+        $this->assertDatabaseHas('articles', [
+            'title' => 'New title for old article',
+            'user_id' => $user->id,
+        ]);
     }
 
-    public function test_not_found_when_attempt_to_update_non_existent_resource()
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_super_admin_can_update_article_with_minimal_provided_data'
+     */
+    public function test_super_admin_can_update_article_with_minimal_provided_data()
+    {
+        $super_admin = $this->loginSuperAdminSPA();
+        $user = $this->createUser();
+        $article = Article::factory()->for($user)->createOne();
+
+        $response = $this->assertAuthenticated()
+            ->putJsonApi('update', $article, [
+                'title' => 'New title for old article',
+            ])
+            ->assertStatus(JsonResponse::HTTP_ACCEPTED)
+            ->assertJsonPath('data.title', 'New title for old article')
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
+
+        $this->assertDatabaseHas('articles', [
+            'title' => 'New title for old article',
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * @covers ::update
+     * @cmd vendor\bin\phpunit --filter '::test_not_found_when_attempt_to_update_non_existent_article'
+     */
+    public function test_not_found_when_attempt_to_update_non_existent_article()
     {
         $user = $this->loginSPA();
 
-        $this->assertDatabaseCount('articles', 0);
-
-        $response = $this->assertAuthenticated()
+        $response = $this->assertDatabaseCount('articles', 0)
+            ->assertAuthenticated()
             ->putJsonApi('update', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
