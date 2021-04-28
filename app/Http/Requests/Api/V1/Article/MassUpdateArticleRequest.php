@@ -2,30 +2,11 @@
 
 namespace App\Http\Requests\Api\V1\Article;
 
-// Сторонние зависимости.
-use App\Http\Requests\BaseFormRequest;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class MassUpdate extends BaseFormRequest
+class MassUpdateArticleRequest extends FormRequest
 {
-    /**
-     * Общий массив допустимых значений для правила `in:список_значений`.
-     * @var array
-     */
-    protected $allowedForInRule = [
-        'mass_action' => [
-            'published',
-            'unpublished',
-            'draft',
-            'on_mainpage',
-            'allow_com',
-            'currdate',
-            'is_favorite',
-            'is_catpinned',
-
-        ],
-
-    ];
-
     /**
      * Получить массив пользовательских строк перевода
      * для формирования сообщений валидатора.
@@ -51,21 +32,27 @@ class MassUpdate extends BaseFormRequest
             'articles' => [
                 'required',
                 'array',
-
             ],
 
             'articles.*' => [
+                'required',
                 'integer',
-
             ],
 
             'mass_action' => [
                 'required',
                 'string',
-                'in:'.$this->allowedForInRule('mass_action'),
-
+                Rule::in([
+                    'published',
+                    'unpublished',
+                    'draft',
+                    'on_mainpage',
+                    'allow_com',
+                    'currdate',
+                    'is_favorite',
+                    'is_catpinned',
+                ]),
             ],
-
         ];
     }
 }
