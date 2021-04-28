@@ -1,6 +1,6 @@
 {
     "name": "russsiq/bixbite",
-    "description": "Система для оперативного развертывания простейших сайтов на shared хостингах на базе Laravel.",
+    "description": "BixBite – проект на Laravel для создания и управления контентом.",
     "keywords": [
         "bixbite",
         "cms",

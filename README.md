@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/russsiq/bixbite/master/public/favicon.ico">
 
-Система рассчитана на оперативное развертывание простейших сайтов на shared хостингах. Расширяема благодаря использованию <a href="https://github.com/laravel/laravel">Laravel</a> в качестве ядра.
+BixBite – проект на <a href="https://github.com/laravel/laravel">Laravel</a> для создания и управления контентом простейших корпоративных сайтов, разворачиваемых на shared хостингах.
 
 Содержание:
 
