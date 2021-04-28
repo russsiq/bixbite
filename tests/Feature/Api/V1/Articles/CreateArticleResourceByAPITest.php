@@ -15,7 +15,11 @@ use Tests\Concerns\JsonApiTrait;
 use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
-/** @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceByAPITest.php */
+/**
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\ArticlesController
+ *
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\CreateArticleResourceByAPITest.php
+ */
 class CreateArticleResourceByAPITest extends TestCase
 {
     use JsonApiTrait;
@@ -24,15 +28,21 @@ class CreateArticleResourceByAPITest extends TestCase
 
     public const JSON_API_PREFIX = 'articles';
 
+    /**
+     * @covers ::store
+     * @cmd vendor\bin\phpunit --filter '::test_guest_cannot_create_article'
+     */
     public function test_guest_cannot_create_article()
     {
         $response = $this->assertGuest()
-            ->postJsonApi('store', [], [
-
-            ])
+            ->postJsonApi('store')
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
+    /**
+     * @covers ::store
+     * @cmd vendor\bin\phpunit --filter '::test_user_without_ability_cannot_create_article'
+     */
     public function test_user_without_ability_cannot_create_article()
     {
         $this->denyPolicyAbility(ArticlePolicy::class, ['create']);
@@ -40,23 +50,57 @@ class CreateArticleResourceByAPITest extends TestCase
         $user = $this->loginSPA();
 
         $response = $this->assertAuthenticated()
-            ->postJsonApi('store', [], [
-
-            ])
+            ->postJsonApi('store')
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
-    public function test_super_admin_can_create_article()
+    /**
+     * @covers ::store
+     * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_can_create_article_with_minimal_provided_data'
+     */
+    public function test_user_with_ability_can_create_article_with_minimal_provided_data()
+    {
+        $this->allowPolicyAbility(ArticlePolicy::class, ['create']);
+
+        $user = $this->loginSPA();
+
+        $response = $this->assertAuthenticated()
+            ->postJsonApi('store', [], [
+                'title' => 'Draft'
+            ])
+            ->assertStatus(JsonResponse::HTTP_CREATED)
+            ->assertJsonPath('data.title', 'Draft')
+            ->assertJsonStructure(
+                ArticleFixtures::resource()
+            );
+
+        $this->assertDatabaseHas('articles', [
+            'title' => 'Draft',
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * @covers ::store
+     * @cmd vendor\bin\phpunit --filter '::test_super_admin_can_create_article_with_minimal_provided_data'
+     */
+    public function test_super_admin_can_create_article_with_minimal_provided_data()
     {
         $super_admin = $this->loginSuperAdminSPA();
 
         $response = $this->assertAuthenticated()
             ->postJsonApi('store', [], [
-                'title' => 'New article title',
+                'title' => 'Draft'
             ])
             ->assertStatus(JsonResponse::HTTP_CREATED)
+            ->assertJsonPath('data.title', 'Draft')
             ->assertJsonStructure(
                 ArticleFixtures::resource()
             );
+
+        $this->assertDatabaseHas('articles', [
+            'title' => 'Draft',
+            'user_id' => $super_admin->id,
+        ]);
     }
 }

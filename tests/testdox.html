@@ -52,7 +52,8 @@
         <ul>
             <li style="color: #555753;">✓ Guest cannot create article</li>
             <li style="color: #555753;">✓ User without ability cannot create article</li>
-            <li style="color: #555753;">✓ Super admin can create article</li>
+            <li style="color: #555753;">✓ User with ability can create article with minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin can create article with minimal provided data</li>
         </ul>
         <h2 id="Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest">Delete Article Resource By API (Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPI)</h2>
         <ul>
@@ -84,12 +85,6 @@
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest">Articles Controller (Tests\Feature\App\Http\Controllers\Api\V1\ArticlesController)</h2>
         <ul>
-            <li style="color: #555753;">✓ Authentication failed while guest create article</li>
-            <li style="color: #ef2929;">❌ Authentication failed while user create article</li>
-            <li style="color: #555753;">✓ Forbidden while user create article</li>
-            <li style="color: #ef2929;">❌ Authentication failed while owner create article</li>
-            <li style="color: #ef2929;">❌ Owner can not create article</li>
-            <li style="color: #ef2929;">❌ Owner can create article with minimal data provided</li>
             <li style="color: #555753;">✓ Authentication failed while guest show article</li>
             <li style="color: #ef2929;">❌ Authentication failed while user show article</li>
             <li style="color: #555753;">✓ Forbidden while user show article</li>
