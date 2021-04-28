@@ -2,37 +2,19 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Article\MassUpdate as MassUpdateArticleRequest;
+use App\Http\Requests\Api\V1\Article\MassUpdateArticleRequest;
 use App\Http\Requests\Api\V1\Article\Store as StoreArticleRequest;
 use App\Http\Requests\Api\V1\Article\Update as UpdateArticleRequest;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
 
-class ArticlesController extends ApiController
+class ArticlesController extends Controller
 {
-    /**
-     * Дополнение к карте сопоставления
-     * методов ресурса и методов в классе политик.
-     *
-     * @var array
-     */
-    protected $advancedAbilityMap = [
-        'massUpdate' => 'massUpdate',
-
-    ];
-
-    /**
-     * Массив дополнительных методов, не имеющих
-     * конкретной модели в качестве параметра класса политик.
-     *
-     * @var array
-     */
-    protected $advancedMethodsWithoutModels = [
-        'massUpdate',
-
-    ];
+    use AuthorizesRequests;
 
     /**
      * Создать экземпляр контроллера.
@@ -134,8 +116,10 @@ class ArticlesController extends ApiController
      */
     public function massUpdate(MassUpdateArticleRequest $request): JsonResponse
     {
-        $ids = $request->articles;
-        $attribute = $request->mass_action;
+        $this->authorize('massUpdate', Article::class);
+
+        ['mass_action' => $attribute, 'articles' => $ids] = $request->validated();
+
         $query = Article::whereIn('id', $ids);
 
         switch ($attribute) {
@@ -155,8 +139,7 @@ class ArticlesController extends ApiController
             case 'allow_com':
             case 'is_favorite':
             case 'is_catpinned':
-                $article = Article::whereId($ids[0])
-                    ->firstOrFail([$attribute]);
+                $article = $query->firstOrFail($attribute);
                 $query->update([
                     $attribute => ! $article->{$attribute},
                 ]);
