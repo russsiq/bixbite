@@ -21,7 +21,7 @@ class DeleteArticleResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_RESOURCE = 'articles';
+    public const JSON_API_PREFIX = 'articles';
 
     public function test_guest_cannot_delete_article()
     {

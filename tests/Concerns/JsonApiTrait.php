@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Concerns;
 
 use Illuminate\Testing\TestResponse;
@@ -87,7 +89,8 @@ trait JsonApiTrait
      */
     protected function jsonApi(string $method, string $action, mixed $parameters = [], array $data = [], array $headers = []): TestResponse
     {
-        $uri = $this->jsonApiRoute(implode('.', [static::JSON_API_RESOURCE, $action]), $parameters);
+        $prefix = static::JSON_API_PREFIX;
+        $uri = $this->jsonApiRoute("{$prefix}.{$action}", $parameters);
 
         return $this->json($method, $uri, $data, $headers);
     }
