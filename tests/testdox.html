@@ -59,8 +59,9 @@
         <ul>
             <li style="color: #555753;">✓ Guest cannot delete article</li>
             <li style="color: #555753;">✓ User without ability cannot delete article</li>
+            <li style="color: #555753;">✓ User with ability can delete article</li>
             <li style="color: #555753;">✓ Super admin can delete article</li>
-            <li style="color: #555753;">✓ Not found when attempt to delete non existent resource</li>
+            <li style="color: #555753;">✓ Not found when attempt to delete non existent article</li>
         </ul>
         <h2 id="Tests\Feature\Api\V1\Articles\FetchArticleResourceByAPITest">Fetch Article Resource By API (Tests\Feature\Api\V1\Articles\FetchArticleResourceByAPI)</h2>
         <ul>
@@ -85,11 +86,6 @@
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest">Articles Controller (Tests\Feature\App\Http\Controllers\Api\V1\ArticlesController)</h2>
         <ul>
-            <li style="color: #555753;">✓ Authentication failed while guest show article</li>
-            <li style="color: #ef2929;">❌ Authentication failed while user show article</li>
-            <li style="color: #555753;">✓ Forbidden while user show article</li>
-            <li style="color: #ef2929;">❌ Forbidden while owner show article</li>
-            <li style="color: #ef2929;">❌ Owner recives article</li>
             <li style="color: #555753;">✓ Authentication failed while guest update article</li>
             <li style="color: #ef2929;">❌ Forbidden while user update article</li>
             <li style="color: #ef2929;">❌ Owner can not update article without data provided</li>
@@ -98,11 +94,6 @@
             <li style="color: #555753;">✓ Forbidden while user mass update article</li>
             <li style="color: #ef2929;">❌ Owner can not mass update article without data provided</li>
             <li style="color: #ef2929;">❌ Owner mass can update article with minimal data provided</li>
-            <li style="color: #555753;">✓ Authentication failed while guest destroy article</li>
-            <li style="color: #ef2929;">❌ Authentication failed while user destroy article</li>
-            <li style="color: #555753;">✓ Forbidden while user destroy article</li>
-            <li style="color: #ef2929;">❌ Forbidden while owner destroy article</li>
-            <li style="color: #ef2929;">❌ Owner destroy article</li>
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\HomeControllerWithoutContentTest">Home Controller Without Content (Tests\Feature\App\Http\Controllers\HomeControllerWithoutContent)</h2>
         <ul>

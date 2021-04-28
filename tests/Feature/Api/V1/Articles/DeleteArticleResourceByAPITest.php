@@ -14,7 +14,11 @@ use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
 use Tests\TestCase;
 
-/** @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest.php */
+/**
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\ArticlesController
+ *
+ * @cmd vendor/bin/phpunit Tests\Feature\Api\V1\Articles\DeleteArticleResourceByAPITest.php
+ */
 class DeleteArticleResourceByAPITest extends TestCase
 {
     use JsonApiTrait;
@@ -23,54 +27,85 @@ class DeleteArticleResourceByAPITest extends TestCase
 
     public const JSON_API_PREFIX = 'articles';
 
+    /**
+     * @covers ::destroy
+     * @cmd vendor\bin\phpunit --filter '::test_guest_cannot_delete_article'
+     */
     public function test_guest_cannot_delete_article()
     {
         $user = $this->createUser();
-
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertGuest()
             ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_UNAUTHORIZED);
     }
 
+    /**
+     * @covers ::destroy
+     * @cmd vendor\bin\phpunit --filter '::test_user_without_ability_cannot_delete_article'
+     */
     public function test_user_without_ability_cannot_delete_article()
     {
         $this->denyPolicyAbility(ArticlePolicy::class, ['delete']);
 
         $user = $this->loginSPA();
-
-        $article = Article::factory()
-            ->for($user)
-            ->create();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertAuthenticated()
             ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_FORBIDDEN);
     }
 
-    public function test_super_admin_can_delete_article()
+    /**
+     * @covers ::destroy
+     * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_can_delete_article'
+     */
+    public function test_user_with_ability_can_delete_article()
     {
-        $super_admin = $this->loginSuperAdminSPA();
+        $this->allowPolicyAbility(ArticlePolicy::class, ['delete']);
 
-        $article = Article::factory()
-            ->for($super_admin)
-            ->create();
+        $user = $this->loginSPA();
+        $article = Article::factory()->for($user)->createOne();
 
         $response = $this->assertAuthenticated()
             ->deleteJsonApi('destroy', $article)
             ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
+
+        $this->assertDatabaseMissing('articles', [
+            'id' => $article->id,
+        ]);
     }
 
-    public function test_not_found_when_attempt_to_delete_non_existent_resource()
+    /**
+     * @covers ::destroy
+     * @cmd vendor\bin\phpunit --filter '::test_super_admin_can_delete_article'
+     */
+    public function test_super_admin_can_delete_article()
+    {
+        $super_admin = $this->loginSuperAdminSPA();
+        $user = $this->createUser();
+        $article = Article::factory()->for($user)->createOne();
+
+        $response = $this->assertAuthenticated()
+            ->deleteJsonApi('destroy', $article)
+            ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
+
+        $this->assertDatabaseMissing('articles', [
+            'id' => $article->id,
+        ]);
+    }
+
+    /**
+     * @covers ::destroy
+     * @cmd vendor\bin\phpunit --filter '::test_not_found_when_attempt_to_delete_non_existent_article'
+     */
+    public function test_not_found_when_attempt_to_delete_non_existent_article()
     {
         $user = $this->loginSPA();
 
-        $this->assertDatabaseCount('articles', 0);
-
-        $response = $this->assertAuthenticated()
+        $response = $this->assertDatabaseCount('articles', 0)
+            ->assertAuthenticated()
             ->deleteJsonApi('destroy', 'not.found')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
