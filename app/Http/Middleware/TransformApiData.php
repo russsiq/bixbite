@@ -75,14 +75,6 @@ class TransformApiData
     protected $action;
 
     /**
-     * Пространство имен для преобразователей данных.
-     * `В настоящее время не используется`.
-     *
-     * @var string
-     */
-    protected $namespace = 'App\Http\Middleware\Transformers\Api\V1';
-
-    /**
      * Создать новый экземпляр Посредника.
      *
      * @param  Container  $container
