@@ -137,7 +137,9 @@ class MassUpdateArticleResourceByAPITest extends TestCase
             ->assertJsonCount($articlesCount, 'data')
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('data', $articlesCount, fn (AssertableJson $json) =>
-                    $json->where('id', 1)->where('state', 'draft')->etc()
+                    $json->where('id', $articles->first()->value('id'))
+                        ->where('state', 'draft')
+                        ->etc()
                 )
             )
             ->assertJsonStructure(
