@@ -22,6 +22,8 @@ class ArticlesController extends Controller
     public function __construct()
     {
         $this->authorizeResource(Article::class, 'article');
+        $this->middleware('can:massUpdate,'.Article::class)
+            ->only('massUpdate');
     }
 
     /**
@@ -116,7 +118,7 @@ class ArticlesController extends Controller
      */
     public function massUpdate(MassUpdateArticleRequest $request): JsonResponse
     {
-        $this->authorize('massUpdate', Article::class);
+        // $this->authorize('massUpdate', Article::class);
 
         ['mass_action' => $attribute, 'articles' => $ids] = $request->validated();
 
