@@ -78,6 +78,15 @@
             <li style="color: #555753;">✓ Single received article contains required fields</li>
             <li style="color: #555753;">✓ Not found when attempt to fetch single non existent article</li>
         </ul>
+        <h2 id="Tests\Feature\Api\V1\Articles\MassUpdateArticleResourceByAPITest">Mass Update Article Resource By API (Tests\Feature\Api\V1\Articles\MassUpdateArticleResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot mass update article</li>
+            <li style="color: #555753;">✓ User without ability cannot mass update article</li>
+            <li style="color: #555753;">✓ User with ability cannot mass update article without minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin cannot mass update article without minimal provided data</li>
+            <li style="color: #555753;">✓ User with ability can mass update article with minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin can mass update article with minimal provided data</li>
+        </ul>
         <h2 id="Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPITest">Update Article Resource By API (Tests\Feature\Api\V1\Articles\UpdateArticleResourceByAPI)</h2>
         <ul>
             <li style="color: #555753;">✓ Guest cannot update article</li>
@@ -86,13 +95,6 @@
             <li style="color: #555753;">✓ User with ability can update article with minimal provided data</li>
             <li style="color: #555753;">✓ Super admin can update article with minimal provided data</li>
             <li style="color: #555753;">✓ Not found when attempt to update non existent article</li>
-        </ul>
-        <h2 id="Tests\Feature\App\Http\Controllers\Api\V1\ArticlesControllerTest">Articles Controller (Tests\Feature\App\Http\Controllers\Api\V1\ArticlesController)</h2>
-        <ul>
-            <li style="color: #555753;">✓ Authentication failed while guest mass update article</li>
-            <li style="color: #555753;">✓ Forbidden while user mass update article</li>
-            <li style="color: #ef2929;">❌ Owner can not mass update article without data provided</li>
-            <li style="color: #ef2929;">❌ Owner mass can update article with minimal data provided</li>
         </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\HomeControllerWithoutContentTest">Home Controller Without Content (Tests\Feature\App\Http\Controllers\HomeControllerWithoutContent)</h2>
         <ul>
