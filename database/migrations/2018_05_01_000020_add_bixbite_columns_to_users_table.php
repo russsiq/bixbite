@@ -7,7 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 class AddBixbiteColumnsToUsersTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -24,11 +25,22 @@ class AddBixbiteColumnsToUsersTable extends Migration
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'role',
+                'avatar',
+                'info',
+                'where_from',
+                'last_ip',
+                'logined_at',
+                'banned_until',
+            ]);
+        });
     }
 }
