@@ -39,7 +39,7 @@ Route::match(['get','post'], 'search', [ArticlesController::class, 'search'])->n
 Route::get('tags', [TagsController::class, 'index'])->name('tags.index');
 Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.tag');
 
-Route::get('downloads/{file:id}', DownloadsController::class)->name('file.download');
+Route::get('downloads/{attachment:id}', DownloadsController::class)->name('attachment.download');
 
 // User, Profile, Passwords...
 Route::group(['middleware' => ['auth', 'verified']], function () {
