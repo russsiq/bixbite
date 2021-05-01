@@ -2,53 +2,49 @@
 
 namespace App\Models;
 
-// Исключения.
-use Exception;
-
-// Базовые расширения PHP.
 use ArrayAccess;
-use JsonSerializable;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\File;
-
-// Сторонние зависимости.
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use JsonSerializable;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
- * Модель шаблонов.
+ * Template model.
+ *
+ * @property-read int $id
+ * @property-read string $filename
+ * @property-read string $path
+ * @property-read bool $exists
+ * @property-read string $content
+ * @property-read string $modified
+ * @property-read string $size
  */
 class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {
     /**
      * Разрешенные разрешения файлов.
-     * @var string
+     *
+     * @const string
      */
-    const ALLOWED_EXTENSIONS = '/\.(tpl|ini|css|js|blade\.php)$/';
-
-    // /**
-    //  * [protected description]
-    //  * @var string|null
-    //  */
-    // protected $filename;
+    public const ALLOWED_EXTENSIONS = '/\.(tpl|ini|css|js|blade\.php)$/';
 
     /**
-     * Значения по умолчанию для атрибутов модели.
+     * The model's attributes.
+     *
      * @var array
      */
     protected $attributes = [
-
+        //
     ];
 
     /**
      * Создать новый экземпляр модели.
+     *
      * @param  array  $attributes
-     * @return void
      */
     public function __construct(
         array $attributes = []
@@ -56,7 +52,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         $this->fill($attributes);
     }
 
-    public function fill($attributes)
+    public function fill($attributes): self
     {
         foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
@@ -65,7 +61,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         return $this;
     }
 
-    public function processSelect()
+    public function processSelect(): void
     {
         // Если возникнет необходимость самостоятельно
         // генерировать идентификатор для маршрутизоторов.
@@ -96,29 +92,16 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         }
     }
 
-    /**
-     * [path description]
-     * @return string|null
-     */
     public function path(): ?string
     {
         return $this->filename ? $this->themePath($this->filename) : null;
     }
 
-    /**
-     * [themePath description]
-     * @param  string|null  $path
-     * @return string
-     */
     public function themePath(string $path = null): string
     {
         return theme_path('views').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
-    /**
-     * [get description]
-     * @return self
-     */
     public function get(): self
     {
         $this->processSelect();
@@ -164,6 +147,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Creates a flaten-structured array of files from a current theme root folder.
+     *
      * @return Collection
      */
     public static function all(): Collection
@@ -188,12 +172,12 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         return $files;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->attributes;
     }
 
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         $json = json_encode($this->jsonSerialize(), $options);
 
@@ -204,7 +188,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         return $json;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -218,7 +202,7 @@ class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
         return $this->attributes[$key] ?? null;
     }
 
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value): self
     {
         $this->attributes[$key] = $value;
 

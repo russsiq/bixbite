@@ -2,67 +2,94 @@
 
 namespace App\Models;
 
-// Сторонние зависимости.
-use App\Models\Article;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Модель Тега.
+ * Tag model.
+ *
+ * @property-read int $id
+ * @property-read string $title
+ * @property-read string $slug
+ *
+ * @property-read string $url
  */
-class Tag extends BaseModel
+class Tag extends Model
 {
-    use Mutators\TagMutators,
-        Scopes\TagScopes,
-        HasFactory;
+    use Mutators\TagMutators;
+    use Scopes\TagScopes;
+    use HasFactory;
+
+    public const TABLE = 'tags';
 
     /**
-     * Таблица БД, ассоциированная с моделью.
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $table = 'tags';
+    protected $table = self::TABLE;
 
     /**
-     * Первичный ключ таблицы БД.
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Следует ли обрабатывать временные метки модели.
+     * Indicates if the model should be timestamped.
+     *
      * @var bool
      */
     public $timestamps = false;
 
     /**
-     * Атрибуты, которые должны быть типизированы.
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'title' => '',
+        'slug' => '',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'url',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
      * @var array
      */
     protected $casts = [
         'title' => 'string',
-
+        'slug' => 'string',
+        'url' => 'string',
     ];
 
     /**
-     * Атрибуты, для которых разрешено массовое присвоение значений.
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
     protected $fillable = [
         'title',
-
+        'slug',
     ];
 
     /**
-     * Получить ключ маршрута для модели.
+     * Get the route key for the model.
+     *
      * @return string
      */
     public function getRouteKeyName(): string
     {
-        return 'title';
+        return 'slug';
     }
 
     /**
-     * Получить все записи, которым присвоен данный тег.
+     * Get all of the articles for the tag.
+     *
      * @return MorphToMany
      */
     public function articles(): MorphToMany
@@ -77,7 +104,8 @@ class Tag extends BaseModel
     }
 
     /**
-     * Удалить неиспользуемые теги.
+     * Remove unused tags.
+     *
      * @return void
      */
     public function reIndex(): void

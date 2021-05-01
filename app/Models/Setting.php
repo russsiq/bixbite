@@ -2,67 +2,89 @@
 
 namespace App\Models;
 
-// Зарегистрированные фасады приложения.
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Russsiq\EnvManager\Facades\EnvManager;
 
-// Сторонние зависимости.
-use App\Models\Module;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Collection as BaseCollection;
-
 /**
- * Модель Настройки.
+ * Setting model.
+ *
+ * @property-read int $id
+ * @property-read string $module_name
+ * @property-read string $name
+ * @property-read string $type
+ * @property-read string $value
+ * @property-read \Illuminate\Support\Carbon $created_at
+ * @property-read \Illuminate\Support\Carbon $updated_at
  */
-class Setting extends BaseModel
+class Setting extends Model
 {
-    use Mutators\SettingMutators,
-        Traits\Dataviewer,
-        HasFactory;
+    use Mutators\SettingMutators;
+    use Traits\Dataviewer;
+    use HasFactory;
+
+    public const TABLE = 'settings';
 
     /**
-     * Таблица БД, ассоциированная с моделью.
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $table = 'settings';
+    protected $table = self::TABLE;
 
     /**
-     * Первичный ключ таблицы БД.
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Указывает, следует ли обрабатывать временные метки модели.
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * Атрибуты, которым разрешено массовое присвоение.
+     * The model's attributes.
+     *
      * @var array
+     */
+    protected $attributes = [
+        'module_name' => '',
+        'name' => '',
+        'type' => 'string',
+        'value' => '',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'module_name' => 'string',
+        'name' => 'string',
+        'type' => 'string',
+        'value' => 'string',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
     protected $fillable = [
         'module_name',
         'name',
         'type',
         'value',
-
     ];
 
     /**
-     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * Attributes by which filtering is allowed.
+     *
      * @var array
      */
     protected $allowedFilters = [
-
+        //
     ];
 
     /**
-     * Атрибуты, по которым разрешена сортировка сущностей.
+     * The attributes by which sorting is allowed.
+     *
      * @var array
      */
     protected $orderableColumns = [
@@ -70,32 +92,27 @@ class Setting extends BaseModel
         'module_name',
         'name',
         'created_at',
-
     ];
 
     /**
      * Разрешенные переменные для сохранения в файл переменных окружения.
-     * @var array
+     *
+     * @var string[]
      */
     protected static $allowedVariablesForEnv = [
+        'APP_DASHBOARD',
         'APP_ENV',
         'APP_LOCALE',
         'APP_NAME',
         'APP_THEME',
-        'APP_SKIN',
 
         'ORG_ADDRESS_LOCALITY',
         'ORG_ADDRESS_STREET',
         'ORG_CONTACT_EMAIL',
         'ORG_CONTACT_TELEPHONE',
         'ORG_NAME',
-
     ];
 
-    /**
-     * Получить модуль, к которому относится настройка.
-     * @return BelongsTo
-     */
     public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class, 'module_name', 'name', 'module');
@@ -103,6 +120,7 @@ class Setting extends BaseModel
 
     /**
      * Обновить настройки модуля, пришедшие от пользователя.
+     *
      * @param  Module  $module
      * @param  array  $attributes
      * @return Collection
@@ -140,6 +158,7 @@ class Setting extends BaseModel
 
     /**
      * Записать доступные переменные окружения в файл.
+     *
      * @param  BaseCollection  $updated
      * @return void
      */
@@ -161,6 +180,7 @@ class Setting extends BaseModel
 
     /**
      * Обновить настройки в файл настроек модуля.
+     *
      * @param  string  $modulename
      * @param  BaseCollection  $updated
      * @return void
@@ -173,5 +193,26 @@ class Setting extends BaseModel
 
         File::ensureDirectoryExists($path);
         File::put($file, $content, true);
+    }
+
+    /**
+     * Получить список встроенных примитивных типизаторов.
+     *
+     * @return array
+     */
+    public function primitiveCastTypes(): array
+    {
+        return static::$primitiveCastTypes;
+    }
+
+    /**
+     * Определить, что переданный тип относится к примитивной типизации.
+     *
+     * @param  string $castType
+     * @return bool
+     */
+    public function isPrimitiveCastTypes(string $castType): bool
+    {
+        return in_array($castType, $this->primitiveCastTypes());
     }
 }

@@ -1,102 +1,145 @@
 <?php
 
-// To do: class FileUploader extend App\Models\File\BaseFile
-
 namespace App\Models;
 
-// Исключения.
-use RuntimeException as FileException;
-
-// Зарегистрированные фасады приложения.
-use Illuminate\Support\Facades\Storage;
-
-// Сторонние зависимости.
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\Local as LocalAdapter;
+use RuntimeException as FileException;
 
 /**
- * Модель Файла.
+ * Attachment model.
+ *
+ * @property-read int $id
+ * @property-read int $attachable_id
+ * @property-read string $attachable_type
+ * @property-read ?int $user_id
+ * @property-read ?string $title
+ * @property-read ?string $description
+ * @property-read string $disk
+ * @property-read string $folder
+ * @property-read string $type
+ * @property-read string $name
+ * @property-read string $extension
+ * @property-read string $mime_type
+ * @property-read int $filesize
+ * @property-read array $properties
+ * @property-read int $downloads
+ * @property-read \Illuminate\Support\Carbon $created_at
+ * @property-read \Illuminate\Support\Carbon $updated_at
+ *
+ * @property-read string $url
+ * @property-read string $path
+ * @property-read string $absolute_path
+ * @property-read int $filesize
  */
-class File extends BaseModel
+class Attachment extends Model
 {
-    use Mutators\FileMutators,
-        Traits\Dataviewer,
-        HasFactory;
+    use Mutators\AtachmentMutators;
+    use Traits\Dataviewer;
+    use HasFactory;
+
+    const TABLE = 'attachments';
 
     /**
-     * Таблица БД, ассоциированная с моделью.
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $table = 'files';
+    protected $table = self::TABLE;
 
     /**
-     * Первичный ключ таблицы БД.
-     * @var string
+     * The model's attributes.
+     *
+     * @var array
      */
-    protected $primaryKey = 'id';
+    protected $attributes = [
+        'user_id' => null,
+        'title' => null,
+        'description' => null,
+        'disk' => 'public',
+        'folder' => 'uploads',
+        'type' => 'other',
+        'properties' => '{}',
+        'downloads' => 0,
+    ];
 
     /**
-     * Аксессоры, добавляемые при сериализации модели.
+     * The accessors to append to the model's array form.
+     *
      * @var array
      */
     protected $appends = [
         'url',
         'path',
-
+        'absolute_path',
+        'filesize',
+        // 'picture_box',
+        // 'media_player',
+        // 'download_button',
     ];
 
     /**
-     * Атрибуты, которые должны быть типизированы.
+     * The attributes that should be cast.
+     *
      * @var array
      */
     protected $casts = [
-        'properties' => 'object',
-
+        'user_id' => 'integer',
+        'type' => 'string',
+        'filesize' => 'integer',
+        'properties' => 'array',
+        'downloads' => 'integer',
+        'url' => 'string',
+        'path' => 'string',
+        'absolute_path' => 'string',
+        'filesize' => 'integer',
+        // 'picture_box' => 'string',
+        // 'media_player' => 'string',
+        // 'download_button' => 'string',
     ];
 
     /**
-     * Атрибуты, для которых разрешено массовое присвоение значений.
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
     protected $fillable = [
         'user_id',
-        'attachment_id',
-        'attachment_type',
+        'title',
+        'description',
         'disk',
-        'category',
+        'folder',
         'type',
         'name',
         'extension',
         'mime_type',
         'filesize',
-        'checksum',
-        'title',
-        'description',
         'properties',
-        'downloads',
-
     ];
 
     /**
-     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * Attributes by which filtering is allowed.
+     *
      * @var array
      */
     protected $allowedFilters = [
         'id',
         'title',
-        'name',
-        'type',
         'disk',
-        'category',
-
+        'folder',
+        'type',
+        'name',
+        'extension',
     ];
 
     /**
-     * Атрибуты, по которым разрешена сортировка сущностей.
+     * The attributes by which sorting is allowed.
+     *
      * @var array
      */
     protected $orderableColumns = [
@@ -104,38 +147,28 @@ class File extends BaseModel
         'title',
         'name',
         'downloads',
-
     ];
 
     /**
      * Размеры миниатюр изображения в порядке возрастания.
+     *
      * @var array
      */
     protected $thumbSizes = [
         'thumb' => 240,
         'small' => 576,
         'medium' => 992,
-
     ];
 
-    /**
-     * Получить родительскую модель комментария.
-     * @return MorphTo
-     */
-    public function attachment(): MorphTo
+    public function attachable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Получить пользователя, загрузившего файл.
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }
-
 
     public function thumbSizes()
     {
@@ -157,7 +190,7 @@ class File extends BaseModel
     public function path(string $thumbSize = null)
     {
         return $this->attributes['type']
-            .DS.$this->attributes['category']
+            .DS.$this->attributes['folder']
             .($thumbSize ? DS.$thumbSize : '')
             .DS.$this->attributes['name'].'.'.$this->attributes['extension'];
     }
@@ -189,7 +222,7 @@ class File extends BaseModel
         $disk = $this->storageDisk($data['disk']);
         $isLocalDisk = $disk->getDriver()->getAdapter() instanceof LocalAdapter;
 
-        $disk->makeDirectory($data['type'].DS.$data['category']);
+        $disk->makeDirectory($data['type'].DS.$data['folder']);
 
         // $name = $data['name'];
         // dump($name[0]);
@@ -212,7 +245,7 @@ class File extends BaseModel
 
     public function storeAsFile(UploadedFile $file, array $data)
     {
-        $path = $data['type'].DS.$data['category'];
+        $path = $data['type'].DS.$data['folder'];
         $name = $data['name'].'.'.$data['extension'];
         $options = [
             'disk' => $data['disk'],
@@ -228,7 +261,7 @@ class File extends BaseModel
 
         // Make zip archive name with full path.
         $zipname = $disk->getDriver()->getAdapter()->getPathPrefix()
-                  .$data['type'].DS.$data['category'].DS
+                  .$data['type'].DS.$data['folder'].DS
                   .$data['name'].'.'.$data['extension'] . '.zip';
 
         // Check if new file exists
@@ -264,7 +297,7 @@ class File extends BaseModel
         // Prepare local variables.
         $properties = [];
         $disk = $this->storageDisk($data['disk']);
-        $path_prefix = $data['type'].DS.$data['category'].DS;
+        $path_prefix = $data['type'].DS.$data['folder'].DS;
         $path_suffix = DS.$data['name'].'.'.$data['extension'];
         $quality = setting('files.images_quality', 75);
         $is_convert = setting('files.images_is_convert', true);

@@ -2,47 +2,55 @@
 
 namespace App\Models;
 
-// Сторонние зависимости.
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Модель Заметки.
+ * Note model.
+ *
+ * @property-read int $id
+ * @property-read int $user_id
+ * @property-read int $image_id
+ * @property-read string $title
+ * @property-read string $slug
+ * @property-read string $description
+ * @property-read boolean $is_completed
+ * @property-read \Illuminate\Support\Carbon $created_at
+ * @property-read \Illuminate\Support\Carbon $updated_at
  */
-class Note extends BaseModel
+class Note extends Model
 {
-    use Mutators\NoteMutators,
-        Relations\Fileable,
-        HasFactory;
+    use Mutators\NoteMutators;
+    use Relations\Attachable;
+    use HasFactory;
+
+    public const TABLE = 'notes';
 
     /**
-     * Таблица БД, ассоциированная с моделью.
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $table = 'notes';
+    protected $table = self::TABLE;
 
     /**
-     * Первичный ключ таблицы БД.
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Значения по умолчанию для атрибутов модели.
+     * The model's attributes.
+     *
      * @var array
      */
     protected $attributes = [
+        'user_id' => null,
         'image_id' => null,
         'title' => '',
         'slug' => '',
-        'description' => '',
+        'description' => null,
         'is_completed' => false,
-
     ];
 
     /**
-     * Атрибуты, которые должны быть типизированы.
+     * The attributes that should be cast.
+     *
      * @var array
      */
     protected $casts = [
@@ -52,12 +60,12 @@ class Note extends BaseModel
         'slug' => 'string',
         'description' => 'string',
         'is_completed' => 'boolean',
-
     ];
 
     /**
-     * Атрибуты, для которых разрешено массовое присвоение значений.
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
     protected $fillable = [
         'user_id',
@@ -66,7 +74,6 @@ class Note extends BaseModel
         'slug',
         'description',
         'is_completed',
-
     ];
 
     /**
@@ -75,7 +82,6 @@ class Note extends BaseModel
      */
     protected $allowedFilters = [
         'is_completed',
-
     ];
 
     /**
@@ -86,13 +92,8 @@ class Note extends BaseModel
         'id',
         'title',
         'created_at',
-
     ];
 
-    /**
-     * Получить владельца заметки.
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');

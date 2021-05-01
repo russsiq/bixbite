@@ -2,38 +2,56 @@
 
 namespace App\Models;
 
-use App\Models\Article;
 use App\Models\Collections\CategoryCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Модель Категории.
+ * Category model.
+ *
+ * @property-read int $id
+ * @property-read ?int $image_id
+ * @property-read int $parent_id
+ * @property-read int $position
+ * @property-read string $title
+ * @property-read string $slug
+ * @property-read ?string $alt_url
+ * @property-read ?string $info
+ * @property-read ?string $meta_description
+ * @property-read ?string $meta_keywords
+ * @property-read string $meta_robots
+ * @property-read bool $show_in_menu
+ * @property-read string $order_by
+ * @property-read string $direction
+ * @property-read int $paginate
+ * @property-read ?string $template
+ *
+ * @property-read string $url
+ * @property-read ?string $edit_page
+ * @property-read bool $is_root
+ *
+ * @method \Illuminate\Database\Eloquent\Builder short()
  */
-class Category extends BaseModel
+class Category extends Model
 {
-    use Mutators\CategoryMutators,
-        Relations\Extensible,
-        Relations\Fileable,
-        Scopes\CategoryScopes,
-        HasFactory;
+    use Mutators\CategoryMutators;
+    use Relations\Extensible;
+    use Relations\Attachable;
+    use Scopes\CategoryScopes;
+    use HasFactory;
+
+    public const TABLE = 'categories';
 
     /**
-     * Таблица БД, ассоциированная с моделью.
+     * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'categories';
+    protected $table = self::TABLE;
 
     /**
-     * Первичный ключ таблицы БД.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Значения по умолчанию для атрибутов модели.
+     * The model's attributes.
      *
      * @var array
      */
@@ -44,30 +62,30 @@ class Category extends BaseModel
         'title' => '',
         'slug' => '',
         'alt_url' => null,
-        'description' => '',
-        'keywords' => '',
-        'info' => '',
+        'info' => null,
+        'meta_description' => null,
+        'meta_keywords' => null,
+        'meta_robots' => 'all',
         'show_in_menu' => true,
-        'paginate' => 8,
         'order_by' => 'id',
         'direction' => 'desc',
+        'paginate' => 8,
         'template' => null,
-
     ];
 
     /**
-     * Аксессоры, добавляемые при сериализации модели.
+     * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var string[]
      */
     protected $appends = [
-        'root',
         'url',
-
+        'edit_page',
+        'is_root',
     ];
 
     /**
-     * Атрибуты, которые должны быть типизированы.
+     * The attributes that should be cast.
      *
      * @var array
      */
@@ -75,33 +93,17 @@ class Category extends BaseModel
         'image_id' => 'integer',
         'parent_id' => 'integer',
         'position' => 'integer',
-        'title' => 'string',
-        'slug' => 'string',
-        'description' => 'string',
-        'keywords' => 'string',
-        'info' => 'string',
         'show_in_menu' => 'boolean',
         'paginate' => 'integer',
-        'order_by' => 'string',
-        'direction' => 'string',
-        'template' => 'string',
-
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-
-        // Прикрепляемые поля.
-        'root' => 'boolean',
         'url' => 'string',
-
-        // Необязательные поля.
-        // 'alt_url' => null,
-
+        'edit_page' => 'string',
+        'is_root' => 'boolean',
     ];
 
     /**
-     * Атрибуты, для которых разрешено массовое присвоение значений.
+     * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
         'image_id',
@@ -110,18 +112,15 @@ class Category extends BaseModel
         'title',
         'slug',
         'alt_url',
-        'description',
-        'keywords',
         'info',
+        'meta_description',
+        'meta_keywords',
+        'meta_robots',
         'show_in_menu',
-        'paginate',
         'order_by',
         'direction',
+        'paginate',
         'template',
-        // Даты.
-        'created_at',
-        'updated_at',
-
     ];
 
     /**
@@ -141,7 +140,7 @@ class Category extends BaseModel
     }
 
     /**
-     * Создать новый экземпляр коллекции Eloquent.
+     * Create a new Eloquent Collection instance.
      *
      * @param  array  $models
      * @return CategoryCollection

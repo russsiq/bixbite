@@ -2,67 +2,85 @@
 
 namespace App\Models;
 
-use App\Models\Article;
-use App\Models\User;
 use App\Models\Collections\CommentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * Модель Комментария.
+ * Comment model.
+ *
+ * @property-read int $id
+ * @property-read ?int $user_id
+ * @property-read int $parent_id
+ * @property-read int $commentable_id
+ * @property-read string $commentable_type
+ * @property-read string $content
+ * @property-read ?string $author_name
+ * @property-read ?string $author_email
+ * @property-read ?string $author_ip
+ * @property-read bool $is_approved
+ * @property-read \Illuminate\Support\Carbon $created_at
+ * @property-read \Illuminate\Support\Carbon $updated_at
+ *
+ * @property-read object $author
+ * @property-read bool $by_user
+ * @property-read string $url
  */
-class Comment extends BaseModel
+class Comment extends Model
 {
-    use Mutators\CommentMutators,
-        Traits\Dataviewer,
-        HasFactory;
+    use Mutators\CommentMutators;
+    use Traits\Dataviewer;
+    use HasFactory;
+
+    public const TABLE = 'comments';
 
     /**
-    * Таблица БД, ассоциированная с моделью.
-    * @var string
-    */
-    protected $table = 'comments';
-
-    /**
-     * Первичный ключ таблицы БД.
+     * The table associated with the model.
+     *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $table = self::TABLE;
 
     /**
-     * Аксессоры, добавляемые при сериализации модели.
+     * The model's attributes.
+     *
      * @var array
      */
-    protected $appends = [
-        'url',
-        'created',
-        // 'updated',
-        'by_user',
-        // 'by_author',
-
+    protected $attributes = [
+        'parent_id' => 0,
+        'content' => null,
+        'author_name' => null,
+        'author_email' => null,
+        'author_ip' => null,
+        'is_approved' => false,
     ];
 
     /**
-     * Атрибуты, которые должны быть типизированы.
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'author',
+        'by_user',
+        'url',
+        'created',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
      * @var array
      */
     protected $casts = [
-        'is_approved' => 'boolean',
-        'user_id' => 'integer',
         'parent_id' => 'integer',
-        'commentable_type' => 'string',
-        'commentable_id' => 'integer',
-        'name' => 'string',
-        'email' => 'string',
-        'content' => 'string',
-
+        'is_approved' => 'boolean',
+        'author' => 'object',
+        'by_user' => 'boolean',
         'url' => 'string',
-        'created' => 'timestamp',
-        'updated' => 'timestamp',
-        'by_user' => 'string',
-        'by_author' => 'string',
-
+        'created' => 'string',
     ];
 
     /**
@@ -70,20 +88,20 @@ class Comment extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'is_approved',
-        'parent_id',
         'user_id',
-        'commentable_type',
+        'parent_id',
         'commentable_id',
-        'name',
-        'email',
-        'user_ip',
+        'commentable_type',
         'content',
-
+        'author_name',
+        'author_email',
+        'author_ip',
+        'is_approved',
     ];
 
     /**
-     * Атрибуты, по которым разрешена фильтрация сущностей.
+     * Attributes by which filtering is allowed.
+     *
      * @var array
      */
     protected $allowedFilters = [
@@ -94,56 +112,36 @@ class Comment extends BaseModel
         'commentable_id',
         'is_approved',
         'created_at',
-
     ];
 
     /**
-     * Атрибуты, по которым разрешена сортировка сущностей.
+     * The attributes by which sorting is allowed.
+     *
      * @var array
      */
     protected $orderableColumns = [
         'id',
         'created_at',
-
     ];
 
-    /**
-     * Все отношения, которые должны быть затронуты.
-     * Automatically "touch" the updated_at timestamp of the owning Forum.
-     *
-     * @var array
-     */
-    // protected $touches = ['forum'];
-
-    /**
-     * Получить запись, к которой относится комментарий.
-     * @return BelongsTo
-     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class, 'commentable_id', 'id', 'commentable_type');
     }
 
-    /**
-     * Получить пользователя, оставившего комментарий.
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }
 
-    /**
-     * Получить родительскую модель комментария.
-     * @return MorphTo
-     */
     public function commentable(): MorphTo
     {
         return $this->morphTo();
     }
 
     /**
-     * Создать новый экземпляр коллекции Eloquent.
+     * Create a new Eloquent Collection instance.
+     *
      * @param  array  $models
      * @return CommentCollection
      */
