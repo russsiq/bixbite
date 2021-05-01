@@ -92,7 +92,7 @@ class ArticlesTransformer implements ResourceRequestTransformer
         }
 
         if (empty($input['categories']) or empty($input['state'])) {
-            $input['state'] = 'unpublished';
+            $input['state'] = 1;
         }
 
         return array_merge($input, [
