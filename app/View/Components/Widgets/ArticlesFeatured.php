@@ -277,9 +277,7 @@ class ArticlesFeatured extends WidgetAbstract
             ->includeXFieldsNames()
             ->published()
             // ->where('articles.state', $this->parameter('state'))
-            ->when($this->parameter('on_mainpage'), function (Builder $builder, bool $on_mainpage) {
-                $builder->onMainpage();
-            })
+            ->visibleOnMainpage($this->parameter('on_mainpage'))
             ->when($this->parameter('sub_days'), function (Builder $builder, int $subDays) {
                 $this->setParameter('sub_days', new \DateTime("-{$subDays} day"));
 
