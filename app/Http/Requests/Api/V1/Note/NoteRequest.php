@@ -80,7 +80,7 @@ class NoteRequest extends BaseFormRequest
 
             'image_id' => [
                 'nullable',
-                'exists:files,id',
+                'exists:attachments,id',
 
             ],
 

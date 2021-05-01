@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\Attachment;
 
 // Сторонние зависимости.
-use App\Models\File;
+use App\Models\Attachment;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Support\Str;
 
-class Store extends FileRequest
+class Store extends AttachmentRequest
 {
     /**
      * Общий массив допустимых значений для правила `in:список_значений`.
@@ -78,8 +78,8 @@ class Store extends FileRequest
 
         $this->replace([
             'user_id' => $this->user()->id,
-            'attachment_id' => $this->input('attachment_id', null),
-            'attachment_type' => $this->input('attachment_type', null),
+            'attachable_id' => $this->input('attachable_id', null),
+            'attachable_type' => $this->input('attachable_type', null),
             'disk' => $this->input('disk', 'public'),
             'category' => $this->input('category', 'default'),
 
@@ -89,7 +89,6 @@ class Store extends FileRequest
             'extension' => $extension,
             'mime_type' => $mime_type,
             'filesize' => $file->getSize(),
-            'checksum' => md5_file($file->getPathname()),
 
             'title' => $title,
             'description' => Str::cleanHTML($this->input('description', null)),
@@ -122,8 +121,8 @@ class Store extends FileRequest
 
             ],
 
-            // Always check the `attachment_type` first.
-            'attachment_type' => [
+            // Always check the `attachable_type` first.
+            'attachable_type' => [
                 'nullable',
                 'alpha_dash',
                 'in:'.self::morphMap(),
@@ -131,12 +130,12 @@ class Store extends FileRequest
             ],
 
             // After that, we check for a record in the database.
-            'attachment_id' => [
+            'attachable_id' => [
                 'bail',
                 'nullable',
                 'integer',
-                'required_with:attachment_type',
-                'exists:'.$this->input('attachment_type').',id',
+                'required_with:attachable_type',
+                'exists:'.$this->input('attachable_type').',id',
 
             ],
 
@@ -184,15 +183,6 @@ class Store extends FileRequest
 
             ],
 
-            'checksum' => [
-                'required',
-                'alpha_num',
-                // На уникальность проверяем ниже, так как
-                // нужна ссылка дубликата во всплывашке на фронте.
-                // 'unique:files',
-
-            ],
-
             'title' => [
                 'required',
                 'string',
@@ -226,7 +216,11 @@ class Store extends FileRequest
     public function withValidator(ValidatorContract $validator)
     {
         $validator->after(function (ValidatorContract $validator) {
-            if ($duplicate = File::whereChecksum($this->input('checksum'))->first()) {
+            $duplicate = Attachment::where('name', $this->input('name'))
+                ->where('extension', $this->input('extension'))
+                ->first();
+
+            if ($duplicate) {
                 $validator->errors()->add('checksum', sprintf(
                     trans('msg.already_exists'),
                     $duplicate->url,

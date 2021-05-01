@@ -2,12 +2,36 @@
 
 namespace App\Http\Requests\Api\V1\Tag;
 
-// Сторонние зависимости.
-use App\Http\Requests\BaseFormRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
-class TagRequest extends BaseFormRequest
+class TagRequest extends FormRequest
 {
+    /**
+     * Indicates whether validation should stop after the first rule failure.
+     *
+     * @var bool
+     */
+    protected $stopOnFirstFailure = true;
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->whenFilled('title', function ($title) {
+            $language = setting('system.translite_code', 'ru__gost_2000_b');
+
+            $this->merge([
+                'slug' => Str::slug($title, '-', $language),
+            ]);
+        });
+    }
+
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
@@ -18,16 +42,28 @@ class TagRequest extends BaseFormRequest
     {
         return [
             'title' => [
+                'bail',
+                'required',
                 'string',
                 'max:255',
-                'regex:/^[\w-]+$/u',
+                'regex:/^[0-9\w\s]+$/u',
 
+            ],
+
+            'slug' => [
+                'bail',
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
             ],
 
             'taggable_type' => [
                 'nullable',
                 'alpha_dash',
-                'in:'.self::morphMap(),
+                Rule::in(
+                    array_keys(Relation::morphMap())
+                ),
 
             ],
 
@@ -41,15 +77,5 @@ class TagRequest extends BaseFormRequest
             ],
 
         ];
-    }
-
-    /**
-     * Получить список из карты полиморфных отношений.
-     *
-     * @return string
-     */
-    protected static function morphMap(): string
-    {
-        return implode(',', array_keys(Relation::morphMap()));
     }
 }

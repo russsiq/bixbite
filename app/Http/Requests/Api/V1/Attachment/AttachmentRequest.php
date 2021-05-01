@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\Attachment;
 
 // Сторонние зависимости.
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class FileRequest extends BaseFormRequest
+class AttachmentRequest extends BaseFormRequest
 {
     /**
      * Получить массив пользовательских строк перевода

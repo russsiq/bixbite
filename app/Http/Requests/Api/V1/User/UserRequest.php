@@ -31,8 +31,8 @@ class UserRequest extends BaseFormRequest
             $input['info'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['info']);
         }
 
-        if (! empty($input['where_from'])) {
-            $input['where_from'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['where_from']);
+        if (! empty($input['location'])) {
+            $input['location'] = preg_replace("/\<script.*?\<\/script\>/", '', $input['location']);
         }
 
         // Always mark as `null` to remove old avatar.
@@ -86,7 +86,7 @@ class UserRequest extends BaseFormRequest
 
             ],
 
-            'where_from' => [
+            'location' => [
                 'nullable',
                 'string',
                 'max:255',

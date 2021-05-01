@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\File;
+namespace App\Http\Requests\Api\V1\Attachment;
 
 use Illuminate\Support\Str;
 
-class Update extends FileRequest
+class Update extends AttachmentRequest
 {
     /**
      * Подготовить данные для валидации.
@@ -42,8 +42,8 @@ class Update extends FileRequest
     public function rules(): array
     {
         return [
-            // Always check the `attachment_type` first.
-            'attachment_type' => [
+            // Always check the `attachable_type` first.
+            'attachable_type' => [
                 'nullable',
                 'alpha_dash',
                 'in:'.self::morphMap(),
@@ -51,12 +51,12 @@ class Update extends FileRequest
             ],
 
             // After that, we check for a record in the database.
-            'attachment_id' => [
+            'attachable_id' => [
                 'bail',
                 'nullable',
                 'integer',
-                'required_with:attachment_type',
-                'exists:'.$this->input('attachment_type').',id',
+                'required_with:attachable_type',
+                'exists:'.$this->input('attachable_type').',id',
 
             ],
 

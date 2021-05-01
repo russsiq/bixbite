@@ -100,14 +100,14 @@ class ArticleRequest extends BaseFormRequest
                 'nullable',
                 'integer',
                 'min:1',
-                'exists:files,id',
+                'exists:attachments,id',
 
             ],
 
             'state' => [
                 'required',
-                'string',
-                'in:published,unpublished,draft',
+                'integer',
+                'in:0,1,2',
 
             ],
 
@@ -203,24 +203,6 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            'shares' => [
-                'nullable',
-                'integer',
-
-            ],
-
-            'votes' => [
-                'nullable',
-                'integer',
-
-            ],
-
-            'rating' => [
-                'nullable',
-                'integer',
-
-            ],
-
             'created_at' => [
                 // 'date_format:"Y-m-d H:i:s"',
                 'date',
@@ -247,14 +229,14 @@ class ArticleRequest extends BaseFormRequest
 
             ],
 
-            /*'files' => [
+            /*'attachments' => [
                 'nullable',
                 'array',
             ],
 
-            'files.*' => [
+            'attachments.*' => [
                 'integer',
-                'exists:files,id',
+                'exists:attachments,id',
             ],
 
             'images' => [
@@ -264,7 +246,7 @@ class ArticleRequest extends BaseFormRequest
 
             'images.*' => [
                 'integer',
-                'exists:files,id',
+                'exists:attachments,id',
             ],*/
 
             'tags' => [

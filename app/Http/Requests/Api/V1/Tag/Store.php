@@ -21,6 +21,10 @@ class Store extends TagRequest
 
             ], $rules['title']),
 
+            'slug' => array_merge([
+                'unique:tags,slug',
+
+            ], $rules['slug']),
         ]);
     }
 }
