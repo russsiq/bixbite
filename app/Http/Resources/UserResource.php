@@ -2,44 +2,33 @@
 
 namespace App\Http\Resources;
 
-// Сторонние зависимости.
-use App\Models\Privilege;
 use App\Models\User;
+use App\Models\Privilege;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
     /**
-     * Преобразовать ресурс в массив.
+     * The resource instance.
+     *
+     * @var User
+     */
+    public $resource;
+
+    /**
+     * Transform the resource into an array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request): array
     {
         return parent::toArray($request);
-
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'avatar' => $this->avatar,
-            'role' => $this->role,
-            'info' => $this->info,
-            'where_from' => $this->where_from,
-            'is_online' => $this->is_online,
-            'last_ip' => $this->last_ip,
-
-            // Конвертируем временные метки в строки.
-            // Можно и так ->toDateTimeString().
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
-            'logined_at' => (string) $this->logined_at,
-        ];
     }
 
     /**
-     * Получить дополнительные данные, которые
-     * должны быть возвращены с массивом ресурса.
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -52,9 +41,7 @@ class UserResource extends JsonResource
         return [
             'meta' => [
                 'roles' => $roles,
-
             ],
-
         ];
     }
 }

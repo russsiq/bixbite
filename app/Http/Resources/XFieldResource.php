@@ -2,14 +2,21 @@
 
 namespace App\Http\Resources;
 
-// Сторонние зависимости.
 use App\Models\XField;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class XFieldResource extends JsonResource
 {
     /**
-     * Преобразовать ресурс в массив.
+     * The resource instance.
+     *
+     * @var XField
+     */
+    public $resource;
+
+    /**
+     * Transform the resource into an array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -19,8 +26,8 @@ class XFieldResource extends JsonResource
     }
 
     /**
-     * Получить дополнительные данные, которые
-     * должны быть возвращены с массивом ресурса.
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -28,11 +35,9 @@ class XFieldResource extends JsonResource
     {
         return [
             'meta' => [
-                'extensibles' => XField::extensibles(),
-                'fieldTypes' => XField::fieldTypes(),
-
+                'extensibles' => $this->resource::extensibles(),
+                'fieldTypes' => $this->resource::fieldTypes(),
             ],
-
         ];
     }
 }

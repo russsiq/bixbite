@@ -2,14 +2,21 @@
 
 namespace App\Http\Resources;
 
-// Сторонние зависимости.
 use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
 {
     /**
-     * Преобразовать ресурс в массив.
+     * The resource instance.
+     *
+     * @var Category
+     */
+    public $resource;
+
+    /**
+     * Transform the resource into an array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -19,8 +26,8 @@ class CategoryResource extends JsonResource
     }
 
     /**
-     * Получить дополнительные данные, которые
-     * должны быть возвращены с массивом ресурса.
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -29,11 +36,8 @@ class CategoryResource extends JsonResource
         return [
             'meta' => [
                 'template_list' => select_dir('custom_views'),
-
-                'x_fields' => $this->x_fields,
-
+                'x_fields' => $this->resource->x_fields,
             ],
-
         ];
     }
 }

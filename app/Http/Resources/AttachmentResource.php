@@ -2,15 +2,15 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Note;
+use App\Models\Attachment;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NoteResource extends JsonResource
+class AttachmentResource extends JsonResource
 {
     /**
      * The resource instance.
      *
-     * @var Note
+     * @var Attachment
      */
     public $resource;
 

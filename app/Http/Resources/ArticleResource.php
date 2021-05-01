@@ -2,48 +2,34 @@
 
 namespace App\Http\Resources;
 
-// Сторонние зависимости.
 use App\Models\Article;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
 {
     /**
-     * Преобразовать ресурс в массив.
+     * The resource instance.
+     *
+     * @var Article
+     */
+    public $resource;
+
+    /**
+     * Transform the resource into an array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request): array
     {
-        // ->getRawOriginal не проходит проверку cast, hidden.
-        // ->getDirty неизвесто
-        // >getOriginal проходит проверку cast, hidden.
-        return array_merge($this->resource->getOriginal(), [
-            'content' => $this->resource->getRawOriginal('content'),
-            'url' => $this->url,
-            'categories' => new CategoryCollection($this->whenLoaded('categories')),
-            'comments' => new CommentCollection($this->whenLoaded('comments')),
-            'files' => new FileCollection($this->whenLoaded('files')),
-            'tags' => new TagCollection($this->whenLoaded('tags')),
-            'user' => new UserResource($this->whenLoaded('user')),
-
-        ]);
-
-        return parent::toArray($request);
-
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
-
-        ];
+        return array_merge($this->resource->attributesToArray(), [
+            //
+        ], $this->relationships($request));
     }
 
     /**
-     * Получить дополнительные данные, которые
-     * должны быть возвращены с массивом ресурса.
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -53,13 +39,37 @@ class ArticleResource extends JsonResource
             'meta' => [
                 'setting' => [
                     'articles' => setting('articles'),
-
                 ],
 
-                'x_fields' => $this->x_fields,
-
+                'x_fields' => $this->resource->x_fields,
             ],
+        ];
+    }
 
+    /**
+     * Get the transformed relationships of the the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function relationships($request): array
+    {
+        return [
+            'attachments' => $this->whenLoaded('attachments', fn () =>
+                AttachmentCollection::make($this->resource->getRelation('attachments'))->toArray($request)
+            ),
+            'categories' => $this->whenLoaded('categories', fn () =>
+                CategoryCollection::make($this->resource->getRelation('categories'))->toArray($request)
+            ),
+            'comments' => $this->whenLoaded('comments', fn () =>
+                CommentCollection::make($this->resource->getRelation('comments'))->toArray($request)
+            ),
+            'tags' => $this->whenLoaded('tags', fn () =>
+                TagCollection::make($this->resource->getRelation('tags'))->toArray($request)
+            ),
+            'user' => $this->whenLoaded('user', fn () =>
+                UserResource::make($this->resource->getRelation('user'))->toArray($request)
+            ),
         ];
     }
 }
