@@ -21,7 +21,7 @@ return [
     'never_been' => 'Не был ни разу',
     'articles_count' => 'Записей',
     'comments_count' => 'Комментариев',
-    'where_from' => 'Откуда',
+    'location' => 'Откуда',
     'info' => 'Информация',
 
     'edit_page' => 'Редактирование профиля',
