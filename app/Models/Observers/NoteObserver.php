@@ -36,7 +36,7 @@ class NoteObserver extends BaseObserver
      */
     public function deleting(Note $note): void
     {
-        $note->files()->get()->each->delete();
+        $note->attachments()->get()->each->delete();
     }
 
     /**
@@ -47,12 +47,12 @@ class NoteObserver extends BaseObserver
     protected function attachImage(Note $note): void
     {
         if (is_int($image_id = $note->image_id)) {
-            $note->files()
+            $note->attachments()
                 ->getRelated()
                 ->whereId($image_id)
                 ->update([
-                    'attachment_type' => $note->getMorphClass(),
-                    'attachment_id' => $note->id,
+                    'attachable_type' => $note->getMorphClass(),
+                    'attachable_id' => $note->id,
                 ]);
         }
     }
@@ -65,7 +65,7 @@ class NoteObserver extends BaseObserver
     protected function deleteImage(Note $note): void
     {
         if (is_int($image_id = $note->getOriginal('image_id'))) {
-            $note->files()
+            $note->attachments()
                 ->whereId($image_id)
                 ->get()
                 ->each

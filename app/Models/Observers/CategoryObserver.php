@@ -72,7 +72,7 @@ class CategoryObserver extends BaseObserver
             ]);
 
         $category->articles()->detach();
-        $category->files()->get()->each->delete();
+        $category->attachments()->get()->each->delete();
     }
 
     /**
@@ -93,12 +93,12 @@ class CategoryObserver extends BaseObserver
     protected function attachImage(Category $category): void
     {
         if (is_int($image_id = $category->image_id)) {
-            $category->files()
+            $category->attachments()
                 ->getRelated()
                 ->whereId($image_id)
                 ->update([
-                    'attachment_type' => $category->getMorphClass(),
-                    'attachment_id' => $category->id,
+                    'attachable_type' => $category->getMorphClass(),
+                    'attachable_id' => $category->id,
                 ]);
         }
     }
@@ -111,7 +111,7 @@ class CategoryObserver extends BaseObserver
     protected function deleteImage(Category $category): void
     {
         if (is_int($image_id = $category->getOriginal('image_id'))) {
-            $category->files()
+            $category->attachments()
                 ->whereId($image_id)
                 ->get()
                 ->each

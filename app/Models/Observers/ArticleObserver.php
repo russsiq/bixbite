@@ -98,7 +98,7 @@ class ArticleObserver extends BaseObserver
         $article->tags()->detach();
         $article->categories()->detach();
         $article->comments()->get(['id'])->each->delete();
-        $article->files()->get()->each->delete();
+        $article->attachments()->get()->each->delete();
 
         // Deleting always.
         $this->deleteImage($article);
@@ -127,12 +127,12 @@ class ArticleObserver extends BaseObserver
     protected function attachImage(Article $article): void
     {
         if (is_int($image_id = $article->image_id)) {
-            $article->files()
+            $article->attachments()
                 ->getRelated()
                 ->whereId($image_id)
                 ->update([
-                    'attachment_type' => $article->getMorphClass(),
-                    'attachment_id' => $article->id,
+                    'attachable_type' => $article->getMorphClass(),
+                    'attachable_id' => $article->id,
                 ]);
         }
     }
@@ -145,7 +145,7 @@ class ArticleObserver extends BaseObserver
     protected function deleteImage(Article $article): void
     {
         if (is_int($image_id = $article->getOriginal('image_id'))) {
-            $article->files()
+            $article->attachments()
                 ->whereId($image_id)
                 ->get()
                 ->each
