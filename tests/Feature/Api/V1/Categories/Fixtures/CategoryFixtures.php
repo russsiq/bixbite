@@ -1,38 +1,35 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Articles\Fixtures;
+namespace Tests\Feature\Api\V1\Categories\Fixtures;
 
-class ArticleFixtures
+class CategoryFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'user_id',
                 'image_id',
-                'state',
+                'parent_id',
+                'position',
                 'title',
                 'slug',
-                'teaser',
-                'content',
+                'alt_url',
+                'info',
                 'meta_description',
                 'meta_keywords',
                 'meta_robots',
-                'on_mainpage',
-                'is_favorite',
-                'is_pinned',
-                'is_catpinned',
-                'allow_com',
-                'views',
-                'published_at',
+                'show_in_menu',
+                'order_by',
+                'direction',
+                'paginate',
+                'template',
                 'created_at',
                 'updated_at',
 
                 'url',
                 'edit_page',
-                'is_published',
-                'raw_content',
+                'is_root',
             ],
         ];
     }

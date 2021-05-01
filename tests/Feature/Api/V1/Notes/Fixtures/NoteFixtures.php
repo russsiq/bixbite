@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Articles\Fixtures;
+namespace Tests\Feature\Api\V1\Notes\Fixtures;
 
-class ArticleFixtures
+class NoteFixtures
 {
     public static function resource(): array
     {
@@ -11,28 +11,12 @@ class ArticleFixtures
                 'id',
                 'user_id',
                 'image_id',
-                'state',
                 'title',
                 'slug',
-                'teaser',
-                'content',
-                'meta_description',
-                'meta_keywords',
-                'meta_robots',
-                'on_mainpage',
-                'is_favorite',
-                'is_pinned',
-                'is_catpinned',
-                'allow_com',
-                'views',
-                'published_at',
+                'description',
+                'is_completed',
                 'created_at',
                 'updated_at',
-
-                'url',
-                'edit_page',
-                'is_published',
-                'raw_content',
             ],
         ];
     }
