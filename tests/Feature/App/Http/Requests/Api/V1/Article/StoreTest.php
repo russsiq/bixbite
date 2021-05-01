@@ -150,7 +150,7 @@ class StoreTest extends TestCase
 
                     return [
                         'user_id' => $ownerUser->id,
-                        'state' => 'draft',
+                        'state' => 0,
                         'title' => $title,
                         'slug' => Str::slug($title),
                         'allow_com' => 2,
