@@ -2,13 +2,14 @@
 
 namespace App\Models\Mutators;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
-trait FileMutators
+trait AtachmentMutators
 {
     /**
      * Path variations.
-     * Used as `{{ $file->path }}` or `{{ $image->getPathAttribute('thumb') }}`.
+     * Used as `{{ $attachment->path }}` or `{{ $image->getPathAttribute('thumb') }}`.
      *
      * @param  string|null $thumbSize Thumbnail size for image file.
      * @return string|null
@@ -22,7 +23,7 @@ trait FileMutators
 
     /**
      * Absolute path variations.
-     * Used as `{{ $file->absolute_path }}` or `{{ $image->getAbsolutePathAttribute('thumb') }}`.
+     * Used as `{{ $attachment->absolute_path }}` or `{{ $image->getAbsolutePathAttribute('thumb') }}`.
      *
      * @param  string|null $thumbSize Thumbnail size for image file.
      * @return string|null
@@ -36,7 +37,7 @@ trait FileMutators
 
     /**
      * Url variations.
-     * Used as `{{ $file->url }}` or `{{ $image->getUrlAttribute('thumb') }}`.
+     * Used as `{{ $attachment->url }}` or `{{ $image->getUrlAttribute('thumb') }}`.
      *
      * @param  string|null $thumbSize Thumbnail size for image file.
      * @return string|null
@@ -50,7 +51,7 @@ trait FileMutators
 
     /**
      * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
-     * Used as `{{ $file->filesize }}`.
+     * Used as `{{ $attachment->filesize }}`.
      *
      * @return string|null
      */
@@ -67,7 +68,7 @@ trait FileMutators
     public function getPictureBoxAttribute()
     {
         // Load theme view.
-        \View::addLocation(theme_path('views'));
+        View::addLocation(theme_path('views'));
 
         if ('image' != $this->attributes['type']) {
             return null;
@@ -91,20 +92,21 @@ trait FileMutators
             }
         }
 
-        return html_raw(view('shortcodes.picture_box',
+        return html_raw(view(
+            'shortcodes.picture_box',
             compact('id', 'url', 'alt', 'title', 'description', 'srcsets')
-        ));
+        )->render());
     }
 
     /**
-     * Used as `{{ $file->media_player }}`.
+     * Used as `{{ $attachment->media_player }}`.
      *
      * @return null|string
      */
     public function getMediaPlayerAttribute()
     {
         // Load theme view.
-        \View::addLocation(theme_path('views'));
+        View::addLocation(theme_path('views'));
 
         if (!in_array($this->attributes['type'], ['video', 'audio'])) {
             return null;
@@ -112,22 +114,22 @@ trait FileMutators
 
         return html_raw(view('shortcodes.media_player', [
             'media' => (object) $this->toArray()
-        ]));
+        ])->render());
     }
 
     /**
      * Download button to file.
-     * Used as `{{ $file->download_button }}`.
+     * Used as `{{ $attachment->download_button }}`.
      *
      * @return string|null
      */
     public function getDownloadButtonAttribute()
     {
         // Load theme view.
-        \View::addLocation(theme_path('views'));
+        View::addLocation(theme_path('views'));
 
         return html_raw(view('shortcodes.download_button', [
             'file' => (object) $this->toArray()
-        ]));
+        ])->render());
     }
 }

@@ -14,7 +14,7 @@ trait CategoryMutators
         return $this->id ? url('/dashboard/categories/'.$this->id.'/edit') : null;
     }
 
-    public function getRootAttribute()
+    public function getIsRootAttribute()
     {
         return ! $this->parent_id;
     }

@@ -2,13 +2,13 @@
 
 namespace App\Models\Mutators;
 
-// Сторонние зависимости.
 use Illuminate\Support\Str;
 
 trait XFieldMutators
 {
     /**
      * Задать атрибуту `name` значение.
+     *
      * @param  string  $name
      * @return void
      */
@@ -19,6 +19,7 @@ trait XFieldMutators
 
     /**
      * Получить значение атрибута `name`.
+     *
      * @return string
      */
     public function getNameAttribute(): string
@@ -27,7 +28,8 @@ trait XFieldMutators
     }
 
     /**
-     * Нормализовать префикс атрибута `$name`.
+     * Нормализовать префикс атрибута `name`.
+     *
      * @param  string $name
      * @return string
      */

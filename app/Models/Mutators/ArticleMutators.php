@@ -11,9 +11,29 @@ use Illuminate\Support\Str;
  */
 trait ArticleMutators
 {
+    /**
+     * $this->is_published
+     *
+     * @return boolean
+     */
+    public function getIsPublishedAttribute(): bool
+    {
+        return 2 === $this->state;
+    }
+
+    /**
+     * $this->raw_content
+     *
+     * @return boolean
+     */
+    public function getRawContentAttribute(): string
+    {
+        return $this->attributes['content'];
+    }
+
     public function getUrlAttribute()
     {
-        return ($this->id and $this->categories->count() > 0  and 'published' === $this->state)
+        return ($this->id and $this->categories->count() > 0  and $this->is_published)
             ? action([ArticlesController::class, 'article'], [
                 $this->categories->pluck('slug')->implode('_'),
                 $this->id,
@@ -21,82 +41,9 @@ trait ArticleMutators
             ]) : null;
     }
 
-    public function getEditPageAttribute()
+    public function getEditPageAttribute(): ?string
     {
         return $this->id ? route('dashboard')."/$this->table/$this->id/edit" : null;
-    }
-
-    /**
-     * Generate content with `shortcode` and `x_fields`.
-     * @return string
-     */
-    public function getContentAttribute()
-    {
-        if (empty($content = $this->attributes['content'])) {
-            // Возвращаем пустую строку, чтобы `quill-editor`
-            // не ругался при валидации входящих данных.
-            return '';
-        }
-
-        // Give shortcodes from app settings. static::$shortcodes ???
-        $shortcodes = [
-            'app_url' => setting('system.app_url'),
-            'organization' => setting('system.org_name'),
-            'contact_email' => setting('system.org_contact_email'),
-            'address' => setting('system.org_address_locality').', '.setting('system.org_address_street'),
-        ];
-
-        $telephone = setting('system.org_contact_telephone');
-
-        $shortcodes['contact_telephone'] = sprintf(
-            '<a href="tel:+%d" rel="nofollow" class="font-weight-bold">%s</a>',
-            preg_replace('/\D/', '', $telephone),
-            $telephone
-        );
-
-        // Give shortcode from extra fields. static::$x_shortcode ???
-        // $x_shortcode = $this->x_fields->keyBy('name')->toArray();
-        $x_shortcode = $this->x_fields->pluck('name')->toArray();
-
-        preg_match_all("/\[\[(.*?)\]\]/u", $content, $matches);
-
-        foreach ($matches[1] as $row) {
-            if (array_key_exists($row, $shortcodes)) {
-                $content = str_ireplace('[[' . $row . ']]', $shortcodes[$row], $content);
-            } elseif (in_array($row, $x_shortcode)) {
-                $content = str_ireplace('[[' . $row . ']]', $this->{$row}, $content);
-            } elseif (Str::startsWith($row, 'picture_box_')) {
-                $id = (int) str_ireplace('picture_box_', '', $row);
-                if ($image = $this->images->where('id', $id)->first()) {
-                    $content = str_ireplace("[[picture_box_$id]]", $image->picture_box, $content);
-                } else {
-                    $content = str_ireplace("[[picture_box_$id]]", '<code>IMG WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
-                }
-            } elseif (Str::startsWith($row, 'media_player_')) {
-                $id = (int) str_ireplace('media_player_', '', $row);
-                if ($file = $this->files->where('id', $id)->first()) {
-                    $content = str_ireplace("[[media_player_$id]]", $file->media_player, $content);
-                } else {
-                    $content = str_ireplace("[[media_player_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
-                }
-            } elseif (Str::startsWith($row, 'download_button_')) {
-                $id = (int) str_ireplace('download_button_', '', $row);
-                if ($file = $this->files->where('id', $id)->first()) {
-                    $content = str_ireplace("[[download_button_$id]]", $file->download_button, $content);
-                } else {
-                    $content = str_ireplace("[[download_button_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
-                }
-            } elseif (Str::startsWith($row, 'file_')) {
-                $id = (int) str_ireplace('file_', '', $row);
-                if ($file = $this->files->where('id', $id)->first()) {
-                    $content = str_ireplace("[[file_$id]]", $file->url, $content);
-                } else {
-                    $content = str_ireplace("[[file_$id]]", '<code>FILE WITH ID #'.$id.' IN THIS ARTICLE NOT FOUND.</code>', $content);
-                }
-            }
-        }
-
-        return $content;
     }
 
     public function getViewsAttribute()
@@ -133,12 +80,12 @@ trait ArticleMutators
 
     /**
      * Get `date_published` in ISO 8601 date format.
-     * @todo: create column published_at
+     *
      * @return mixed
      */
     public function getDatePublishedAttribute()
     {
-        return empty($this->attributes['created_at']) ? null : $this->created_at->toIso8601String();
+        return empty($this->attributes['published_at']) ? null : $this->published_at->toIso8601String();
     }
 
     /**
