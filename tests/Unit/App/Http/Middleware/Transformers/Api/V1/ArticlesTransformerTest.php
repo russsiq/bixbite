@@ -104,14 +104,14 @@ class ArticlesTransformerTest extends TestCase
         $request = $this->createRequestWithCustomData([
             'title' => 'Some title',
             'categories' => [],
-            'state' => 'published',
+            'state' => 2,
 
         ]);
 
         $transformer = $this->createTransformer($request);
         $transformed = $transformer->default();
 
-        $this->assertSame('unpublished', $transformed['state']);
+        $this->assertSame(1, $transformed['state']);
     }
 
     /**
@@ -131,7 +131,7 @@ class ArticlesTransformerTest extends TestCase
         $transformer = $this->createTransformer($request);
         $transformed = $transformer->default();
 
-        $this->assertSame('unpublished', $transformed['state']);
+        $this->assertSame(1, $transformed['state']);
     }
 
     /**
@@ -146,14 +146,14 @@ class ArticlesTransformerTest extends TestCase
         $request = $this->createRequestWithCustomData([
             'title' => 'Some title',
             'categories' => [1, 2, 3],
-            'state' => 'published',
+            'state' => 2,
 
         ]);
 
         $transformer = $this->createTransformer($request);
         $transformed = $transformer->default();
 
-        $this->assertSame('published', $transformed['state']);
+        $this->assertSame(2, $transformed['state']);
     }
 
     /**
