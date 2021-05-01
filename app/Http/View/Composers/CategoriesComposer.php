@@ -45,7 +45,7 @@ class CategoriesComposer
     protected function categoryCollection(): CategoryCollection
     {
         return $this->categoryCollection
-            ?? $this->resolveCategoryCollection();
+            ?? $this->categoryCollection = $this->resolveCategoryCollection();
     }
 
     /**
@@ -55,7 +55,9 @@ class CategoriesComposer
      */
     protected function resolveCategoryCollection(): CategoryCollection
     {
-        return $this->categoryCollection = $this->categoryModel->query()
+        return $this->categoryModel->query()
+            ->short()
+            ->showInMenu()
             ->orderBy('position')
             ->get()
             ->nested();
