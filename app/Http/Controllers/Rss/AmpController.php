@@ -104,20 +104,20 @@ class AmpController extends BaseController
         ])
             ->includeXFieldsNames()
             ->with([
-                'files' => function ($query) {
+                'attachments' => function ($query) {
                     $query->select([
-                        'files.id',
-                        'files.disk',
-                        'files.type',
-                        'files.category',
-                        'files.name',
-                        'files.extension',
-                        'files.attachment_type',
-                        'files.attachment_id',
-
+                        'attachments.id',
+                        'attachments.attachable_type',
+                        'attachments.attachable_id',
+                        'attachments.title',
+                        'attachments.disk',
+                        'attachments.folder',
+                        'attachments.type',
+                        'attachments.name',
+                        'attachments.extension',
                     ])
                     ->join('articles', function ($join) {
-                        $join->on('files.id', '=', 'articles.image_id');
+                        $join->on('attachments.id', '=', 'articles.image_id');
                     })
                     ->where('type', 'image');
                 },

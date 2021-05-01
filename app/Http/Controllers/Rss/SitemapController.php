@@ -20,7 +20,7 @@ class SitemapController extends BaseController
      *
      * @const string
      */
-    const TEMPLATE_PREFIX = 'rss.sitemap.';
+    public const TEMPLATE_PREFIX = 'rss.sitemap.';
 
     /**
      * Текущая карта сайта.
@@ -255,25 +255,26 @@ class SitemapController extends BaseController
                 'articles.id',
                 'articles.image_id',
                 'articles.slug',
+                'articles.state',
                 'articles.created_at',
                 'articles.updated_at',
 
             ])
                 ->with([
-                    'files' => function ($query) {
+                    'attachments' => function ($query) {
                         $query->select([
-                            'files.id',
-                            'files.disk',
-                            'files.type',
-                            'files.category',
-                            'files.name',
-                            'files.extension',
-                            'files.attachment_type',
-                            'files.attachment_id',
-
+                            'attachments.id',
+                            'attachments.attachable_type',
+                            'attachments.attachable_id',
+                            'attachments.title',
+                            'attachments.disk',
+                            'attachments.folder',
+                            'attachments.type',
+                            'attachments.name',
+                            'attachments.extension',
                         ])
                         ->join('articles', function ($join) {
-                            $join->on('files.id', '=', 'articles.image_id');
+                            $join->on('attachments.id', '=', 'articles.image_id');
                         })
                         ->where('type', 'image');
                     },
@@ -301,20 +302,20 @@ class SitemapController extends BaseController
 
             ])
                 ->with([
-                    'files' => function ($query) {
+                    'attachments' => function ($query) {
                         $query->select([
-                            'files.id',
-                            'files.disk',
-                            'files.type',
-                            'files.category',
-                            'files.name',
-                            'files.extension',
-                            'files.attachment_type',
-                            'files.attachment_id',
-
+                            'attachments.id',
+                            'attachments.attachable_type',
+                            'attachments.attachable_id',
+                            'attachments.title',
+                            'attachments.disk',
+                            'attachments.folder',
+                            'attachments.type',
+                            'attachments.name',
+                            'attachments.extension',
                         ])
                         ->join('categories', function ($join) {
-                            $join->on('files.id', '=', 'categories.image_id');
+                            $join->on('attachments.id', '=', 'categories.image_id');
                         })
                         ->where('type', 'image');
                     },
