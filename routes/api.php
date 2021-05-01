@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\V1\ArticlesController;
 use App\Http\Controllers\Api\V1\CategoriesController;
 use App\Http\Controllers\Api\V1\CommentsController;
-use App\Http\Controllers\Api\V1\FilesController;
+use App\Http\Controllers\Api\V1\AttachmentsController;
 use App\Http\Controllers\Api\V1\NotesController;
 use App\Http\Controllers\Api\V1\PrivilegesController;
 use App\Http\Controllers\Api\V1\SettingsController;
@@ -44,9 +44,9 @@ Route::group([
         ], function () {
             Route::apiResources([
                 'articles' => ArticlesController::class,
+                'attachments' => AttachmentsController::class,
                 'categories' => CategoriesController::class,
                 'comments' => CommentsController::class,
-                'files' => FilesController::class,
                 'notes' => NotesController::class,
                 'privileges' => PrivilegesController::class,
                 'settings' => SettingsController::class,
