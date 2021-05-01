@@ -86,9 +86,8 @@ class MassUpdateArticleResourceByAPITest extends TestCase
         $super_admin = $this->loginSuperAdminSPA();
         $user = $this->createUser();
         $articlesCount = mt_rand(2, 5);
-        $articles = Article::factory($articlesCount)->for($user)->create([
-            'state' => 'unpublished',
-        ]);
+        $articles = Article::factory($articlesCount)->for($user)
+            ->unPublished()->create();
 
         $this->assertAuthenticated();
 
@@ -124,9 +123,8 @@ class MassUpdateArticleResourceByAPITest extends TestCase
 
         $user = $this->loginSPA();
         $articlesCount = mt_rand(2, 5);
-        $articles = Article::factory($articlesCount)->for($user)->create([
-            'state' => 'unpublished',
-        ]);
+        $articles = Article::factory($articlesCount)->for($user)
+            ->unPublished()->create();
 
         $response = $this->assertAuthenticated()
             ->putJsonApi('massUpdate', [], [
@@ -138,13 +136,15 @@ class MassUpdateArticleResourceByAPITest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('data', $articlesCount, fn (AssertableJson $json) =>
                     $json->where('id', $articles->first()->value('id'))
-                        ->where('state', 'draft')
+                        ->where('state', 0)
                         ->etc()
                 )
             )
-            ->assertJsonStructure(
-                ArticleFixtures::resource()
-            );
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => ArticleFixtures::resource()['data']
+                ]
+            ]);
     }
 
     /**
@@ -156,9 +156,8 @@ class MassUpdateArticleResourceByAPITest extends TestCase
         $super_admin = $this->loginSuperAdminSPA();
         $user = $this->createUser();
         $articlesCount = mt_rand(2, 5);
-        $articles = Article::factory($articlesCount)->for($user)->create([
-            'state' => 'unpublished',
-        ]);
+        $articles = Article::factory($articlesCount)->for($user)
+            ->unPublished()->create();
 
         $response = $this->assertAuthenticated()
             ->putJsonApi('massUpdate', [], [
@@ -167,9 +166,11 @@ class MassUpdateArticleResourceByAPITest extends TestCase
             ])
             ->assertStatus(JsonResponse::HTTP_ACCEPTED)
             ->assertJsonCount($articlesCount, 'data')
-            ->assertJsonPath('data.0.state', 'draft')
-            ->assertJsonStructure(
-                ArticleFixtures::resource()
-            );
+            ->assertJsonPath('data.0.state', 0)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => ArticleFixtures::resource()['data']
+                ]
+            ]);
     }
 }
