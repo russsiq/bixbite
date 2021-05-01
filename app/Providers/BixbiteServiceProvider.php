@@ -61,7 +61,7 @@ class BixbiteServiceProvider extends ServiceProvider
         \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
         \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
         \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
-        \App\Models\File::observe(\App\Models\Observers\FileObserver::class);
+        \App\Models\Attachment::observe(\App\Models\Observers\AttachmentObserver::class);
         \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
         \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
         \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
@@ -72,7 +72,7 @@ class BixbiteServiceProvider extends ServiceProvider
             'articles' => \App\Models\Article::class,
             'categories' => \App\Models\Category::class,
             'comments' => \App\Models\Comment::class,
-            'files' => \App\Models\File::class,
+            'attachments' => \App\Models\Attachment::class,
             'notes' => \App\Models\Note::class,
             'tags' => \App\Models\Tag::class,
             'users' => \App\Models\User::class,
