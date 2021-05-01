@@ -10,36 +10,37 @@ use Illuminate\Support\Str;
 class CategoryFactory extends Factory
 {
     /**
-     * Название модели соответствующей фабрики.
+     * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Category::class;
 
     /**
-     * Определить состояние модели по умолчанию.
+     * Define the model's default state.
      *
      * @return array
      */
     public function definition(): array
     {
-        $title = $this->faker->unique()->words(mt_rand(1, 3), true);
+        $title = $this->faker->unique()->sentence(mt_rand(1, 3));
 
         return [
+            'image_id' => null,
+            'parent_id' => 0,
+            'position' => 1,
             'title' => Str::ucfirst($title),
             'slug' => Str::slug($title),
+            'alt_url' => null,
             'info' => '<p>'.$this->faker->paragraph().'</p>',
-
-            'description' => $this->faker->text(mt_rand(120, 255)),
-            'keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
-            'robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
-
-            'show_in_menu' => mt_rand(0, 1),
-            'paginate' => mt_rand(5, 20),
-            // 'template' => 'string',
+            'meta_description' => $this->faker->text(mt_rand(120, 255)),
+            'meta_keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
+            'meta_robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
+            'show_in_menu' => $this->faker->boolean(),
             'order_by' => 'id',
             'direction' => $this->faker->randomElement(['desc', 'asc']),
-
+            'paginate' => mt_rand(5, 20),
+            // 'template' => 'string',
             'created_at' => $this->faker->dateTimeBetween(),
             'updated_at' => $this->faker->dateTimeBetween(),
         ];

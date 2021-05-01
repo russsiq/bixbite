@@ -9,14 +9,14 @@ use Illuminate\Support\Str;
 class TagFactory extends Factory
 {
     /**
-     * Название модели соответствующей фабрики.
+     * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Tag::class;
 
     /**
-     * Определить состояние модели по умолчанию.
+     * Define the model's default state.
      *
      * @return array
      */

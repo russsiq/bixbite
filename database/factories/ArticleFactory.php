@@ -10,14 +10,14 @@ use Illuminate\Support\Str;
 class ArticleFactory extends Factory
 {
     /**
-     * Название модели соответствующей фабрики.
+     * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Article::class;
 
     /**
-     * Определить состояние модели по умолчанию.
+     * Define the model's default state.
      *
      * @return array
      */
@@ -26,28 +26,56 @@ class ArticleFactory extends Factory
         $title = $this->faker->unique()->sentence(mt_rand(4, 8));
 
         return [
-            'state' => $this->faker->randomElement([
-                'published',
-                'unpublished',
-                'draft',
-            ]),
-
+            'image_id' => null,
+            'state' => mt_rand(0, 2),
             'title' => $title,
             'slug' => Str::slug($title),
             'teaser' => $this->faker->text(mt_rand(120, 255)),
+
             'content' => implode('', array_map(function () {
                     return '<p>'.$this->faker->paragraph().'</p>';
                 }, range(1, mt_rand(8, 20)))),
 
-            'description' => $this->faker->text(mt_rand(120, 255)),
-            'keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
-            'robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
-
+            'meta_description' => $this->faker->text(mt_rand(120, 255)),
+            'meta_keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
+            'meta_robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),
+            'on_mainpage' => $this->faker->boolean(),
+            'is_favorite' => $this->faker->boolean(),
+            'is_pinned' => $this->faker->boolean(),
+            'is_catpinned' => $this->faker->boolean(),
+            'allow_com' => mt_rand(0, 2),
             'views' => mt_rand(0, 240),
-
+            // 'published_at' => $this->faker->dateTimeBetween(),
             'created_at' => $this->faker->dateTimeBetween(),
             'updated_at' => $this->faker->dateTimeBetween(),
         ];
+    }
+
+    public function drafts()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => 0,
+            ];
+        });
+    }
+
+    public function unPublished()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => 1,
+            ];
+        });
+    }
+
+    public function published()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => 2,
+            ];
+        });
     }
 }
 
