@@ -18,7 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Article::class => \App\Policies\ArticlePolicy::class,
         \App\Models\Category::class => \App\Policies\CategoryPolicy::class,
         \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
-        \App\Models\File::class => \App\Policies\FilePolicy::class,
+        \App\Models\Attachment::class => \App\Policies\AttachmentPolicy::class,
         \App\Models\Note::class => \App\Policies\NotePolicy::class,
         \App\Models\Privilege::class => \App\Policies\PrivilegePolicy::class,
         \App\Models\Setting::class => \App\Policies\SettingPolicy::class,
@@ -40,13 +40,13 @@ class AuthServiceProvider extends ServiceProvider
 
         // Хуки `before` и `after` в текущем определении
         // будут применены только к зарегистрированным пользователям.
-        Gate::before(function (\App\Models\User $user, $ability) {
+        Gate::before(function (User $user, $ability) {
             if ($user->isSuperAdmin()) {
                 return true;
             }
         });
 
-        Gate::after(function (\App\Models\User $user, $ability, $result, $arguments) {
+        Gate::after(function (User $user, $ability, $result, $arguments) {
             return false;
         });
 
@@ -80,7 +80,7 @@ class AuthServiceProvider extends ServiceProvider
         // что текущий пользователь имеет право
         // воспользоваться Ассистентом приложения.
         Gate::define('use-assistant', function ($user) {
-            return $user->canDo('dashboard');
+            return $user->isSuperAdmin();
         });
     }
 }
