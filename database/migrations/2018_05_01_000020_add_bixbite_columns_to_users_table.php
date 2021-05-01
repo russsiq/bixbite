@@ -14,10 +14,10 @@ class AddBixbiteColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role', 20)->default('user');
-            $table->string('avatar', 100)->nullable();
+            $table->string('role')->default('user');
+            $table->string('avatar')->nullable();
             $table->text('info')->length(500)->nullable();
-            $table->string('where_from')->nullable();
+            $table->string('location')->nullable();
             $table->ipAddress('last_ip')->nullable();
             $table->timestamp('logined_at')->nullable();
             $table->timestamp('banned_until')->nullable();
@@ -36,7 +36,7 @@ class AddBixbiteColumnsToUsersTable extends Migration
                 'role',
                 'avatar',
                 'info',
-                'where_from',
+                'location',
                 'last_ip',
                 'logined_at',
                 'banned_until',

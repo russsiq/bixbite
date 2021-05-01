@@ -7,7 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 class CreateSettingsTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -27,7 +28,8 @@ class CreateSettingsTable extends Migration
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

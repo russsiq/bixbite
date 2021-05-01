@@ -1,12 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreatePrivilegesTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -14,7 +16,7 @@ class CreatePrivilegesTable extends Migration
         Schema::create('privileges', function (Blueprint $table) {
             $table->id();
             $table->string('privilege')->unique();
-            $table->string('description')->nullable(); // ->default('No description available');
+            $table->string('description')->nullable();
             $table->boolean('owner')->default(1);
             $table->boolean('admin')->nullable();
             $table->boolean('moder')->nullable();
@@ -24,7 +26,8 @@ class CreatePrivilegesTable extends Migration
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

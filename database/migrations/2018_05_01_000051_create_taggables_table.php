@@ -7,26 +7,31 @@ use Illuminate\Database\Migrations\Migration;
 class CreateTaggablesTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
     {
         Schema::create('taggables', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tag_id');
+            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
             $table->morphs('taggable');
 
             $table->index('tag_id');
             $table->index('taggable_id');
             $table->index('taggable_type');
-            $table->foreign('tag_id')->references('id')->on('tags')
-                  ->onDelete('cascade');
+            $table->unique([
+                'tag_id',
+                'taggable_id',
+                'taggable_type',
+            ], 'taggable');
         });
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

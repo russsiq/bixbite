@@ -7,7 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 class CreateXFieldsTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -31,7 +32,8 @@ class CreateXFieldsTable extends Migration
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

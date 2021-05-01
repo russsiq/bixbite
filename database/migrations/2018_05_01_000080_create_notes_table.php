@@ -7,15 +7,16 @@ use Illuminate\Database\Migrations\Migration;
 class CreateNotesTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('image_id')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('image_id')->nullable()->constrained('attachments')->onDelete('set null');
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
@@ -23,16 +24,15 @@ class CreateNotesTable extends Migration
             $table->timestamps();
 
             $table->index('user_id');
-            $table->foreign('user_id')->references('id')->on('users')
-                  ->onDelete('cascade');
-            $table->foreign('image_id')->references('id')->on('files')
-                  ->onDelete('set null');
+            $table->index('image_id');
+            $table->index('is_completed');
         });
 
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

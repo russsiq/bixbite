@@ -7,7 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 class CreateModulesTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -18,13 +19,14 @@ class CreateModulesTable extends Migration
             $table->string('title', 30)->nullable();
             $table->string('icon', 20)->default('fa fa-puzzle-piece');
             $table->text('info')->length(500)->nullable();
-            $table->boolean('on_mainpage')->nullable()->default(1);
+            $table->boolean('on_mainpage')->default(true);
             $table->timestamps();
         });
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()
