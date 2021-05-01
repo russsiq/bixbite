@@ -134,7 +134,7 @@ class ArticlesArchives extends WidgetAbstract
                 $builder->selectRaw('count(*) AS count');
             })
             ->published()
-            ->onMainpage()
+            ->visibleOnMainpage()
             ->groupBy('year', 'month')
             ->latest()
             ->limit($this->parameter('limit'))
