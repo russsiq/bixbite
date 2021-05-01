@@ -8,7 +8,13 @@ trait Categoryable
 {
     public function categories()
     {
-        return $this->morphToMany(Category::class, 'categoryable', 'categoryables', 'categoryable_id', 'category_id');
+        return $this->morphToMany(Category::class, 'categoryable', 'categoryables', 'categoryable_id', 'category_id')
+            ->withPivot('is_main');
+    }
+
+    public function getCategoryAttribute(): Category
+    {
+        return $this->categories->where('is_main', true)->first() ?: $this->categories->first();
     }
 
     // public function getCategoriesAttribute()
@@ -18,23 +24,23 @@ trait Categoryable
     //     });
     // }
 
-    /**
-     * Get a attributes to first category
-     *
-     * @var array
-     */
-    public function getCategoryAttribute()
-    {
-        if(is_null($category = $this->categories->last())) {
-            $category = new \stdClass();
-            $category->title = 'No name';
-            $category->slug = 'none';
-            $category->alt_url = null;
-            $category->template = null;
-        }
+    // /**
+    //  * Get a attributes to first category
+    //  *
+    //  * @var array
+    //  */
+    // public function getCategoryAttribute()
+    // {
+    //     if(is_null($category = $this->categories->last())) {
+    //         $category = new \stdClass();
+    //         $category->title = 'No name';
+    //         $category->slug = 'none';
+    //         $category->alt_url = null;
+    //         $category->template = null;
+    //     }
 
-        return $category;
-    }
+    //     return $category;
+    // }
 
     /*// Связь OneToOne
     public function category()

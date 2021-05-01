@@ -9,24 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait ArticleScopes
 {
-    /**
-     * Фильтрация записей по часто используемым критериям.
-     * @param  Builder  $builder
-     * @param  array  $filters
-     * @return void
-     */
-    public function scopeFilter(Builder $builder, array $filters): void
-    {
-        $builder->when($filters['month'], function(Builder $builder, string $month) {
-            $builder->whereMonth('created_at', Carbon::parse($month)->month);
-        })
-        ->when($filters['year'], function(Builder $builder, int $year) {
-            $builder->whereYear('created_at', $year);
-        })
-        ->when($filters['user_id'], function(Builder $builder, int $user_id) {
-            $builder->where('user_id', $user_id);
-        });
-    }
+
 
     /**
      * [scopeFullArticle description]
@@ -39,13 +22,10 @@ trait ArticleScopes
         $builder->with([
                 // 'categories:categories.id,categories.title,categories.slug',
                 'user:users.id,users.name,users.email,users.avatar',
-                'files',
-
+                'attachments',
             ])
             ->withCount([
-                'comments',
-                'tags',
-
+                'comments', 'tags',
             ])
             ->where('articles.id', $id)
             ->published();
@@ -75,30 +55,6 @@ trait ArticleScopes
         }
 
         return $article;
-    }
-
-    /**
-     * Диапазон записей только отображаемых на главной странице.
-     * @param  Builder  $builder
-     * @return void
-     */
-    public function scopeOnMainpage(Builder $builder): void
-    {
-        $builder->where('articles.on_mainpage', true);
-    }
-
-    /**
-     * Диапазон записей только опубликованных.
-     * @param  Builder  $builder
-     * @return void
-     */
-    public function scopePublished(Builder $builder): void
-    {
-        if (! $builder->getQuery()->distinct) {
-            $builder->addSelect('articles.state');
-        }
-
-        $builder->where('articles.state', 'published');
     }
 
     /**
@@ -139,18 +95,17 @@ trait ArticleScopes
             ->with([
                 // 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',
-                'files' => function ($query) {
+                'attachments' => function ($query) {
                     $query->addSelect([
-                        'files.id',
-                        'files.disk',
-                        'files.type',
-                        'files.category',
-                        'files.name',
-                        'files.extension',
-                        'files.title',
-                        'files.attachment_type',
-                        'files.attachment_id',
-
+                        'attachments.id',
+                        'attachments.attachable_type',
+                        'attachments.attachable_id',
+                        'attachments.title',
+                        'attachments.disk',
+                        'attachments.folder',
+                        'attachments.type',
+                        'attachments.name',
+                        'attachments.extension',
                     ]);
                 },
             ])
