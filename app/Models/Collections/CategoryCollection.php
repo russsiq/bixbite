@@ -12,16 +12,14 @@ class CategoryCollection extends EloquentCollection
         $collection = $this;
 
         return $collection->map(function (Category $category) use ($collection) {
-            // Appending child of category.
+            // Appending children of category.
             if ($collection->firstWhere('parent_id', $category->id)) {
                 $category->children = $collection->where('parent_id', $category->id);
             }
 
             return $category;
         })
-        ->reject(function (Category $category) {
-            // Return only root category.
-            return $category->parent_id > 0;
-        });
+        // Return only root category.
+        ->filter(fn (Category $category) => $category->is_root);
     }
 }
