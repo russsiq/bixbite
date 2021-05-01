@@ -2,17 +2,17 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Template;
+use App\Models\Attachment;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TemplateCollection extends ResourceCollection
+class AttachmentCollection extends ResourceCollection
 {
     /**
      * The resource that this resource collects.
      *
      * @var string
      */
-    public $collects = Template::class;
+    public $collects = Attachment::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,9 +33,12 @@ class TemplateCollection extends ResourceCollection
      */
     public function with($request): array
     {
+        $model = $this->collects::getModel();
+
         return [
             'meta' => [
-                'theme' => app_theme(),
+                'orderableColumns' => $model->orderableColumns(),
+                'allowedFilters' => $model->allowedFilters(),
             ],
         ];
     }

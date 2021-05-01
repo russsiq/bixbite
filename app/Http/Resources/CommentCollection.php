@@ -2,14 +2,21 @@
 
 namespace App\Http\Resources;
 
-// Сторонние зависимости.
 use App\Models\Comment;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CommentCollection extends ResourceCollection
 {
     /**
-     * Преобразовать коллекцию ресурсов в массив.
+     * The resource that this resource collects.
+     *
+     * @var string
+     */
+    public $collects = Comment::class;
+
+    /**
+     * Transform the resource into a JSON array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -19,20 +26,20 @@ class CommentCollection extends ResourceCollection
     }
 
     /**
-     * Получить дополнительные данные, которые
-     * должны быть возвращены с массивом ресурса.
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function with($request): array
     {
+        $model = $this->collects::getModel();
+
         return [
             'meta' => [
-                'orderableColumns' => Comment::getModel()->orderableColumns(),
-                'allowedFilters' => Comment::getModel()->allowedFilters(),
-
+                'orderableColumns' => $model->orderableColumns(),
+                'allowedFilters' => $model->allowedFilters(),
             ],
-
         ];
     }
 }
