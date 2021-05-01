@@ -263,11 +263,19 @@ class ArticleRequest extends BaseFormRequest
             ],
 
             'tags.*.title' => [
+                'bail',
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\w-]+$/u',
+                'regex:/^[0-9\w\s]+$/u',
+            ],
 
+            'tags.*.slug' => [
+                'bail',
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
             ],
 
         ]);

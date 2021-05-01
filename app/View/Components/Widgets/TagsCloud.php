@@ -154,7 +154,7 @@ class TagsCloud extends WidgetAbstract
         return Tag::select([
                 'tags.id',
                 'tags.title',
-
+                'tags.slug',
             ])
             ->withCount($relation)
             ->whereHas($relation)

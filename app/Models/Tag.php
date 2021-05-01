@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Tag extends Model
 {
-    use Mutators\TagMutators;
     use Scopes\TagScopes;
     use HasFactory;
 
@@ -101,6 +100,11 @@ class Tag extends Model
             /* $foreignPivotKey */ 'tag_id',
             /* $relatedPivotKey */ 'taggable_id'
         );
+    }
+
+    public function getUrlAttribute(): string
+    {
+        return route('tags.tag', $this);
     }
 
     /**

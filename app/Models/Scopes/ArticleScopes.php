@@ -23,9 +23,10 @@ trait ArticleScopes
                 // 'categories:categories.id,categories.title,categories.slug',
                 'user:users.id,users.name,users.email,users.avatar',
                 'attachments',
+                'tags:id,title,slug'
             ])
             ->withCount([
-                'comments', 'tags',
+                'comments'
             ])
             ->where('articles.id', $id)
             ->published();
@@ -39,11 +40,9 @@ trait ArticleScopes
      */
     public function scopeCachedFullArticleWithRelation(Builder $builder, int $id): Article
     {
+        /** @var Article */
         $article = cache()->remember('articles-single-'.$id, setting('articles.cache_used', 1440) * 60, function () use ($id) {
-            $article = $this->fullArticle($id)->firstOrFail();
-            $article->tags = $article->tags_count ? $article->getTags() : [];
-
-            return $article;
+            return $this->fullArticle($id)->firstOrFail();
         });
 
         // Комментарии ни в коем случае не кэшируем.

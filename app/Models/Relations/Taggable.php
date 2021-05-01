@@ -10,9 +10,4 @@ trait Taggable
     {
         return $this->morphToMany(Tag::class, 'taggable', 'taggables', 'taggable_id', 'tag_id');
     }
-
-    public function getTags()
-    {
-        return $this->tags()->get(['tags.id','tags.title']);
-    }
 }
