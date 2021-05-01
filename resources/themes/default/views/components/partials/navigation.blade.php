@@ -1,4 +1,4 @@
-@if ($category->root)
+@if ($category->is_root)
     @if ($category->children)
     <li class="nav-item dropdown">
         <a href="{{ $category->url }}" class="nav-link dropdown-toggle" itemprop="url" data-toggle="dropdown">

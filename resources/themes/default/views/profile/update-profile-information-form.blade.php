@@ -30,10 +30,10 @@
     		</div>
 
             {{-- <div class="mb-3 row">
-    			<label for="where_from" class="col-sm-4 col-form-label">@lang('Where from')</label>
+    			<label for="location" class="col-sm-4 col-form-label">@lang('Location')</label>
     			<div class="col-sm-6">
-                    <input type="text" name="where_from" value="{{ old('where_from', $user->where_from) }}" class="form-control" />
-                    @error('where_from')
+                    <input type="text" name="location" value="{{ old('location', $user->location) }}" class="form-control" />
+                    @error('location')
                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
