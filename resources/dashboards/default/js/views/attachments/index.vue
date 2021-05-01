@@ -29,23 +29,23 @@
             <td>{{ row.id }}</td>
             <td><a :href="row.url" target="_blank">{{ row.title }}</a></td>
             <td>{{ row.extension }}</td>
-            <template v-if="row.attachment">
+            <template v-if="row.attachable">
                 <td>
-                    {{ row.attachment_type }}
+                    {{ row.attachable_type }}
                 </td>
                 <td>
-                    {{ row.attachment_id }}
+                    {{ row.attachable_id }}
                 </td>
                 <td>
-                    <a :href="row.attachment.url" target="_blank">{{ row.attachment.title }}</a>
+                    <a :href="row.attachable.url" target="_blank">{{ row.attachable.title }}</a>
                 </td>
             </template>
             <td v-else colspan="3"><code>Файл не прикреплен</code></td>
             <td>{{ row.user && row.user.name }}</td>
             <td class="text-right d-print-none">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link" @click="destroy(row)" :disabled="row.attachment">
-                        <i class="fa fa-trash-o" :class="{'text-danger':!row.attachment}"></i>
+                    <button type="button" class="btn btn-link" @click="destroy(row)" :disabled="row.attachable">
+                        <i class="fa fa-trash-o" :class="{'text-danger':!row.attachable}"></i>
                     </button>
                 </div>
             </td>
@@ -73,7 +73,7 @@ import {
 import Filterable from '@/views/components/filterable';
 
 export default {
-    name: 'files',
+    name: 'attachments',
 
     components: {
         'filterable': Filterable

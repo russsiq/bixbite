@@ -47,7 +47,7 @@
             </td>
             <td class="text-right d-print-none">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link" @click="toggleStateArticle(row)"><i :class="classState(row.state)" :title="__(row.state)"></i></button>
+                    <button type="button" class="btn btn-link" @click="toggleStateArticle(row)"><i :class="classState(row.state)"></i></button>
                     <button type="button" class="btn btn-link" @click="massUpdate([row.id], 'is_favorite')"><i :class="classIsFavorite(row.is_favorite)"></i></button>
                     <button type="button" class="btn btn-link" @click="massUpdate([row.id], 'is_catpinned')"><i :class="classIsCatpinned(row.is_catpinned)"></i></button>
                     <button type="button" class="btn btn-link" @click="massUpdate([row.id], 'on_mainpage')"><i :class="classOnMainpage(row.on_mainpage)"></i></button>
@@ -151,11 +151,11 @@ export default {
 
         classState() {
             return (state) => {
-                const states = {
-                    published: 'fa fa-check text-success',
-                    unpublished: 'fa fa-times text-warning',
-                    draft: 'fa fa-ban text-danger',
-                };
+                const states = [
+                    'fa fa-ban text-danger',
+                    'fa fa-times text-warning',
+                    'fa fa-check text-success',
+                ];
 
                 return states[state] || 'fa fa-question text-danger';
             }

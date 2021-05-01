@@ -12,7 +12,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import File from '@/store/models/file';
+import Attachment from '@/store/models/attachment';
 
 import ImagePreview from '@/components/image-preview';
 
@@ -44,9 +44,9 @@ export default {
                 this.errors = [];
 
                 const data = new FormData();
-                data.append('file', this.takeFileFromInput(event, 'image.*'));
+                data.append('file', this.takeAttachmentFromInput(event, 'image.*'));
 
-                const image = await File.$create({
+                const image = await Attachment.$create({
                     data
                 });
 
@@ -64,9 +64,9 @@ export default {
         /**
          * Take first file from input field.
          *
-         * @return {object} File
+         * @return {object} Attachment
          */
-        takeFileFromInput(event, pattern) {
+        takeAttachmentFromInput(event, pattern) {
             const files = event.target.files;
 
             if (!files.length) {

@@ -35,7 +35,7 @@
 <script type="text/ecmascript-6">
 import Modal from 'bxb-modal';
 
-import File from '@/store/models/file';
+import Attachment from '@/store/models/attachment';
 
 export default {
     name: 'image-preview',
@@ -67,7 +67,7 @@ export default {
                 this.image = {};
 
                 if ('number' === typeof id) {
-                    File.$get({
+                    Attachment.$get({
                             params: {
                                 id: id
                             }
@@ -81,7 +81,7 @@ export default {
     methods: {
         /**
          * Заполнить форму полученными данными.
-         * @param {File} image
+         * @param {Attachment} image
          */
         fillForm(image) {
             this.image = image;
@@ -98,7 +98,7 @@ export default {
          * Add a new title and description to image.
          */
         updateImage() {
-            File.$update({
+            Attachment.$update({
                     params: {
                         id: this.image_id
                     },
@@ -117,7 +117,7 @@ export default {
         deleteImage() {
             const result = confirm(`Хотите удалить этот файл [${this.image.title}] с сервера?`);
 
-            result && File.$delete({
+            result && Attachment.$delete({
                     params: {
                         id: this.image_id
                     },

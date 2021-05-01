@@ -1,43 +1,43 @@
 <template>
 <div class="table-responsive">
-    <table class="table table-sm mb-0" v-if="files.length > 0">
+    <table class="table table-sm mb-0" v-if="attachments.length > 0">
         <tbody>
-            <tr v-for="(file, key) in files" :key="key">
+            <tr v-for="(attachment, key) in attachments" :key="key">
                 <td class="baguetteBox text-center">
-                    <div class="card-file-icon" v-if="'wait' == file.state"><i class="fa fa-spinner fa-pulse text-primary"></i></div>
-                    <div class="card-file-icon" v-else-if="'error' == file.state"><i class="fa fa-ban text-danger"></i></div>
+                    <div class="card-file-icon" v-if="'wait' == attachment.state"><i class="fa fa-spinner fa-pulse text-primary"></i></div>
+                    <div class="card-file-icon" v-else-if="'error' == attachment.state"><i class="fa fa-ban text-danger"></i></div>
                     <div v-else>
-                        <a :href="file.url" target="_blank" v-if="'image'== file.type">
-                            <img :src="file.url" :alt="file.title" :title="file.title" class="card-file-icon" width="42" />
+                        <a :href="attachment.url" target="_blank" v-if="'image'== attachment.type">
+                            <img :src="attachment.url" :alt="attachment.title" :title="attachment.title" class="card-file-icon" width="42" />
                         </a>
-                        <a href="#" class="media-link" v-else-if="'audio'== file.type" @click.prevent="mediaModal(file)">
+                        <a href="#" class="media-link" v-else-if="'audio'== attachment.type" @click.prevent="mediaModal(attachment)">
                             <div class="card-file-icon"><i class="fa fa-music"></i></div>
                         </a>
-                        <a href="#" class="media-link" v-else-if="'video'== file.type" @click.prevent="mediaModal(file)">
+                        <a href="#" class="media-link" v-else-if="'video'== attachment.type" @click.prevent="mediaModal(attachment)">
                             <div class="card-file-icon"><i class="fa fa-film"></i></div>
                         </a>
-                        <div class="card-file-icon" v-else-if="'archive'== file.type"><i class="fa fa-archive"></i></div>
+                        <div class="card-file-icon" v-else-if="'archive'== attachment.type"><i class="fa fa-archive"></i></div>
                         <div class="card-file-icon" v-else><i class="fa fa-file"></i></div>
                     </div>
                 </td>
                 <td>
-                    {{ file.title }}
-                    <!--br>{{ file.url }}-->
-                    <div v-html="file.message" class=""></div>
+                    {{ attachment.title }}
+                    <!--br>{{ attachment.url }}-->
+                    <div v-html="attachment.message" class=""></div>
                 </td>
                 <td style="white-space: nowrap;">
-                    <span v-if="file.id > 0">
-                        <code>[[file_{{ file.id }}]]</code>
-                        <code v-if="isImageFile(file)">[[picture_box_{{ file.id }}]]</code>
-                        <code v-if="isMediaFile(file)">[[media_player_{{ file.id }}]]</code>
+                    <span v-if="attachment.id > 0">
+                        <code>[[attachment_{{ attachment.id }}]]</code>
+                        <code v-if="isImageFile(attachment)">[[picture_box_{{ attachment.id }}]]</code>
+                        <code v-if="isMediaFile(attachment)">[[media_player_{{ attachment.id }}]]</code>
                         <br>
-                        <code v-if="isMediaFile(file)">[[download_button_{{ file.id }}]]</code>
+                        <code v-if="isMediaFile(attachment)">[[download_button_{{ attachment.id }}]]</code>
                     </span>
                 </td>
                 <td style="white-space: nowrap;" class="text-right">
                     <div class="btn-group ms-auto">
-                        <div v-if="file.id > 0">
-                            <button type="button" class="btn btn-link text-primary" @click="editFileModal(file, key)"><i class="fa fa-pencil"></i></button>
+                        <div v-if="attachment.id > 0">
+                            <button type="button" class="btn btn-link text-primary" @click="editFileModal(attachment, key)"><i class="fa fa-pencil"></i></button>
                             <button type="button" class="btn btn-link text-danger" @click="deleteFile(key)"><i class="fa fa-trash"></i></button>
                         </div>
                         <div v-else>
@@ -78,11 +78,11 @@ export default {
             String,
             // required: true
         },
-        attachment_id: {
+        attachable_id: {
             Number,
             required: true
         },
-        attachment_type: {
+        attachable_type: {
             String,
             required: true
         },
@@ -109,7 +109,7 @@ export default {
     },
 
     async mounted() {
-        await this.loadFromJsonPath('files')
+        await this.loadFromJsonPath('attachments')
 
         // Executed after the next DOM update cycle.
         this.$nextTick(() => {
@@ -131,11 +131,11 @@ export default {
 
             // @need items = [item:{file,id,key,url,message,state,type}]
             Array.from(uploadFiles, (file, index) => {
-                this.files.push({
+                this.attachments.push({
                     file,
                     id: 0,
                     title: file.name,
-                    key: index + this.files.length,
+                    key: index + this.attachments.length,
                     url: null,
                     message: null,
                     state: false,
@@ -152,8 +152,8 @@ export default {
                 return alert('Nothing to upload')
             }
 
-            for (let i = 0; i < this.files.length; i++) {
-                if (this.files[i].id == 0) {
+            for (let i = 0; i < this.attachments.length; i++) {
+                if (this.attachments[i].id == 0) {
                     this.uploadFile(i)
                 }
             }
@@ -162,11 +162,11 @@ export default {
         },
 
         removeFile(key) {
-            this.files.splice(key, 1)
+            this.attachments.splice(key, 1)
         },
 
         /**
-         * Fetch files from server by attachment_id and attachment_type.
+         * Fetch files from server by attachable_id and attachable_type.
          *
          * @param  string  url
          * @return {Promise}
@@ -175,36 +175,36 @@ export default {
             try {
                 const response = await axios.get(this.$props.file_url, {
                     params: {
-                        attachment_id: this.$props.attachment_id,
-                        attachment_type: this.$props.attachment_type,
+                        attachable_id: this.$props.attachable_id,
+                        attachable_type: this.$props.attachable_type,
                     }
                 })
 
-                if (!response.data.files) {
+                if (!response.data.attachments) {
                     throw new Error(response.data.message)
                 }
 
-                this.files = response.data.files
+                this.attachments = response.data.attachments
             } catch (error) {
                 console.log(error)
             }
         },
 
         async uploadFile(key) {
-            if (!this.$props.attachment_id || !this.$props.attachment_type) {
+            if (!this.$props.attachable_id || !this.$props.attachable_type) {
                 this.$notification.warning({
-                    message: this.lang.trans('Before you can upload files, you must save the article.')
+                    message: this.lang.trans('Before you can upload attachments, you must save the article.')
                 })
 
                 return false
             }
 
             let formData = new FormData();
-            formData.append('file', this.files[key].file);
-            formData.append('attachment_id', this.$props.attachment_id)
-            formData.append('attachment_type', this.$props.attachment_type)
+            formData.append('file', this.attachments[key].file);
+            formData.append('attachable_id', this.$props.attachable_id)
+            formData.append('attachable_type', this.$props.attachable_type)
 
-            this.files.splice(key, 1, Object.assign(this.files[key], {
+            this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                 state: 'wait',
                 message: null,
             }))
@@ -223,7 +223,7 @@ export default {
                     throw new Error(response.data.message);
                 }
 
-                this.files.splice(key, 1, Object.assign(this.files[key], {
+                this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                     id: response.data.file.id,
                     title: response.data.file.title,
                     url: response.data.file.url,
@@ -232,7 +232,7 @@ export default {
                     type: response.data.file.type,
                 }))
             } catch (error) {
-                this.files.splice(key, 1, Object.assign(this.files[key], {
+                this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                     state: 'error',
                     message: error.message,
                 }))
@@ -244,21 +244,21 @@ export default {
                 return false
             }
 
-            this.files.splice(key, 1, Object.assign(this.files[key], {
+            this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                 state: 'wait',
                 message: null,
             }))
 
             axios
-                .delete(this.$props.file_url + '/' + this.files[key].id)
+                .delete(this.$props.file_url + '/' + this.attachments[key].id)
                 .then((response) => {
-                    this.files.splice(key, 1)
+                    this.attachments.splice(key, 1)
                     this.$notification.success({
                         message: response.data.message
                     })
                 })
                 .catch((error) => {
-                    this.files.splice(key, 1, Object.assign(this.files[key], {
+                    this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                         state: 'error',
                         message: error.message,
                     }))
@@ -309,7 +309,7 @@ export default {
 
         updateFile(attr) {
             let key = this.file.key
-            this.files.splice(key, 1, Object.assign(this.files[key], {
+            this.attachments.splice(key, 1, Object.assign(this.attachments[key], {
                 title: attr.title,
                 description: attr.description,
             }))

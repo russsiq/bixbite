@@ -1,7 +1,7 @@
 import Model from '@/store/model';
 
 import Article from './article';
-import File from './file';
+import Attachment from './attachment';
 
 class Category extends Model {
     static fields() {
@@ -31,12 +31,12 @@ class Category extends Model {
             //children: this.attr(null),
             //children: this.hasMany(Category, 'parent_id', 'id'),
             articles: this.morphedByMany(Article, Categoryable, 'category_id', 'categoryable_id', 'categoryable_type'),
-            files: this.morphMany(File, 'attachment_id', 'attachment_type'),
-            image: this.hasOne(File, 'id', 'image_id'),
+            attachments: this.morphMany(Attachment, 'attachable_id', 'attachable_type'),
+            image: this.hasOne(Attachment, 'id', 'image_id'),
 
             // Счетчики для других сущностей.
             articles_count: this.number(0),
-            files_count: this.number(0),
+            attachments_count: this.number(0),
 
             // Appends attributes.
             url: this.attr(null),

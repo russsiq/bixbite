@@ -157,13 +157,13 @@
 import Module from '@/views/settings/module.js';
 
 export default {
-    name: 'files-settings',
+    name: 'attachments-settings',
 
     extends: Module,
 
     data() {
         return {
-            entity: 'files',
+            entity: 'attachments',
         }
     },
 }

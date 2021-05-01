@@ -1,7 +1,7 @@
 import Model from '@/store/model';
 
 import Article from './article';
-import File from './file';
+import Attachment from './attachment';
 
 class User extends Model {
     static fields() {
@@ -14,7 +14,7 @@ class User extends Model {
             // Дополнительная информация.
             avatar: this.string('').nullable(),
             info: this.string('').nullable(),
-            where_from: this.string('').nullable(),
+            location: this.string('').nullable(),
             last_ip: this.string('').nullable(),
 
             // Скрываемые атрибуты.
@@ -24,7 +24,7 @@ class User extends Model {
 
             // Связи с другими сущностями.
             articles: this.hasMany(Article, 'user_id', 'id'),
-            files: this.hasMany(File, 'user_id', 'id'),
+            attachments: this.hasMany(Attachment, 'user_id', 'id'),
 
             // Динамически добавляемые атрибуты.
             is_online: this.boolean(false),

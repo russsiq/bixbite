@@ -1,15 +1,15 @@
 import Quill from 'quill';
 
-import File from '@/store/models/file';
+import Attachment from '@/store/models/attachment';
 
 /**
  * Image upload handler.
  */
-const figureHandler = async function(quill, attachment) {
+const figureHandler = async function(quill, attachable) {
 
-    if (!attachment.id || !attachment.type) {
+    if (!attachable.id || !attachable.type) {
         Notification.warning({
-            message: __('Before you can upload files, you must save the article.')
+            message: __('Before you can upload attachments, you must save the article.')
         });
 
         return false;
@@ -33,10 +33,10 @@ const figureHandler = async function(quill, attachment) {
 
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            formData.append('attachment_id', attachment.id);
-            formData.append('attachment_type', attachment.type);
+            formData.append('attachable_id', attachable.id);
+            formData.append('attachable_type', attachable.type);
 
-            const image = await File.$create({
+            const image = await Attachment.$create({
                 data: formData
             });
 

@@ -2,9 +2,9 @@
 <div id="toolbar-container">
     <span class="ql-formats">
         <select class="ql-save">
-            <option value='{"state":"published"}'>Опубликовать</option>
-            <option value='{"state":"unpublished"}'>Отправить на модерацию</option>
-            <option value='{"state":"draft"}'>Оставить в черновиках</option>
+            <option value='{"state":"2"}'>Опубликовать</option>
+            <option value='{"state":"1"}'>Отправить на модерацию</option>
+            <option value='{"state":"0"}'>Оставить в черновиках</option>
         </select>
     </span>
 
@@ -60,7 +60,7 @@
 
         <span class="ql-formats">
             <button class="ql-image"></button>
-            <!-- <button class="ql-image" :disabled="!$parent.$props.attachment_id"></button>
+            <!-- <button class="ql-image" :disabled="!$parent.$props.attachable_id"></button>
             <button class="ql-video"></button>
             <button class="ql-formula"></button> -->
         </span>

@@ -8,7 +8,7 @@ import notFound from './not-found';
 import articles from './articles';
 import categories from './categories';
 import comments from './comments';
-import files from './files';
+import attachments from './attachments';
 import notes from './notes';
 import privileges from './privileges';
 import settings from './settings';
@@ -25,7 +25,7 @@ export default [
     ...articles,
     ...categories,
     ...comments,
-    ...files,
+    ...attachments,
     ...notes,
     ...privileges,
     ...settings,

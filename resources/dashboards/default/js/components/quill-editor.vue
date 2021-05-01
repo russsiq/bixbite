@@ -11,7 +11,7 @@
 import Quill from 'quill';
 import Parchment from 'parchment';
 
-import Toolbar from './editor/toolbar.vue';
+import Toolbar from './editor/toolbar';
 import QuillFragment from './editor/quill-fragment.vue';
 import FragmentBlot from './editor/blots/FragmentBlot.js';
 
@@ -32,12 +32,12 @@ export default {
             required: true
         },
 
-        attachment: {
+        attachable: {
             type: Object,
             required: true,
-            validator(attachment) {
-                return 'number' === typeof attachment.id
-                    && 'string' === typeof attachment.type;
+            validator(attachable) {
+                return 'number' === typeof attachable.id
+                    && 'string' === typeof attachable.type;
             }
         },
     },
@@ -68,7 +68,7 @@ export default {
     },
 
     async mounted() {
-        await this.loadFromJsonPath('files');
+        await this.loadFromJsonPath('attachables');
         await this.loadFromJsonPath('articles');
 
         this.$refs.editor.innerHTML = this.$props.value.trim();
@@ -132,7 +132,7 @@ export default {
             // Handlers can also be added post initialization.
             quill.getModule('toolbar')
                 .addHandler('image', () => {
-                    figureHandler(quill, this.$props.attachment);
+                    figureHandler(quill, this.$props.attachable);
                 });
 
             return quill;

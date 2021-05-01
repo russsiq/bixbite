@@ -10,7 +10,7 @@
                 <label class="control-label">Заголовок</label>
                 <div class="input-group">
                     <input type="text" v-model="article.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
-                    <a v-if="isPublished" :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
+                    <a v-if="article.is_published" :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="mb-3">
-                <quill-editor :attachment="attachment" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
+                <quill-editor :attachable="attachable" :value="article.raw_content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
                         <a href="#card_files" data-toggle="collapse" class="d-block"><i class="fa fa-files-o text-muted"></i> Прикрепленные файлы</a>
                     </div>
                     <div id="card_files" class="card-body table-responsive">
-                        <table v-if="article.files.length" class="table table-sm table-hover">
+                        <table v-if="article.attachments.length" class="table table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -55,14 +55,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="file in article.files">
-                                    <td>{{ file.id }}</td>
-                                    <td>{{ file.title }}</td>
-                                    <td>{{ file.extension }}</td>
-                                    <!-- <td>{{ file.category }}</td> -->
+                                <tr v-for="attachment in article.attachments" :key=" attachment.id">
+                                    <td>{{ attachment.id }}</td>
+                                    <td>{{ attachment.title }}</td>
+                                    <td>{{ attachment.extension }}</td>
+                                    <!-- <td>{{ attachment.category }}</td> -->
                                     <td class="text-right d-print-none">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-link" @click="fileDelete(file)">
+                                            <button type="button" class="btn btn-link" @click="attachmentDelete(attachment)">
                                                 <i class="fa fa-trash-o text-danger"></i>
                                             </button>
                                         </div>
@@ -225,7 +225,7 @@ import {
 
 import Quill from 'quill';
 
-import File from '@/store/models/file';
+import Attachment from '@/store/models/attachment';
 
 import QuillEditor from '@/components/quill-editor.vue';
 import ImageUploader from '@/components/image-uploader.vue';
@@ -265,7 +265,7 @@ export default {
 
             saveTimer: null,
 
-            attachment: {
+            attachable: {
                 id: this.$props.id,
                 type: this.$props.model.entity
             },
@@ -313,11 +313,7 @@ export default {
          * @return {Boolean}
          */
         showedForm() {
-            return Object.keys(this.article).length > 0;
-        },
-
-        isPublished() {
-            return 'published' === this.article.state;
+            return this.article.id && this.article.id > 0;
         },
 
         classState() {
@@ -415,12 +411,12 @@ export default {
                 .then(this.fillForm);
         },
 
-        fileDelete(file) {
-            if (this.article.image_id === file.id) {
+        attachmentDelete(attachment) {
+            if (this.article.image_id === attachment.id) {
                 return alert(`Это основное изображение записи.`)
             }
 
-            if (!confirm(`Хотите удалить это изображение [${file.id}] с сервера?`)) {
+            if (!confirm(`Хотите удалить это изображение [${attachment.id}] с сервера?`)) {
                 return false;
             }
 
@@ -430,13 +426,13 @@ export default {
 
             const html = quillComponent.editor.root;
             const [...images] = html.querySelectorAll('figure');
-            const selectedImage = images.find(image => +image.dataset.id === file.id);
+            const selectedImage = images.find(image => +image.dataset.id === attachment.id);
 
             selectedImage && selectedImage.remove();
 
-            File.$delete({
+            Attachment.$delete({
                 params: {
-                    id: file.id
+                    id: attachment.id
                 }
             })
             .then((response) => {

@@ -1,7 +1,7 @@
 import Model from '@/store/model';
 
 import User from './user';
-import File from './file';
+import Attachment from './attachment';
 
 class Note extends Model {
     static fields() {
@@ -17,8 +17,8 @@ class Note extends Model {
 
             // Связи с другими сущностями.
             user: this.belongsTo(User, 'user_id'),
-            files: this.morphMany(File, 'attachment_id', 'attachment_type'),
-            image: this.hasOne(File, 'id', 'image_id'),
+            attachments: this.morphMany(Attachment, 'attachable_id', 'attachable_type'),
+            image: this.hasOne(Attachment, 'id', 'image_id'),
 
             // Временные метки.
             created_at: this.string(),

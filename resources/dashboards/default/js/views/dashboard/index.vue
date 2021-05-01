@@ -78,7 +78,7 @@ export default {
                 icon: 'fa-folder-open-o',
             }, {
                 id: 3,
-                name: 'files',
+                name: 'attachments',
                 title: 'Файловый менеджер',
                 icon: 'fa-files-o',
             // }, {

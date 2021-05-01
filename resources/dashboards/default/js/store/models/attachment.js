@@ -2,11 +2,11 @@ import Model from '@/store/model';
 
 import User from './user';
 
-class File extends Model {
+class Attachment extends Model {
     static state() {
         return {
             allowedFilters: {
-                files: {
+                attachments: {
                     'id': {
                         type: 'numeric'
                     },
@@ -41,8 +41,8 @@ class File extends Model {
             // Relation and other indexed keys.
             user_id: this.number().nullable(),
             parent_id: this.number().nullable(),
-            attachment_id: this.number().nullable(),
-            attachment_type: this.string().nullable(),
+            attachable_id: this.number().nullable(),
+            attachable_type: this.string().nullable(),
 
             // Main content.
             title: this.string().nullable(),
@@ -58,7 +58,7 @@ class File extends Model {
             downloads: this.number(0),
 
             // Связи с другими сущностями.
-            attachment: this.morphTo('attachment_id', 'attachment_type'),
+            attachment: this.morphTo('attachable_id', 'attachable_type'),
             user: this.belongsTo(User, 'user_id'),
 
             // // Appending when download.
@@ -80,6 +80,6 @@ class File extends Model {
     }
 }
 
-File.entity = 'files';
+Attachment.entity = 'attachments';
 
-export default File;
+export default Attachment;

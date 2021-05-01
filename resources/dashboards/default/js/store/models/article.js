@@ -1,6 +1,6 @@
 import Model from '@/store/model';
 
-import File from './file';
+import Attachment from './attachment';
 import Category from './category';
 import Comment from './comment';
 import Tag from './tag';
@@ -59,7 +59,7 @@ class Article extends Model {
             id: this.attr(null),
             categories: this.morphToMany(Category, Categoryable, 'category_id', 'categoryable_id', 'categoryable_type'),
             comments: this.morphMany(Comment, 'commentable_id', 'commentable_type'),
-            files: this.morphMany(File, 'attachment_id', 'attachment_type'),
+            attachments: this.morphMany(Attachment, 'attachable_id', 'attachable_type'),
             tags: this.morphToMany(Tag, Taggable, 'tag_id', 'taggable_id', 'taggable_type'),
             user_id: this.number(1),
             image_id: this.number().nullable(),
@@ -90,7 +90,7 @@ class Article extends Model {
 
             // Count relationship.
             comments_count: this.number(0),
-            files_count: this.number(0),
+            attachments_count: this.number(0),
 
             // Appends attributes.
             url: this.attr('').nullable(),
@@ -98,7 +98,7 @@ class Article extends Model {
             // Связи с другими сущностями.
             //img: this.string().nullable(),
             user: this.belongsTo(User, 'user_id'),
-            image: this.hasOne(File, 'image_id', 'attachment_id'),
+            image: this.hasOne(Attachment, 'image_id', 'attachable_id'),
 
             // Временные метки.
             created_at: this.string(),
