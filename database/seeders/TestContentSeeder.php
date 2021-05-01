@@ -7,11 +7,11 @@ use Illuminate\Database\Seeder;
 class TestContentSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
             UsersTableSeeder::class,

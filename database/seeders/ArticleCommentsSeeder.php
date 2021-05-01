@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class ArticleCommentsSeeder extends Seeder
 {

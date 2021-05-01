@@ -7,11 +7,11 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Model::unguard();
 
@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             ModulesTableSeeder::class,
             PrivilegesTableSeeder::class,
             SettingsTableSeeder::class,
-
         ]);
 
         // Model::reguard();

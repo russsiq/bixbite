@@ -15,7 +15,7 @@ class ArticleTagsSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $tags = Tag::pluck('id')->toArray();
         $articles = Article::pluck('id')->toArray();

@@ -8,16 +8,12 @@ use Illuminate\Database\Seeder;
 class CommentsTableSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Truncate used tables.
-        // Comment::truncate();
-
-        // Seeding used table.
         Comment::factory()->count(50)->create();
     }
 }

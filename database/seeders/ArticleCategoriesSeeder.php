@@ -15,7 +15,7 @@ class ArticleCategoriesSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $categories = Category::pluck('id')->toArray();
         $articles = Article::pluck('id')->toArray();

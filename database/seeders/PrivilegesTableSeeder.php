@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- *
  * Следующие привилегии доступны только владельцам сайта:
  * - privileges,
  * - settings,
@@ -17,11 +16,11 @@ use Illuminate\Support\Facades\DB;
 class PrivilegesTableSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Подготовка массива привилегий.
         $privileges = [
@@ -90,7 +89,6 @@ class PrivilegesTableSeeder extends Seeder
             $inserting[] = [
                 'privilege' => $privilege,
                 'description' => trans('privileges.'.$privilege),
-
             ];
         }
 

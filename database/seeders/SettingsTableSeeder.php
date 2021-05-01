@@ -11,18 +11,17 @@ use Illuminate\Support\Facades\DB;
 class SettingsTableSeeder extends Seeder
 {
     /**
-     * Запустить наполнение базы данных.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $default = [
             'module_name' => null,
             'name' => null,
             'type' => 'string',
             'value' => null,
-
         ];
 
         DB::table('settings')->insert($this->getArticles($default));
@@ -95,7 +94,7 @@ class SettingsTableSeeder extends Seeder
     protected function getFiles(array $def): array
     {
         $out = [];
-        $def['module_name'] = 'files';
+        $def['module_name'] = 'attachments';
 
         // general
 

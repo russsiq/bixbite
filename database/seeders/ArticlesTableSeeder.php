@@ -15,7 +15,7 @@ class ArticlesTableSeeder extends Seeder
      *
      * @const int
      */
-    public const COUNT_TO_SEED = 120;
+    public const COUNT_TO_SEED = 88;
 
     /**
      * Run the database seeds.
@@ -56,7 +56,7 @@ class ArticlesTableSeeder extends Seeder
             ->get();
     }
 
-    public static function ensureMinimumSeeding()
+    public static function ensureMinimumSeeding(): void
     {
         $count = Article::count();
 
