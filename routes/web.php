@@ -37,7 +37,7 @@ Route::resource('comments', CommentsController::class)->only(['edit','update','d
 Route::get('articles', [ArticlesController::class, 'index'])->name('articles.index');
 Route::match(['get','post'], 'search', [ArticlesController::class, 'search'])->name('articles.search');
 Route::get('tags', [TagsController::class, 'index'])->name('tags.index');
-Route::get('tags/{tag:title}', [ArticlesController::class, 'tag'])->name('tags.tag');
+Route::get('tags/{tag:slug}', [ArticlesController::class, 'tag'])->name('tags.tag');
 
 Route::get('downloads/{attachment:id}', DownloadsController::class)->name('attachment.download');
 
