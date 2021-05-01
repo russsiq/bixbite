@@ -33,11 +33,16 @@ class CommentStoreRequest extends BaseFormRequest
 
         $input['content'] = $this->prepareContent($this->input('content'));
 
+        if (is_numeric($this->input('parent_id'))) {
+            $input['parent_id'] = $this->input('parent_id');
+        } else {
+            unset($input['parent_id']);
+        }
+
         $this->replace($input)
             ->merge([
                 // Default value.
                 'is_approved' => ($this->user() and $this->user()->hasRole('owner')) or ! setting('comments.moderate'),
-                'parent_id' => $this->input('parent_id', null),
 
                 // Default value from route.
                 'commentable_id' => (int) $this->route('commentable_id'),
@@ -94,28 +99,24 @@ class CommentStoreRequest extends BaseFormRequest
             'is_approved' => [
                 'required',
                 'boolean',
-
             ],
 
             'parent_id' => [
-                'nullable',
+                'sometimes',
                 'integer',
                 'exists:comments,id',
-
             ],
 
             'user_id' => [
                 'sometimes',
                 'integer',
                 'exists:users,id',
-
             ],
 
             'commentable_type' => [
                 'bail',
                 'required',
                 'string',
-
             ],
 
             'commentable_id' => [
@@ -123,7 +124,6 @@ class CommentStoreRequest extends BaseFormRequest
                 'required',
                 'integer',
                 'exists:'.$this->commentable_type.',id',
-
             ],
 
             // To prevent guests to use the email and name of users.
@@ -133,7 +133,6 @@ class CommentStoreRequest extends BaseFormRequest
                 'between:3,255',
                 'string',
                 'unique:users,name',
-
             ],
 
             'email' => [
@@ -142,12 +141,10 @@ class CommentStoreRequest extends BaseFormRequest
                 'between:6,255',
                 'email',
                 'unique:users,email',
-
             ],
 
             'user_ip' => [
                 'required',
-
             ],
 
             // 'captcha' => [
@@ -160,16 +157,13 @@ class CommentStoreRequest extends BaseFormRequest
                 ! auth()->check() && config('g_recaptcha.used')
                     ? 'g_recaptcha'
                     : 'nullable',
-
             ],
 
             'content' => [
                 'required',
                 'string',
                 'between:10,1500',
-
             ],
-
         ];
     }
 }
