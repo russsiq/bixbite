@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'role' => $this->faker->randomElement([
                 'admin', 'moder', 'user',
             ]),
-            'avatar' => asset('storage/avatars/noavatar.png'),
+            'avatar' => null,
             'info' => null,
             'location' => null,
             'last_ip' => null,
