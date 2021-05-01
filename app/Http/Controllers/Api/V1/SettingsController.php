@@ -107,7 +107,7 @@ class SettingsController extends ApiController
      */
     public function store(StoreSettingRequest $request): JsonResponse
     {
-        $setting = Setting::create($request->all());
+        $setting = Setting::create($request->validated());
 
         $resource = new SettingResource($setting);
 
@@ -142,7 +142,7 @@ class SettingsController extends ApiController
      */
     public function update(UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
-        $setting->update($request->all());
+        $setting->update($request->validated());
 
         $resource = new SettingResource($setting);
 

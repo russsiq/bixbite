@@ -39,7 +39,7 @@ class ArticlesController extends Controller
         ])
             ->withCount([
                 'comments',
-                'files',
+                'attachments',
             ])
             ->advancedFilter();
 
@@ -59,7 +59,7 @@ class ArticlesController extends Controller
     {
         $article = Article::create($request->validated());
 
-        $resource = new ArticleResource($article);
+        $resource = new ArticleResource($article->refresh());
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
@@ -75,7 +75,7 @@ class ArticlesController extends Controller
     {
         $article->load([
             'categories',
-            'files',
+            'attachments',
             'tags',
             'user',
         ]);
@@ -99,7 +99,7 @@ class ArticlesController extends Controller
 
         $article->load([
             'categories',
-            'files',
+            'attachments',
             'tags',
             'user',
         ]);
@@ -128,13 +128,17 @@ class ArticlesController extends Controller
             case 'published':
                 $query->whereHas('categories')
                     ->update([
-                        'state' => $attribute,
+                        'state' => 2,
                     ]);
                 break;
             case 'unpublished':
+                $query->update([
+                    'state' => 1,
+                ]);
+                break;
             case 'draft':
                 $query->update([
-                    'state' => $attribute,
+                    'state' => 0,
                 ]);
                 break;
             case 'on_mainpage':

@@ -49,7 +49,7 @@ class XFieldsController extends ApiController
      */
     public function store(StoreXFieldRequest $request)
     {
-        $x_field = XField::create($request->all());
+        $x_field = XField::create($request->validated());
 
         $resource = new XFieldResource($x_field);
 
@@ -84,7 +84,7 @@ class XFieldsController extends ApiController
      */
     public function update(UpdateXFieldRequest $request, XField $x_field)
     {
-        $x_field->update($request->all());
+        $x_field->update($request->validated());
 
         $resource = new XFieldResource($x_field);
 

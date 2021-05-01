@@ -47,7 +47,7 @@ class CategoriesController extends ApiController
      */
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $category = Category::create($request->all());
+        $category = Category::create($request->validated());
 
         $resource = new CategoryResource($category);
 
@@ -67,7 +67,7 @@ class CategoriesController extends ApiController
             'articles',
         ])
             ->load([
-                'files',
+                'attachments',
             ]);
 
         $resource = new CategoryResource($category);
@@ -85,7 +85,7 @@ class CategoriesController extends ApiController
      */
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        $category->update($request->all());
+        $category->update($request->validated());
 
         $resource = new CategoryResource($category);
 

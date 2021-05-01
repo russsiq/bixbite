@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
+use App\Models\Attachment;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
@@ -11,37 +11,20 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class DownloadsController extends BaseController
 {
     /**
-     * Модель Файл.
-     *
-     * @var File
-     */
-    protected $model;
-
-    /**
-     * Создать экземпляр контроллера.
-     *
-     * @param  File  $model
-     */
-    public function __construct(File $model)
-    {
-        $this->model = $model;
-    }
-
-    /**
      * Скачать файл с сайта.
      *
-     * @param  File  $file
+     * @param  Attachment  $attachment
      * @return BinaryFileResponse
      */
-    public function __invoke(File $file): BinaryFileResponse
+    public function __invoke(Attachment $attachment): BinaryFileResponse
     {
-        $file->increment('downloads');
+        $attachment->increment('downloads');
 
         return response()
             ->download(
-                $file->absolute_path,
-                $file->title.'.'.$file->extension, [
-                    'Content-Type:'.$file->mime_type,
+                $attachment->absolute_path,
+                $attachment->title.'.'.$attachment->extension, [
+                    'Content-Type:'.$attachment->mime_type,
                 ]
             );
     }

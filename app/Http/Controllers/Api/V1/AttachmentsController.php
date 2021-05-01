@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\File\Store as StoreFileRequest;
-use App\Http\Requests\Api\V1\File\Update as UpdateFileRequest;
-use App\Http\Resources\FileCollection;
-use App\Http\Resources\FileResource;
-use App\Models\File;
+use App\Http\Requests\Api\V1\Attachment\Store as StoreAttachmentRequest;
+use App\Http\Requests\Api\V1\Attachment\Update as UpdateAttachmentRequest;
+use App\Http\Resources\AttachmentCollection;
+use App\Http\Resources\AttachmentResource;
+use App\Models\Attachment;
 use Illuminate\Http\JsonResponse;
 
-class FilesController extends ApiController
+class AttachmentsController extends ApiController
 {
     /**
      * Создать экземпляр контроллера.
      */
     public function __construct()
     {
-        $this->authorizeResource(File::class, 'file');
+        $this->authorizeResource(Attachment::class, 'file');
     }
 
     /**
@@ -27,13 +27,13 @@ class FilesController extends ApiController
      */
     public function index()
     {
-        $files = File::with([
+        $attachments = Attachment::with([
             'user',
-            'attachment',
+            'attachable',
         ])
             ->advancedFilter();
 
-        $collection = new FileCollection($files);
+        $collection = new AttachmentCollection($attachments);
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
@@ -42,15 +42,15 @@ class FilesController extends ApiController
     /**
      * Создать и сохранить сущность в хранилище.
      *
-     * @param  StoreFileRequest  $request
+     * @param  StoreAttachmentRequest  $request
      * @return JsonResponse
      */
-    public function store(StoreFileRequest $request)
+    public function store(StoreAttachmentRequest $request)
     {
-        $file = app(File::class)
+        $attachment = app(Attachment::class)
             ->manageUpload($request->file('file'), $request->except('file'));
 
-        $resource = new FileResource($file);
+        $resource = new AttachmentResource($attachment);
 
         return $resource->additional([
             'message' => __('msg.uploaded_success'),
@@ -62,17 +62,17 @@ class FilesController extends ApiController
     /**
      * Отобразить сущность.
      *
-     * @param  File  $file
+     * @param  Attachment  $attachment
      * @return JsonResponse
      */
-    public function show(File $file)
+    public function show(Attachment $attachment)
     {
-        $file->load([
+        $attachment->load([
             'user',
-            'attachment',
+            'attachable',
         ]);
 
-        $resource = new FileResource($file);
+        $resource = new AttachmentResource($attachment);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -81,15 +81,15 @@ class FilesController extends ApiController
     /**
      * Обновить сущность в хранилище.
      *
-     * @param  UpdateFileRequest  $request
-     * @param  File  $file
+     * @param  UpdateAttachmentRequest  $request
+     * @param  Attachment  $attachment
      * @return JsonResponse
      */
-    public function update(UpdateFileRequest $request, File $file)
+    public function update(UpdateAttachmentRequest $request, Attachment $attachment)
     {
-        $file->update($request->all());
+        $attachment->update($request->validated());
 
-        $resource = new FileResource($file);
+        $resource = new AttachmentResource($attachment);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
@@ -98,12 +98,12 @@ class FilesController extends ApiController
     /**
      * Удалить сущность из хранилища.
      *
-     * @param  File  $file
+     * @param  Attachment  $attachment
      * @return JsonResponse
      */
-    public function destroy(File $file)
+    public function destroy(Attachment $attachment)
     {
-        $file->delete();
+        $attachment->delete();
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

@@ -92,7 +92,7 @@ class CommentsController extends ApiController
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        $comment->update($request->all());
+        $comment->update($request->validated());
 
         $resource = new CommentResource($comment);
 

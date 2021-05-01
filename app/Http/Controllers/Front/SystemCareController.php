@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 class SystemCareController extends BaseController
 {
@@ -81,7 +82,7 @@ class SystemCareController extends BaseController
     public function clearXCache()
     {
         if (function_exists('xcache_get')) {
-            xcache_clear_cache(XC_TYPE_PHP);
+            \xcache_clear_cache(XC_TYPE_PHP);
         }
     }
 
@@ -93,13 +94,13 @@ class SystemCareController extends BaseController
     public function clearOpCache()
     {
         if (function_exists('opcache_invalidate')) {
-            collect(\File::allFiles([
+            collect(File::allFiles([
                 base_path('app'),
                 base_path('bootstrap'),
                 base_path('resources'),
                 base_path('storage'.DS.'framework'.DS.'views'),
             ]))->filter(function ($value) {
-                return \File::extension($value) == 'php';
+                return File::extension($value) == 'php';
             })->each(function ($file) {
                 opcache_invalidate($file, true);
             });

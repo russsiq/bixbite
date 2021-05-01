@@ -52,7 +52,7 @@ class NotesController extends ApiController
     public function index(Request $request)
     {
         $notes = Note::with([
-            'files',
+            'attachments',
             'user:users.id,users.name',
         ])
             ->where('user_id', $request->user()->id)
@@ -93,7 +93,7 @@ class NotesController extends ApiController
      */
     public function store(StoreNoteRequest $request)
     {
-        $note = Note::create($request->all());
+        $note = Note::create($request->validated());
 
         $resource = new NoteResource($note);
 
@@ -110,7 +110,7 @@ class NotesController extends ApiController
     public function show(Note $note)
     {
         $note->load([
-            'files',
+            'attachments',
             'user',
         ]);
 
@@ -129,10 +129,10 @@ class NotesController extends ApiController
      */
     public function update(UpdateNoteRequest $request, Note $note)
     {
-        $note->update($request->all());
+        $note->update($request->validated());
 
         $note->load([
-            // 'files',
+            // 'attachments',
             // 'user',
         ]);
 

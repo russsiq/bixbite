@@ -64,7 +64,7 @@ class CommentsController extends SiteController
     {
         $this->authorize('create', Comment::class);
 
-        $comment = $this->model->create($request->all());
+        $comment = $this->model->create($request->validated());
         $entity = $comment->commentable;
 
         // Если добавлен первый комментарий к записи.
