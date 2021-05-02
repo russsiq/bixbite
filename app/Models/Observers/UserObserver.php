@@ -6,6 +6,7 @@ namespace App\Models\Observers;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\UploadedFile;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Наблюдатель модели `User`.
@@ -87,12 +88,21 @@ class UserObserver extends BaseObserver
         // 3 Обновим комментарии якобы они от незарегистрированного пользователя,
         //   но только после удаления новостей пользователя см. пункт 2,
         //   т.к. он мог наоставлять комментов к своим записям, а это лишние запросы.
-        $user->comments()->update(['user_id' => null, 'name' => $user->name, 'email' => $user->email]);
+        $user->comments()->update([
+            'user_id' => null,
+            'author_name' => $user->name,
+            'author_email' => $user->email,
+        ]);
 
-        // 4 Просто удаляем, т.к. заметки не имеют реляц. связей.
-        $user->notes()->delete();
+        // 4 Удаляем заметки.
+        $user->notes()->get(['id'])->each->delete();
 
-        // 5 Всегда удаляем аватар пользователя.
+        // 5 Удаляем токены.
+        if (in_array(HasApiTokens::class, class_uses(User::class))) {
+            $user->tokens->each->delete();
+        }
+
+        // 6 Всегда удаляем аватар пользователя.
         $this->deleteAvatar($user);
     }
 
