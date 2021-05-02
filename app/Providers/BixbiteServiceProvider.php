@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
+use App\Contracts\Actions\Article\CreatesArticle;
+use App\Contracts\Actions\Article\DeletesArticle;
+use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Contracts\BixBiteContract;
@@ -34,8 +37,13 @@ class BixbiteServiceProvider extends ServiceProvider
         'pageinfo' => PageInfo::class,
         BixBiteContract::class => BixBite::class,
         // BixBite Actions ...
+        CreatesArticle::class => CreateArticleAction::class,
+        DeletesArticle::class => DeleteArticleAction::class,
+        UpdatesArticle::class => UpdateArticleAction::class,
+
         UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
         UpdatesUserPasswords::class => UpdateUserPasswordAction::class,
+        DeletesUsers::class => DeleteUser::class,
     ];
 
     /**
