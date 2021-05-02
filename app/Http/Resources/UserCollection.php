@@ -2,17 +2,17 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ArticleCollection extends ResourceCollection
+class UserCollection extends ResourceCollection
 {
     /**
      * The resource that this resource collects.
      *
      * @var string
      */
-    public $collects = Article::class;
+    public $collects = User::class;
 
     /**
      * Transform the resource into a JSON array.
