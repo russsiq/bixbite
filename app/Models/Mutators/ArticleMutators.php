@@ -24,9 +24,9 @@ trait ArticleMutators
     /**
      * $this->raw_content
      *
-     * @return boolean
+     * @return string|null
      */
-    public function getRawContentAttribute(): string
+    public function getRawContentAttribute(): ?string
     {
         return $this->attributes['content'];
     }
