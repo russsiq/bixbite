@@ -24,11 +24,11 @@ trait ArticleMutators
     /**
      * $this->raw_content
      *
-     * @return string|null
+     * @return string
      */
-    public function getRawContentAttribute(): ?string
+    public function getRawContentAttribute(): string
     {
-        return $this->attributes['content'];
+        return (string) $this->attributes['content'];
     }
 
     public function getUrlAttribute()
