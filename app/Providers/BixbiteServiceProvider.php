@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Actions\Article\CreateArticleAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
 use App\Contracts\Actions\Article\CreatesArticle;
 use App\Contracts\Actions\Article\DeletesArticle;
+use App\Contracts\Actions\Article\UpdatesArticle;
 use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
