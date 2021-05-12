@@ -68,7 +68,7 @@ export default {
     },
 
     async mounted() {
-        await this.loadFromJsonPath('attachables');
+        await this.loadFromJsonPath('attachments');
         await this.loadFromJsonPath('articles');
 
         this.$refs.editor.innerHTML = this.$props.value.trim();
