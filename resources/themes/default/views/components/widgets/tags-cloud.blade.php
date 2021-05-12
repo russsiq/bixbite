@@ -11,7 +11,7 @@
             @empty ($tags)
                 @lang('common.msg.not_found')
             @else
-                {{ wrap_attr($tags, '<a href="%url" class="mb-1 mr-1 btn btn-sm btn-outline-dark" rel="tag">%title</a>', ' ') }}
+                {{ wrap_attr($tags, '<a href="%url" class="mb-1 me-1 btn btn-sm btn-outline-dark" rel="tag">%title</a>', ' ') }}
             @endforelse
         </div>
     </div>

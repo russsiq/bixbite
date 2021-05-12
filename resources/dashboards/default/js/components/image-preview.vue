@@ -25,7 +25,7 @@
         </template>
 
         <template slot="modal__footer">
-            <button type="button" class="btn btn-outline-success mr-2" @click="updateImage">Сохранить</button>
+            <button type="button" class="btn btn-outline-success me-2" @click="updateImage">Сохранить</button>
             <button type="button" class="btn btn-outline-secondary" @click="closeModal">Отменить</button>
         </template>
     </modal>

@@ -94,7 +94,7 @@
                 <template v-if="filterCandidates.length && filterCandidates[0].query_1">
                     <button type="button" @click="applyFilter" class="btn btn-outline-success">{{ 'Apply' | trans }}</button>
                 </template>
-                <button type="reset" v-if="appliedFilters.length > 0" @click="resetFilter" class="btn btn-outline-dark ml-2">{{ 'Reset' | trans }}</button>
+                <button type="reset" v-if="appliedFilters.length > 0" @click="resetFilter" class="btn btn-outline-dark ms-2">{{ 'Reset' | trans }}</button>
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="col col-md-6">
                     <div class="d-flex">
-                        <div class="has-float-label ms-auto mr-2">
+                        <div class="has-float-label ms-auto me-2">
                             <label>{{ 'Count' | trans }}</label>
                             <select class="form-select" v-model="query.limit" @input="changePage(1)" :disabled="loading">
                                 <option v-for="limit in limits" :value="limit">{{ limit }}</option>

@@ -30,7 +30,7 @@
                     </ul>
                 </nav>
 
-                <main class="col-md-9 ml-sm-auto p-3 border-bottom border-right">
+                <main class="col-md-9 ms-sm-auto p-3 border-bottom border-right">
                     <div class="mb-3">
                         <div class="input-group">
                             <input type="text" :value="template && template.filename" readonly class="form-control" placeholder="Выберите шаблон для редактирования ..." autocomplete="off" required />

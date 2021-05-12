@@ -95,8 +95,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-select.form-control[multiple] {
-    height: 159px;
+select.form-select[multiple] {
+    min-height: 160px;
 }
 
 option:disabled {

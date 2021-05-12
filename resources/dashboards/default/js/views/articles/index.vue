@@ -35,7 +35,7 @@
                 [{{ row.created_at | dateToString }}] <span v-if="row.updated_at">[{{ row.updated_at | dateToString }}]</span>
             </td>
             <td class="hidden-xs">
-                <span v-for="category in row.categories" class="cat-links mr-1">
+                <span v-for="category in row.categories" class="cat-links me-1">
                     <a :href="category.url" target="_blank">{{ category.title }}</a>
                 </span>
             </td>

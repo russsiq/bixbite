@@ -17,7 +17,7 @@
     <template slot="modal__footer">
         <button v-if="isEditMode" type="button" form="form_html_content" class="btn btn-outline-danger me-auto" @click="removeFragment">Удалить</button>
 
-        <button type="submit" form="form_html_content" class="btn btn-outline-success mr-2">
+        <button type="submit" form="form_html_content" class="btn btn-outline-success me-2">
             <span v-if="isEditMode">Обновить</span>
             <span v-else>Вставить</span>
         </button>

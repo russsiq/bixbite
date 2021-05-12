@@ -16,7 +16,7 @@
     </template>
 
     <template slot="modal__footer">
-        <button type="button" class="btn btn-outline-secondary mr-2" @click="close()">{{ 'btn.cancel' | trans }}</button>
+        <button type="button" class="btn btn-outline-secondary me-2" @click="close()">{{ 'btn.cancel' | trans }}</button>
         <button type="button" class="btn btn-outline-success" @click="updateFile()">{{ 'btn.save' | trans }}</button>
     </template>
 </modal>
