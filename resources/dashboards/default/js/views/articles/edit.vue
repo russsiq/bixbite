@@ -318,23 +318,21 @@ export default {
 
         classState() {
             return (state) => {
-                const states = {
-                    published: 'text-success',
-                    unpublished: 'text-warning',
-                };
+                const states = [
+                    'text-danger', 'text-warning', 'text-success',
+                ];
 
-                return states[state] || 'text-danger';
+                return states[state] || states[0];
             }
         },
 
         titleState() {
             return (state) => {
-                const states = {
-                    published: 'опубликована',
-                    unpublished: 'на модерации',
-                };
+                const states = [
+                    'черновик', 'на модерации', 'опубликована',
+                ];
 
-                return states[state] || 'черновик';
+                return states[state] || 'неизвестно';
             }
         },
     },
