@@ -116,7 +116,7 @@ class XFieldRequest extends BaseFormRequest
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\w\s\d\-\_\.]+$/u',
+                'regex:/^[\w\s\d\-\_\.\,\(\)]+$/u',
 
             ],
 
