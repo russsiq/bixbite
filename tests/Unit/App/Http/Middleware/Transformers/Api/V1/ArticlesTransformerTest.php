@@ -99,7 +99,7 @@ class ArticlesTransformerTest extends TestCase
      * Сброс статуса Записи, если не указаны категории.
      * @return void
      */
-    public function testResetStateArticleWithoutCategoriesToUnpublished(): void
+    public function testResetStateArticleWithoutCategoriesToDraft(): void
     {
         $request = $this->createRequestWithCustomData([
             'title' => 'Some title',
@@ -111,7 +111,7 @@ class ArticlesTransformerTest extends TestCase
         $transformer = $this->createTransformer($request);
         $transformed = $transformer->default();
 
-        $this->assertSame(1, $transformed['state']);
+        $this->assertSame(0, $transformed['state']);
     }
 
     /**
@@ -121,7 +121,7 @@ class ArticlesTransformerTest extends TestCase
      * Сброс статуса Записи, если статус не указан.
      * @return void
      */
-    public function testResetStateArticleWithoutStateToUnpublished(): void
+    public function testResetStateArticleWithoutStateToDraft(): void
     {
         $request = $this->createRequestWithCustomData([
             'title' => 'Some title',
@@ -131,7 +131,7 @@ class ArticlesTransformerTest extends TestCase
         $transformer = $this->createTransformer($request);
         $transformed = $transformer->default();
 
-        $this->assertSame(1, $transformed['state']);
+        $this->assertSame(0, $transformed['state']);
     }
 
     /**
