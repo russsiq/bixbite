@@ -51,6 +51,10 @@ class StoreTest extends TestCase
      */
     protected function setUp(): void
     {
+        $this->markTestSkipped(
+            'Тестируемые классы удалены.'
+        );
+
         parent::setUp();
 
         $this->ownerUser = User::factory()->asOwner()->createOne();
