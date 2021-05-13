@@ -46,16 +46,8 @@ class SqlTextLength implements Rule
      */
     public function message(): string
     {
-        $locale = $this->translator->getLocale();
-
-        $message = [
-            'en' => 'The size of the text in the :attribute must not exceed :value bytes.',
-            'ru' => 'Размер текста в поле :attribute не должен превышать :value байт.',
-        ];
-
-        return $this->translator->get(
-            $message[$locale] ?? $message['ru'], [
-            'value' => $this->length,
+        return $this->translator->get('validation.lt.file', [
+            'value' => round($this->length / 1024),
         ]);
     }
 }
