@@ -8,6 +8,7 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UsersController extends ApiController
 {
@@ -22,15 +23,16 @@ class UsersController extends ApiController
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::withCount([
             'articles',
             'comments',
         ])
-            ->advancedFilter();
+            ->advancedFilter($request->all());
 
         $collection = new UserCollection($users);
 

@@ -6,29 +6,30 @@ use App\Models\Support\CustomQueryBuilder;
 
 /**
 * @source https://github.com/codekerala/Laravel-5.6-and-Vue.j-2-Dataviewer-Advanced-Filter
+* @method \Illuminate\Database\Eloquent\Builder advancedFilter(array $input)
 */
 trait Dataviewer
 {
-    public function scopeAdvancedFilter($query)
+    public function scopeAdvancedFilter($query, array $input)
     {
-        $data = $this->validateAdvancedFilter(request()->all());
+        $validated = $this->validateAdvancedFilter($input);
 
-        return $this->processAdvancedFilter($query, $data)
-            ->orderBy($data['order_column'], $data['order_direction'])
-            ->paginate($data['limit']);
+        return $this->processAdvancedFilter($query, $validated)
+            ->orderBy($validated['order_column'], $validated['order_direction'])
+            ->paginate($validated['limit']);
             // ->appends(request()->only('f'))
     }
 
-    protected function validateAdvancedFilter(array $request)
+    protected function validateAdvancedFilter(array $input)
     {
-        $request['order_column'] = $request['order_column'] ?? 'id';
-        $request['order_direction'] = $request['order_direction'] ?? 'desc';
-        $request['limit'] = $request['limit'] ?? $this->getPerPage();
+        $input['order_column'] = $input['order_column'] ?? 'id';
+        $input['order_direction'] = $input['order_direction'] ?? 'desc';
+        $input['limit'] = $input['limit'] ?? $this->getPerPage();
 
         // // Debug.
-        // dd($request);
+        // dd($input);
 
-        $validator = validator()->make($request, [
+        $validator = validator()->make($input, [
             'order_column' => 'sometimes|required|in:'.implode(',', $this->orderableColumns()),
             'order_direction' => 'sometimes|required|in:asc,desc',
             // min:1 to get first entity.

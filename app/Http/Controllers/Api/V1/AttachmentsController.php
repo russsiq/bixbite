@@ -8,6 +8,7 @@ use App\Http\Resources\AttachmentCollection;
 use App\Http\Resources\AttachmentResource;
 use App\Models\Attachment;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AttachmentsController extends ApiController
 {
@@ -23,15 +24,16 @@ class AttachmentsController extends ApiController
      * Отобразить список сущностей с дополнительной фильтрацией,
      * включая связанные сущности.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $attachments = Attachment::with([
             'user',
             'attachable',
         ])
-            ->advancedFilter();
+            ->advancedFilter($request->all());
 
         $collection = new AttachmentCollection($attachments);
 

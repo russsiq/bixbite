@@ -23,9 +23,10 @@ class XFieldsController extends ApiController
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $x_fields = XField::with([
 
@@ -33,7 +34,7 @@ class XFieldsController extends ApiController
             ->withCount([
 
             ])
-            ->advancedFilter();
+            ->advancedFilter($request->all());
 
         $collection = new XFieldCollection($x_fields);
 

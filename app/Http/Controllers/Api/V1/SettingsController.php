@@ -47,9 +47,10 @@ class SettingsController extends ApiController
     /**
      * Отобразить список сущностей с дополнительной фильтрацией.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $settings = Setting::with([
 
@@ -57,7 +58,7 @@ class SettingsController extends ApiController
             ->withCount([
 
             ])
-            ->advancedFilter();
+            ->advancedFilter($request->all());
 
         $collection = SettingResource::collection($settings);
 

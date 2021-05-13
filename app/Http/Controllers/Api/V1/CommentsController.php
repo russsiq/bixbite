@@ -11,6 +11,7 @@ use App\Models\Comment;
 // use Illuminate\Database\Eloquent\Relations\MorphTo;
 // use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CommentsController extends ApiController
 {
@@ -48,15 +49,16 @@ class CommentsController extends ApiController
      * Отобразить весь список сущностей,
      * включая связанные сущности.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $comments = Comment::with([
             'commentable',
             'user:users.id,users.name',
         ])
-            ->advancedFilter();
+            ->advancedFilter($request->all());
 
         $collection = new CommentCollection($comments);
 
