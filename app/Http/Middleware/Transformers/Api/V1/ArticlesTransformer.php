@@ -92,10 +92,12 @@ class ArticlesTransformer implements ResourceRequestTransformer
         }
 
         if (empty($input['categories']) or empty($input['state'])) {
-            $input['state'] = 1;
+            $input['state'] = 0;
         }
 
         return array_merge($input, [
+            'meta_robots' => $this->request->input('meta_robots', 'all'),
+
             // default value to the checkbox
             'on_mainpage' => $this->request->input('on_mainpage', 0),
             'is_pinned' => $this->request->input('is_pinned', 0),

@@ -45,7 +45,7 @@ class ArticlesFeatured extends WidgetAbstract
         'direction' => 'desc',
 
         // Состояние публикации.
-        'state' => 'published',
+        'state' => 1,
 
         // Размещение на главной странице.
         'on_mainpage' => true,
@@ -149,8 +149,8 @@ class ArticlesFeatured extends WidgetAbstract
             'state' => [
                 'sometimes',
                 'required',
-                'string',
-                'in:draft,unpublished,published',
+                'integer',
+                'in:0,1,2',
 
             ],
 

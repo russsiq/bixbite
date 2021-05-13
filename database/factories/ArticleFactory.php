@@ -64,7 +64,7 @@ class ArticleFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'state' => 1,
+                'state' => 2,
             ];
         });
     }
@@ -73,7 +73,7 @@ class ArticleFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'state' => 2,
+                'state' => 1,
             ];
         });
     }

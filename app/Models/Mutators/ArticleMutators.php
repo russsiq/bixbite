@@ -18,7 +18,7 @@ trait ArticleMutators
      */
     public function getIsPublishedAttribute(): bool
     {
-        return 2 === $this->state;
+        return 1 === $this->state;
     }
 
     /**

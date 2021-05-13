@@ -42,8 +42,8 @@ use Illuminate\Support\Carbon;
  * @method \Illuminate\Database\Eloquent\Builder favorites()
  * @method \Illuminate\Database\Eloquent\Builder filter(array $filters)
  * @method \Illuminate\Database\Eloquent\Builder drafts()
- * @method \Illuminate\Database\Eloquent\Builder unPublished()
  * @method \Illuminate\Database\Eloquent\Builder published()
+ * @method \Illuminate\Database\Eloquent\Builder unPublished()
  * @method \Illuminate\Database\Eloquent\Builder visibleOnMainpage(bool $isVisible = true)
  * @method static \Illuminate\Database\Eloquent\Builder shortArticle()
  */
@@ -74,7 +74,7 @@ class Article extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    // public $timestamps = false;
 
     /**
      * The model's attributes.
@@ -282,17 +282,6 @@ class Article extends Model
     }
 
     /**
-     * Область запроса, содержащая только неопубликованные записи.
-     *
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeUnPublished(Builder $builder): Builder
-    {
-        return $builder->where('articles.state', 1);
-    }
-
-    /**
      * Область запроса, содержащая только опубликованные записи.
      *
      * @param  Builder  $builder
@@ -304,6 +293,17 @@ class Article extends Model
         //     $builder->addSelect('articles.state');
         // }
 
+        return $builder->where('articles.state', 1);
+    }
+
+    /**
+     * Область запроса, содержащая только неопубликованные записи.
+     *
+     * @param  Builder  $builder
+     * @return Builder
+     */
+    public function scopeUnPublished(Builder $builder): Builder
+    {
         return $builder->where('articles.state', 2);
     }
 

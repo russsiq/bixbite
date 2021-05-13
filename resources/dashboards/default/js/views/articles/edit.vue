@@ -74,29 +74,27 @@
                     </div>
                 </div>
 
-                <div v-if="setting.manual_meta" class="card">
-                    <div class="card-header">
-                        <a href="#card_meta" data-toggle="collapse" class="d-block"><i class="fa fa-header text-muted"></i> Мета данные</a>
-                    </div>
-                    <div id="card_meta" class="collapse">
-                        <div class="card-body">
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Описание</label>
-                                <textarea v-model="article.description" rows="3" maxlength="255" class="form-control"></textarea>
-                            </div>
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Ключевые слова</label>
-                                <input type="text" v-model="article.keywords" maxlength="255" class="form-control" autocomplete="off" />
-                            </div>
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Инструкции для поисковых роботов</label>
-                                <select class="form-select" v-model="article.robots">
-                                    <option :value="null">По умолчанию</option>
-                                    <option value="noindex">noindex</option>
-                                    <option value="nofollow">nofollow</option>
-                                    <option value="none">none</option>
-                                </select>
-                            </div>
+                <div class="card-header">
+                    <a href="#card_meta" data-toggle="collapse" class="d-block"><i class="fa fa-header text-muted"></i> Мета данные</a>
+                </div>
+                <div id="card_meta" class="collapse">
+                    <div class="card-body">
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Описание</label>
+                            <textarea v-model="article.meta_description" rows="3" maxlength="255" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Ключевые слова</label>
+                            <input type="text" v-model="article.meta_keywords" maxlength="255" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Инструкции для поисковых роботов</label>
+                            <select class="form-select" v-model="article.meta_robots">
+                                <option value="all">По умолчанию</option>
+                                <option value="noindex">noindex</option>
+                                <option value="nofollow">nofollow</option>
+                                <option value="none">none</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -132,7 +130,7 @@
                                 </template>
                                 <template v-else-if="'array' === field.type">
                                     <select class="form-select" v-model="article[field.name]">
-                                        <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
+                                        <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
                                     </select>
                                 </template>
                                 <template v-else-if="'text' === field.type">
@@ -319,7 +317,7 @@ export default {
         classState() {
             return (state) => {
                 const states = [
-                    'text-danger', 'text-warning', 'text-success',
+                    'text-danger', 'text-success', 'text-warning',
                 ];
 
                 return states[state] || states[0];
@@ -329,7 +327,7 @@ export default {
         titleState() {
             return (state) => {
                 const states = [
-                    'черновик', 'на модерации', 'опубликована',
+                    'черновик', 'опубликована', 'на модерации',
                 ];
 
                 return states[state] || 'неизвестно';

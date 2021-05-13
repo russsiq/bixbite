@@ -52,7 +52,7 @@
                     <button type="button" class="btn btn-link" @click="massUpdate([row.id], 'is_catpinned')"><i :class="classIsCatpinned(row.is_catpinned)"></i></button>
                     <button type="button" class="btn btn-link" @click="massUpdate([row.id], 'on_mainpage')"><i :class="classOnMainpage(row.on_mainpage)"></i></button>
 
-                    <a v-if="'published' === row.state" :href="row.url" target="_blank" class="btn btn-link">
+                    <a v-if="'1' == row.state" :href="row.url" target="_blank" class="btn btn-link">
                         <i class="fa fa-external-link"></i>
                     </a>
                     <button v-else type="button" class="btn btn-link" disabled><i class="fa fa-eye-slash text-muted"></i></button>
@@ -152,12 +152,10 @@ export default {
         classState() {
             return (state) => {
                 const states = [
-                    'fa fa-ban text-danger',
-                    'fa fa-times text-warning',
-                    'fa fa-check text-success',
+                    'fa fa-ban text-danger', 'fa fa-check text-success', 'fa fa-times text-warning',
                 ];
 
-                return states[state] || 'fa fa-question text-danger';
+                return states[state] || states[0];
             }
         },
 
@@ -186,9 +184,13 @@ export default {
         },
 
         toggleStateArticle(row) {
-            const state = 'published' !== row.state ? 'published' : 'draft';
+            if (! row.categories.length) {
+                return alert('Запись не имеет выбранной категории.');
+            }
 
-            row.categories.length && this.massUpdate([row.id], state);
+            const state = 1 !== row.state ? 'published' : 'draft';
+
+            this.massUpdate([row.id], state);
         },
 
         selectAll() {

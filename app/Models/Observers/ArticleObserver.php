@@ -57,8 +57,8 @@ class ArticleObserver extends BaseObserver
             $this->request->input('categories', [])
         ));
 
-        if ($article->categories->isEmpty()) {
-            $article->state = 'unpublished';
+        if ($article->state && $article->categories->isEmpty()) {
+            $article->state = 0;
         }
 
         $article->tags()->sync(array_map(

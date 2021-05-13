@@ -2,9 +2,9 @@
 <div id="toolbar-container">
     <span class="ql-formats">
         <select class="ql-save">
-            <option value='{"state":"2"}'>Опубликовать</option>
-            <option value='{"state":"1"}'>Отправить на модерацию</option>
             <option value='{"state":"0"}'>Оставить в черновиках</option>
+            <option value='{"state":"1"}'>Опубликовать</option>
+            <option value='{"state":"2"}'>Отправить на модерацию</option>
         </select>
     </span>
 

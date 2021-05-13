@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('image_id')->nullable()->constrained('attachments')->onDelete('set null');
-            $table->unsignedTinyInteger('state')->default(0)->comment('0: draft; 1: unpublished; 2: published');
+            $table->unsignedTinyInteger('state')->default(0)->comment('0: draft; 1: published; 2: unpublished');
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('teaser')->nullable();
@@ -30,7 +30,7 @@ class CreateArticlesTable extends Migration
             $table->boolean('is_favorite')->default(false);
             $table->boolean('is_pinned')->default(false);
             $table->boolean('is_catpinned')->default(false);
-            $table->unsignedTinyInteger('allow_com')->default(2)->comment('0: disable; 1: enable; 2: by default');
+            $table->unsignedTinyInteger('allow_com')->default(2)->comment('0: deny; 1: allow; 2: by default');
             $table->unsignedInteger('views')->default(0);
             $table->timestamp('published_at');
             $table->timestamps();
