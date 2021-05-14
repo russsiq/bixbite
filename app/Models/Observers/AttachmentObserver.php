@@ -54,7 +54,7 @@ class AttachmentObserver extends BaseObserver
     protected function originalPath(Attachment $attachment, string $thumbSize = null)
     {
         return $attachment->getOriginal('type')
-            .DS.$attachment->getOriginal('category')
+            .DS.$attachment->getOriginal('folder')
             .($thumbSize ? DS.$thumbSize : '')
             .DS.$attachment->getOriginal('name').'.'.$attachment->getOriginal('extension');
     }
