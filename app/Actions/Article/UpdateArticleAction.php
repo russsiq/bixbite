@@ -24,6 +24,13 @@ class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticl
             $this->validate($input)
         );
 
+        $this->article->load([
+            'categories',
+            'attachments',
+            'tags',
+            'user',
+        ]);
+
         return $this->article;
     }
 

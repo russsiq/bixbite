@@ -21,6 +21,13 @@ class FetchArticleAction extends ArticleActionAbstract implements FetchesArticle
 
         $this->authorize('view', $this->article);
 
+        $this->article->load([
+            'categories',
+            'attachments',
+            'tags',
+            'user',
+        ]);
+
         return $this->article;
     }
 

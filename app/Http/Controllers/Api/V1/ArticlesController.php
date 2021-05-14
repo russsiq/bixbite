@@ -35,9 +35,9 @@ class ArticlesController extends Controller
      */
     public function index(FetchesArticle $fetcher, Request $request): JsonResponse
     {
-        $articles = $fetcher->fetchCollection($request->all());
-
-        $collection = new ArticleCollection($articles);
+        $collection = new ArticleCollection(
+            $fetcher->fetchCollection($request->all())
+        );
 
         return $collection->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
@@ -52,9 +52,9 @@ class ArticlesController extends Controller
      */
     public function store(CreatesArticle $creator, Request $request): JsonResponse
     {
-        $article = $creator->create($request->all());
-
-        $resource = new ArticleResource($article);
+        $resource = new ArticleResource(
+            $creator->create($request->all())
+        );
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
@@ -70,16 +70,9 @@ class ArticlesController extends Controller
      */
     public function show(FetchesArticle $fetcher, Request $request, int $id): JsonResponse
     {
-        $article = $fetcher->fetch($id, $request->all());
-
-        $article->load([
-            'categories',
-            'attachments',
-            'tags',
-            'user',
-        ]);
-
-        $resource = new ArticleResource($article);
+        $resource = new ArticleResource(
+            $fetcher->fetch($id, $request->all())
+        );
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
@@ -95,16 +88,9 @@ class ArticlesController extends Controller
      */
     public function update(UpdatesArticle $updater, Request $request, Article $article): JsonResponse
     {
-        $article = $updater->update($article, $request->all());
-
-        $article->load([
-            'categories',
-            'attachments',
-            'tags',
-            'user',
-        ]);
-
-        $resource = new ArticleResource($article);
+        $resource = new ArticleResource(
+            $updater->update($article, $request->all())
+        );
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
@@ -119,8 +105,6 @@ class ArticlesController extends Controller
      */
     public function massUpdate(MassUpdatesArticle $updater, Request $request): JsonResponse
     {
-        // No need to load relationships.
-
         $collection = ArticleResource::collection(
             $updater->massUpdate($request->all())
         );
