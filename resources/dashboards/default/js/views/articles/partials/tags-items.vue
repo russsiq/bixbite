@@ -123,7 +123,9 @@ export default {
 
         fetchSuggestions() {
             this.title && Tag.$fetch({
-                    title: this.title
+                    params: {
+                        title: this.title,
+                    }
                 })
                 .then((collection) => {
                     this.suggestedTags = collection || []

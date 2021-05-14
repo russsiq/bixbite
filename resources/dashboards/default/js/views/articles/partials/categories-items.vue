@@ -69,9 +69,7 @@ export default {
     },
 
     created() {
-        Category.$fetch({
-
-            })
+        Category.$fetch()
             .then(this.fillForm);
     },
 

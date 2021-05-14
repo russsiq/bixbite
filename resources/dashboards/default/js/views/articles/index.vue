@@ -202,7 +202,11 @@ export default {
         },
 
         fetch(filter) {
-            this.$props.model.$fetch(filter)
+            this.$props.model.$fetch({
+                params: {
+                    ...filter
+                }
+            })
                 .then(this.fillTable);
         },
 
