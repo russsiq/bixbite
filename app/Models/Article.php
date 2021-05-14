@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Casts\ArticleContentAttributeCast;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -123,7 +122,7 @@ class Article extends Model
         'user_id' => 'integer',
         'image_id' => 'integer',
         'state' => 'integer',
-        'content' => ArticleContentAttributeCast::class,
+        'content' => 'string',
         'on_mainpage' => 'boolean',
         'is_favorite' => 'boolean',
         'is_pinned' => 'boolean',

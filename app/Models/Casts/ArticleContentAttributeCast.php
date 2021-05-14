@@ -15,14 +15,14 @@ class ArticleContentAttributeCast implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return mixed
+     * @return string
      */
     public function get($model, string $key, $value, array $attributes): string
     {
-        if (empty($content = $attributes['content'])) {
-            // Возвращаем пустую строку, чтобы `quill-editor`
-            // не ругался при валидации входящих данных.
-            return '';
+        $content = $attributes['content'];
+
+        if (empty($content)) {
+            return (string) $content;
         }
 
         // Give shortcodes from app settings. static::$shortcodes ???

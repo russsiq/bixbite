@@ -72,7 +72,7 @@
             <!-- <button class="ql-columns"><i class="fa fa-columns"></i></button> -->
         </span>
 
-        <span class="ql-formats">
+        <!-- <span class="ql-formats">
             <select class="ql-shortcodes" ref="ql-shortcodes">
                 <option value="[[app_url]]">{{ 'app_url' | trans }}</option>
                 <option value="[[organization]]">{{ 'organization' | trans }}</option>
@@ -80,7 +80,7 @@
                 <option value="[[contact_telephone]]">{{ 'contact_telephone' | trans }}</option>
                 <option value="[[contact_email]]">{{ 'contact_email' | trans }}</option>
             </select>
-        </span>
+        </span> -->
     </div>
 </div>
 </template>
@@ -108,16 +108,7 @@ export default {
     },
 
     mounted() {
-        this.$nextTick(() => {
-            setTimeout(() => {
-                // Почему-то это стало не нужным.
-                // const [...shortcodes] = document.querySelectorAll('.ql-shortcodes .ql-picker-options .ql-picker-item');
-                //
-                // shortcodes.forEach((item, index) => {
-                //     item.dataset.label = this.$refs['ql-shortcodes'][index].text
-                // });
-            }, 100)
-        })
+        //
     },
 
     methods: {

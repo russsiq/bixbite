@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="mb-3">
-                <quill-editor :attachable="attachable" :value="article.raw_content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
+                <quill-editor :attachable="attachable" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
     </div>
@@ -39,6 +39,77 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
             <div id="accordion">
+
+                <div v-if="setting.manual_meta" class="card card-default">
+                    <div class="card-header"><i class="fa fa-header text-muted"></i> Мета данные</div>
+                    <div class="card-body">
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Описание</label>
+                            <textarea v-model="article.meta_description" rows="3" maxlength="255" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Ключевые слова</label>
+                            <input type="text" v-model="article.meta_keywords" maxlength="255" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Инструкции для поисковых роботов</label>
+                            <select class="form-select" v-model="article.meta_robots">
+                                <option value="all">По умолчанию</option>
+                                <option value="noindex">noindex</option>
+                                <option value="nofollow">nofollow</option>
+                                <option value="none">none</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="x_fields.length" class="card card-default">
+                    <div class="card-header"><i class="fa fa-puzzle-piece"></i> Дополнительные поля</div>
+                    <div class="card-body">
+                        <div v-for="field in x_fields" :key="field.id" class="mb-3 row">
+                            <div class="col-sm-5">
+                                <label class="control-label">{{ field.title }}</label>
+                                <small class="form-text d-block text-muted">{{ field.descr }}</small>
+                            </div>
+                            <div class="col-sm-7">
+                                <template v-if="'string' === field.type">
+                                    <input type="text" v-model="article[field.name]" class="form-control" />
+                                </template>
+                                <template v-else-if="'integer' === field.type">
+                                    <input type="number" v-model="article[field.name]" class="form-control" />
+                                </template>
+                                <template v-else-if="'boolean' === field.type">
+                                    <input type="checkbox" v-model="article[field.name]" />
+                                </template>
+                                <template v-else-if="'array' === field.type">
+                                    <select class="form-select" v-model="article[field.name]">
+                                        <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
+                                    </select>
+                                </template>
+                                <template v-else-if="'text' === field.type">
+                                    <textarea v-model="article[field.name]" rows="4" class="form-control"></textarea>
+                                </template>
+                                <template v-else-if="'timestamp' === field.type">
+                                    <input-datetime-local v-model="article[field.name]" class="form-control"></input-datetime-local>
+                                </template>
+
+                                <div v-else class="alert alert-danger">Неизвестный тип поля.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <a href="#card_tags" data-toggle="collapse" class="d-block"><i class="fa fa-tags text-muted"></i> Список тегов</a>
+                    </div>
+                    <div id="card_tags">
+                        <div class="card-body">
+                            <tags-items :taggable="taggable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card card-table">
                     <div class="card-header">
                         <a href="#card_files" data-toggle="collapse" class="d-block"><i class="fa fa-files-o text-muted"></i> Прикрепленные файлы</a>
@@ -71,80 +142,6 @@
                             </tbody>
                         </table>
                         <p v-else class="alert alert-info text-center">К этой записи нет прикрепленных файлов.</p>
-                    </div>
-                </div>
-
-                <div v-if="setting.manual_meta" class="card">
-                    <div class="card-header">
-                        <a href="#card_meta" data-toggle="collapse" class="d-block"><i class="fa fa-header text-muted"></i> Мета данные</a>
-                    </div>
-                    <div id="card_meta" class="collapse">
-                        <div class="card-body">
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Описание</label>
-                                <textarea v-model="article.meta_description" rows="3" maxlength="255" class="form-control"></textarea>
-                            </div>
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Ключевые слова</label>
-                                <input type="text" v-model="article.meta_keywords" maxlength="255" class="form-control" autocomplete="off" />
-                            </div>
-                            <div class="mb-3 has-float-label">
-                                <label class="control-label">Инструкции для поисковых роботов</label>
-                                <select class="form-select" v-model="article.meta_robots">
-                                    <option value="all">По умолчанию</option>
-                                    <option value="noindex">noindex</option>
-                                    <option value="nofollow">nofollow</option>
-                                    <option value="none">none</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <a href="#card_tags" data-toggle="collapse" class="d-block"><i class="fa fa-tags text-muted"></i> Список тегов</a>
-                    </div>
-                    <div id="card_tags">
-                        <div class="card-body">
-                            <tags-items :taggable="taggable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
-                        </div>
-                    </div>
-                </div>
-
-                <div v-if="x_fields.length" class="card card-default">
-                    <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
-                    <div class="card-body">
-                        <div v-for="field in x_fields" class="mb-3 row">
-                            <div class="col-sm-5">
-                                <label class="control-label">{{ field.title }}</label>
-                                <small class="form-text d-block text-muted">{{ field.descr }}</small>
-                            </div>
-                            <div class="col-sm-7">
-                                <template v-if="'string' === field.type">
-                                    <input type="text" v-model="article[field.name]" class="form-control" />
-                                </template>
-                                <template v-else-if="'integer' === field.type">
-                                    <input type="number" v-model="article[field.name]" class="form-control" />
-                                </template>
-                                <template v-else-if="'boolean' === field.type">
-                                    <input type="checkbox" v-model="article[field.name]" />
-                                </template>
-                                <template v-else-if="'array' === field.type">
-                                    <select class="form-select" v-model="article[field.name]">
-                                        <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
-                                    </select>
-                                </template>
-                                <template v-else-if="'text' === field.type">
-                                    <textarea v-model="article[field.name]" rows="4" class="form-control"></textarea>
-                                </template>
-                                <template v-else-if="'timestamp' === field.type">
-                                    <input-datetime-local v-model="article[field.name]" class="form-control"></input-datetime-local>
-                                </template>
-
-                                <div v-else class="alert alert-danger">Неизвестный тип поля.</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

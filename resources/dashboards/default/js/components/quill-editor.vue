@@ -113,7 +113,7 @@ export default {
                                 }
                             },
                             'fragment': this.queryFragmentContent,
-                            'shortcodes': this.insertShortcode,
+                            // 'shortcodes': this.insertShortcode,
                             'save': this.saveFromEditor,
 
                             published() {
@@ -187,14 +187,14 @@ export default {
             }
         },
 
-        insertShortcode(value) {
-            if (value) {
-                const position = this.cursorPosition;
+        // insertShortcode(value) {
+        //     if (value) {
+        //         const position = this.cursorPosition;
 
-                this.editor.insertText(position, value);
-                this.editor.setSelection(position, value.length);
-            }
-        },
+        //         this.editor.insertText(position, value);
+        //         this.editor.setSelection(position, value.length);
+        //     }
+        // },
 
         saveFromEditor(value) {
             const data = JSON.parse(value);
