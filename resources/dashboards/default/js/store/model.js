@@ -15,67 +15,36 @@ export default class {
         return http;
     }
 
-    static apiToken() {
-        return store.getters['auth/api_token'];
-    }
-
-    static $fetch(params) {
+    static $fetch(config = {}) {
         return this.api()
-            .get(this.entity, {
-                params,
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            .get(this.entity, config);
     }
 
-    static $get({params}) {
+    static $get(id, config = {}) {
         return this.api()
-            .get(`${this.entity}/${params.id}`, {
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            .get(`${this.entity}/${id}`, config);
     }
 
-    static $create({data}) {
+    static $create(data, config = {}) {
         return this.api()
-            .post(this.entity, data, {
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            .post(this.entity, data, config);
     }
 
-    static $update({params, data}) {
-        const id = params.id;
-
+    static $update(id, data, config = {}) {
         return this.api()
-            .put(this.entity+'/'+id, data, {
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            .put(`${this.entity}/${id}`, data, config);
     }
 
-    static $massUpdate(ids, mass_action) {
+    static $massUpdate(ids, mass_action, config = {}) {
         return this.api()
             .put(this.entity, {
                 [this.entity]: ids,
                 mass_action: mass_action
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            }, config);
     }
 
-    static $delete({params}) {
+    static $delete(id, config = {}) {
         return this.api()
-            .delete(`${this.entity}/${params.id}`, {
-                headers: {
-                    'Authorization': 'Bearer ' + this.apiToken(),
-                },
-            });
+            .delete(`${this.entity}/${id}`, config);
     }
 }

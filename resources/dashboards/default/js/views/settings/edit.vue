@@ -74,11 +74,11 @@ export default {
         showedForm() {
             return Object.keys(this.form).length > 0;
         },
-        
+
         isEditMode() {
             return this.$props.id > 0;
         },
-        
+
         extensibles() {
             return [];
         },
@@ -86,26 +86,19 @@ export default {
 
     async mounted() {
         if (this.isEditMode) {
-            this.form = await this.$props.model.$get({
-                params: {
-                    id: this.$props.id
-                }
-            });
+            this.form = await this.$props.model.$get(this.$props.id);
         }
     },
 
     methods: {
         async onSubmit(event) {
             if (this.isEditMode) {
-                await this.$props.model.$update({
-                    params: {
-                        id: this.form.id
-                    },
-                    data: this.form
+                await this.$props.model.$update(this.form.id, {
+                    ...this.form
                 });
             } else {
                 const item = await this.$props.model.$create({
-                    data: this.form
+                    ...this.form
                 });
 
                 this.form = item;

@@ -125,11 +125,7 @@ export default {
         destroy(file) {
             const result = confirm(`Хотите удалить этот файл [${file.title}]?`);
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: file.id
-                    }
-                })
+            result && this.$props.model.$delete(file.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== file.id);
                 });

@@ -101,11 +101,7 @@ export default {
                 `Хотите безвозвратно удалить поле [${field.title}] \n из таблицы [${field.extensible}] со всеми связанными данными?`
             );
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: field.id
-                    }
-                })
+            result && this.$props.model.$delete(field.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== field.id);
                 });

@@ -149,11 +149,7 @@ export default {
         destroy(entity) {
             const result = confirm(`Хотите удалить эту Категорию [${entity.title}]?`);
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: entity.id
-                    }
-                })
+            result && this.$props.model.$delete(entity.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== entity.id);
                 });

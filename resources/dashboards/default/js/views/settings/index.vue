@@ -115,11 +115,7 @@ export default {
         destroy(row) {
             const result = confirm(`Вы уверены, что хотите удалить эту настройку: ${row.name}?`);
 
-            result && this.$props.model.$delete({
-                params: {
-                    id: row.id
-                }
-            });
+            result && this.$props.model.$delete(row.id);
         }
     },
 }

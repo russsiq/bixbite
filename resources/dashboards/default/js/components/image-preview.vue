@@ -67,11 +67,7 @@ export default {
                 this.image = {};
 
                 if ('number' === typeof id) {
-                    Attachment.$get({
-                            params: {
-                                id: id
-                            }
-                        })
+                    Attachment.$get(id)
                         .then(this.fillForm);
                 }
             }
@@ -98,15 +94,9 @@ export default {
          * Add a new title and description to image.
          */
         updateImage() {
-            Attachment.$update({
-                    params: {
-                        id: this.image_id
-                    },
-
-                    data: {
-                        title: this.image.title,
-                        description: this.image.description,
-                    }
+            Attachment.$update(this.image_id, {
+                    title: this.image.title,
+                    description: this.image.description,
                 })
                 .then(response => {
                     console.log(response);
@@ -117,11 +107,7 @@ export default {
         deleteImage() {
             const result = confirm(`Хотите удалить этот файл [${this.image.title}] с сервера?`);
 
-            result && Attachment.$delete({
-                    params: {
-                        id: this.image_id
-                    },
-                })
+            result && Attachment.$delete(this.image_id)
                 .then(response => {
                     this.$emit('destroy');
                 });

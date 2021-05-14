@@ -107,7 +107,7 @@ export default {
             const result = confirm('Вы уверены?');
 
             result && this.$props.model.$create({
-                    data: this.table
+                    ...this.table
                 })
                 .then(this.fillTable);
         },

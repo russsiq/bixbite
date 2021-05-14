@@ -29,11 +29,7 @@ export default Vue.extend({
         // Обманным путем загружаем настройки только для текущего модуля.
         // Будет выполнен запрос по адресу, например:
         // GET: `/api/v1/settings/articles`.
-        Setting.$get({
-                params: {
-                    id: this.entity
-                }
-            })
+        Setting.$get(this.entity)
             .then(this.fillForm);
     },
 
@@ -67,14 +63,8 @@ export default Vue.extend({
 
             // Если форма провалидирована, то сохраняем настройки.
             // @NB: `form.checkValidity()` – не предотвращает отправку формы.
-            form.checkValidity() && Setting.$update({
-                params: {
-                    id: this.entity
-                },
-
-                data: {
-                    ...this.form
-                }
+            form.checkValidity() && Setting.$update(this.entity, {
+                ...this.form
             });
         },
 

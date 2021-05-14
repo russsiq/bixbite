@@ -55,7 +55,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="attachment in article.attachments" :key=" attachment.id">
+                                <tr v-for="attachment in article.attachments" :key="attachment.id">
                                     <td>{{ attachment.id }}</td>
                                     <td>{{ attachment.title }}</td>
                                     <td>{{ attachment.extension }}</td>
@@ -344,11 +344,7 @@ export default {
     },
 
     created() {
-        this.$props.model.$get({
-                params: {
-                    id: this.$props.id
-                }
-            })
+        this.$props.model.$get(this.$props.id)
             .then(this.fillForm);
     },
 
@@ -394,17 +390,11 @@ export default {
             // чтобы не было зацикливаний.
             clearTimeout(this.saveTimer);
 
-            this.$props.model.$update({
-                    params: {
-                        id: this.$props.id
-                    },
-
-                    data: {
-                        ...this.article,
-                        // Дополнительные поля.
-                        // Переписать на сторону клиента.
-                        date_at: this.date_at
-                    }
+            this.$props.model.$update(this.$props.id, {
+                    ...this.article,
+                    // Дополнительные поля.
+                    // Переписать на сторону клиента.
+                    date_at: this.date_at
                 })
                 .then(this.fillForm);
         },
@@ -428,14 +418,10 @@ export default {
 
             selectedImage && selectedImage.remove();
 
-            Attachment.$delete({
-                params: {
-                    id: attachment.id
-                }
-            })
-            .then((response) => {
-                this.save();
-            });
+            Attachment.$delete(attachment.id)
+                .then((response) => {
+                    this.save();
+                });
         },
     },
 }

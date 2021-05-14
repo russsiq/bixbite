@@ -363,10 +363,8 @@ export default {
             const name = prompt('Задайте имя новому файлу: *.blade.php', 'new');
 
             name && this.$props.model.$create({
-                    data: {
-                        filename: name + '.blade.php',
-                        content: '',
-                    }
+                    filename: name + '.blade.php',
+                    content: '',
                 })
                 .then((template) => {
                     this.collection.push(template);
@@ -375,15 +373,9 @@ export default {
         },
 
         updateTemplate() {
-            this.template && this.template.id && this.$props.model.$update({
-                params: {
-                    id: this.template.id
-                },
-
-                data: {
-                    filename: this.template.filename,
-                    content: this.template.content
-                }
+            this.template && this.template.id && this.$props.model.$update(this.template.id, {
+                filename: this.template.filename,
+                content: this.template.content
             });
         },
 

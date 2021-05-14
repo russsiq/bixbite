@@ -118,15 +118,9 @@ export default {
         },
 
         toggleCompleted(note) {
-            this.$props.model.$update({
-                params: {
-                    id: note.id
-                },
-
-                data: {
-                    ...note,
-                    is_completed: !note.is_completed,
-                }
+            this.$props.model.$update(note.id, {
+                ...note,
+                is_completed: !note.is_completed,
             })
             .then((updated) => {
                 this.collection = this.collection.map((item) => {
@@ -145,11 +139,7 @@ export default {
         destroy(note) {
             const result = confirm(`Хотите удалить эту Заметку: [${note.title}] с прикрепленными файлами?`);
 
-            result && this.$props.model.$delete({
-                params: {
-                    id: note.id
-                }
-            })
+            result && this.$props.model.$delete(note.id)
             .then((response) => {
                 this.collection = this.collection.filter((item) => item.id !== note.id);
             });

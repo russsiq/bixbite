@@ -116,11 +116,7 @@ export default {
     },
 
     mounted() {
-        this.$props.model.$get({
-            params: {
-                id: this.$props.id
-            }
-        })
+        this.$props.model.$get(this.$props.id)
         .then(this.fillForm);
     },
 
@@ -141,11 +137,8 @@ export default {
                 message: 'This feature is not implemented!'
             });
 
-            // this.model.$update({
-            //     params: {
-            //         id: this.form.id
-            //     },
-            //     data: this.form
+            // this.model.$update(this.form.id, {
+            //     ...this.form
             // });
         },
     },

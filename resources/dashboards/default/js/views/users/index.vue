@@ -129,11 +129,7 @@ export default {
         destroy(user) {
             const result = confirm(`Хотите удалить этого Пользователя [${user.name}]?`);
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: user.id
-                    }
-                })
+            result && this.$props.model.$delete(user.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== user.id);
                 });

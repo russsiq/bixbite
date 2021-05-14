@@ -87,13 +87,10 @@ export default {
                 this.tags.push(finded);
             } else {
                 const result = await Tag.$create({
-                    data: {
-                        title: this.title,
-                        taggable_id: this.taggable.id,
-                        taggable_type: this.taggable.type,
-
-                    }
-                })
+                    title: this.title,
+                    taggable_id: this.taggable.id,
+                    taggable_type: this.taggable.type,
+                });
 
                 this.tags.push(result);
             }

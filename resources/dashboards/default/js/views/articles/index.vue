@@ -214,9 +214,7 @@ export default {
             const title = prompt('Укажите заголовок новой Записи:', 'Черновик');
 
             title && this.$props.model.$create({
-                data: {
-                    title
-                }
+                title
             });
         },
 
@@ -272,11 +270,7 @@ export default {
 
             const result = confirm(`Хотите удалить эту Запись [${article.title}] с прикрепленными файлами?`);
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: article.id
-                    }
-                })
+            result && this.$props.model.$delete(article.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== article.id);
                 });

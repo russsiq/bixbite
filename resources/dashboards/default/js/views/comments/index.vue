@@ -193,11 +193,7 @@ export default {
         destroy(comment) {
             const result = confirm(`Хотите удалить этот Комментарий [${comment.id}] с прикрепленными файлами?`);
 
-            result && this.$props.model.$delete({
-                    params: {
-                        id: comment.id
-                    }
-                })
+            result && this.$props.model.$delete(comment.id)
                 .then((response) => {
                     this.collection = this.collection.filter((item) => item.id !== comment.id);
                 });

@@ -104,11 +104,7 @@ export default {
 
     mounted() {
         // Если это режим редактирования, то необходимо подгрузить Заметку.
-        this.isEditMode && this.$props.model.$get({
-                params: {
-                    id: this.$props.id
-                }
-            })
+        this.isEditMode && this.$props.model.$get(this.$props.id)
             .then(this.fillForm);
     },
 
@@ -130,21 +126,13 @@ export default {
 
         save() {
             if (this.isEditMode) {
-                return this.$props.model.$update({
-                        params: {
-                            id: this.$props.id
-                        },
-
-                        data: {
-                            ...this.note
-                        }
+                return this.$props.model.$update(this.$props.id, {
+                        ...this.note
                     })
                     .then(this.fillForm);
             } else {
                 this.$props.model.$create({
-                        data: {
-                            ...this.note
-                        }
+                        ...this.note
                     })
                     .then(this.fillForm);
             }

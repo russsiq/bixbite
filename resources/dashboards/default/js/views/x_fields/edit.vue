@@ -186,11 +186,7 @@ export default {
     },
 
     mounted() {
-        this.isEditMode && this.$props.model.$get({
-                params: {
-                    id: this.$props.id
-                }
-            })
+        this.isEditMode && this.$props.model.$get(this.$props.id)
             .then(this.fillForm);
     },
 
@@ -212,21 +208,13 @@ export default {
 
         save() {
             if (this.isEditMode) {
-                return this.$props.model.$update({
-                        params: {
-                            id: this.$props.id
-                        },
-
-                        data: {
-                            ...this.form
-                        }
+                return this.$props.model.$update(this.$props.id, {
+                        ...this.form
                     })
                     .then(this.fillForm);
             } else {
                 this.$props.model.$create({
-                        data: {
-                            ...this.form
-                        }
+                        ...this.form
                     })
                     .then(this.fillForm);
             }

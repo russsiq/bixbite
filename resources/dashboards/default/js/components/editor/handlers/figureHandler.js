@@ -7,7 +7,7 @@ import Attachment from '@/store/models/attachment';
  */
 const figureHandler = async function(quill, attachable) {
 
-    if (!attachable.id || !attachable.type) {
+    if (! attachable.id || ! attachable.type) {
         Notification.warning({
             message: __('Before you can upload attachments, you must save the article.')
         });
@@ -36,9 +36,7 @@ const figureHandler = async function(quill, attachable) {
             formData.append('attachable_id', attachable.id);
             formData.append('attachable_type', attachable.type);
 
-            const image = await Attachment.$create({
-                data: formData
-            });
+            const image = await Attachment.$create(formData);
 
             // Вставляем загруженное изображение.
             quill.insertEmbed(range.index, 'figure-image', {

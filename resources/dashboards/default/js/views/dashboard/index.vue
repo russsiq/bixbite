@@ -136,15 +136,9 @@ export default {
 
     methods: {
         toggleComplete(note) {
-            Note.$update({
-                params: {
-                    id: note.id
-                },
-
-                data: {
-                    ...note,
-                    is_completed: !note.is_completed,
-                }
+            Note.$update(note.id, {
+                ...note,
+                is_completed: !note.is_completed,
             });
         },
     },

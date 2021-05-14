@@ -43,12 +43,10 @@ export default {
                 this.state = 'uploading';
                 this.errors = [];
 
-                const data = new FormData();
-                data.append('file', this.takeAttachmentFromInput(event, 'image.*'));
+                const formData = new FormData();
+                formData.append('file', this.takeAttachmentFromInput(event, 'image.*'));
 
-                const image = await Attachment.$create({
-                    data
-                });
+                const image = await Attachment.$create(formData);
 
                 this.state = 'uploaded';
 
