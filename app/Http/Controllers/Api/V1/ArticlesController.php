@@ -10,22 +10,12 @@ use App\Contracts\Actions\Article\UpdatesArticle;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class ArticlesController extends Controller
 {
-    use AuthorizesRequests;
-
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -35,11 +25,10 @@ class ArticlesController extends Controller
      */
     public function index(FetchesArticle $fetcher, Request $request): JsonResponse
     {
-        $collection = new ArticleCollection(
-            $fetcher->fetchCollection($request->all())
-        );
-
-        return $collection->response()
+        return ArticleCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
@@ -52,11 +41,10 @@ class ArticlesController extends Controller
      */
     public function store(CreatesArticle $creator, Request $request): JsonResponse
     {
-        $resource = new ArticleResource(
-            $creator->create($request->all())
-        );
-
-        return $resource->response()
+        return ArticleResource::make(
+                $creator->create($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
@@ -70,11 +58,10 @@ class ArticlesController extends Controller
      */
     public function show(FetchesArticle $fetcher, Request $request, int $id): JsonResponse
     {
-        $resource = new ArticleResource(
-            $fetcher->fetch($id, $request->all())
-        );
-
-        return $resource->response()
+        return ArticleResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
@@ -88,11 +75,10 @@ class ArticlesController extends Controller
      */
     public function update(UpdatesArticle $updater, Request $request, Article $article): JsonResponse
     {
-        $resource = new ArticleResource(
-            $updater->update($article, $request->all())
-        );
-
-        return $resource->response()
+        return ArticleResource::make(
+                $updater->update($article, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
@@ -105,11 +91,10 @@ class ArticlesController extends Controller
      */
     public function massUpdate(MassUpdatesArticle $updater, Request $request): JsonResponse
     {
-        $collection = ArticleResource::collection(
-            $updater->massUpdate($request->all())
-        );
-
-        return $collection->response()
+        return ArticleResource::collection(
+                $updater->massUpdate($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
