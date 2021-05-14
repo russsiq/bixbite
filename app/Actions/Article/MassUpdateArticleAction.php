@@ -63,7 +63,7 @@ class MassUpdateArticleAction extends ArticleActionAbstract implements MassUpdat
 
         // No need to load relationships.
 
-        return Article::whereIn('id', $ids)->get();
+        return $query->get();
     }
 
     /**
