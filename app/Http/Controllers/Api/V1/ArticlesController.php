@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Article\MassUpdateArticleRequest;
-use App\Http\Requests\Api\V1\Article\Store as StoreArticleRequest;
-use App\Http\Requests\Api\V1\Article\Update as UpdateArticleRequest;
+use App\Contracts\Actions\Article\CreatesArticle;
+use App\Contracts\Actions\Article\DeletesArticle;
+use App\Contracts\Actions\Article\FetchesArticle;
+use App\Contracts\Actions\Article\MassUpdatesArticle;
+use App\Contracts\Actions\Article\UpdatesArticle;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class ArticlesController extends Controller
@@ -17,31 +20,22 @@ class ArticlesController extends Controller
     use AuthorizesRequests;
 
     /**
-     * Создать экземпляр контроллера.
+     * Create a new controller instance.
      */
     public function __construct()
     {
-        $this->authorizeResource(Article::class, 'article');
-        $this->middleware('can:massUpdate,'.Article::class)
-            ->only('massUpdate');
     }
 
     /**
-     * Отобразить список сущностей с дополнительной фильтрацией.
+     * Display a listing of the resource.
      *
+     * @param  FetchesArticle  $fetcher
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(FetchesArticle $fetcher, Request $request): JsonResponse
     {
-        $articles = Article::with([
-            'categories:categories.id,categories.title,categories.slug',
-            'user:users.id,users.name',
-        ])
-            ->withCount([
-                'comments',
-                'attachments',
-            ])
-            ->advancedFilter();
+        $articles = $fetcher->fetchCollection($request->all());
 
         $collection = new ArticleCollection($articles);
 
@@ -50,29 +44,34 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Создать и сохранить сущность в хранилище.
+     * Store a newly created resource in storage.
      *
-     * @param  StoreArticleRequest  $request
+     * @param  CreatesArticle  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(StoreArticleRequest $request): JsonResponse
+    public function store(CreatesArticle $creator, Request $request): JsonResponse
     {
-        $article = Article::create($request->validated());
+        $article = $creator->create($request->all());
 
-        $resource = new ArticleResource($article->refresh());
+        $resource = new ArticleResource($article);
 
         return $resource->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Article  $article
+     * @param  FetchesArticle  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(Article $article): JsonResponse
+    public function show(FetchesArticle $fetcher, Request $request, int $id): JsonResponse
     {
+        $article = $fetcher->fetch($id, $request->all());
+
         $article->load([
             'categories',
             'attachments',
@@ -87,15 +86,16 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateArticleRequest  $request
+     * @param  UpdatesArticle  $updater
+     * @param  Request  $request
      * @param  Article  $article
      * @return JsonResponse
      */
-    public function update(UpdateArticleRequest $request, Article $article): JsonResponse
+    public function update(UpdatesArticle $updater, Request $request, Article $article): JsonResponse
     {
-        $article->update($request->validated());
+        $article = $updater->update($article, $request->all());
 
         $article->load([
             'categories',
@@ -111,58 +111,18 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Массово обновить сущности по массиву `id` в хранилище.
+     * Update the specified resource collection in storage.
      *
-     * @param  MassUpdateArticleRequest  $request
+     * @param  MassUpdatesArticle  $updater
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function massUpdate(MassUpdateArticleRequest $request): JsonResponse
+    public function massUpdate(MassUpdatesArticle $updater, Request $request): JsonResponse
     {
-        // $this->authorize('massUpdate', Article::class);
-
-        ['mass_action' => $attribute, 'articles' => $ids] = $request->validated();
-
-        $query = Article::whereIn('id', $ids);
-
-        switch ($attribute) {
-            case 'published':
-                $query->whereHas('categories')
-                    ->update([
-                        'state' => 2,
-                    ]);
-                break;
-            case 'unpublished':
-                $query->update([
-                    'state' => 1,
-                ]);
-                break;
-            case 'draft':
-                $query->update([
-                    'state' => 0,
-                ]);
-                break;
-            case 'on_mainpage':
-            case 'allow_com':
-            case 'is_favorite':
-            case 'is_catpinned':
-                $article = $query->firstOrFail($attribute);
-                $query->update([
-                    $attribute => ! $article->{$attribute},
-                ]);
-                break;
-            case 'currdate':
-                $query->timestamps = false;
-                $query->update([
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => null,
-                ]);
-                $query->timestamps = true;
-                break;
-        }
+        // No need to load relationships.
 
         $collection = ArticleResource::collection(
-            // No need to load relationships.
-            Article::whereIn('id', $ids)->get()
+            $updater->massUpdate($request->all())
         );
 
         return $collection->response()
@@ -170,14 +130,15 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
-     * @param  Article $article
+     * @param  DeletesArticle  $deleter
+     * @param  Article  $article
      * @return JsonResponse
      */
-    public function destroy(Article $article): JsonResponse
+    public function destroy(DeletesArticle $deleter, Article $article): JsonResponse
     {
-        $article->delete();
+        $deleter->delete($article);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

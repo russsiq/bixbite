@@ -195,7 +195,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
         $response = $this->assertDatabaseCount('articles', 0)
             ->assertAuthenticated()
-            ->getJsonApi('show', 'not.found')
+            ->getJsonApi('show', '888')
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }
