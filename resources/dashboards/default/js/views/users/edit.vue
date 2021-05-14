@@ -16,10 +16,10 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <label class="col-sm-5">Группа</label>
+                        <label class="col-sm-5">{{ 'Role'|trans }}</label>
                         <div class="col-sm-7">
                             <select class="form-select" v-model="form.role">
-                                <option v-for="role in roles" :value="role">{{ role | trans }}</option>
+                                <option v-for="(role, index) in roles" :key="index" :value="role">{{ role | trans }}</option>
                             </select>
                         </div>
                     </div>

@@ -139,7 +139,7 @@
                 <div class="col-sm-5">
                     <select class="form-select" v-model="category.template">
                         <option :value="null">По умолчанию</option>
-                        <option v-for="(template, key) in template_list" :value="key">{{ template }}</option>
+                        <option v-for="(template, key) in template_list" :key="key" :value="key">{{ template }}</option>
                     </select>
                 </div>
             </div>
@@ -166,7 +166,7 @@
                     </template>
                     <template v-else-if="'array' === field.type">
                         <select class="form-select" v-model="category[field.name]">
-                            <option v-for="(param, index) in field.params" :value="param.key">{{ param.value }}</option>
+                            <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
                         </select>
                     </template>
                     <template v-else-if="'text' === field.type">

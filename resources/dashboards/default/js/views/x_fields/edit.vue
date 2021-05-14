@@ -12,7 +12,7 @@
                     </template>
                     <template v-else>
                         <select class="form-select" v-model="form.extensible" required>
-                            <option v-for="extensible in extensibles" :value="extensible">{{ extensible }}</option>
+                            <option v-for="(extensible, index) in extensibles" :key="index" :value="extensible">{{ extensible }}</option>
                         </select>
                     </template>
                 </div>
@@ -33,7 +33,7 @@
                     </template>
                     <template v-else>
                         <select class="form-select" v-model="form.type" required>
-                            <option v-for="type in fieldTypes" :value="type">{{ type }}</option>
+                            <option v-for="(type, index) in fieldTypes" :key="index" :value="type">{{ type }}</option>
                         </select>
                     </template>
                 </div>
@@ -69,7 +69,7 @@
                 </label>
                 <div class="col-sm-5">
                     <select class="form-select">
-                        <option v-for="(param, index) in form.params" :value="param.key">{{ param.value }}</option>
+                        <option v-for="(param, index) in form.params" :key="index" :value="param.key">{{ param.value }}</option>
                     </select>
                 </div>
             </div>

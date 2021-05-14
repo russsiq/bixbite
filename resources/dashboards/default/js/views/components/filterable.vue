@@ -21,13 +21,13 @@
         </div> -->
 
         <div class="card-body filter">
-            <div v-for="(filter, index) in filterCandidates" class="row">
+            <div v-for="(filter, index) in filterCandidates" :key="index" class="row">
                 <div class="col col-md-4 mb-3 filter-column">
                     <div class="input-group">
                         <select class="form-select" v-model="filter.column" @change="selectColumn(index)">
                             <option value="" disabled selected>{{ 'Select a filter' | trans }}</option>
-                            <optgroup v-for="(table, tableName) in allowedFilters" :label="tableName | title | trans">
-                                <option v-for="(column, columnName) in table" :value="columnName">{{ columnName | title | trans }}</option>
+                            <optgroup v-for="(table, tableName) in allowedFilters" :key="tableName" :label="tableName | title | trans">
+                                <option v-for="(column, columnName) in table" :key="columnName" :value="columnName">{{ columnName | title | trans }}</option>
                             </optgroup>
                         </select>
                         <button type="button" @click="removeFilter(index)" class="filter-remove btn btn-outline-secondary">x</button>
@@ -37,7 +37,7 @@
                 <div class="col col-md-4 mb-3 filter-operator">
                     <template v-if="filter.column">
                         <select class="form-select" v-model="filter.operator" @change="selectOperator(index)">
-                            <option v-for="operator in fetchOperators(filter)" :value="operator.name">{{ operator.title | trans }}</option>
+                            <option v-for="(operator, index) in fetchOperators(filter)" :key="index" :value="operator.name">{{ operator.title | trans }}</option>
                         </select>
                     </template>
                 </div>
@@ -54,7 +54,7 @@
                         </template>
                         <template v-if="filter.component === 'enum'">
                             <select class="form-select" v-model="filter.query_1">
-                                <option v-for="enumValue in filter.values" :value="enumValue">{{ enumValue | trans }}</option>
+                                <option v-for="(enumValue, index) in filter.values" :key="index" :value="enumValue">{{ enumValue | trans }}</option>
                             </select>
                         </template>
                         <template v-if="filter.component === 'boolean'">
@@ -110,7 +110,7 @@
                         <div class="has-float-label ms-auto me-2">
                             <label>{{ 'Count' | trans }}</label>
                             <select class="form-select" v-model="query.limit" @input="changePage(1)" :disabled="loading">
-                                <option v-for="limit in limits" :value="limit">{{ limit }}</option>
+                                <option v-for="(limit, index) in limits" :key="index" :value="limit">{{ limit }}</option>
                             </select>
                         </div>
 
@@ -118,8 +118,8 @@
                             <label>{{ 'Order by' | trans }}</label>
                             <div class="input-group">
                                 <select class="form-select" v-model="query.order_column" @input="changePage(1)" :disabled="loading">
-                                    <template v-for="column in orderableColumns">
-                                        <option :value="column">{{ column | title | trans }}</option>
+                                    <template v-for="(column, index) in orderableColumns">
+                                        <option :key="index" :value="column">{{ column | title | trans }}</option>
                                     </template>
                                 </select>
                                 <button type="button" class="btn btn-outline-secondary bg-white" @click="changeOrderDirection">

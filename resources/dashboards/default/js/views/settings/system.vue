@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.captcha_font_family" readonly>
-                                        <option v-for="font in meta.fonts" :value="font">{{ font }}</option>
+                                        <option v-for="(font, index) in meta.fonts" :key="index" :value="font">{{ font }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.home_changefreq">
-                                        <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
+                                        <option v-for="(frequency, index) in changefreq" :key="index" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -282,7 +282,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.categories_changefreq">
-                                        <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
+                                        <option v-for="(frequency, index) in changefreq" :key="index" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -310,7 +310,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.articles_changefreq">
-                                        <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
+                                        <option v-for="(frequency, index) in changefreq" :key="index" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -338,7 +338,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.amp_articles_changefreq">
-                                        <option v-for="frequency in changefreq" :value="frequency">{{ frequency }}</option>
+                                        <option v-for="(frequency, index) in changefreq" :key="index" :value="frequency">{{ frequency }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -356,7 +356,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.app_theme">
-                                        <option v-for="theme in meta.themes" :value="theme">{{ theme }}</option>
+                                        <option v-for="(theme, index) in meta.themes" :key="index" :value="theme">{{ theme }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -367,7 +367,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.app_dashboard">
-                                        <option v-for="dashboard in meta.dashboards" :value="dashboard">{{ dashboard }}</option>
+                                        <option v-for="(dashboard, index) in meta.dashboards" :key="index" :value="dashboard">{{ dashboard }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -379,7 +379,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <select class="form-select" v-model="form.app_locale">
-                                        <option v-for="lang in meta.lang" :value="lang">{{ lang }}</option>
+                                        <option v-for="(lang, index) in meta.lang" :key="index" :value="lang">{{ lang }}</option>
                                     </select>
                                 </div>
                             </div>

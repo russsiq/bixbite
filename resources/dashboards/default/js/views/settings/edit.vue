@@ -14,7 +14,7 @@
                             </template>
                             <template v-else>
                                 <select class="form-select" v-model="form.extensible" required>
-                                    <option v-for="extensible in extensibles" :value="extensible">{{ extensible }}</option>
+                                    <option v-for="(extensible, index) in extensibles" :key="index" :value="extensible">{{ extensible }}</option>
                                 </select>
                             </template>
                         </div>
