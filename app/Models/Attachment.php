@@ -110,6 +110,8 @@ class Attachment extends Model
      */
     protected $fillable = [
         'user_id',
+        'attachable_id',
+        'attachable_type',
         'title',
         'description',
         'disk',
@@ -201,7 +203,7 @@ class Attachment extends Model
             ->uploadFile($file)
             ->save();
 
-        return  $this;
+        return  $this->fresh();
     }
 
     /**
