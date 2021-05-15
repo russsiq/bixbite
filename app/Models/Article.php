@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\CommentableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @method \Illuminate\Database\Eloquent\Builder visibleOnMainpage(bool $isVisible = true)
  * @method static \Illuminate\Database\Eloquent\Builder shortArticle()
  */
-class Article extends Model
+class Article extends Model implements CommentableContract
 {
     use Mutators\ArticleMutators;
     use Relations\Attachable;

@@ -3,18 +3,18 @@
 namespace App\Contracts\Actions\Comment;
 
 use App\Models\Comment;
+use App\Models\Contracts\CommentableContract;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
 interface CreatesComment
 {
     /**
      * Validate and create a newly comment.
      *
-     * @param  Model  $commentable
+     * @param  CommentableContract  $commentable
      * @param  array  $input
      * @param  User|null $user
      * @return Comment
      */
-    public function create(Model $commentable, array $input, ?User $user): Comment;
+    public function create(CommentableContract $commentable, array $input, ?User $user): Comment;
 }

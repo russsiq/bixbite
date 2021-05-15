@@ -2,50 +2,57 @@
 
 namespace App\Models\Relations;
 
+use App\Models\Collections\CommentCollection;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 
 trait Commentable
 {
-    public function comments()
+    /**
+     * Get all comments for the current model.
+     *
+     * @return MorphMany
+     */
+    public function comments(): MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable', 'commentable_type', 'commentable_id', 'id');
+        return $this->morphMany(
+            Comment::class,
+            'commentable',
+            'commentable_type',
+            'commentable_id',
+            $this->getKeyName()
+        );
     }
 
     /**
      * Get a list comments with user relation, if need
      *
-     * @param boolean $nested
-     * @return mixed Collection
+     * @param  boolean  $nested
+     * @return mixed  CommentCollection
      */
-    public function getComments(bool $nested = false)
+    public function getComments(bool $nested = false): CommentCollection
     {
-        $comments = $this->comments()
-            ->when(setting('comments.moderate', true), function($query) {
-                $query->where('is_approved', true)
+        return $this->comments()
+            ->where(function ($query) {
+                $query->when(setting('comments.moderate', true), function($query) {
+                        return $query->where('is_approved', true);
+                    })
                     ->when(Auth::check(), function($query) {
-                        $query->orWhere('user_id', Auth::id());
+                        return $query->orWhere('user_id', Auth::id());
                     });
             })
-            ->get();
-
-        // If at least one comment is left by a registered user
-        if ($comments->firstWhere('user_id', '<>', null)) {
-            $comments->load([
-                'user:users.id,users.name,users.email,users.avatar',
-            ]);
-        }
-
-        return $comments->treated($nested, $this->getAttributes());
+            ->get()
+            ->treated($nested, $this->getAttributes());
     }
 
     /**
-     * Get a non-existing attribute $commentable->comment_store_url for html-form.
+     * Get a non-existing attribute `$commentable->comment_store_url` for html-form.
      *
      * @return string
      */
-    public function getCommentStoreUrlAttribute()
+    public function getCommentStoreUrlAttribute(): string
     {
-        return route(static::TABLE.'.comments.store', $this);
+        return route("{$this->table}.comments.store", $this);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Actions\Comment;
 
 use App\Models\Comment;
+use App\Models\Contracts\CommentableContract;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response as AccessResponse;
@@ -10,13 +11,12 @@ use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 abstract class CommentActionAbstract
 {
-    /** @var Model|null */
+    /** @var CommentableContract|null */
     protected $commentable = null;
 
     /** @var Comment|null */

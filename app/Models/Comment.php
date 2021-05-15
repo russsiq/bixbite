@@ -100,6 +100,15 @@ class Comment extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = [
+        'user:users.id,users.name,users.email,users.avatar',
+    ];
+
+    /**
      * Attributes by which filtering is allowed.
      *
      * @var array

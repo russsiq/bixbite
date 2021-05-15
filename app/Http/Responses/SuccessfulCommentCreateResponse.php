@@ -4,8 +4,8 @@ namespace App\Http\Responses;
 
 use App\Contracts\Responses\SuccessfulCommentCreateResponseContract;
 use App\Models\Comment;
+use App\Models\Contracts\CommentableContract;
 use Illuminate\Contracts\Translation\Translator;
-use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponseContract
@@ -16,7 +16,7 @@ class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponse
     /** @var Comment */
     protected $comment;
 
-    /** @var Model */
+    /** @var CommentableContract */
     protected $commentable;
 
     /**
@@ -25,7 +25,7 @@ class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponse
      * @param  string  $status
      * @return void
      */
-    public function __construct(Translator $translator, Comment $comment, Model $commentable)
+    public function __construct(Translator $translator, Comment $comment, CommentableContract $commentable)
     {
         $this->translator = $translator;
         $this->comment = $comment;
@@ -53,7 +53,7 @@ class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponse
             ], SymfonyResponse::HTTP_CREATED);
         }
 
-        return redirect(url()->previous().'#comment-'.$this->comment->id)
+        return redirect($this->comment->url)
             ->withStatus($this->statusMessage());
     }
 
