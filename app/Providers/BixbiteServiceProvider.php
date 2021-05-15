@@ -19,21 +19,13 @@ use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Contracts\BixBiteContract;
-use App\Mixins\ArrMixin;
-use App\Mixins\FileMixin;
-use App\Mixins\LangMixin;
-use App\Mixins\StrMixin;
 use App\Support\BixBite;
 use App\Support\CacheFile;
 use App\Support\PageInfo;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
@@ -73,10 +65,10 @@ class BixbiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Arr::mixin(new ArrMixin);
-        File::mixin(new FileMixin);
-        Lang::mixin(new LangMixin);
-        Str::mixin(new StrMixin);
+        \Illuminate\Support\Arr::mixin(new \App\Mixins\ArrMixin);
+        \Illuminate\Support\Facades\File::mixin(new \App\Mixins\FileMixin);
+        \Illuminate\Support\Facades\Lang::mixin(new \App\Mixins\LangMixin);
+        \Illuminate\Support\Str::mixin(new \App\Mixins\StrMixin);
 
         \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
         \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
@@ -89,13 +81,13 @@ class BixbiteServiceProvider extends ServiceProvider
         \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
 
         Relation::morphMap([
-            'articles' => \App\Models\Article::class,
-            'categories' => \App\Models\Category::class,
-            'comments' => \App\Models\Comment::class,
-            'attachments' => \App\Models\Attachment::class,
-            'notes' => \App\Models\Note::class,
-            'tags' => \App\Models\Tag::class,
-            'users' => \App\Models\User::class,
+            \App\Models\Article::TABLE => \App\Models\Article::class,
+            \App\Models\Category::TABLE => \App\Models\Category::class,
+            \App\Models\Comment::TABLE => \App\Models\Comment::class,
+            \App\Models\Attachment::TABLE => \App\Models\Attachment::class,
+            \App\Models\Note::TABLE => \App\Models\Note::class,
+            \App\Models\Tag::TABLE => \App\Models\Tag::class,
+            \App\Models\User::TABLE => \App\Models\User::class,
         ], true);
 
         Blade::if('setting', function (string $environment) {
