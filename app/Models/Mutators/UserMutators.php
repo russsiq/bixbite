@@ -41,13 +41,4 @@ trait UserMutators
 
         $this->attributes['role'] = $role;
     }
-
-    /**
-     * Get a non-existing attribute $entity->comment_store_action for html-form.
-     * @return string
-     */
-    public function getCommentStoreActionAttribute()
-    {
-        return route('comments.store', [$this->getMorphClass(), $this->id]);
-    }
 }
