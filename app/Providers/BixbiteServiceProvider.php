@@ -7,6 +7,7 @@ use App\Actions\Article\DeleteArticleAction;
 use App\Actions\Article\FetchArticleAction;
 use App\Actions\Article\MassUpdateArticleAction;
 use App\Actions\Article\UpdateArticleAction;
+use App\Actions\Comment\CreateCommentAction;
 use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
@@ -15,10 +16,13 @@ use App\Contracts\Actions\Article\DeletesArticle;
 use App\Contracts\Actions\Article\FetchesArticle;
 use App\Contracts\Actions\Article\MassUpdatesArticle;
 use App\Contracts\Actions\Article\UpdatesArticle;
+use App\Contracts\Actions\Comment\CreatesComment;
 use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Contracts\BixBiteContract;
+use App\Contracts\Responses\SuccessfulCommentCreateResponseContract;
+use App\Http\Responses\SuccessfulCommentCreateResponse;
 use App\Support\BixBite;
 use App\Support\CacheFile;
 use App\Support\PageInfo;
@@ -45,9 +49,14 @@ class BixbiteServiceProvider extends ServiceProvider
         UpdatesArticle::class => UpdateArticleAction::class,
         MassUpdatesArticle::class => MassUpdateArticleAction::class,
 
+        CreatesComment::class => CreateCommentAction::class,
+
         UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
         UpdatesUserPasswords::class => UpdateUserPasswordAction::class,
         DeletesUsers::class => DeleteUserAction::class,
+
+        // BixBite Responses ...
+        SuccessfulCommentCreateResponseContract::class => SuccessfulCommentCreateResponse::class,
     ];
 
     /**

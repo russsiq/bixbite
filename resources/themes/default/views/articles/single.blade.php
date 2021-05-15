@@ -71,4 +71,4 @@
 
 ]" />
 
-@include('comments.area', ['entity' => $article])
+@include('comments.area', ['commentable' => $article])

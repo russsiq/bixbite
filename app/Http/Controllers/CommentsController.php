@@ -55,58 +55,6 @@ class CommentsController extends SiteController
     }
 
     /**
-     * Создать и сохранить сущность в хранилище.
-     *
-     * @param  CommentStoreRequest  $request
-     * @return [type]
-     */
-    public function store(CommentStoreRequest $request)
-    {
-        $this->authorize('create', Comment::class);
-
-        $comment = $this->model->create($request->validated());
-        $entity = $comment->commentable;
-
-        // Если добавлен первый комментарий к записи.
-        if ('articles' === $request->commentable_type and 1 === $entity->comments()->count()) {
-            cache()->forget('articles-single-'.$request->commentable_id);
-        }
-
-        // Не нужно сохранять эти данные в БД.
-        // Эти данные только для отображения.
-        if ($user = user()) {
-            // Но, если комментарий оставлен автором записи.
-            if ($comment->user_id === $entity->user_id) {
-                $comment->update([
-                    'is_approved' => true,
-
-                ]);
-            }
-
-            $comment->user = $user;
-            $comment->name = $user->name;
-            $comment->email = $user->email;
-        }
-
-        // Temporarily.
-        if ($request->expectsJson()) {
-            $comment->children = [];
-            $comment->html = view(
-                    $this->template.'.show',
-                    compact('comment', 'entity')
-                )->render();
-
-            return response()->json([
-                'message' => trans('comments.msg.add_success'),
-                'comment' => $comment,
-
-            ], 200);
-        }
-
-        return $this->makeRedirect(true, url()->previous().'#comment-'.$comment->id, trans('comments.msg.add_success'));
-    }
-
-    /**
      * Отобразить форму редактирования для указанного ресурса.
      *
      * @param  Comment  $comment

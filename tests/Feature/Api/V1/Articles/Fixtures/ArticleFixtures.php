@@ -32,7 +32,7 @@ class ArticleFixtures
                 'url',
                 'edit_page',
                 'is_published',
-                'raw_content',
+                'comment_store_url',
             ],
         ];
     }

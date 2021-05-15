@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
@@ -26,12 +27,10 @@ Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])
     ->where('any', '.*')
     ->name('dashboard');
 
-// Вначале располагаем группу маршрутов, где не нужны регулярные выражения.
+Route::middleware('throttle:5,1')
+    ->post('articles/{article}/comments', ArticleCommentController::class)
+    ->name('articles.comments.store');
 
-// Route::get('{commentable_type}/{commentable_id}/comments/{comment}', function ($postId, $commentId) {});
-Route::post(
-    'comments/{commentable_type}/{commentable_id}/store', [CommentsController::class, 'store']
-)->name('comments.store');
 Route::resource('comments', CommentsController::class)->only(['edit','update','destroy'])->names(['destroy' => 'comments.delete']);
 
 Route::get('articles', [ArticlesController::class, 'index'])->name('articles.index');
@@ -42,6 +41,7 @@ Route::get('tags/{tag:slug}', [ArticlesController::class, 'tag'])->name('tags.ta
 Route::get('downloads/{attachment:id}', DownloadsController::class)->name('attachment.download');
 
 // User, Profile, Passwords...
+// @todo Make prefix `account`
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user/profile/{id?}', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('user/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');

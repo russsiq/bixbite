@@ -7,7 +7,7 @@
 
         {{-- Присутствие данного контейнера обязательно. Он используется для комментариев, добавляемых по AJAX. --}}
         <ol id="comments_list" class="comments__list">
-            @each('comments.show', $entity->comments, 'comment')
+            @each('comments.show', $commentable->comments, 'comment')
         </ol>
 
         @include('comments.partials.form')

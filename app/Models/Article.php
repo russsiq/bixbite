@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $url
  * @property-read ?string $edit_page
  * @property-read bool $is_published
- * @property-read string $raw_content
+ * @property-read string $comment_store_url
  *
  * @method \Illuminate\Database\Eloquent\Builder favorites()
  * @method \Illuminate\Database\Eloquent\Builder filter(array $filters)
@@ -108,7 +108,7 @@ class Article extends Model
         'url',
         'edit_page',
         'is_published',
-        'raw_content',
+        'comment_store_url',
         'created',
         'updated',
     ];
@@ -136,7 +136,7 @@ class Article extends Model
         'url' => 'string',
         'edit_page' => 'string',
         'is_published' => 'boolean',
-        'raw_content' => 'string',
+        'comment_store_url' => 'string',
     ];
 
     /**

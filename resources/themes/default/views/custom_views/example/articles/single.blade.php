@@ -59,4 +59,4 @@
     // 'template' => 'widgets.articles_related',
 ]"></x-comments-latest-widget>
 
-@include('comments.area', ['entity' => $article])
+@include('comments.area', ['commentable' => $article])

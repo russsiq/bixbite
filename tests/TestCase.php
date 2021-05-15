@@ -13,8 +13,7 @@ abstract class TestCase extends BaseTestCase
     protected function loginSPA(array $attributes = [], array $abilities = []): User
     {
         $user = Sanctum::actingAs(
-            $this->createUser($attributes),
-            $abilities
+            $this->createUser($attributes), $abilities
         );
 
         return $user;
@@ -22,11 +21,20 @@ abstract class TestCase extends BaseTestCase
 
     protected function loginSuperAdminSPA(array $attributes = [], array $abilities = []): User
     {
-        [$first_email] = explode(',', env('APP_SUPER_ADMINS'), 2);
-
-        $attributes['email'] = $first_email;
+        $attributes['email'] = $this->getSuperAdminEmail();
 
         return $this->loginSPA($attributes, $abilities);
+    }
+
+    protected function loginSuperAdmin(array $attributes = [], string $guard = null): User
+    {
+        $attributes['email'] = $this->getSuperAdminEmail();
+
+        $this->actingAs(
+            $user = $this->createUser($attributes), $guard
+        );
+
+        return $user;
     }
 
     protected function createUser(array $attributes = []): User
@@ -37,8 +45,15 @@ abstract class TestCase extends BaseTestCase
             ], $attributes));
     }
 
-    protected function currentAuthenticatedUser($guard = null): User
+    protected function currentAuthenticatedUser(string $guard = null): User
     {
         return $this->app->make('auth')->guard($guard)->user();
+    }
+
+    protected function getSuperAdminEmail(): string
+    {
+        [$first_email] = explode(',', env('APP_SUPER_ADMINS'), 2);
+
+        return $first_email;
     }
 }

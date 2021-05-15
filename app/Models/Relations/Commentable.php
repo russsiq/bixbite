@@ -3,6 +3,7 @@
 namespace App\Models\Relations;
 
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 trait Commentable
 {
@@ -20,8 +21,11 @@ trait Commentable
     public function getComments(bool $nested = false)
     {
         $comments = $this->comments()
-            ->when(setting('comments.moderate'), function($query) {
-                $query->where('is_approved', true);
+            ->when(setting('comments.moderate', true), function($query) {
+                $query->where('is_approved', true)
+                    ->when(Auth::check(), function($query) {
+                        $query->orWhere('user_id', Auth::id());
+                    });
             })
             ->get();
 
@@ -36,12 +40,12 @@ trait Commentable
     }
 
     /**
-     * Get a non-existing attribute $entity->comment_store_action for html-form.
+     * Get a non-existing attribute $commentable->comment_store_url for html-form.
      *
      * @return string
      */
-    public function getCommentStoreActionAttribute()
+    public function getCommentStoreUrlAttribute()
     {
-        return route('comments.store', [$this->getMorphClass(), $this->id]);
+        return route(static::TABLE.'.comments.store', $this);
     }
 }
