@@ -198,9 +198,9 @@ if (! function_exists('setting')) {
      * @param  string  $environment The strig of config file settings
      * @param  string  $default
      *
-     * @return Config containing setting
+     * @return mixed  Config containing setting
      */
-    function setting(string $environment = null, string $default = null)
+    function setting(string $environment = null, string $default = null): mixed
     {
         return config('settings' . ($environment ? '.' . $environment : null), $default);
     }
