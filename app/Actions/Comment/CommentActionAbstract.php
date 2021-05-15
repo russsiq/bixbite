@@ -16,8 +16,8 @@ use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 abstract class CommentActionAbstract
 {
-    /** @var Model */
-    protected $commentable;
+    /** @var Model|null */
+    protected $commentable = null;
 
     /** @var Comment|null */
     protected $comment = null;
