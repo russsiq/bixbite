@@ -56,7 +56,7 @@ class CommentsController extends ApiController
     {
         $comments = Comment::with([
             'commentable',
-            'user:users.id,users.name',
+            'user:users.id,users.name,users.avatar',
         ])
             ->advancedFilter($request->all());
 
