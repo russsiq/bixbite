@@ -28,7 +28,7 @@ trait CommentMutators
             'name' => $by_user ? $this->user->name : $this->author_name,
             'profile' => $by_user ? $this->user->profile : $this->author_name,
             'avatar' => $by_user ? $this->user->avatar : get_avatar($this->author_email),
-            'isOnline' => $by_user ? $this->user->isOnline() : false,
+            'is_online' => $by_user ? $this->user->isOnline() : false,
         ];
     }
 }
