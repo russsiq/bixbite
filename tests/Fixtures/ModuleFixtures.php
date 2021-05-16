@@ -1,20 +1,21 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Tags\Fixtures;
+namespace Tests\Fixtures;
 
-class TagFixtures
+class ModuleFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
+                'name',
                 'title',
-                'slug',
+                'icon',
+                'info',
+                'on_mainpage',
                 'created_at',
                 'updated_at',
-
-                'url',
             ],
         ];
     }

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
-use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
+use Tests\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
 /**

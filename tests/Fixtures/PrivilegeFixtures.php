@@ -1,21 +1,20 @@
 <?php
 
-namespace Tests\Feature\Api\V1\XFields\Fixtures;
+namespace Tests\Fixtures;
 
-class XFieldFixtures
+class PrivilegeFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'extensible',
-                'name',
-                'type',
-                'params',
-                'title',
-                'descr',
-                'html_flags',
+                'privilege',
+                'description',
+                'owner',
+                'admin',
+                'moder',
+                'user',
                 'created_at',
                 'updated_at',
             ],

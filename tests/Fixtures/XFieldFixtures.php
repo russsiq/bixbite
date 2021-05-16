@@ -1,19 +1,21 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Modules\Fixtures;
+namespace Tests\Fixtures;
 
-class ModuleFixtures
+class XFieldFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
+                'extensible',
                 'name',
+                'type',
+                'params',
                 'title',
-                'icon',
-                'info',
-                'on_mainpage',
+                'descr',
+                'html_flags',
                 'created_at',
                 'updated_at',
             ],

@@ -1,20 +1,14 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Settings\Fixtures;
+namespace Tests\Fixtures;
 
-class SettingFixtures
+class ThemeFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
-                'id',
-                'module_name',
-                'name',
-                'type',
-                'value',
-                'created_at',
-                'updated_at',
+                //
             ],
         ];
     }

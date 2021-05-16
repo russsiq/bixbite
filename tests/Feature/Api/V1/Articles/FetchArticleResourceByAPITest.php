@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
-use Tests\Feature\Api\V1\Articles\Fixtures\ArticleFixtures;
+use Tests\Fixtures\ArticleFixtures;
 use Tests\TestCase;
 
 /**

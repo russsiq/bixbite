@@ -1,22 +1,29 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Privileges\Fixtures;
+namespace Tests\Fixtures;
 
-class PrivilegeFixtures
+class CommentFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'privilege',
-                'description',
-                'owner',
-                'admin',
-                'moder',
-                'user',
+                'user_id',
+                'parent_id',
+                'commentable_id',
+                'commentable_type',
+                'content',
+                'author_name',
+                'author_email',
+                'author_ip',
+                'is_approved',
                 'created_at',
                 'updated_at',
+
+                'url',
+                'by_user',
+                'author',
             ],
         ];
     }

@@ -1,29 +1,33 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Comments\Fixtures;
+namespace Tests\Fixtures;
 
-class CommentFixtures
+class UserFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'user_id',
-                'parent_id',
-                'commentable_id',
-                'commentable_type',
-                'content',
-                'author_name',
-                'author_email',
-                'author_ip',
-                'is_approved',
+                'name',
+                'email',
+                'email_verified_at',
+                'password',
+                'remember_token',
                 'created_at',
                 'updated_at',
 
-                'url',
-                'by_user',
-                'author',
+                'role',
+                'avatar',
+                'info',
+                'location',
+                'last_ip',
+                'logined_at',
+                'banned_until',
+
+                'profile',
+                'is_online',
+                'logined',
             ],
         ];
     }

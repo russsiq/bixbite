@@ -1,33 +1,22 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Users\Fixtures;
+namespace Tests\Fixtures;
 
-class UserFixtures
+class NoteFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'name',
-                'email',
-                'email_verified_at',
-                'password',
-                'remember_token',
+                'user_id',
+                'image_id',
+                'title',
+                'slug',
+                'description',
+                'is_completed',
                 'created_at',
                 'updated_at',
-
-                'role',
-                'avatar',
-                'info',
-                'location',
-                'last_ip',
-                'logined_at',
-                'banned_until',
-
-                'profile',
-                'is_online',
-                'logined',
             ],
         ];
     }

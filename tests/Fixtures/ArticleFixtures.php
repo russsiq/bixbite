@@ -1,35 +1,38 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Attachments\Fixtures;
+namespace Tests\Fixtures;
 
-class AttachmentFixtures
+class ArticleFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'attachable_id',
-                'attachable_type',
                 'user_id',
+                'image_id',
+                'state',
                 'title',
-                'description',
-                'disk',
-                'folder',
-                'type',
-                'name',
-                'extension',
-                'mime_type',
-                'filesize',
-                'properties',
-                'downloads',
+                'slug',
+                'teaser',
+                'content',
+                'meta_description',
+                'meta_keywords',
+                'meta_robots',
+                'on_mainpage',
+                'is_favorite',
+                'is_pinned',
+                'is_catpinned',
+                'allow_com',
+                'views',
+                'published_at',
                 'created_at',
                 'updated_at',
 
                 'url',
-                'path',
-                'absolute_path',
-                'filesize',
+                'edit_page',
+                'is_published',
+                'comment_store_url',
             ],
         ];
     }

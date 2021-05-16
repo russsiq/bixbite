@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Templates\Fixtures;
+namespace Tests\Fixtures;
 
-class TemplateFixtures
+class SettingFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
-                'filename',
-                'path',
-                'exists',
-                'content',
-                'modified',
-                'size',
+                'module_name',
+                'name',
+                'type',
+                'value',
+                'created_at',
+                'updated_at',
             ],
         ];
     }

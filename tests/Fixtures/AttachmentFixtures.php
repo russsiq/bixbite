@@ -1,22 +1,35 @@
 <?php
 
-namespace Tests\Feature\Api\V1\Notes\Fixtures;
+namespace Tests\Fixtures;
 
-class NoteFixtures
+class AttachmentFixtures
 {
     public static function resource(): array
     {
         return [
             'data' => [
                 'id',
+                'attachable_id',
+                'attachable_type',
                 'user_id',
-                'image_id',
                 'title',
-                'slug',
                 'description',
-                'is_completed',
+                'disk',
+                'folder',
+                'type',
+                'name',
+                'extension',
+                'mime_type',
+                'filesize',
+                'properties',
+                'downloads',
                 'created_at',
                 'updated_at',
+
+                'url',
+                'path',
+                'absolute_path',
+                'filesize',
             ],
         ];
     }
