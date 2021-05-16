@@ -31,4 +31,13 @@ trait CommentMutators
             'is_online' => $by_user ? $this->user->isOnline() : false,
         ];
     }
+
+    public function getIsApprovedAttribute(bool $value): bool
+    {
+        if (setting('comments.moderate', true)) {
+            return (bool) $value;
+        }
+
+        return true;
+    }
 }
