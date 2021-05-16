@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Collections\CommentCollection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read object $author
  * @property-read bool $by_user
  * @property-read string $url
+ *
+ * @method \Illuminate\Database\Eloquent\Builder approved(bool $isApproved = true)
  */
 class Comment extends Model
 {
@@ -133,16 +136,21 @@ class Comment extends Model
         'created_at',
     ];
 
-    public function article(): BelongsTo
-    {
-        return $this->belongsTo(Article::class, 'commentable_id', 'id', 'commentable_type');
-    }
-
+    /**
+     * Get the user who created the comment.
+     *
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user');
     }
 
+    /**
+     * Get the parent commentable model.
+     *
+     * @return MorphTo
+     */
     public function commentable(): MorphTo
     {
         return $this->morphTo();
@@ -157,5 +165,17 @@ class Comment extends Model
     public function newCollection(array $models = []): CommentCollection
     {
         return new CommentCollection($models);
+    }
+
+    /**
+     * Scope a query to only include approved / unapproved comments.
+     *
+     * @param  Builder  $builder
+     * @param  boolean  $isApproved
+     * @return Builder
+     */
+    public function scopeApproved(Builder $builder, bool $isApproved = true): Builder
+    {
+        return $builder->where('comments.is_approved', $isApproved);
     }
 }

@@ -137,12 +137,10 @@ class CommentsLatest extends WidgetAbstract
     protected function resolveComments(): Collection
     {
         return Comment::with([
-                'user:users.id,users.name,users.email,users.avatar',
-                'article:articles.id,articles.title,articles.slug,articles.state',
-
+                'commentable',
             ])
             ->where('commentable_type', $this->parameter('relation'))
-            ->where('is_approved', true)
+            ->approved()
             ->latest()
             ->limit($this->parameter('limit'))
             ->get()
