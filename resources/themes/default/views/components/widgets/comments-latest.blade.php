@@ -11,7 +11,7 @@
             <ul class="widget__list">
                 @forelse($comments as $comment)
                     <li class="widget__item">
-                        <a href="{{ $comment->article->url}}#comment-{{ $comment->id }}" class="widget_item__inner">
+                        <a href="{{ $comment->url}}" class="widget_item__inner">
                             <figure class="widget_item__image widget_comments-item__image">
                                 <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33px" class="widget_item_image__thumbnail widget_comments-item-image__thumbnail" />
                             </figure>
@@ -20,7 +20,9 @@
                                 <p class="widget_item__subtitle">{{ $comment->created }}</p>
                             </header>
                             <p class="widget_item__content widget_comments-item__content">
-                                <span class="widget_item__title">{{ $comment->article->title }}</span>
+                                @if ($comment->commentable->title)
+                                    <span class="widget_item__title">{{ $comment->commentable->title }}</span>
+                                @endif
                                 <i>{{ $comment->content }}</i>
                             </p>
                         </a>
