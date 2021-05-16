@@ -10,7 +10,7 @@
             <span class="comment__reply" data-reply="{{ $comment->id }}">@lang('comments.btn.reply')</span>
             @if ($comment->by_user)<a href="{{ $comment->author->profile }}" title="@lang('auth.profile')">@endif
                 <i class="widget_item__title" itemprop="creator">
-                    {{ $comment->author->name }} <b class="{{ $comment->author->isOnline ? 'is_online' : '' }}"></b>
+                    {{ $comment->author->name }} <b class="{{ $comment->author->is_online ? 'is_online' : '' }}"></b>
                 </i>
             @if ($comment->by_user)</a>@endif
             <p class="widget_item__subtitle">{{ $comment->created }}</p>
