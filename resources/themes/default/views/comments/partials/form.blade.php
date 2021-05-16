@@ -16,7 +16,7 @@
                     @guest
                         <div class="col-md-4 ">
                             <div class="mb-3">
-                                <input type="text" name="author_name" value="{{ old('author_name') }}" class="form-control" placeholder="@lang('auth.name')" required />
+                                <input type="text" name="author_name" value="{{ old('author_name') }}" class="form-control" placeholder="@lang('Name')" required />
                                 @if ($errors->has('author_name'))
                                     <span class="invalid-feedback d-block">{{ $errors->first('author_name') }}</span>
                                 @endif
@@ -25,7 +25,7 @@
 
                         <div class="col-md-4 ">
                             <div class="mb-3">
-                                <input type="email" name="author_email" value="{{ old('author_email') }}" class="form-control" placeholder="@lang('auth.email')" required />
+                                <input type="email" name="author_email" value="{{ old('author_email') }}" class="form-control" placeholder="@lang('Email')" required />
                                 @if ($errors->has('author_email'))
                                     <span class="invalid-feedback d-block">{{ $errors->first('author_email') }}</span>
                                 @endif
