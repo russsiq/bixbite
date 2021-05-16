@@ -79,7 +79,10 @@ abstract class CommentActionAbstract
      */
     protected function messages(): array
     {
-        return [];
+        return [
+            'author_name.unique' => $this->translator->get('You cannot use this :attribute.'),
+            'author_email.unique' => $this->translator->get('You cannot use this :attribute.'),
+        ];
     }
 
     /**
@@ -90,8 +93,8 @@ abstract class CommentActionAbstract
     protected function attributes(): array
     {
         return [
-            'name' => $this->translator->get('auth.name'),
-            'email' => $this->translator->get('auth.email'),
+            'author_name' => $this->translator->get('Name'),
+            'author_email' => $this->translator->get('Email'),
             'content' => $this->translator->get('comments.content'),
         ];
     }
@@ -188,7 +191,7 @@ abstract class CommentActionAbstract
         return [
             'user_id' => [
                 'bail',
-                'required',
+                'nullable',
                 'integer',
                 'min:1',
                 'exists:users,id',
