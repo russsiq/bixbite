@@ -4,6 +4,7 @@ namespace App\Models\Relations;
 
 use App\Models\Collections\CommentCollection;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,13 +35,17 @@ trait Commentable
     public function getComments(bool $nested = false): CommentCollection
     {
         return $this->comments()
-            ->where(function ($query) {
-                $query->when(setting('comments.moderate', true), function($query) {
-                        return $query->where('is_approved', true);
-                    })
-                    ->when(Auth::check(), function($query) {
-                        return $query->orWhere('user_id', Auth::id());
-                    });
+            ->where(function (Builder $query) {
+                $query->when(
+                    setting('comments.moderate', true),
+                    function(Builder $query) {
+                        $query->where('is_approved', true);
+                        $query->when(
+                            Auth::check(),
+                            fn (Builder $query) => $query->orWhere('user_id', Auth::id())
+                        );
+                    }
+                );
             })
             ->get()
             ->treated($nested, $this->getAttributes());
