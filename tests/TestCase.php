@@ -10,6 +10,9 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    /** @var string|null */
+    protected $firstSuperAdminEmail;
+
     protected function loginSPA(array $attributes = [], array $abilities = []): User
     {
         $user = Sanctum::actingAs(
@@ -52,8 +55,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function getSuperAdminEmail(): string
     {
-        [$first_email] = explode(',', env('APP_SUPER_ADMINS'), 2);
-
-        return $first_email;
+        return $this->firstSuperAdminEmail
+            ?: $this->firstSuperAdminEmail = head(
+                explode(',', env('APP_SUPER_ADMINS'), 2)
+            );
     }
 }
