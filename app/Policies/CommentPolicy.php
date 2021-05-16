@@ -36,12 +36,14 @@ class CommentPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User|null  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(?User $user)
     {
-        //
+        if (! setting('comments.regonly', true)) {
+            return true;
+        }
     }
 
     /**
