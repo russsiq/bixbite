@@ -2,37 +2,18 @@
 
 namespace App\Actions\Comment;
 
+use App\Actions\ActionAbstract;
 use App\Models\Comment;
 use App\Models\Contracts\CommentableContract;
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Access\Response as AccessResponse;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Translation\Translator;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Str;
 use Russsiq\DomManipulator\Facades\DOMManipulator;
 
-abstract class CommentActionAbstract
+abstract class CommentActionAbstract extends ActionAbstract
 {
-    /** @var CommentableContract|null */
-    protected $commentable = null;
-
-    /** @var Comment|null */
-    protected $comment = null;
-
-    /** @var User|null */
-    protected $user = null;
-
-    /** @var Gate */
-    protected $gate;
-
-    /** @var Translator */
-    protected $translator;
-
-    /** @var ValidationFactory */
-    protected $validationFactory;
+    protected ?CommentableContract $commentable = null;
+    protected ?Comment $comment = null;
+    protected ?User $user = null;
 
     /**
      * Get the validation rules that apply to the action.
@@ -42,37 +23,6 @@ abstract class CommentActionAbstract
     abstract protected function rules(): array;
 
     /**
-     * Create a new Action instance.
-     *
-     * @param Gate  $gate
-     * @param Translator  $translator
-     * @param ValidationFactory  $validationFactory
-     */
-    public function __construct(
-        Gate $gate,
-        Translator $translator,
-        ValidationFactory $validationFactory
-    ) {
-        $this->gate = $gate;
-        $this->translator = $translator;
-        $this->validationFactory = $validationFactory;
-    }
-
-    /**
-     * Authorize a given action for the current user.
-     *
-     * @param  string  $ability
-     * @param  mixed  $arguments
-     * @return AccessResponse
-     *
-     * @throws AuthorizationException
-     */
-    protected function authorize(string $ability, mixed $arguments): AccessResponse
-    {
-        return $this->gate->authorize($ability, $arguments);
-    }
-
-    /**
      * Get custom messages for validator errors.
      *
      * @return array
@@ -80,8 +30,8 @@ abstract class CommentActionAbstract
     protected function messages(): array
     {
         return [
-            'author_name.unique' => $this->translator->get('You cannot use this :attribute.'),
-            'author_email.unique' => $this->translator->get('You cannot use this :attribute.'),
+            'author_name.unique' => $this->translate('You cannot use this :attribute.'),
+            'author_email.unique' => $this->translate('You cannot use this :attribute.'),
         ];
     }
 
@@ -93,40 +43,10 @@ abstract class CommentActionAbstract
     protected function attributes(): array
     {
         return [
-            'author_name' => $this->translator->get('Name'),
-            'author_email' => $this->translator->get('Email'),
-            'content' => $this->translator->get('comments.content'),
+            'author_name' => $this->translate('Name'),
+            'author_email' => $this->translate('Email'),
+            'content' => $this->translate('comments.content'),
         ];
-    }
-
-    /**
-     * Run the validator's rules against its data.
-     *
-     * @param  array  $input
-     * @return array
-     *
-     * @throws ValidationException
-     */
-    protected function validate(array $input): array
-    {
-        return $this->createValidator($input)
-            ->validate();
-    }
-
-    /**
-     * Create a new Validator instance.
-     *
-     * @param  array  $input
-     * @return Validator
-     */
-    protected function createValidator(array $input): Validator
-    {
-        return $this->validationFactory->make(
-            $input,
-            $this->rules(),
-            $this->messages(),
-            $this->attributes()
-        );
     }
 
     /**

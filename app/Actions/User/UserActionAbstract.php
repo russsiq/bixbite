@@ -2,49 +2,18 @@
 
 namespace App\Actions\User;
 
+use App\Actions\ActionAbstract;
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Access\Response as AccessResponse;
-use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Contracts\Translation\Translator;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use Laravel\Fortify\Rules\Password;
 
-abstract class UserActionAbstract
+abstract class UserActionAbstract extends ActionAbstract
 {
-    /** @var Gate */
-    protected $gate;
+    protected ?Hasher $hasher;
 
-    /** @var Hasher */
-    protected $hasher;
-
-    /** @var Translator */
-    protected $translator;
-
-    /** @var User|null */
-    protected $user;
-
-    /** @var ValidationFactory */
-    protected $validationFactory;
-
-    /**
-     * The key to be used for the view error bag.
-     *
-     * @var string|null
-     */
-    protected $validationErrorBag;
-
-    /**
-     * Indicates whether validation should stop after the first rule failure.
-     *
-     * @var bool
-     */
-    protected $stopOnFirstFailure = false;
+    protected ?User $user = null;
 
     /**
      * Get the validation rules that apply to the action.
@@ -54,90 +23,15 @@ abstract class UserActionAbstract
     abstract protected function rules(): array;
 
     /**
-     * Create a new Action instance.
+     * Get the Hasher implementation.
      *
-     * @param Gate  $gate
-     * @param Hasher  $hasher
-     * @param Translator  $translator
-     * @param ValidationFactory  $validationFactory
+     * @return Hasher
      */
-    public function __construct(
-        Gate $gate,
-        Hasher $hasher,
-        Translator $translator,
-        ValidationFactory $validationFactory
-    ) {
-        $this->gate = $gate;
-        $this->hasher = $hasher;
-        $this->translator = $translator;
-        $this->validationFactory = $validationFactory;
-    }
-
-    /**
-     * Authorize a given action for the current user.
-     *
-     * @param  string  $ability
-     * @param  mixed  $arguments
-     * @return AccessResponse
-     *
-     * @throws AuthorizationException
-     */
-    protected function authorize(string $ability, mixed $arguments): AccessResponse
+    protected function hasher(): Hasher
     {
-        return $this->gate->authorize($ability, $arguments);
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    protected function messages(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    protected function attributes(): array
-    {
-        return [];
-    }
-
-    /**
-     * Create a new Validator instance.
-     *
-     * @param  array  $input
-     * @return Validator
-     */
-    protected function createValidator(array $input): Validator
-    {
-        return $this->validationFactory->make(
-            $input,
-            $this->rules(),
-            $this->messages(),
-            $this->attributes()
-        )->stopOnFirstFailure($this->stopOnFirstFailure);
-    }
-
-    /**
-     * Run the validator's rules against its data.
-     *
-     * @param  array  $input
-     * @return array
-     *
-     * @throws ValidationException
-     */
-    protected function validate(array $input): array
-    {
-        $validator = $this->createValidator($input);
-
-        return $this->validationErrorBag
-            ? $validator->validateWithBag($this->validationErrorBag)
-            : $validator->validate();
+        return $this->hasher
+            ?? $this->hasher = $this->container->make(
+                Hasher::class);
     }
 
     /**
@@ -148,7 +42,8 @@ abstract class UserActionAbstract
      */
     protected function makeHash(string $value): string
     {
-        return $this->hasher->make($value);
+        return $this->hasher()
+            ->make($value);
     }
 
     /**
@@ -164,7 +59,8 @@ abstract class UserActionAbstract
         string $hashedValue,
         array $options = []
     ): bool {
-        return $this->hasher->check($value, $hashedValue, $options);
+        return $this->hasher()
+            ->check($value, $hashedValue, $options);
     }
 
     /**
