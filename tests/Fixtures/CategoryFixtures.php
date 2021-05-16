@@ -40,9 +40,9 @@ class CategoryFixtures
             'data' => [
                 '*' => static::resource()['data'],
             ],
-            'links' => [
-                //
-            ],
+            // 'links' => [
+            //     //
+            // ],
             // 'meta' => [
             //     //
             // ],
