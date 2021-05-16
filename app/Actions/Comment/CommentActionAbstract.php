@@ -25,9 +25,6 @@ abstract class CommentActionAbstract
     /** @var User|null */
     protected $user = null;
 
-    /** @var Validator|null */
-    protected $validator = null;
-
     /** @var Gate */
     protected $gate;
 
@@ -109,11 +106,8 @@ abstract class CommentActionAbstract
      */
     protected function validate(array $input): array
     {
-        if (is_null($this->validator)) {
-            $this->validator = $this->createValidator($input);
-        }
-
-        return $this->validator->validate();
+        return $this->createValidator($input)
+            ->validate();
     }
 
     /**
