@@ -23,6 +23,11 @@ trait CommentMutators
         return is_int($this->user_id);
     }
 
+    public function getByAuthorAttribute(): bool
+    {
+        return $this->user_id === $this->commentable->user_id;
+    }
+
     // Don't touch this. Need when comments added from ajax
     public function getAuthorAttribute()
     {
