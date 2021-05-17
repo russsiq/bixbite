@@ -69,15 +69,16 @@ class ArticlesTransformer implements ResourceRequestTransformer
         ]);
 
         $input['title'] = Str::teaser($this->request->input('title'), 255, '');
+
         if (! $this->setting('articles.manual_slug', false) || empty($this->request->input('slug'))) {
             $input['slug'] = Str::slug($this->request->input('title'), '-', $this->setting('system.translite_code', 'ru__gost_2000_b'));
         }
 
-        $input['teaser'] = Str::teaser($this->request->input('teaser'));
+        $input['teaser'] = Str::teaser($this->request->input('teaser'), 255, '');
         $input['content'] = $this->prepareContent($this->request->input('content'));
 
-        $input['description'] = Str::teaser($this->request->input('description'));
-        $input['keywords'] = Str::teaser($this->request->input('keywords'), 255, '');
+        $input['meta_description'] = Str::teaser($this->request->input('meta_description'), 255, '');
+        $input['meta_keywords'] = Str::teaser($this->request->input('meta_keywords'), 255, '');
 
         if (empty($input['date_at'])) {
             $input['updated_at'] = date('Y-m-d H:i:s');
