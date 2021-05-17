@@ -5,6 +5,7 @@ namespace App\Actions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response as AccessResponse;
 use Illuminate\Contracts\Auth\Access\Gate as AccessGate;
+use Illuminate\Contracts\Auth\Guard as AuthGuard;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -14,6 +15,7 @@ abstract class ActionAbstract
 {
     protected Container $container;
 
+    protected ?AuthGuard $authGuard;
     protected ?AccessGate $accessGate;
     protected ?Translator $translator;
     protected ?ValidationFactory $validationFactory;
@@ -48,6 +50,18 @@ abstract class ActionAbstract
     public function __construct(Container $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Get the available auth instance.
+     *
+     * @return AuthGuard
+     */
+    protected function authGuard(): AuthGuard
+    {
+        return $this->authGuard
+            ?? $this->authGuard = $this->container->make(
+                AuthGuard::class);
     }
 
     /**
