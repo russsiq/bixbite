@@ -4,6 +4,12 @@ namespace App\Models\Mutators;
 
 trait CommentMutators
 {
+    /**
+     * Not used because it generates additional queries.
+     * @see App\Models\Collections\CommentCollection
+     */
+    // public function getByAuthorAttribute(): bool {}
+
     public function getUrlAttribute(): ?string
     {
         if ($parentUrl = $this->commentable->url) {
@@ -21,11 +27,6 @@ trait CommentMutators
     public function getByUserAttribute(): bool
     {
         return is_int($this->user_id);
-    }
-
-    public function getByAuthorAttribute(): bool
-    {
-        return $this->user_id === $this->commentable->user_id;
     }
 
     // Don't touch this. Need when comments added from ajax

@@ -2,6 +2,7 @@
 
 namespace App\Models\Collections;
 
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 
 class CommentCollection extends Collection
@@ -12,17 +13,13 @@ class CommentCollection extends Collection
 
         $collection->transform(function ($comment) use ($collection, $nested, $related) {
             // Treating info about comment to make css .by_author.
-            if (is_int($comment->user_id) and isset($related['user_id'])) {
-                $comment->by_author = intval($related['user_id']) === $comment->user_id;
-            } else {
-                $comment->by_author = false;
-            }
+            $comment->by_author = is_int($comment->user_id)
+                && $comment->user_id === ($related['user_id'] ?? null);
 
             // Formatting of a comment tree, if this need.
-            if ($nested and $collection->firstWhere('parent_id', $comment->id)) {
+            $comment->children = [];
+            if ($nested && $collection->firstWhere('parent_id', $comment->id)) {
                 $comment->children = $collection->where('parent_id', $comment->id);
-            } else {
-                $comment->children = [];
             }
 
             return $comment;
@@ -30,9 +27,9 @@ class CommentCollection extends Collection
 
         // Finish stage formatting of a comment tree, if this need.
         if ($nested) {
-            $collection = $collection->reject(function ($comment) {
-                return $comment->parent_id !== null and $comment->parent_id !== 0;
-            });
+            $collection = $collection->filter(
+                fn (Comment $comment) => ! $comment->parent_id
+            );
         }
 
         return $collection;
