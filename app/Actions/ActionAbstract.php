@@ -5,6 +5,7 @@ namespace App\Actions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response as AccessResponse;
 use Illuminate\Contracts\Auth\Access\Gate as AccessGate;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard as AuthGuard;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Translation\Translator;
@@ -50,6 +51,16 @@ abstract class ActionAbstract
     public function __construct(Container $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Get the currently authenticated user.
+     *
+     * @return Authenticatable|null
+     */
+    protected function user(): ?Authenticatable
+    {
+        return $this->authGuard()->user();
     }
 
     /**
