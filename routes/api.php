@@ -46,16 +46,16 @@ Route::group([
                 'articles' => ArticlesController::class,
                 'attachments' => AttachmentsController::class,
                 'categories' => CategoriesController::class,
-                'comments' => CommentsController::class,
                 'notes' => NotesController::class,
                 'privileges' => PrivilegesController::class,
                 'settings' => SettingsController::class,
-                'tags' => TagsController::class,
                 'templates' => TemplatesController::class,
-                'users' => UsersController::class,
                 'x_fields' => XFieldsController::class,
-
             ]);
+
+            Route::apiResource('comments', CommentsController::class)->except(['store']);
+            Route::apiResource('tags', TagsController::class)->except(['store']);
+            Route::apiResource('users', UsersController::class)->except(['store']);
 
             Route::put('articles', [ArticlesController::class, 'massUpdate'])->name('articles.massUpdate');
             Route::put('comments', [CommentsController::class, 'massUpdate'])->name('comments.massUpdate');
