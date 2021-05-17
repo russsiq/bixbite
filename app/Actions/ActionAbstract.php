@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response as AccessResponse;
-use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Access\Gate as AccessGate;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -14,7 +14,7 @@ abstract class ActionAbstract
 {
     protected Container $container;
 
-    protected ?Gate $gate;
+    protected ?AccessGate $accessGate;
     protected ?Translator $translator;
     protected ?ValidationFactory $validationFactory;
 
@@ -61,20 +61,20 @@ abstract class ActionAbstract
      */
     protected function authorize(string $ability, mixed $arguments): AccessResponse
     {
-        return $this->gate()
+        return $this->accessGate()
             ->authorize($ability, $arguments);
     }
 
     /**
      * Get the Gate implementation.
      *
-     * @return Gate
+     * @return AccessGate
      */
-    protected function gate(): Gate
+    protected function accessGate(): AccessGate
     {
-        return $this->gate
-            ?? $this->gate = $this->container->make(
-                Gate::class);
+        return $this->accessGate
+            ?? $this->accessGate = $this->container->make(
+                AccessGate::class);
     }
 
     /**
