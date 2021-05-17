@@ -135,6 +135,37 @@
             <li style="color: #555753;">✓ Super admin can update category with minimal provided data</li>
             <li style="color: #555753;">✓ Not found when attempt to update non existent category</li>
         </ul>
+        <h2 id="Tests\Feature\Api\V1\Comments\DeleteCommentResourceByAPITest">Delete Comment Resource By API (Tests\Feature\Api\V1\Comments\DeleteCommentResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot delete comment</li>
+            <li style="color: #555753;">✓ User without ability cannot delete comment</li>
+            <li style="color: #555753;">✓ User with ability can delete comment</li>
+            <li style="color: #555753;">✓ Super admin can delete comment</li>
+            <li style="color: #555753;">✓ Not found when attempt to delete non existent comment</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\Comments\FetchCommentResourceByAPITest">Fetch Comment Resource By API (Tests\Feature\Api\V1\Comments\FetchCommentResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot fetch comments</li>
+            <li style="color: #555753;">✓ User without ability cannot fetch comments</li>
+            <li style="color: #555753;">✓ User with ability can fetch comments</li>
+            <li style="color: #555753;">✓ Super admin can fetch comments</li>
+            <li style="color: #555753;">✓ Guest cannot fetch specific comment</li>
+            <li style="color: #555753;">✓ User without ability cannot fetch specific comment</li>
+            <li style="color: #555753;">✓ User with ability can fetch specific comment</li>
+            <li style="color: #555753;">✓ Super admin can fetch specific comment</li>
+            <li style="color: #555753;">✓ Each received comment contains required fields</li>
+            <li style="color: #555753;">✓ Single received comment contains required fields</li>
+            <li style="color: #555753;">✓ Not found when attempt to fetch single non existent comment</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\Comments\MassUpdateCommentResourceByAPITest">Mass Update Comment Resource By API (Tests\Feature\Api\V1\Comments\MassUpdateCommentResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot mass update comment</li>
+            <li style="color: #555753;">✓ User without ability cannot mass update comment</li>
+            <li style="color: #555753;">✓ User with ability cannot mass update comment without minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin cannot mass update comment without minimal provided data</li>
+            <li style="color: #555753;">✓ User with ability can mass update comment with minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin can mass update comment with minimal provided data</li>
+        </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\ArticleCommentControllerTest">Article Comment Controller (Tests\Feature\App\Http\Controllers\ArticleCommentController)</h2>
         <ul>
             <li style="color: #555753;">✓ Super admin can comment article with minimal provided data</li>

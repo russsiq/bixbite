@@ -35,4 +35,22 @@ class CommentFactory extends Factory
             'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
+
+    public function unApproved()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_approved' => false,
+            ];
+        });
+    }
+
+    public function approved()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_approved' => true,
+            ];
+        });
+    }
 }
