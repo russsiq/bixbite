@@ -33,7 +33,7 @@ trait hasOnline
      */
     public function getIsOnlineAttribute(): bool
     {
-        return $this->isOnline();
+        return $this->exists ? $this->isOnline() : false;
     }
 
     /**

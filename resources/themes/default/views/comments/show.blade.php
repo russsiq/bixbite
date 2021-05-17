@@ -1,6 +1,6 @@
 {{-- Наличие идентификатора комментария `id="comment-{{ $comment->id }}"` обязательно. --}}
 <li id="comment-{{ $comment->id }}" class="comment" itemscope itemtype="http://schema.org/Comment">
-    <article class="comment__inner  {{ $comment->by_author ?  'by_author' : ''}}" style="{{ $comment->is_approved ? '' : 'border: 1px dashed red;' }}">
+    <article class="comment__inner" style="{{ $comment->is_approved ? '' : 'border: 1px dashed red;' }}  {{ $comment->by_author ?  'border: 1px dashed blue;' : ''}}">
         <figure class="comment__avatar">
             <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33" class="comment_avatar__thumbnail" />
         </figure>

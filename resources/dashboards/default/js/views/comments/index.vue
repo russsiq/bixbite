@@ -24,7 +24,7 @@
         <tr :key="row.id">
             <td>{{ row.id }}</td>
             <td>
-                <b>{{ row.user && row.user.name }}</b>: {{ row.content }}
+                <b>{{ row.author.name }}</b>: {{ row.content }}
             </td>
             <td style="white-space: nowrap;">{{ row.created_at | dateToString }}</td>
             <td class="text-right d-print-none">

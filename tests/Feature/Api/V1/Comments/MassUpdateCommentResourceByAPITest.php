@@ -89,7 +89,8 @@ class MassUpdateCommentResourceByAPITest extends TestCase
         $user = $this->createUser();
         $article = Article::factory()->for($user)->createOne();
         $commentsCount = mt_rand(2, 5);
-        $comments = Comment::factory($commentsCount)->for($user)
+        $comments = Comment::factory($commentsCount)
+            ->for($user, 'author')
             ->for($article, 'commentable')
             ->unApproved()
             ->create();
@@ -129,7 +130,8 @@ class MassUpdateCommentResourceByAPITest extends TestCase
         $user = $this->loginSPA();
         $article = Article::factory()->for($user)->createOne();
         $commentsCount = mt_rand(2, 5);
-        $comments = Comment::factory($commentsCount)->for($user)
+        $comments = Comment::factory($commentsCount)
+            ->for($user, 'author')
             ->for($article, 'commentable')
             ->unApproved()
             ->create();
@@ -165,7 +167,8 @@ class MassUpdateCommentResourceByAPITest extends TestCase
         $user = $this->createUser();
         $article = Article::factory()->for($user)->createOne();
         $commentsCount = mt_rand(2, 5);
-        $comments = Comment::factory($commentsCount)->for($user)
+        $comments = Comment::factory($commentsCount)
+            ->for($user, 'author')
             ->for($article, 'commentable')
             ->unApproved()
             ->create();

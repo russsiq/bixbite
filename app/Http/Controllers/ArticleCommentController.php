@@ -44,9 +44,7 @@ class ArticleCommentController extends Controller
         ]);
 
         /** @var Comment */
-        $comment = $creator->create(
-            $article, $request->all(), $request->user(),
-        );
+        $comment = $creator->create($article, $request->all());
 
         return $this->container->make(Response::class, [
             'comment' => $comment,

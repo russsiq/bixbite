@@ -90,7 +90,7 @@ class DeleteCommentResourceByAPITest extends TestCase
         $super_admin = $this->loginSuperAdminSPA();
         $user = $this->createUser();
         $article = Article::factory()->for($user)->createOne();
-        $comment = Comment::factory()->for($user)->for($article, 'commentable')->createOne();
+        $comment = Comment::factory()->for($user, 'author')->for($article, 'commentable')->createOne();
 
         $response = $this->assertAuthenticated()
             ->deleteJsonApi('destroy', $comment)

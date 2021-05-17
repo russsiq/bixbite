@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\App;
 
 trait UserMutators
 {
-    public function getProfileAttribute(): string
+    public function getProfileAttribute(): ?string
     {
-        return route('profile.show', $this);
+        return $this->exists ? route('profile.show', $this) : null;
     }
 
     public function getCreatedAttribute()

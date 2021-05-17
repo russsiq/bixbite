@@ -14,15 +14,14 @@ class CreateCommentAction extends CommentActionAbstract implements CreatesCommen
      *
      * @param  CommentableContract  $commentable
      * @param  array  $input
-     * @param  User|null $user
      * @return Comment
      */
-    public function create(CommentableContract $commentable, array $input, ?User $user): Comment
+    public function create(CommentableContract $commentable, array $input): Comment
     {
         $this->authorize('create', Comment::class);
 
         $this->commentable = $commentable;
-        $this->user = $user;
+        $this->author = $this->user();
 
         $validated = $this->validate(
             $this->prepareForValidation($input)
@@ -32,8 +31,8 @@ class CreateCommentAction extends CommentActionAbstract implements CreatesCommen
             ->create($validated)
             ->fresh();
 
-        if ($this->user instanceof User) {
-            $this->comment->user = $this->user;
+        if ($this->author instanceof User) {
+            $this->comment->user = $this->author;
         }
 
         return $this->comment;

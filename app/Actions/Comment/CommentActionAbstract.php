@@ -13,7 +13,7 @@ abstract class CommentActionAbstract extends ActionAbstract
 {
     protected ?CommentableContract $commentable = null;
     protected ?Comment $comment = null;
-    protected ?User $user = null;
+    protected ?User $author = null;
 
     /**
      * Get the validation rules that apply to the action.
@@ -60,9 +60,10 @@ abstract class CommentActionAbstract extends ActionAbstract
         $input['user_id'] = null;
         $input['is_approved'] = ! setting('comments.moderate');
 
-        if ($this->user instanceof User) {
-            $input['user_id'] = $this->user->id;
-            $input['is_approved'] = $this->user->isSuperAdmin() || $this->user->id === $this->commentable->user->id;
+        if ($this->author instanceof User) {
+            $input['user_id'] = $this->author->id;
+            $input['is_approved'] = $this->author->isSuperAdmin()
+                || $this->author->id === $this->commentable->user->id;
         }
 
         if (empty($input['parent_id'])) {
@@ -226,7 +227,7 @@ abstract class CommentActionAbstract extends ActionAbstract
      */
     protected function recaptchaRules(): array
     {
-        if ($this->user instanceof User) {
+        if ($this->author instanceof User) {
             return [];
         }
 

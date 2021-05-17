@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read \Illuminate\Support\Carbon $created_at
  * @property-read \Illuminate\Support\Carbon $updated_at
  *
- * @property-read object $author
  * @property-read bool $by_user
  * @property-read string $url
  *
@@ -66,7 +65,6 @@ class Comment extends Model
      * @var array
      */
     protected $appends = [
-        'author',
         'by_user',
         'url',
         'created',
@@ -80,7 +78,6 @@ class Comment extends Model
     protected $casts = [
         'parent_id' => 'integer',
         'is_approved' => 'boolean',
-        'author' => 'object',
         'by_user' => 'boolean',
         'url' => 'string',
         'created' => 'string',
@@ -108,7 +105,7 @@ class Comment extends Model
      * @var array
      */
     protected $with = [
-        'user:users.id,users.name,users.email,users.avatar',
+        'author:users.id,users.name,users.email,users.avatar',
     ];
 
     /**
@@ -137,19 +134,18 @@ class Comment extends Model
     ];
 
     /**
-     * Get the user who created the comment.
+     * Get the author who created the comment.
      *
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'user')
-            ->withDefault(function (User $user, $comment) {
+            ->withDefault(function (User $user, Comment $comment) {
                 $user->id = null;
                 $user->name = $comment->author_name;
                 $user->email = $comment->author_email;
                 $user->profile = null;
-                $user->avatar = get_avatar($comment->author_email);
                 $user->is_online = false;
             });
     }
