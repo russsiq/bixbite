@@ -4,9 +4,13 @@ namespace App\Models\Mutators;
 
 trait CommentMutators
 {
-    public function getUrlAttribute(): string
+    public function getUrlAttribute(): ?string
     {
-        return $this->commentable->url.'#comment-'.$this->id;
+        if ($parentUrl = $this->commentable->url) {
+            return "{$parentUrl}#comment-{$this->id}";
+        }
+
+        return null;
     }
 
     public function getCreatedAttribute()
