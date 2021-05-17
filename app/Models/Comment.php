@@ -143,7 +143,15 @@ class Comment extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
+        return $this->belongsTo(User::class, 'user_id', 'id', 'user')
+            ->withDefault(function (User $user, $comment) {
+                $user->id = null;
+                $user->name = $comment->author_name;
+                $user->email = $comment->author_email;
+                $user->profile = null;
+                $user->avatar = get_avatar($comment->author_email);
+                $user->is_online = false;
+            });
     }
 
     /**

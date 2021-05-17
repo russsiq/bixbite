@@ -53,7 +53,7 @@ class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponse
             ], SymfonyResponse::HTTP_CREATED);
         }
 
-        return redirect($this->comment->url)
+        return redirect()->to($this->comment->url)
             ->withStatus($this->statusMessage());
     }
 

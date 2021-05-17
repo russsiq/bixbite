@@ -1,18 +1,18 @@
 {{-- Наличие идентификатора комментария `id="comment-{{ $comment->id }}"` обязательно. --}}
 <li id="comment-{{ $comment->id }}" class="comment" itemscope itemtype="http://schema.org/Comment">
-    <article class="comment__inner" style="{{ $comment->is_approved ? '' : 'border: 1px dashed red;' }}">
+    <article class="comment__inner  {{ $comment->by_author ?  'by_author' : ''}}" style="{{ $comment->is_approved ? '' : 'border: 1px dashed red;' }}">
         <figure class="comment__avatar">
             <img src="{{ $comment->author->avatar }}" alt="{{ $comment->author->name }}" width="33" class="comment_avatar__thumbnail" />
         </figure>
 
-        <header class="comment__header {{ $comment->by_author ?  'by_author' : ''}}">
+        <header class="comment__header">
             {{-- Класс `comment__reply` и атрибут `data-reply` используется JavaScript. --}}
             <span class="comment__reply" data-reply="{{ $comment->id }}">@lang('comments.btn.reply')</span>
-            @if ($comment->by_user)<a href="{{ $comment->author->profile }}" title="@lang('auth.profile')">@endif
+            @if ($comment->author->profile)<a href="{{ $comment->author->profile }}" title="@lang('auth.profile')">@endif
                 <i class="widget_item__title" itemprop="creator">
                     {{ $comment->author->name }} <b class="{{ $comment->author->is_online ? 'is_online' : '' }}"></b>
                 </i>
-            @if ($comment->by_user)</a>@endif
+            @if ($comment->author->profile)</a>@endif
             <p class="widget_item__subtitle">{{ $comment->created }}</p>
         </header>
 

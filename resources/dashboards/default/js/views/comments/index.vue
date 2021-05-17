@@ -60,8 +60,8 @@
             <select class="form-select" v-model="massAction">
                 <option value="" disabled selected>Выберите действие</option>
                 <optgroup label="Статус">
-                    <option value="published">Опубликовать</option>
-                    <option value="unpublished">Отправить на модерацию</option>
+                    <option value="approved">Опубликовать</option>
+                    <option value="unapproved">Отправить на модерацию</option>
                 </optgroup>
                 <optgroup label="Удалить">
                     <option value="delete">Удалить отмеченные</option>
@@ -122,7 +122,7 @@ export default {
         },
 
         toggleStateComment(row) {
-            const state = row.is_approved ? 'unpublished' : 'published';
+            const state = row.is_approved ? 'unapproved' : 'approved';
 
             this.massUpdate([row.id], state);
         },

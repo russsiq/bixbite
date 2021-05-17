@@ -2,148 +2,96 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Comment\MassUpdate as MassUpdateCommentRequest;
-use App\Http\Requests\Api\V1\Comment\Store as StoreCommentRequest;
-use App\Http\Requests\Api\V1\Comment\Update as UpdateCommentRequest;
+use App\Contracts\Actions\Comment\CreatesComment;
+use App\Contracts\Actions\Comment\DeletesComment;
+use App\Contracts\Actions\Comment\FetchesComment;
+use App\Contracts\Actions\Comment\MassUpdatesComment;
+use App\Contracts\Actions\Comment\UpdatesComment;
 use App\Http\Resources\CommentCollection;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
-// use Illuminate\Database\Eloquent\Relations\MorphTo;
-// use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class CommentsController extends ApiController
+class CommentsController extends Controller
 {
     /**
-     * Дополнение к карте сопоставления
-     * методов ресурса и методов в классе политик.
+     * Display a listing of the resource.
      *
-     * @var array
-     */
-    protected $advancedAbilityMap = [
-        'massUpdate' => 'massUpdate',
-
-    ];
-
-    /**
-     * Массив дополнительных методов, не имеющих
-     * конкретной модели в качестве параметра класса политик.
-     *
-     * @var array
-     */
-    protected $advancedMethodsWithoutModels = [
-        'massUpdate',
-
-    ];
-
-    /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Comment::class, 'comment');
-    }
-
-    /**
-     * Отобразить весь список сущностей,
-     * включая связанные сущности.
-     *
+     * @param  FetchesComment  $fetcher
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(FetchesComment $fetcher, Request $request): JsonResponse
     {
-        $comments = Comment::with([
-            'commentable',
-        ])
-            ->advancedFilter($request->all());
-
-        $collection = new CommentCollection($comments);
-
-        return $collection->response()
+        return CommentCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Comment  $comment
+     * @param  FetchesComment  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(Comment $comment)
+    public function show(FetchesComment $fetcher, Request $request, int $id): JsonResponse
     {
-        $comment->load([
-            'commentable',
-            'user',
-        ]);
-
-        $resource = new CommentResource($comment);
-
-        return $resource->response()
+        return CommentResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateCommentRequest  $request
+     * @param  UpdatesComment  $updater
+     * @param  Request  $request
      * @param  Comment  $comment
      * @return JsonResponse
      */
-    public function update(UpdateCommentRequest $request, Comment $comment)
+    public function update(UpdatesComment $updater, Request $request, Comment $comment): JsonResponse
     {
-        $comment->update($request->validated());
-
-        $resource = new CommentResource($comment);
-
-        return $resource->response()
+        return CommentResource::make(
+                $updater->update($comment, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Массово обновить сущности по `id` в хранилище.
+     * Update the specified resource collection in storage.
      *
-     * @param  MassUpdateCommentRequest  $request
+     * @param  MassUpdatesComment  $updater
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function massUpdate(MassUpdateCommentRequest $request)
+    public function massUpdate(MassUpdatesComment $updater, Request $request): JsonResponse
     {
-        $ids = $request->comments;
-        $attribute = $request->mass_action;
-        $query = Comment::whereIn('id', $ids);
-
-        switch ($attribute) {
-            case 'published':
-                $query->update([
-                    'is_approved' => true,
-                ]);
-                break;
-            case 'unpublished':
-                $query->update([
-                    'is_approved' => false,
-                ]);
-                break;
-        }
-
-        // No need to load relationships.
-        $comments = Comment::whereIn('id', $ids)->get();
-
-        $collection = new CommentCollection($comments);
-
-        return $collection->response()
+        return CommentResource::collection(
+                $updater->massUpdate($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
+     * @param  DeletesComment  $deleter
      * @param  Comment  $comment
      * @return JsonResponse
      */
-    public function destroy(Comment $comment)
+    public function destroy(DeletesComment $deleter, Comment $comment): JsonResponse
     {
-        $comment->delete();
+        $deleter->delete($comment);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
