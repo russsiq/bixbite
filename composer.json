@@ -78,7 +78,8 @@
         ],
         "testdox": [
             "@php artisan config:clear",
-            "vendor\\bin\\phpunit --testdox-html tests/testdox.html"
+            "vendor\\bin\\phpunit --testdox-html tests/testdox.html",
+            "@php artisan optimize"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
