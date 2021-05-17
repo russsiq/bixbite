@@ -20,8 +20,8 @@ class MassUpdateArticleAction extends ArticleActionAbstract implements MassUpdat
         $this->authorize('massUpdate', Article::class);
 
         $validated = $this->validate($input);
-
-        ['mass_action' => $attribute, 'articles' => $ids] = $validated;
+        $ids = $validated['articles'];
+        $attribute = $validated['mass_action'];
 
         $query = Article::whereIn('id', $ids);
 
