@@ -39,7 +39,7 @@
         "russsiq/laravel-zipper": "^0.2.3"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5.5",
+        "barryvdh/laravel-debugbar": "^3.5.7",
         "brianium/paratest": "^6.3.0",
         "facade/ignition": "^2.9.0",
         "fakerphp/faker": "^1.14.1",
