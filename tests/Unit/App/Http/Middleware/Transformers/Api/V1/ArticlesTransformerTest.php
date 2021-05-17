@@ -173,8 +173,8 @@ class ArticlesTransformerTest extends TestCase
         $fields = [
             'slug',
             // 'teaser',
-            'description',
-            'keywords',
+            'meta_description',
+            'meta_keywords',
             // 'tags.*',
 
         ];
@@ -195,7 +195,7 @@ class ArticlesTransformerTest extends TestCase
     }
 
     /**
-     * [createTransformer description]
+     * [createTransformer meta_description]
      * @param  Request  $request
      * @param  ConfigRepository  $config
      * @return ResourceRequestTransformer
