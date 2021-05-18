@@ -2,7 +2,6 @@
 
 namespace App\Models\Relations;
 
-// Сторонние зависимости.
 use App\Models\XField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,7 +9,54 @@ use Illuminate\Database\Eloquent\Collection;
 trait Extensible
 {
     /**
-     * Получить значение динамического атрибута `x_fields`.
+     * Boot the Extensible trait for a model.
+     *
+     * @return void
+     */
+    public static function bootExtensible(): void
+    {
+        static::retrieved(function ($extensible) {
+            $extensible->fillable(array_merge(
+                $extensible->getFillable(),
+                $extensible->x_fields->pluck('name')->toArray()
+            ));
+        });
+    }
+
+    /**
+     * Initialize the Extensible trait for an instance.
+     *
+     * @return void
+     */
+    public function initializeExtensible(): void
+    {
+        $this->x_fields->pluck('name', 'type')
+            ->map(function (string $column, string $type) {
+                if (! isset($this->casts[$column])) {
+                    switch ($type) {
+                        case 'integer':
+                            $this->casts[$column] = 'integer';
+                            break;
+
+                        case 'boolean':
+                            $this->casts[$column] = 'boolean';
+                            break;
+
+                        case 'timestamp':
+                            $this->casts[$column] = 'datetime';
+                            break;
+
+                        default:
+                            $this->casts[$column] = 'string';
+                            break;
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get the value of the dynamic attribute `x_fields`.
+     *
      * @return Collection
      */
     public function getXFieldsAttribute(): Collection
@@ -19,23 +65,17 @@ trait Extensible
     }
 
     /**
-     * Включить в выборку имена дополнительных полей.
+     * Include names of extra fields in the query.
+     *
      * @param  Builder  $builder
-     * @return void
+     * @return Builder
      */
-    public function scopeIncludeXFieldsNames(Builder $builder): void
+    public function scopeIncludeXFieldsNames(Builder $builder): Builder
     {
-        // $names = $this->x_fields->pluck('name', 'extensible')
-        //     ->map(fn (string $field, string $table) => $table.'.'.$field)
-        //     ->values();
-
-        $table = $this->getTable();
-
-        $names = $this->x_fields->pluck('name')
-            ->map(function (string $field, int $key) use ($table) {
-                return $table.'.'.$field;
-            });
-
-        $builder->addSelect($names->toArray());
+        return $builder->addSelect(
+            $this->x_fields->pluck('name')
+                ->map(fn (string $column) => $this->qualifyColumn($column))
+                ->toArray()
+        );
     }
 }

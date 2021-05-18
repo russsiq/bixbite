@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Collections\CategoryCollection;
+use App\Models\Contracts\ExtensibleContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ use Illuminate\Support\Facades\DB;
  *
  * @method \Illuminate\Database\Eloquent\Builder short()
  */
-class Category extends Model
+class Category extends Model implements ExtensibleContract
 {
     use Mutators\CategoryMutators;
     use Relations\Extensible;

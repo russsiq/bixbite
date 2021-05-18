@@ -20,19 +20,6 @@ class CategoryObserver extends BaseObserver
     ];
 
     /**
-     * Обработать событие `retrieved` модели.
-     * @param  Category  $category
-     * @return void
-     */
-    public function retrieved(Category $category): void
-    {
-        $category->fillable(array_merge(
-            $category->getFillable(),
-            $category->x_fields->pluck('name')->toArray()
-        ));
-    }
-
-    /**
      * Обработать событие `saved` модели.
      * @param  Category  $category
      * @return void

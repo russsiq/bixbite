@@ -89,53 +89,6 @@ abstract class ArticleActionAbstract extends ActionAbstract
     }
 
     /**
-     * Get the validation rules used to validate `x_*` fields.
-     *
-     * @return array
-     * @todo This needs to be moved to a different location.
-     */
-    protected function extraFieldsRules(): array
-    {
-        $extensibles = [];
-
-        foreach (Article::getModel()->x_fields as $field) {
-            $rules = ['bail'];
-
-            if (! str_contains($field->html_flags, 'required')) {
-                array_push($rules, 'nullable');
-            }
-
-            switch ($field->type) {
-                case 'string':
-                    array_push($rules, 'string', 'max:255');
-                    break;
-
-                case 'array':
-                    array_push($rules, 'string', Rule::in(
-                        collect($field->params)->pluck('key')
-                    ));
-                    break;
-
-                case 'text':
-                    array_push($rules, 'string');
-                    break;
-
-                case 'timestamp':
-                    array_push($rules, 'date');
-                    break;
-
-                default:
-                    array_push($rules, $field->type);
-                    break;
-            }
-
-            $extensibles[$field->name] = $rules;
-        }
-
-        return $extensibles;
-    }
-
-    /**
      * Get the validation rules used to validate `user_id` field.
      *
      * @return array

@@ -14,19 +14,6 @@ use Laravel\Sanctum\HasApiTokens;
 class UserObserver extends BaseObserver
 {
     /**
-     * Обработать событие `retrieved` модели.
-     * @param  User  $user
-     * @return void
-     */
-    public function retrieved(User $user): void
-    {
-        $user->fillable(array_merge(
-            $user->getFillable(),
-            $user->x_fields->pluck('name')->toArray()
-        ));
-    }
-
-    /**
      * Обработать событие `updating` модели.
      * @param  User  $user
      * @return void

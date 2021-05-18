@@ -4,10 +4,13 @@ namespace App\Actions\User;
 
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
 use App\Models\User;
+use App\Rules\Concerns\ExtraFieldsRules;
 
 class UpdateUserProfileInformationAction extends UserActionAbstract implements UpdatesUserProfileInformation
 {
-    /** @var string|null */
+    use ExtraFieldsRules;
+
+    /** @var string */
     protected $validationErrorBag = 'updateProfileInformation';
 
     /**
@@ -24,12 +27,9 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
             $this->user = $user->fresh()
         );
 
-        $validated = $this->validate($input);
-
-        $this->user->forceFill([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-        ])->save();
+        $this->user->update(
+            $this->validate($input)
+        );
     }
 
     /**
@@ -40,6 +40,7 @@ class UpdateUserProfileInformationAction extends UserActionAbstract implements U
     protected function rules(): array
     {
         return array_merge(
+            $this->extraFieldsRules(User::getModel()),
             $this->nameRules(),
             $this->emailRules(),
         );

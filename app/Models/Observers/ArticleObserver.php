@@ -31,19 +31,6 @@ class ArticleObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `retrieved` модели.
-     * @param  Article  $article
-     * @return void
-     */
-    public function retrieved(Article $article): void
-    {
-        $article->fillable(array_merge(
-            $article->getFillable(),
-            $article->x_fields->pluck('name')->toArray()
-        ));
-    }
-
-    /**
      * Обработать событие `saved` модели.
      * @param  Article  $article
      * @return void

@@ -4,9 +4,12 @@ namespace App\Actions\Article;
 
 use App\Contracts\Actions\Article\UpdatesArticle;
 use App\Models\Article;
+use App\Rules\Concerns\ExtraFieldsRules;
 
 class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticle
 {
+    use ExtraFieldsRules;
+
     /**
      * Validate and update the given article.
      *
@@ -42,7 +45,7 @@ class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticl
     protected function rules(): array
     {
         return array_merge(
-            $this->extraFieldsRules(),
+            $this->extraFieldsRules(Article::getModel()),
             // $this->userIdRules(), // Determined once at creation.
             $this->imageIdRules(),
             $this->stateRules(),

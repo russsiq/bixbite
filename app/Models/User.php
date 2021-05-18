@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\ExtensibleContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -33,7 +34,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read bool $is_online
  * @property-read ?string $logined
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, ExtensibleContract
 {
     use Mutators\UserMutators;
     use Relations\Extensible;

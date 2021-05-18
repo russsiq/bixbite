@@ -22,6 +22,13 @@ abstract class ActionAbstract
     protected ?ValidationFactory $validationFactory;
 
     /**
+     * The array of custom attribute names.
+     *
+     * @var array
+     */
+    protected $customAttributes = [];
+
+    /**
      * The key to be used for the view error bag.
      *
      * @var string|null
@@ -137,7 +144,8 @@ abstract class ActionAbstract
      */
     protected function validate(array $input): array
     {
-        $validator = $this->createValidator($input);
+        $validator = $this->createValidator($input)
+            ->addCustomAttributes($this->customAttributes);
 
         return $this->validationErrorBag
             ? $validator->validateWithBag($this->validationErrorBag)

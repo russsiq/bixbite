@@ -13,8 +13,8 @@
     			<label for="name" class="col-sm-4 col-form-label">@lang('Name')</label>
     			<div class="col-sm-6">
                     <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" required />
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @error('name', 'updateProfileInformation')
+                        <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
     		</div>
@@ -23,8 +23,8 @@
     			<label for="email" class="col-sm-4 col-form-label">@lang('Email')</label>
     			<div class="col-sm-6">
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required />
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @error('email', 'updateProfileInformation')
+                        <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
     		</div>
@@ -33,8 +33,8 @@
     			<label for="location" class="col-sm-4 col-form-label">@lang('Location')</label>
     			<div class="col-sm-6">
                     <input type="text" name="location" value="{{ old('location', $user->location) }}" class="form-control" />
-                    @error('location')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @error('location', 'updateProfileInformation')
+                        <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
     		</div>
@@ -43,8 +43,8 @@
     			<label for="info" class="col-sm-4 col-form-label">@lang('Info')</label>
     			<div class="col-sm-6">
                     <textarea id="info" name="info" rows="4" class="form-control">{{ old('info', $user->info) }}</textarea>
-                    @error('info')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @error('info', 'updateProfileInformation')
+                        <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
                     @enderror
                 </div>
     		</div>
@@ -57,8 +57,8 @@
     					<label class="form-text text-muted"><input type="checkbox" name="delete_avatar" value="1" /> @lang('users.delete_avatar')</label>
     				@endif
     				<input type="file" name="avatar" class="form-control" />
-                    @error('avatar')
-                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @error('avatar', 'updateProfileInformation')
+                        <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
                     @enderror
     			</div>
     		</div>

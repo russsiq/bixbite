@@ -1,4 +1,4 @@
-<div class="mb-3 row {{ $errors->has($x_field->name) ? ' has-error' : '' }}">
+<div class="mb-3 row">
 	<label class="col-sm-4 col-form-label">{{ $x_field->title }}</label>
 	<div class="col-sm-6">
 		@if ('boolean' == $x_field->type)
@@ -26,5 +26,8 @@
 			<input type="text" name="{{ $x_field->name }}" class="form-control" {{ $x_field->html_flags }} maxlength="255"
 				value="{{ old($x_field->name, optional($item)->{$x_field->name}) }}" />
 		@endif
+        @error($x_field->name, 'updateProfileInformation')
+            <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
+        @enderror
 	</div>
 </div>
