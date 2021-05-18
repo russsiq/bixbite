@@ -65,13 +65,13 @@
 
             <hr> --}}
 
-            {{-- @if (count($x_fields))
+            @if (count($x_fields))
                 @foreach ($x_fields as $x_field)
-                    DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work
+                    {{-- DON'T use "@each(...)", because "$loop->..." and "$user->..." does not work --}}
                     @include('profile.x_fields', ['x_field' => $x_field, 'item' => $user ?? []])
                 @endforeach
                 <hr>
-            @endif --}}
+            @endif
 
             <div class="mb-3 row">
                 <div class="col-md-6 offset-md-4">
