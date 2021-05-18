@@ -185,21 +185,21 @@ abstract class ActionAbstract
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    protected function messages(): array
-    {
-        return [];
-    }
-
-    /**
      * Get custom attributes for validator errors.
      *
      * @return array
      */
     protected function attributes(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    protected function messages(): array
     {
         return [];
     }
