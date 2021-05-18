@@ -5,7 +5,7 @@ namespace App\Actions\Article;
 use App\Actions\ActionAbstract;
 use App\Models\Article;
 use App\Rules\MetaRobotsRule;
-use App\Rules\SqlTextLength;
+use App\Rules\SqlTextLengthRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 
@@ -255,7 +255,7 @@ abstract class ArticleActionAbstract extends ActionAbstract
             'content' => [
                 'nullable',
                 'string',
-                $this->container->make(SqlTextLength::class),
+                $this->container->make(SqlTextLengthRule::class),
             ],
         ];
     }

@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Rule;
 
-class SqlTextLength implements Rule
+class SqlTextLengthRule implements Rule
 {
     /** @var Translator */
     protected $translator;
