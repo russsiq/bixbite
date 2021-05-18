@@ -24,7 +24,7 @@
             <a href="{{ route('comments.edit', $comment) }}" class="btn btn-link">@lang('common.btn.edit')</a>
         @endcan
         @can ('comments.delete', $comment)
-            <form action="{{ route('comments.delete', $comment) }}" method="post" onsubmit="return confirm('@lang('common.msg.sure_del')');">
+            <form action="{{ route('comments.destroy', $comment) }}" method="post" onsubmit="return confirm('@lang('common.msg.sure_del')');">
                 <input type="hidden" name="_method" value="DELETE" />
                 <button type="submit" name="_token" value="{{ pageinfo('csrf_token') }}" class="btn btn-link">@lang('common.btn.delete')</button>
             </form>

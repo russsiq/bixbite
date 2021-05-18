@@ -31,7 +31,7 @@ Route::middleware('throttle:5,1')
     ->post('articles/{article}/comments', ArticleCommentController::class)
     ->name('articles.comments.store');
 
-Route::resource('comments', CommentsController::class)->only(['edit','update','destroy'])->names(['destroy' => 'comments.delete']);
+Route::resource('comments', CommentsController::class)->only(['edit','update','destroy']);
 
 Route::get('articles', [ArticlesController::class, 'index'])->name('articles.index');
 Route::match(['get','post'], 'search', [ArticlesController::class, 'search'])->name('articles.search');
