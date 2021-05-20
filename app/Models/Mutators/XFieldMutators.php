@@ -33,7 +33,7 @@ trait XFieldMutators
      * @param  string $name
      * @return string
      */
-    protected function normalizeNameAttributePrefix(string $name): string
+    public function normalizeNameAttributePrefix(string $name): string
     {
         return trim(Str::start($name, $this->xPrefix()), '_');
     }
