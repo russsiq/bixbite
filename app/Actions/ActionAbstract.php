@@ -147,6 +147,12 @@ abstract class ActionAbstract
         $validator = $this->createValidator($input)
             ->addCustomAttributes($this->customAttributes);
 
+        if (method_exists($this, 'withValidator')) {
+            $this->container->call(
+                [$this, 'withValidator'], compact('validator')
+            );
+        }
+
         return $this->validationErrorBag
             ? $validator->validateWithBag($this->validationErrorBag)
             : $validator->validate();
