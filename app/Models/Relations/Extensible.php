@@ -9,15 +9,43 @@ use Illuminate\Database\Eloquent\Collection;
 trait Extensible
 {
     /**
+     * The built-in cast types supported by Extra Fields.
+     *
+     * @var array
+     */
+    protected $extraFieldsCastMap = [
+        'default' => 'string',
+        'integer' => 'integer',
+        'boolean' => 'boolean',
+        'timestamp' => 'datetime',
+    ];
+
+    /**
      * Boot the Extensible trait for a model.
      *
      * @return void
      */
     public static function bootExtensible(): void
     {
+        // Extra fields can only be set for instances of existing models in the database.
         static::retrieved(function ($extensible) {
+            /** @var Collection */
+            $x_fields = $extensible->x_fields;
+
             $extensible->mergeFillable(
-                $extensible->x_fields->pluck('name')->toArray()
+                $x_fields->pluck('name')->toArray()
+            );
+
+            $extensible->mergeCasts(
+                $x_fields->pluck('name', 'type')
+                    ->reject(fn (string $name) => isset($extensible->casts[$name]))
+                    ->mapWithKeys(
+                        fn (string $name, string $type) => [
+                            $name => $extensible->extraFieldsCastMap[$type]
+                                ?? $extensible->extraFieldsCastMap['default']
+                        ]
+                    )
+                    ->toArray()
             );
         });
     }
@@ -29,28 +57,7 @@ trait Extensible
      */
     public function initializeExtensible(): void
     {
-        $this->x_fields->pluck('name', 'type')
-            ->map(function (string $column, string $type) {
-                if (! isset($this->casts[$column])) {
-                    switch ($type) {
-                        case 'integer':
-                            $this->casts[$column] = 'integer';
-                            break;
-
-                        case 'boolean':
-                            $this->casts[$column] = 'boolean';
-                            break;
-
-                        case 'timestamp':
-                            $this->casts[$column] = 'datetime';
-                            break;
-
-                        default:
-                            $this->casts[$column] = 'string';
-                            break;
-                    }
-                }
-            });
+        //
     }
 
     /**
