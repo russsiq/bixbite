@@ -49,9 +49,11 @@ trait ArticleScopes
         $article->comments = $article->comments_count ? $article->getComments(setting('comments.nested', true)) : [];
 
         // Если в настройках указано вести подсчет количества просмотров записи.
-        if (setting('articles.views_used', false)) {
-            $article->increment('views');
-        }
+        $article->timestamps = false;
+        $article->when(setting('articles.views_used', false), function ($builder) {
+            $builder->increment('views');
+        });
+        $article->timestamps = true;
 
         return $article;
     }
