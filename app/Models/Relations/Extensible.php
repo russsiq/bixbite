@@ -16,10 +16,9 @@ trait Extensible
     public static function bootExtensible(): void
     {
         static::retrieved(function ($extensible) {
-            $extensible->fillable(array_merge(
-                $extensible->getFillable(),
+            $extensible->mergeFillable(
                 $extensible->x_fields->pluck('name')->toArray()
-            ));
+            );
         });
     }
 
