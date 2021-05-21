@@ -25,31 +25,23 @@ trait InteractsWithPolicy
     ];
 
     /**
-     * Mock a partial instance of an object in the container.
-     *
-     * @param  string  $abstract
-     * @param  Closure  $mock
-     * @return MockInterface
-     */
-    abstract protected function partialMock($abstract, Closure $mock);
-
-    /**
      * Allow policy abilities for the test.
      *
      * @param  string  $policy
      * @param  string[]  $abilities
+     * @param  int  $limit
      * @return $this
      */
-    protected function allowPolicyAbility(string $policy, array $abilities = []): static
+    protected function allowPolicyAbility(string $policy, array $abilities = [], int $limit = 1): static
     {
         $abilities = $abilities ?: $this->defaultResourceAbilities();
 
-        $this->partialMock($policy,
-            function (MockInterface $mock) use ($abilities) {
-                return $mock->shouldReceive(...$abilities)
-                    ->once()
-                    ->andReturn(true);
-            }
+        /** @var \Tests\TestCase $this */
+        $this->partialMock(
+            $policy,
+            fn (MockInterface $mock) => $mock->shouldReceive(...$abilities)
+                ->times($limit)
+                ->andReturn(true)
         );
 
         return $this;
@@ -62,16 +54,16 @@ trait InteractsWithPolicy
      * @param  string[]  $abilities
      * @return $this
      */
-    protected function denyPolicyAbility(string $policy, array $abilities = []): static
+    protected function denyPolicyAbility(string $policy, array $abilities = [], int $limit = 1): static
     {
         $abilities = $abilities ?: $this->defaultResourceAbilities();
 
-        $this->partialMock($policy,
-            function (MockInterface $mock) use ($abilities) {
-                return $mock->shouldReceive(...$abilities)
-                    ->once()
-                    ->andReturn(false);
-            }
+        /** @var \Tests\TestCase $this */
+        $this->partialMock(
+            $policy,
+            fn (MockInterface $mock) => $mock->shouldReceive(...$abilities)
+                ->times($limit)
+                ->andReturn(false)
         );
 
         return $this;
