@@ -1,4 +1,9 @@
 {
+    "Unknown extensible extra fields table: [:extensible].": "Неизвестная расширяемая таблица дополнительных полей [:extensible].",
+    "Unknown extra field type: [:type].": "Неизвестный тип дополнительного поля: [:type].",
+    "Column [:name] in table [:table] already exists.": "Столбец [:name] в таблице [:table] уже существует.",
+    "Column [:name] in table [:table] does not exists.": "Столбца [:name] в таблице [:table] не существует.",
+
     "A fresh verification link has been sent to your email address.": "Новая ссылка для подтверждения была отправлена на ваш email-адрес.",
     "A new verification link has been sent to the email address you provided during registration.": "Новая ссылка для подтверждения была отправлена на ваш email-адрес, указанный при регистрации.",
     "Accept Invitation": "Принять приглашение",

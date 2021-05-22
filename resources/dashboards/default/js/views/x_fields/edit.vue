@@ -19,7 +19,7 @@
             </div>
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Идентификатор<small class="form-text d-block text-muted">Заполняется по схеме <code>/^[a-z_]+$/</code>. В БД к полю будет добавлен префикс <code>x_</code>.</small></label>
+                <label class="col-sm-7 control-label">Идентификатор<small class="form-text d-block text-muted">Заполняется по схеме <code>/^[a-z0-9_]+$/</code>. В БД к полю будет добавлен префикс <code>x_</code>.</small></label>
                 <div class="col-sm-5">
                     <input type="text" v-model="form.name" class="form-control" required :readonly="isEditMode" />
                 </div>

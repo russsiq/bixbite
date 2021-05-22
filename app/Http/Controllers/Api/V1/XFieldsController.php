@@ -2,116 +2,96 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\XField\Store as StoreXFieldRequest;
-use App\Http\Requests\Api\V1\XField\Update as UpdateXFieldRequest;
+use App\Contracts\Actions\XField\CreatesXField;
+use App\Contracts\Actions\XField\DeletesXField;
+use App\Contracts\Actions\XField\FetchesXField;
+use App\Contracts\Actions\XField\UpdatesXField;
 use App\Http\Resources\XFieldCollection;
 use App\Http\Resources\XFieldResource;
 use App\Models\XField;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class XFieldsController extends ApiController
+class XFieldsController extends Controller
 {
     /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(XField::class, 'x_field');
-    }
-
-    /**
-     * Отобразить список сущностей с дополнительной фильтрацией.
+     * Display a listing of the resource.
      *
+     * @param  FetchesXField  $fetcher
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(FetchesXField $fetcher, Request $request): JsonResponse
     {
-        $x_fields = XField::with([
-
-        ])
-            ->withCount([
-
-            ])
-            ->advancedFilter($request->all());
-
-        $collection = new XFieldCollection($x_fields);
-
-        return $collection->response()
+        return XFieldCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Создать и сохранить сущность в хранилище.
+     * Store a newly created resource in storage.
      *
-     * @param  StoreXFieldRequest  $request
+     * @param  CreatesXField  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(StoreXFieldRequest $request)
+    public function store(CreatesXField $creator, Request $request): JsonResponse
     {
-        $x_field = XField::create($request->validated());
-
-        $resource = new XFieldResource($x_field);
-
-        return $resource->response()
+        return XFieldResource::make(
+                $creator->create($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  XField  $x_field
+     * @param  FetchesXField  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(XField $x_field)
+    public function show(FetchesXField $fetcher, Request $request, int $id): JsonResponse
     {
-        $x_field->load([
-
-        ]);
-
-        $resource = new XFieldResource($x_field);
-
-        return $resource->response()
+        return XFieldResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateXFieldRequest  $request
-     * @param  XField  $x_field
-     * @return JsonResponse
-     */
-    public function update(UpdateXFieldRequest $request, XField $x_field)
-    {
-        $x_field->update($request->validated());
-
-        $resource = new XFieldResource($x_field);
-
-        return $resource->response()
-            ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
-    }
-
-    /**
-     * Удалить сущность из хранилища.
-     *
+     * @param  UpdatesXField  $updater
      * @param  Request  $request
      * @param  XField  $x_field
      * @return JsonResponse
      */
-    public function destroy(Request $request, XField $x_field)
+    public function update(UpdatesXField $updater, Request $request, XField $x_field): JsonResponse
     {
-        // Check if currently authenticated user has owner role.
-        if ($request->user()->hasRole('owner')) {
-            $x_field->delete();
+        return XFieldResource::make(
+                $updater->update($x_field, $request->all())
+            )
+            ->response()
+            ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
+    }
 
-            return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
-        }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  DeletesXField  $deleter
+     * @param  XField  $x_field
+     * @return JsonResponse
+     */
+    public function destroy(DeletesXField $deleter, XField $x_field): JsonResponse
+    {
+        $deleter->delete($x_field);
 
-        return response()
-            ->json([
-                'message' => 'You can not delete x_fields.',
-            ], JsonResponse::HTTP_FORBIDDEN);
+        return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

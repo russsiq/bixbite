@@ -166,6 +166,44 @@
             <li style="color: #555753;">✓ User with ability can mass update comment with minimal provided data</li>
             <li style="color: #555753;">✓ Super admin can mass update comment with minimal provided data</li>
         </ul>
+        <h2 id="Tests\Feature\Api\V1\XFields\CreateXFieldResourceByAPITest">Create XField Resource By API (Tests\Feature\Api\V1\XFields\CreateXFieldResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot create x field</li>
+            <li style="color: #555753;">✓ User without ability cannot create x field</li>
+            <li style="color: #555753;">✓ User with ability cannot create x field without minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin can create x field with minimal provided data</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\XFields\DeleteXFieldResourceByAPITest">Delete XField Resource By API (Tests\Feature\Api\V1\XFields\DeleteXFieldResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot delete x field</li>
+            <li style="color: #555753;">✓ User without ability cannot delete x field</li>
+            <li style="color: #555753;">✓ User with ability can delete x field</li>
+            <li style="color: #555753;">✓ Super admin can delete x field</li>
+            <li style="color: #555753;">✓ Not found when attempt to delete non existent x field</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\XFields\FetchXFieldResourceByAPITest">Fetch XField Resource By API (Tests\Feature\Api\V1\XFields\FetchXFieldResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot fetch x fields</li>
+            <li style="color: #555753;">✓ User without ability cannot fetch x fields</li>
+            <li style="color: #555753;">✓ User with ability can fetch x fields</li>
+            <li style="color: #555753;">✓ Super admin can fetch x fields</li>
+            <li style="color: #555753;">✓ Guest cannot fetch specific x field</li>
+            <li style="color: #555753;">✓ User without ability cannot fetch specific x field</li>
+            <li style="color: #555753;">✓ User with ability can fetch specific x field</li>
+            <li style="color: #555753;">✓ Super admin can fetch specific x field</li>
+            <li style="color: #555753;">✓ Each received x field contains required fields</li>
+            <li style="color: #555753;">✓ Single received x field contains required fields</li>
+            <li style="color: #555753;">✓ Not found when attempt to fetch single non existent x field</li>
+        </ul>
+        <h2 id="Tests\Feature\Api\V1\XFields\UpdateXFieldResourceByAPITest">Update XField Resource By API (Tests\Feature\Api\V1\XFields\UpdateXFieldResourceByAPI)</h2>
+        <ul>
+            <li style="color: #555753;">✓ Guest cannot update x field</li>
+            <li style="color: #555753;">✓ User without ability cannot update x field</li>
+            <li style="color: #555753;">✓ User with ability cannot update x field without minimal provided data</li>
+            <li style="color: #555753;">✓ User with ability can update x field with minimal provided data</li>
+            <li style="color: #555753;">✓ Super admin can update x field with minimal provided data</li>
+            <li style="color: #555753;">✓ Not found when attempt to update non existent x field</li>
+        </ul>
         <h2 id="Tests\Feature\App\Http\Controllers\ArticleCommentControllerTest">Article Comment Controller (Tests\Feature\App\Http\Controllers\ArticleCommentController)</h2>
         <ul>
             <li style="color: #555753;">✓ Super admin can comment article with minimal provided data</li>

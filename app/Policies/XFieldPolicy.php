@@ -41,7 +41,7 @@ class XFieldPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class XFieldPolicy
      */
     public function update(User $user, XField $xField)
     {
-        //
+        return false;
     }
 
     /**
@@ -65,7 +65,7 @@ class XFieldPolicy
      */
     public function delete(User $user, XField $xField)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,7 +77,7 @@ class XFieldPolicy
      */
     public function restore(User $user, XField $xField)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +89,6 @@ class XFieldPolicy
      */
     public function forceDelete(User $user, XField $xField)
     {
-        //
+        return false;
     }
 }

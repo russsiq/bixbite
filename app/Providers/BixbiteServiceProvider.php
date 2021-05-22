@@ -15,6 +15,10 @@ use App\Actions\Comment\UpdateCommentAction;
 use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
+use App\Actions\XField\CreateXFieldAction;
+use App\Actions\XField\DeleteXFieldAction;
+use App\Actions\XField\FetchXFieldAction;
+use App\Actions\XField\UpdateXFieldAction;
 use App\Contracts\Actions\Article\CreatesArticle;
 use App\Contracts\Actions\Article\DeletesArticle;
 use App\Contracts\Actions\Article\FetchesArticle;
@@ -28,6 +32,10 @@ use App\Contracts\Actions\Comment\UpdatesComment;
 use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
+use App\Contracts\Actions\XField\CreatesXField;
+use App\Contracts\Actions\XField\DeletesXField;
+use App\Contracts\Actions\XField\FetchesXField;
+use App\Contracts\Actions\XField\UpdatesXField;
 use App\Contracts\BixBiteContract;
 use App\Contracts\Responses\SuccessfulCommentCreateResponseContract;
 use App\Http\Responses\SuccessfulCommentCreateResponse;
@@ -66,6 +74,11 @@ class BixbiteServiceProvider extends ServiceProvider
         UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
         UpdatesUserPasswords::class => UpdateUserPasswordAction::class,
         DeletesUsers::class => DeleteUserAction::class,
+
+        CreatesXField::class => CreateXFieldAction::class,
+        DeletesXField::class => DeleteXFieldAction::class,
+        FetchesXField::class => FetchXFieldAction::class,
+        UpdatesXField::class => UpdateXFieldAction::class,
 
         // BixBite Responses ...
         SuccessfulCommentCreateResponseContract::class => SuccessfulCommentCreateResponse::class,

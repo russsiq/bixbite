@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 trait XFieldMutators
 {
     /**
-     * Задать атрибуту `name` значение.
+     * Set the extra field `name`.
      *
      * @param  string  $name
      * @return void
@@ -18,7 +18,7 @@ trait XFieldMutators
     }
 
     /**
-     * Получить значение атрибута `name`.
+     * Get the extra field `name`.
      *
      * @return string
      */
