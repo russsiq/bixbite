@@ -85,7 +85,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_guest_cannot_fetch_specific_article'
      */
     public function test_guest_cannot_fetch_specific_article()
@@ -99,7 +99,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_user_without_ability_cannot_fetch_specific_article'
      */
     public function test_user_without_ability_cannot_fetch_specific_article()
@@ -115,7 +115,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_user_with_ability_can_fetch_specific_article'
      */
     public function test_user_with_ability_can_fetch_specific_article()
@@ -131,7 +131,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_super_admin_can_fetch_specific_article'
      */
     public function test_super_admin_can_fetch_specific_article()
@@ -167,7 +167,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_single_received_article_contains_required_fields'
      */
     public function test_single_received_article_contains_required_fields()
@@ -186,7 +186,7 @@ class FetchArticleResourceByAPITest extends TestCase
     }
 
     /**
-     * @covers ::index
+     * @covers ::show
      * @cmd vendor\bin\phpunit --filter '::test_not_found_when_attempt_to_fetch_single_non_existent_article'
      */
     public function test_not_found_when_attempt_to_fetch_single_non_existent_article()
@@ -195,7 +195,7 @@ class FetchArticleResourceByAPITest extends TestCase
 
         $response = $this->assertDatabaseCount('articles', 0)
             ->assertAuthenticated()
-            ->getJsonApi('show', '888')
+            ->getJsonApi('show', 888)
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }
