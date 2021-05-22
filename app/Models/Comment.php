@@ -84,8 +84,9 @@ class Comment extends Model
     ];
 
     /**
-     * Атрибуты, для которых разрешено массовое присвоение значений.
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
     protected $fillable = [
         'user_id',
