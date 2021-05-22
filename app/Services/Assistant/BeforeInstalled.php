@@ -73,6 +73,10 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
         ]));
 
+        $request/*->replace($data)*/->merge([
+            'APP_SUPER_ADMINS' => $request->input('email'),
+        ]);
+
         // Перенаправляем на страницу входа на сайт.
         return redirect()->route('login');
     }
@@ -197,6 +201,9 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
             ],
 
+            'APP_SUPER_ADMINS' => [
+                'same:email',
+            ],
         ];
     }
 
