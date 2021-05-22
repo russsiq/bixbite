@@ -18,7 +18,7 @@ class TagsCloudTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->afterApplicationCreated(function () {
             // Добавляем пространство имен шаблонов активной темы.
