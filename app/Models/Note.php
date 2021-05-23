@@ -2,42 +2,41 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\BelongsToUserContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Note model.
  *
- * @property-read int $id
- * @property-read int $user_id
- * @property-read int $image_id
- * @property-read string $title
- * @property-read string $slug
- * @property-read string $description
- * @property-read boolean $is_completed
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property int $user_id
+ * @property int $image_id
+ * @property string $title
+ * @property string $slug
+ * @property string $description
+ * @property boolean $is_completed
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
-class Note extends Model
+class Note extends Model implements BelongsToUserContract
 {
-    use Mutators\NoteMutators;
     use Relations\Attachable;
+    use Relations\BelongsToUser;
     use HasFactory;
 
     public const TABLE = 'notes';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'user_id' => null,
@@ -49,9 +48,7 @@ class Note extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'user_id' => 'integer',
@@ -63,9 +60,7 @@ class Note extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'user_id',
@@ -77,25 +72,29 @@ class Note extends Model
     ];
 
     /**
-     * Атрибуты, по которым разрешена фильтрация сущностей.
-     * @var array
+     * {@inheritDoc}
+     */
+    protected $with = [
+        'user:users.id,users.name',
+    ];
+
+    /**
+     * Attributes by which filtering is allowed.
+     *
+     * @var string[]
      */
     protected $allowedFilters = [
         'is_completed',
     ];
 
     /**
-     * Атрибуты, по которым разрешена сортировка сущностей.
-     * @var array
+     * The attributes by which sorting is allowed.
+     *
+     * @var string[]
      */
     protected $orderableColumns = [
         'id',
         'title',
         'created_at',
     ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
-    }
 }
