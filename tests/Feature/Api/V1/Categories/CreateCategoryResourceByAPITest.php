@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\V1\Categories;
 
 use App\Models\Category;
-use App\Models\User;
 use App\Policies\CategoryPolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
@@ -26,7 +24,7 @@ class CreateCategoryResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'categories';
+    public const JSON_API_PREFIX = Category::TABLE;
 
     /**
      * @covers ::store
@@ -75,6 +73,8 @@ class CreateCategoryResourceByAPITest extends TestCase
      */
     public function test_user_with_ability_can_create_category_with_minimal_provided_data()
     {
+        $this->assertDatabaseCount(Category::TABLE, 0);
+
         $this->allowPolicyAbility(CategoryPolicy::class, ['create']);
 
         $user = $this->loginSPA();
@@ -89,7 +89,7 @@ class CreateCategoryResourceByAPITest extends TestCase
                 CategoryFixtures::resource()
             );
 
-        $this->assertDatabaseHas('categories', [
+        $this->assertDatabaseHas(Category::TABLE, [
             'title' => 'Laravel',
         ]);
     }
@@ -100,6 +100,8 @@ class CreateCategoryResourceByAPITest extends TestCase
      */
     public function test_super_admin_can_create_category_with_minimal_provided_data()
     {
+        $this->assertDatabaseCount(Category::TABLE, 0);
+
         $super_admin = $this->loginSuperAdminSPA();
 
         $response = $this->assertAuthenticated()
@@ -112,7 +114,7 @@ class CreateCategoryResourceByAPITest extends TestCase
                 CategoryFixtures::resource()
             );
 
-        $this->assertDatabaseHas('categories', [
+        $this->assertDatabaseHas(Category::TABLE, [
             'title' => 'Laravel',
         ]);
     }

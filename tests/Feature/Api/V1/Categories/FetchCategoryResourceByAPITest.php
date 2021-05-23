@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\V1\Categories;
 
 use App\Models\Category;
-use App\Models\User;
 use App\Policies\CategoryPolicy;
-use Database\Seeders\TestContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
 use Tests\Fixtures\CategoryFixtures;
@@ -28,7 +24,7 @@ class FetchCategoryResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'categories';
+    public const JSON_API_PREFIX = Category::TABLE;
 
     /**
      * @covers ::index
@@ -193,7 +189,9 @@ class FetchCategoryResourceByAPITest extends TestCase
     {
         $user = $this->loginSPA();
 
-        $response = $this->assertDatabaseCount('categories', 0)
+        $response = $this->assertDatabaseMissing(Category::TABLE, [
+                'id' => 888,
+            ])
             ->assertAuthenticated()
             ->getJsonApi('show', 888)
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);

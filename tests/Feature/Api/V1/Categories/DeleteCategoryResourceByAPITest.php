@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\V1\Categories;
 
 use App\Models\Category;
-use App\Models\User;
 use App\Policies\CategoryPolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
@@ -25,7 +23,7 @@ class DeleteCategoryResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'categories';
+    public const JSON_API_PREFIX = Category::TABLE;
 
     /**
      * @covers ::destroy
@@ -71,7 +69,7 @@ class DeleteCategoryResourceByAPITest extends TestCase
             ->deleteJsonApi('destroy', $category)
             ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
 
-        $this->assertDatabaseMissing('categories', [
+        $this->assertDatabaseMissing(Category::TABLE, [
             'id' => $category->id,
         ]);
     }
@@ -89,7 +87,7 @@ class DeleteCategoryResourceByAPITest extends TestCase
             ->deleteJsonApi('destroy', $category)
             ->assertStatus(JsonResponse::HTTP_NO_CONTENT);
 
-        $this->assertDatabaseMissing('categories', [
+        $this->assertDatabaseMissing(Category::TABLE, [
             'id' => $category->id,
         ]);
     }
@@ -102,9 +100,11 @@ class DeleteCategoryResourceByAPITest extends TestCase
     {
         $user = $this->loginSPA();
 
-        $response = $this->assertDatabaseCount('categories', 0)
+        $response = $this->assertDatabaseMissing(Category::TABLE, [
+                'id' => 888,
+            ])
             ->assertAuthenticated()
-            ->deleteJsonApi('destroy', 'not.found')
+            ->deleteJsonApi('destroy', 888)
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }

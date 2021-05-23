@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div v-if="!category.articles_count" class="mb-3 row">
+            <div v-if="! category.articles_count" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Ссылка на внешний ресурс</label>
                     <small class="form-text d-block text-warning">В категорию, для которой прописана данная ссылка, добавлять записи нельзя!</small>
@@ -149,7 +149,7 @@
     <div v-if="x_fields.length" class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
         <div class="card-body">
-            <div v-for="field in x_fields" class="mb-3 row">
+            <div v-for="field in x_fields" class="mb-3 row" :key="field.id">
                 <div class="col-sm-7">
                     <label class="control-label">{{ field.title }}</label>
                     <small class="form-text d-block text-muted">{{ field.descr }}</small>

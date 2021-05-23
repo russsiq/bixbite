@@ -152,6 +152,27 @@ class Category extends Model implements ExtensibleContract
     }
 
     /**
+     * Get a set of relationship counts onto the `categoryable` relationship model.
+     *
+     * @return integer
+     */
+    public function getCategoryableCount(): int
+    {
+        if (! $this->exists) {
+            return 0;
+        }
+
+        return $this->query()
+            ->select([
+                'categories.id',
+                'categoryables.category_id as pivot_category_id',
+            ])
+            ->join('categoryables', 'categories.id', '=', 'categoryables.category_id')
+            ->where('categories.id', $this->id)
+            ->count();
+    }
+
+    /**
      * Сбросить позиции для всех категорий и
      * сохранить обновленные модели в базу данных.
      * @return bool

@@ -2,106 +2,95 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Category\Store as StoreCategoryRequest;
-use App\Http\Requests\Api\V1\Category\Update as UpdateCategoryRequest;
+use App\Contracts\Actions\Category\CreatesCategory;
+use App\Contracts\Actions\Category\DeletesCategory;
+use App\Contracts\Actions\Category\FetchesCategory;
+use App\Contracts\Actions\Category\UpdatesCategory;
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class CategoriesController extends ApiController
+class CategoriesController extends Controller
 {
     /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Category::class, 'category');
-    }
-
-    /**
-     * Отобразить весь список сущностей,
-     * включая связанные сущности.
+     * Display a listing of the resource.
      *
+     * @param  FetchesArticle  $fetcher
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(FetchesCategory $fetcher, Request $request): JsonResponse
     {
-        $categories = Category::withCount([
-            'articles',
-        ])
-            ->orderByRaw('ISNULL(`position`), `position` ASC')
-            ->get();
-
-        $collection = new CategoryCollection($categories);
-
-        return $collection->response()
+        return CategoryCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Создать и сохранить сущность в хранилище.
+     * Store a newly created resource in storage.
      *
-     * @param  StoreCategoryRequest  $request
+     * @param  CreatesCategory  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request): JsonResponse
+    public function store(CreatesCategory $creator, Request $request): JsonResponse
     {
-        $category = Category::create($request->validated());
-
-        $resource = new CategoryResource($category);
-
-        return $resource->response()
+        return CategoryResource::make(
+                $creator->create($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Category  $category
+     * @param  FetchesCategory  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(Category $category): JsonResponse
+    public function show(FetchesCategory $fetcher, Request $request, int $id): JsonResponse
     {
-        $category->loadCount([
-            'articles',
-        ])
-            ->load([
-                'attachments',
-            ]);
-
-        $resource = new CategoryResource($category);
-
-        return $resource->response()
+        return CategoryResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateCategoryRequest  $request
+     * @param  UpdatesCategory  $updater
+     * @param  Request  $request
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
+    public function update(UpdatesCategory $updater, Request $request, Category $category): JsonResponse
     {
-        $category->update($request->validated());
-
-        $resource = new CategoryResource($category);
-
-        return $resource->response()
+        return CategoryResource::make(
+                $updater->update($category, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
+     * @param  DeletesCategory  $deleter
      * @param  Category  $category
      * @return JsonResponse
      */
-    public function destroy(Category $category): JsonResponse
+    public function destroy(DeletesCategory $deleter, Category $category): JsonResponse
     {
-        $category->delete();
+        $deleter->delete($category);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

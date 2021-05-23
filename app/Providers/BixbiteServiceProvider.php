@@ -7,6 +7,10 @@ use App\Actions\Article\DeleteArticleAction;
 use App\Actions\Article\FetchArticleAction;
 use App\Actions\Article\MassUpdateArticleAction;
 use App\Actions\Article\UpdateArticleAction;
+use App\Actions\Category\CreateCategoryAction;
+use App\Actions\Category\DeleteCategoryAction;
+use App\Actions\Category\FetchCategoryAction;
+use App\Actions\Category\UpdateCategoryAction;
 use App\Actions\Comment\CreateCommentAction;
 use App\Actions\Comment\DeleteCommentAction;
 use App\Actions\Comment\FetchCommentAction;
@@ -24,6 +28,10 @@ use App\Contracts\Actions\Article\DeletesArticle;
 use App\Contracts\Actions\Article\FetchesArticle;
 use App\Contracts\Actions\Article\MassUpdatesArticle;
 use App\Contracts\Actions\Article\UpdatesArticle;
+use App\Contracts\Actions\Category\CreatesCategory;
+use App\Contracts\Actions\Category\DeletesCategory;
+use App\Contracts\Actions\Category\FetchesCategory;
+use App\Contracts\Actions\Category\UpdatesCategory;
 use App\Contracts\Actions\Comment\CreatesComment;
 use App\Contracts\Actions\Comment\DeletesComment;
 use App\Contracts\Actions\Comment\FetchesComment;
@@ -64,6 +72,11 @@ class BixbiteServiceProvider extends ServiceProvider
         FetchesArticle::class => FetchArticleAction::class,
         UpdatesArticle::class => UpdateArticleAction::class,
         MassUpdatesArticle::class => MassUpdateArticleAction::class,
+
+        CreatesCategory::class => CreateCategoryAction::class,
+        DeletesCategory::class => DeleteCategoryAction::class,
+        FetchesCategory::class => FetchCategoryAction::class,
+        UpdatesCategory::class => UpdateCategoryAction::class,
 
         CreatesComment::class => CreateCommentAction::class,
         DeletesComment::class => DeleteCommentAction::class,

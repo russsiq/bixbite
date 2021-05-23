@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\V1\Categories;
 
 use App\Models\Category;
-use App\Models\User;
 use App\Policies\CategoryPolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\JsonResponse;
 use Tests\Concerns\InteractsWithPolicy;
 use Tests\Concerns\JsonApiTrait;
@@ -26,7 +24,7 @@ class UpdateCategoryResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'categories';
+    public const JSON_API_PREFIX = Category::TABLE;
 
     /**
      * @covers ::update
@@ -97,7 +95,7 @@ class UpdateCategoryResourceByAPITest extends TestCase
                 CategoryFixtures::resource()
             );
 
-        $this->assertDatabaseHas('categories', [
+        $this->assertDatabaseHas(Category::TABLE, [
             'title' => 'New title for old category',
         ]);
     }
@@ -108,6 +106,8 @@ class UpdateCategoryResourceByAPITest extends TestCase
      */
     public function test_super_admin_can_update_category_with_minimal_provided_data()
     {
+        $this->assertDatabaseCount(Category::TABLE, 0);
+
         $super_admin = $this->loginSuperAdminSPA();
         $user = $this->createUser();
         $category = Category::factory()->createOne();
@@ -122,7 +122,7 @@ class UpdateCategoryResourceByAPITest extends TestCase
                 CategoryFixtures::resource()
             );
 
-        $this->assertDatabaseHas('categories', [
+        $this->assertDatabaseHas(Category::TABLE, [
             'title' => 'New title for old category',
         ]);
     }
@@ -135,9 +135,11 @@ class UpdateCategoryResourceByAPITest extends TestCase
     {
         $user = $this->loginSPA();
 
-        $response = $this->assertDatabaseCount('categories', 0)
+        $response = $this->assertDatabaseMissing(Category::TABLE, [
+                'id' => 888,
+            ])
             ->assertAuthenticated()
-            ->putJsonApi('update', 'not.found')
+            ->putJsonApi('update', 888)
             ->assertStatus(JsonResponse::HTTP_NOT_FOUND);
     }
 }

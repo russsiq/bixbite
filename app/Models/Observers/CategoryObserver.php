@@ -2,23 +2,10 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\Category;
 
-/**
- * Наблюдатель модели `Category`.
- */
-class CategoryObserver extends BaseObserver
+class CategoryObserver
 {
-    /**
-     * Массив ключей для очистки кэша.
-     * @var array
-     */
-    protected $keysToForgetCache = [
-        'categories' => null,
-
-    ];
-
     /**
      * Обработать событие `saved` модели.
      * @param  Category  $category
@@ -36,8 +23,6 @@ class CategoryObserver extends BaseObserver
             // Attaching.
             $this->attachImage($category);
         }
-
-        $this->forgetCacheByKeys($category);
     }
 
     /**
@@ -51,25 +36,13 @@ class CategoryObserver extends BaseObserver
             ->select([
                 'articles.id',
                 'articles.state',
-
             ])
             ->update([
-                'articles.state' => 'draft',
-
+                'articles.state' => 0,
             ]);
 
         $category->articles()->detach();
         $category->attachments()->get()->each->delete();
-    }
-
-    /**
-     * Обработать событие `deleted` модели.
-     * @param  Category  $category
-     * @return void
-     */
-    public function deleted(Category $category): void
-    {
-        $this->forgetCacheByKeys($category);
     }
 
     /**
