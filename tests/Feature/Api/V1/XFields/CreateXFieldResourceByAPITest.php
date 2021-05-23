@@ -117,6 +117,9 @@ class CreateXFieldResourceByAPITest extends TestCase
         $this->assertDatabaseHas(XField::TABLE, $expected);
 
         $schemaBuilder = $this->getConnection()->getSchemaBuilder();
+        $doctrineSchemaManager = $this->getConnection()->getDoctrineSchemaManager();
+        $doctrineSchemaManager->getDatabasePlatform()
+            ->registerDoctrineTypeMapping('enum', 'string');
 
         $this->assertTrue(
             $schemaBuilder->hasColumn($data['extensible'], $expected['name'])
