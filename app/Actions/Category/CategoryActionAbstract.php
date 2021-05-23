@@ -340,6 +340,7 @@ abstract class CategoryActionAbstract extends ActionAbstract
                 'sometimes',
                 'nullable',
                 'integer',
+                'min:1',
                 'max:255',
             ],
         ];
