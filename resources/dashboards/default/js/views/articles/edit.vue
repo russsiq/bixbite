@@ -23,7 +23,12 @@
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
             <div class="mb-3 has-float-label">
                 <label class="control-label">Категории</label>
-                <categories-items :categoryable="categoryable" :value="article.categories" @update:categories="sync('categories', $event)"></categories-items>
+                <category-selector
+                        :categoryable="categoryable"
+                        :value="article.categories"
+                        :multiple="true"
+                        @update:categories="sync('categories', $event)"
+                    ></category-selector>
             </div>
         </div>
     </div>
@@ -228,7 +233,7 @@ import QuillEditor from '@/components/quill-editor.vue';
 import ImageUploader from '@/components/image-uploader.vue';
 import InputDatetimeLocal from '@/components/input-datetime-local.vue';
 
-import CategoriesItems from './partials/categories-items';
+import CategorySelector from './partials/category-selector.vue';
 import TagsItems from './partials/tags-items';
 
 export default {
@@ -237,7 +242,7 @@ export default {
     components: {
         'image-uploader': ImageUploader,
         'input-datetime-local': InputDatetimeLocal,
-        'categories-items': CategoriesItems,
+        'category-selector': CategorySelector,
         'tags-items': TagsItems,
         'quill-editor': QuillEditor,
     },
