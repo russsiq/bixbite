@@ -9,7 +9,7 @@ use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Database\Schema\ColumnDefinition;
 use Illuminate\Validation\ValidationException;
 
-class XFieldObserver extends BaseObserver
+class XFieldObserver
 {
     /**
      * The Schema Builder instance.
