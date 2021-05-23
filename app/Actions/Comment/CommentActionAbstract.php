@@ -7,6 +7,8 @@ use App\Models\Comment;
 use App\Models\Contracts\CommentableContract;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 abstract class CommentActionAbstract extends ActionAbstract
@@ -115,7 +117,7 @@ abstract class CommentActionAbstract extends ActionAbstract
                 'nullable',
                 'integer',
                 'min:1',
-                'exists:users,id',
+                Rule::exists(User::TABLE, 'id'),
             ],
         ];
     }
@@ -133,7 +135,12 @@ abstract class CommentActionAbstract extends ActionAbstract
                 'sometimes',
                 'integer',
                 'min:1',
-                'exists:comments,id',
+                with(
+                    Rule::exists(Comment::TABLE, 'id'),
+                    fn (Exists $exists) => $this->comment instanceof Comment
+                        ? $exists->whereNot('id', $this->comment->id)
+                        : $exists
+                ),
             ],
         ];
     }
@@ -167,7 +174,7 @@ abstract class CommentActionAbstract extends ActionAbstract
                 'required_without:user_id',
                 'between:3,255',
                 'string',
-                'unique:users,name',
+                Rule::unique(User::TABLE, 'name'),
             ],
         ];
     }
@@ -185,7 +192,7 @@ abstract class CommentActionAbstract extends ActionAbstract
                 'required_without:user_id',
                 'between:6,255',
                 'email',
-                'unique:users,email',
+                Rule::unique(User::TABLE, 'email'),
             ],
         ];
     }
