@@ -50,13 +50,13 @@ trait Extensible
         static::registerModelEvent('booted', function ($extensible) {
             /**
              * @var Model $extensible
-             * @var Collection $extraFields
+             * @var Collection $x_fields
              */
-            $extraFields = $extensible->extraFields;
+            $x_fields = $extensible->x_fields;
 
-            static::$extraFieldsFillable = $extraFields->pluck('name')->toArray();
+            static::$extraFieldsFillable = $x_fields->pluck('name')->toArray();
 
-            static::$extraFieldsCasts = $extraFields->pluck('name', 'type')
+            static::$extraFieldsCasts = $x_fields->pluck('name', 'type')
                 ->reject(
                     fn (string $name) => $extensible->hasCast($name)
                 )
