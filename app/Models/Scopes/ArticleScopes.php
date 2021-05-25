@@ -92,7 +92,7 @@ trait ArticleScopes
                 'articles.state',
 
             ])
-            ->includeXFieldsNames()
+            ->includeExtensibleAttributes()
             ->with([
                 // 'categories:categories.id,categories.slug,categories.title',
                 'user:users.id,users.name', // users.email,users.avatar',

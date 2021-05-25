@@ -274,7 +274,6 @@ class ArticlesFeatured extends WidgetAbstract
     protected function resolveArticles(): Collection
     {
         return Article::shortArticle()
-            ->includeXFieldsNames()
             ->published()
             // ->where('articles.state', $this->parameter('state'))
             ->visibleOnMainpage($this->parameter('on_mainpage'))

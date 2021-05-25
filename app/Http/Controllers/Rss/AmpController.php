@@ -102,7 +102,7 @@ class AmpController extends BaseController
             'articles.content',
 
         ])
-            ->includeXFieldsNames()
+            ->includeExtensibleAttributes()
             ->with([
                 'attachments' => function ($query) {
                     $query->select([
