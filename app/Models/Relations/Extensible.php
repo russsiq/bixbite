@@ -3,17 +3,37 @@
 namespace App\Models\Relations;
 
 use App\Models\XField;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 
+/**
+ * @property-read Collection $x_fields
+ * @method static static|EloquentBuilder|QueryBuilder includeExtensibleAttributes()
+ */
 trait Extensible
 {
+    /**
+     * The aditional attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected static $extraFieldsFillable = [];
+
+    /**
+     * The aditional attributes that should be cast.
+     *
+     * @var array
+     */
+    protected static $extraFieldsCasts = [];
+
     /**
      * The built-in cast types supported by Extra Fields.
      *
      * @var array
      */
-    protected $extraFieldsCastMap = [
+    protected static $extraFieldsCastMap = [
         'default' => 'string',
         'integer' => 'integer',
         'boolean' => 'boolean',
@@ -27,26 +47,26 @@ trait Extensible
      */
     public static function bootExtensible(): void
     {
-        // Extra fields can only be set for instances of existing models in the database.
-        static::retrieved(function ($extensible) {
-            /** @var Collection */
-            $x_fields = $extensible->x_fields;
+        static::registerModelEvent('booted', function ($extensible) {
+            /**
+             * @var Model $extensible
+             * @var Collection $extraFields
+             */
+            $extraFields = $extensible->extraFields;
 
-            $extensible->mergeFillable(
-                $x_fields->pluck('name')->toArray()
-            );
+            static::$extraFieldsFillable = $extraFields->pluck('name')->toArray();
 
-            $extensible->mergeCasts(
-                $x_fields->pluck('name', 'type')
-                    ->reject(fn (string $name) => isset($extensible->casts[$name]))
-                    ->mapWithKeys(
-                        fn (string $name, string $type) => [
-                            $name => $extensible->extraFieldsCastMap[$type]
-                                ?? $extensible->extraFieldsCastMap['default']
-                        ]
-                    )
-                    ->toArray()
-            );
+            static::$extraFieldsCasts = $extraFields->pluck('name', 'type')
+                ->reject(
+                    fn (string $name) => $extensible->hasCast($name)
+                )
+                ->mapWithKeys(
+                    fn (string $name, string $type) => [
+                        $name => static::$extraFieldsCastMap[$type]
+                              ?? static::$extraFieldsCastMap['default']
+                    ]
+                )
+                ->toArray();
         });
     }
 
@@ -57,7 +77,13 @@ trait Extensible
      */
     public function initializeExtensible(): void
     {
-        //
+        if (! empty(static::$extraFieldsFillable)) {
+            $this->mergeFillable(static::$extraFieldsFillable);
+        }
+
+        if (! empty(static::$extraFieldsCasts)) {
+            $this->mergeCasts(static::$extraFieldsCasts);
+        }
     }
 
     /**
@@ -73,13 +99,13 @@ trait Extensible
     /**
      * Include names of extra fields in the query.
      *
-     * @param  Builder  $builder
-     * @return Builder
+     * @param  EloquentBuilder  $builder
+     * @return void
      */
-    public function scopeIncludeXFieldsNames(Builder $builder): Builder
+    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): void
     {
-        return $builder->addSelect(
-            $this->x_fields->pluck('name')
+        $builder->addSelect(
+            $this->extraFields->pluck('name')
                 ->map(fn (string $column) => $this->qualifyColumn($column))
                 ->toArray()
         );

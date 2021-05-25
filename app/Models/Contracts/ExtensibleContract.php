@@ -2,12 +2,13 @@
 
 namespace App\Models\Contracts;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 
 /**
  * @property-read Collection $x_fields
- * @method-read static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder includeXFieldsNames()
+ * @method static static|EloquentBuilder|QueryBuilder includeExtensibleAttributes()
  */
 interface ExtensibleContract
 {
@@ -21,8 +22,8 @@ interface ExtensibleContract
     /**
      * Include names of extra fields in the query.
      *
-     * @param  Builder  $builder
-     * @return Builder
+     * @param  EloquentBuilder  $builder
+     * @return void
      */
-    public function scopeIncludeXFieldsNames(Builder $builder): Builder;
+    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): void;
 }
