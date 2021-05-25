@@ -105,7 +105,7 @@ trait Extensible
     public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): void
     {
         $builder->addSelect(
-            $this->extraFields->pluck('name')
+            $this->x_fields->pluck('name')
                 ->map(fn (string $column) => $this->qualifyColumn($column))
                 ->toArray()
         );
