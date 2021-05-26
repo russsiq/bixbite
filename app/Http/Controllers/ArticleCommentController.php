@@ -13,13 +13,13 @@ use Illuminate\Routing\Controller;
 
 class ArticleCommentController extends Controller
 {
-    /** @var Container */
-    protected $container;
+    protected Container $container;
 
     /**
      * Create a new controller instance.
      *
      * @param  Container  $container
+     * @return void
      */
     public function __construct(Container $container)
     {
