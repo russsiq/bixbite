@@ -16,6 +16,10 @@ use App\Actions\Comment\DeleteCommentAction;
 use App\Actions\Comment\FetchCommentAction;
 use App\Actions\Comment\MassUpdateCommentAction;
 use App\Actions\Comment\UpdateCommentAction;
+use App\Actions\Note\CreateNoteAction;
+use App\Actions\Note\DeleteNoteAction;
+use App\Actions\Note\FetchNoteAction;
+use App\Actions\Note\UpdateNoteAction;
 use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
@@ -37,6 +41,10 @@ use App\Contracts\Actions\Comment\DeletesComment;
 use App\Contracts\Actions\Comment\FetchesComment;
 use App\Contracts\Actions\Comment\MassUpdatesComment;
 use App\Contracts\Actions\Comment\UpdatesComment;
+use App\Contracts\Actions\Note\CreatesNote;
+use App\Contracts\Actions\Note\DeletesNote;
+use App\Contracts\Actions\Note\FetchesNote;
+use App\Contracts\Actions\Note\UpdatesNote;
 use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
@@ -83,6 +91,11 @@ class BixbiteServiceProvider extends ServiceProvider
         FetchesComment::class => FetchCommentAction::class,
         UpdatesComment::class => UpdateCommentAction::class,
         MassUpdatesComment::class => MassUpdateCommentAction::class,
+
+        CreatesNote::class => CreateNoteAction::class,
+        DeletesNote::class => DeleteNoteAction::class,
+        FetchesNote::class => FetchNoteAction::class,
+        UpdatesNote::class => UpdateNoteAction::class,
 
         UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
         UpdatesUserPasswords::class => UpdateUserPasswordAction::class,

@@ -17,6 +17,7 @@ class TestContentSeeder extends Seeder
             UsersTableSeeder::class,
             ArticlesTableSeeder::class,
             CategoriesTableSeeder::class,
+            NotesTableSeeder::class,
             TagsTableSeeder::class,
             // AtachmentsTableSeeder::class,
 

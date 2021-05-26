@@ -1,84 +1,73 @@
 <template>
-<div class="filterable">
-    <div class="card d-print-none">
-        <div class="card-header d-flex">
-            <router-link :to="{name: 'notes.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
-            <div class="btn-group ms-auto">
-                <button class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
-            </div>
+<filterable v-bind="filterable" :value="collection" @apply:change="fetch">
+    <template #preaction>
+        <router-link :to="{name: 'notes.create'}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> Создать</router-link>
+        <div class="btn-group ms-auto">
+            <button class="btn btn-outline-dark" onclick="window.print()"><i class="fa fa-print"></i></button>
         </div>
-    </div>
+    </template>
 
-    <div class="card card-table">
-        <div class="card-header d-print-none"></div>
+    <template #thead>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th>Заголовок</th>
+            <th>Описание</th>
+            <th class="text-right d-print-none">Действия</th>
+            <!-- <th></th> -->
+        </tr>
+    </template>
 
-        <!-- LIST OF COLLECTION -->
-        <div class="card-body table-responsive">
-            <table v-if="collection.length" class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th></th>
-                        <th>Заголовок</th>
-                        <th>Описание</th>
-                        <th class="text-right d-print-none">Действия</th>
-                        <!-- <th></th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="note in collection" :key="note.id">
-                        <td>{{ note.id }}</td>
-                        <td>
-                            <button type="button" class="btn btn-link" @click="toggleCompleted(note)">
-                                <b :class="isCompleted(note)"></b>
-                            </button>
-                        </td>
-                        <td>
-                            <router-link :to="{name: 'note.edit', params:{id: note.id}}">{{ note.title }}</router-link>
-                        </td>
-                        <td>
-                            {{ note.description }}
-                            <figure v-if="note.image && note.image.id">
-                                <picture><img :src="note.image.url" :alt="note.slug" width="180" /></picture>
-                                <figcaption>{{ note.image.title }}</figcaption>
-                            </figure>
-                        </td>
-                        <td class="text-right d-print-none">
-                            <div class="btn-group">
-                                <router-link :to="{name: 'note.edit', params:{id: note.id}}" class="btn btn-link"><i class="fa fa-pencil"></i></router-link>
-                                <button class="btn btn-link" :disabled="!note.is_completed" @click.prevent="destroy(note)">
-                                    <i class="fa fa-trash-o" :class="{'text-danger': note.is_completed}"></i>
-                                </button>
-                            </div>
-                        </td>
-                        <!-- <td></td> -->
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>#</td>
-                        <td></td>
-                        <td>Заголовок</td>
-                        <td>Описание</td>
-                        <td class="text-right d-print-none">Действия</td>
-                        <!-- <td></td> -->
-                    </tr>
-                </tfoot>
-            </table>
-            <p v-else-if="loading" class="alert alert-info text-center">Список загружается, пожалуйста, подождите ...</p>
-            <p v-else class="alert alert-info text-center">Нет информации для отображения.</p>
-        </div>
-    </div>
-</div>
+    <template #row="{row: note}">
+        <tr :key="note.id">
+            <td>{{ note.id }}</td>
+            <td>
+                <button type="button" class="btn btn-link" @click="toggleCompleted(note)">
+                    <b :class="isCompleted(note)"></b>
+                </button>
+            </td>
+            <td>
+                <router-link :to="{name: 'note.edit', params:{id: note.id}}">{{ note.title }}</router-link>
+            </td>
+            <td>
+                {{ note.description }}
+                <figure v-if="note.image && note.image.id">
+                    <picture><img :src="note.image.url" :alt="note.slug" width="180" /></picture>
+                    <figcaption>{{ note.image.title }}</figcaption>
+                </figure>
+            </td>
+            <td class="text-right d-print-none">
+                <div class="btn-group">
+                    <router-link :to="{name: 'note.edit', params:{id: note.id}}" class="btn btn-link"><i class="fa fa-pencil"></i></router-link>
+                    <button class="btn btn-link" :disabled="!note.is_completed" @click.prevent="destroy(note)">
+                        <i class="fa fa-trash-o" :class="{'text-danger': note.is_completed}"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </template>
+
+    <template #tfoot>
+        <tr>
+            <td>#</td>
+            <td></td>
+            <td>Заголовок</td>
+            <td>Описание</td>
+            <td class="text-right d-print-none">Действия</td>
+        </tr>
+    </template>
+</filterable>
 </template>
 
 <script type="text/ecmascript-6">
-import {
-    mapGetters
-} from 'vuex';
+import Filterable from '../components/filterable.vue';
 
 export default {
     name: 'notes',
+
+    components: {
+        'filterable': Filterable
+    },
 
     props: {
         model: {
@@ -90,15 +79,15 @@ export default {
     data() {
         return {
             collection: [],
+            filterable: {
+                model: this.$props.model,
+                active: false,
+                massAction: false,
+            }
         }
     },
 
     computed: {
-        ...mapGetters({
-            meta: 'meta/all',
-            loading: 'loadingLayer/show',
-        }),
-
         isCompleted() {
             return (note) => ({
                 'fa fa-check text-success': note.is_completed,
@@ -107,12 +96,16 @@ export default {
         }
     },
 
-    mounted() {
-        this.$props.model.$fetch()
-            .then(this.fillTable);
-    },
-
     methods: {
+        fetch(filter) {
+            this.$props.model.$fetch({
+                params: {
+                    ...filter
+                }
+            })
+                .then(this.fillTable);
+        },
+
         fillTable(collection) {
             this.collection = collection;
         },

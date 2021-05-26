@@ -2,155 +2,95 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Note\Store as StoreNoteRequest;
-use App\Http\Requests\Api\V1\Note\Update as UpdateNoteRequest;
+use App\Contracts\Actions\Note\CreatesNote;
+use App\Contracts\Actions\Note\DeletesNote;
+use App\Contracts\Actions\Note\FetchesNote;
+use App\Contracts\Actions\Note\UpdatesNote;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Models\Note;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class NotesController extends ApiController
+class NotesController extends Controller
 {
     /**
-     * Дополнение к карте сопоставления
-     * методов ресурса и методов в классе политик.
+     * Display a listing of the resource.
      *
-     * @var array
-     */
-    protected $advancedAbilityMap = [
-        'form' => 'create',
-
-    ];
-
-    /**
-     * Массив дополнительных методов, не имеющих
-     * конкретной модели в качестве параметра класса политик.
-     *
-     * @var array
-     */
-    protected $advancedMethodsWithoutModels = [
-        'form',
-
-    ];
-
-    /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Note::class, 'note');
-    }
-
-    /**
-     * Отобразить весь список сущностей,
-     * включая связанные сущности.
-     *
-     * @param Request  $request
+     * @param  FetchesNote  $fetcher
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(FetchesNote $fetcher, Request $request): JsonResponse
     {
-        $notes = Note::with([
-            'attachments',
-            'user:users.id,users.name',
-        ])
-            ->where('user_id', $request->user()->id)
-            ->get()
-            ->append('image');
-
-        $collection = new NoteCollection($notes);
-
-        return $collection->response()
+        return NoteCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Отобразить форму для создания сущности.
-     * Позволяет передавать мета-данные и
-     * связи с другими сущностями.
+     * Store a newly created resource in storage.
      *
-     * @param Request  $request
+     * @param  CreatesNote  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function form(Request $request)
+    public function store(CreatesNote $creator, Request $request): JsonResponse
     {
-        $note = new Note();
-        $note->user = $request->user();
-        $note->user_id = $note->user->id;
-
-        $resource = new NoteResource($note);
-
-        return $resource->response()
-            ->setStatusCode(JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * Создать и сохранить сущность в хранилище.
-     *
-     * @param  StoreNoteRequest  $request
-     * @return JsonResponse
-     */
-    public function store(StoreNoteRequest $request)
-    {
-        $note = Note::create($request->validated());
-
-        $resource = new NoteResource($note);
-
-        return $resource->response()
+        return NoteResource::make(
+                $creator->create($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Note  $note
+     * @param  FetchesNote  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(Note $note)
+    public function show(FetchesNote $fetcher, Request $request, int $id): JsonResponse
     {
-        $note->load([
-            'attachments',
-            'user',
-        ]);
-
-        $resource = new NoteResource($note);
-
-        return $resource->response()
+        return NoteResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateNoteRequest  $request
+     * @param  UpdatesNote  $updater
+     * @param  Request  $request
      * @param  Note  $note
      * @return JsonResponse
      */
-    public function update(UpdateNoteRequest $request, Note $note)
+    public function update(UpdatesNote $updater, Request $request, Note $note): JsonResponse
     {
-        $note->update($request->validated());
-
-        $note->load([
-            // 'attachments',
-            // 'user',
-        ]);
-
-        $resource = new NoteResource($note);
-
-        return $resource->response()
+        return NoteResource::make(
+                $updater->update($note, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
+     * @param  DeletesNote  $deleter
      * @param  Note  $note
      * @return JsonResponse
      */
-    public function destroy(Note $note)
+    public function destroy(DeletesNote $deleter, Note $note): JsonResponse
     {
-        $note->delete();
+        $deleter->delete($note);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

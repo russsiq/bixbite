@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\Contracts\BelongsToUserContract;
-use Illuminate\Database\Eloquent\Builder;
+use Database\Factories\NoteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -21,6 +20,8 @@ use Illuminate\Support\Carbon;
  * @property boolean $is_completed
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @method static NoteFactory factory()
  */
 class Note extends Model implements BelongsToUserContract
 {
@@ -28,6 +29,11 @@ class Note extends Model implements BelongsToUserContract
     use Relations\BelongsToUser;
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @const string
+     */
     public const TABLE = 'notes';
 
     /**
@@ -45,6 +51,13 @@ class Note extends Model implements BelongsToUserContract
         'slug' => '',
         'description' => null,
         'is_completed' => false,
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $appends = [
+        'image',
     ];
 
     /**

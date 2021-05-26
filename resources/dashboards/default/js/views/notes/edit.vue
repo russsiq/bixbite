@@ -1,5 +1,5 @@
 <template>
-<form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
+<form action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
     <div class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Основное содержание</div>
         <div class="card-body">
@@ -11,22 +11,24 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <div class="col-sm-7"><label class="control-label">Краткое описание</label></div>
-                <div class="col-sm-5">
-                    <textarea v-model="note.description" rows="4" class="form-control" required></textarea>
+            <template v-if="note.id">
+                <div class="mb-3 row">
+                    <div class="col-sm-7"><label class="control-label">Краткое описание</label></div>
+                    <div class="col-sm-5">
+                        <textarea v-model="note.description" rows="4" class="form-control"></textarea>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3 row">
-                <div class="col-sm-7">
-                    <label class="control-label">Прикрепленное изображение</label>
-                    <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>
+                <div class="mb-3 row">
+                    <div class="col-sm-7">
+                        <label class="control-label">Прикрепленное изображение</label>
+                        <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>
+                    </div>
+                    <div class="col-sm-5">
+                        <image-uploader :value="note.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
+                    </div>
                 </div>
-                <div class="col-sm-5">
-                    <image-uploader :value="note.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
-                </div>
-            </div>
+            </template>
         </div>
     </div>
 
@@ -37,7 +39,7 @@
                     <div class="d-flex">
                         <button type="submit" title="Ctrl+S" class="btn btn-outline-success btn-bg-white">
                             <span class="d-md-none"><i class="fa fa-floppy-o"></i></span>
-                            <span class="d-none d-md-inline">Сохранить</span>
+                            <span class="d-none d-md-inline">{{ ! note.id ? 'Создать' : 'Сохранить' }}</span>
                         </button>
                         <router-link :to="{name: 'notes'}" class="btn btn-outline-dark btn-bg-white ms-auto" exact>
                             <span class="d-lg-none"><i class="fa fa-ban"></i></span>
@@ -75,24 +77,17 @@ export default {
 
     data() {
         return {
-            // Текущая Заметка (редактируемая или вновь созданная).
             note: {
+                id: null,
+                image_id: null,
                 title: '',
                 description: '',
-
+                is_completed: false,
             },
         }
     },
 
     computed: {
-        /**
-         * Разрешено ли отобразить форму создания/редактирования.
-         * @return {Boolean}
-         */
-        showedForm() {
-            return Object.keys(this.note).length > 0;
-        },
-
         /**
          * Если текущий режим – режим редактирования Заметки.
          * @return {Boolean}
@@ -130,12 +125,12 @@ export default {
                         ...this.note
                     })
                     .then(this.fillForm);
-            } else {
-                this.$props.model.$create({
-                        ...this.note
-                    })
-                    .then(this.fillForm);
             }
+
+            this.$props.model.$create({
+                    ...this.note
+                })
+                .then(this.fillForm);
         },
     },
 }

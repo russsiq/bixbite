@@ -22,7 +22,9 @@ class NoteResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return array_merge($this->resource->attributesToArray(), [
+            //
+        ], $this->relationships($request));
     }
 
     /**
@@ -35,6 +37,24 @@ class NoteResource extends JsonResource
     {
         return [
             //
+        ];
+    }
+
+    /**
+     * Get the transformed relationships of the the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function relationships($request): array
+    {
+        return [
+            'attachments' => $this->whenLoaded('attachments', fn () =>
+                AttachmentCollection::make($this->resource->getRelation('attachments'))->toArray($request)
+            ),
+            'user' => $this->whenLoaded('user', fn () =>
+                UserResource::make($this->resource->getRelation('user'))->toArray($request)
+            ),
         ];
     }
 }
