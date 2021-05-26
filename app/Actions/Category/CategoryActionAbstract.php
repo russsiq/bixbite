@@ -83,6 +83,10 @@ abstract class CategoryActionAbstract extends ActionAbstract
      */
     protected function imageIdRules(): array
     {
+        if (is_null($this->category)) {
+            return [];
+        }
+
         return [
             'image_id' => [
                 'bail',
@@ -90,7 +94,10 @@ abstract class CategoryActionAbstract extends ActionAbstract
                 'nullable',
                 'integer',
                 'min:1',
-                Rule::exists(Attachment::TABLE, 'id'),
+                Rule::exists(Attachment::TABLE, 'id')
+                    ->where('type', 'image')
+                    ->where('attachable_id', $this->category->id)
+                    ->where('attachable_type', Category::TABLE),
             ],
         ];
     }

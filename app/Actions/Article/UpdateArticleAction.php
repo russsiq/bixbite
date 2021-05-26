@@ -46,8 +46,8 @@ class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticl
     {
         return array_merge(
             $this->extraFieldsRules(Article::getModel()),
-            // $this->userIdRules(), // Determined once at creation.
-            $this->imageIdRules(),
+            // $this->userIdRules(), // Only when create.
+            $this->imageIdRules(), // Only when update.
             $this->stateRules(),
             $this->titleRules(),
             $this->slugRules(),

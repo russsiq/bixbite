@@ -4,6 +4,7 @@ namespace App\Actions\Article;
 
 use App\Actions\ActionAbstract;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Rules\MetaRobotsRule;
 use App\Rules\SqlTextLengthRule;
 use Illuminate\Validation\Rule;
@@ -95,13 +96,17 @@ abstract class ArticleActionAbstract extends ActionAbstract
      */
     protected function userIdRules(): array
     {
+        if ($this->article instanceof Article) {
+            return [];
+        }
+
         return [
             'user_id' => [
                 'bail',
                 'required',
                 'integer',
                 'min:1',
-                'exists:users,id',
+                "size:{$this->user()->getAuthIdentifier()}",
             ],
         ];
     }
@@ -113,13 +118,21 @@ abstract class ArticleActionAbstract extends ActionAbstract
      */
     protected function imageIdRules(): array
     {
+        if (is_null($this->article)) {
+            return [];
+        }
+
         return [
             'image_id' => [
                 'bail',
+                'sometimes',
                 'nullable',
                 'integer',
                 'min:1',
-                'exists:attachments,id',
+                Rule::exists(Attachment::TABLE, 'id')
+                    ->where('type', 'image')
+                    ->where('attachable_id', $this->article->id)
+                    ->where('attachable_type', Article::TABLE),
             ],
         ];
     }

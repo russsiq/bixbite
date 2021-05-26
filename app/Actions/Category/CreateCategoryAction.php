@@ -35,7 +35,7 @@ class CreateCategoryAction extends CategoryActionAbstract implements CreatesCate
     {
         return array_merge(
             // $this->extraFieldsRules(Category::getModel()), // Only when update.
-            $this->imageIdRules(),
+            // $this->imageIdRules(), // Only when update.
             $this->parentIdRules(),
             // $this->positionRules(), // Only when mass update.
             $this->titleRules(),

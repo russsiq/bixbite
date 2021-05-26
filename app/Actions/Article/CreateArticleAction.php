@@ -32,7 +32,8 @@ class CreateArticleAction extends ArticleActionAbstract implements CreatesArticl
     protected function rules(): array
     {
         return array_merge(
-            $this->userIdRules(),
+            $this->userIdRules(), // Only when create.
+            // $this->imageIdRules(), // Only when update.
             $this->stateRules(),
             $this->titleRules(),
             $this->slugRules(),

@@ -40,8 +40,8 @@ class UpdateCategoryAction extends CategoryActionAbstract implements UpdatesCate
     protected function rules(): array
     {
         return array_merge(
-            $this->extraFieldsRules(Category::getModel()),
-            $this->imageIdRules(),
+            $this->extraFieldsRules(Category::getModel()), // Only when update.
+            $this->imageIdRules(), // Only when update.
             $this->parentIdRules(),
             // $this->positionRules(), // Only when mass update.
             $this->titleRules(),
