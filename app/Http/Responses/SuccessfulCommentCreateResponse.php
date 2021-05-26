@@ -10,14 +10,11 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class SuccessfulCommentCreateResponse implements SuccessfulCommentCreateResponseContract
 {
-    /** @var Translator */
-    protected $translator;
+    protected Translator $translator;
 
-    /** @var Comment */
-    protected $comment;
+    protected Comment $comment;
 
-    /** @var CommentableContract */
-    protected $commentable;
+    protected CommentableContract $commentable;
 
     /**
      * Create a new response instance.
