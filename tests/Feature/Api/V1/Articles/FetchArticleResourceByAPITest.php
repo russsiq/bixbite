@@ -154,7 +154,7 @@ class FetchArticleResourceByAPITest extends TestCase
         $this->allowPolicyAbility(ArticlePolicy::class, ['viewAny']);
 
         $user = $this->loginSPA();
-        $articlesCount = mt_rand(4, 12);
+        $articlesCount = mt_rand(2, 5);
         $articles = Article::factory($articlesCount)->for($user)->create();
 
         $response = $this->assertAuthenticated()
