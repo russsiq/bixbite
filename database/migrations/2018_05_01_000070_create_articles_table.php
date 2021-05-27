@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('teaser')->nullable();
-            $table->text('content')->default('');
+            $table->text('content')->nullable();
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
             $table->string('meta_robots')->default('all');
