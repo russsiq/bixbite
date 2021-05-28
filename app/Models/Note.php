@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Contracts\BelongsToUserContract;
-use Database\Factories\NoteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * Note model.
@@ -18,16 +15,21 @@ use Illuminate\Support\Carbon;
  * @property string $slug
  * @property string $description
  * @property boolean $is_completed
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static NoteFactory factory()
+ * @method static \Database\Factories\NoteFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Note extends Model implements BelongsToUserContract
+class Note extends Model implements
+    Contracts\AttachableContract,
+    Contracts\BelongsToUserContract
 {
-    use Relations\Attachable;
-    use Relations\BelongsToUser;
     use HasFactory;
+    use Relations\AttachableTrait;
+    use Relations\BelongsToUserTrait;
 
     /**
      * The table associated with the model.

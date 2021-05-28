@@ -2,66 +2,78 @@
 
 namespace App\Models\Scopes;
 
-// Сторонние зависимости.
-use App\Models\Category;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
+/**
+ * @method static static|EloquentBuilder|QueryBuilder excludeExternal() Scope a query to exclude internal links by `alt_url` attribute.
+ * @method static static|EloquentBuilder|QueryBuilder includeExternal() Scope a query to include also external links by `alt_url` attribute.
+ * @method static static|EloquentBuilder|QueryBuilder orderByPosition() Order categories by position.
+ * @method static static|EloquentBuilder|QueryBuilder short() Scope a query to include only short categories.
+ * @method static static|EloquentBuilder|QueryBuilder showInMenu() Scope a query to include only visible in the menu categories.
+ */
 trait CategoryScopes
 {
     /**
-     * [scopeShort description]
-     * @param  Builder  $builder
-     * @return Builder
+     * Scope a query to exclude internal links by `alt_url` attribute.
+     *
+     * @param  EloquentBuilder  $builder
+     * @return EloquentBuilder
      */
-    public function scopeShort(Builder $builder): Builder
-    {
-        return $builder->addSelect([
-            'categories.id',
-            'categories.title',
-            'categories.slug',
-            'categories.parent_id',
-            'categories.show_in_menu',
-
-        ]);
-    }
-
-    /**
-     * [scopeIncludeExternal description]
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeIncludeExternal(Builder $builder): Builder
-    {
-        return $builder->addSelect('categories.alt_url');
-    }
-
-    /**
-     * [scopeExcludeExternal description]
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeExcludeExternal(Builder $builder): Builder
+    public function scopeExcludeExternal(EloquentBuilder $builder): EloquentBuilder
     {
         return $builder->whereNull('categories.alt_url');
     }
 
     /**
-     * [scopeShowInMenu description]
-     * @param  Builder  $builder
-     * @return Builder
+     * Scope a query to include also external links by `alt_url` attribute.
+     *
+     * @param  EloquentBuilder  $builder
+     * @return EloquentBuilder
      */
-    public function scopeShowInMenu(Builder $builder): Builder
+    public function scopeIncludeExternal(EloquentBuilder $builder): EloquentBuilder
     {
-        return $builder->where('show_in_menu', true);
+        return $builder->addSelect('categories.alt_url');
     }
 
     /**
-     * [scopeOrderByPosition description]
-     * @param  Builder  $builder
-     * @return Builder
+     * Order categories by position.
+     *
+     * Used in `\App\Http\Controllers\SiteController`.
+     *
+     * @param  EloquentBuilder  $builder
+     * @return EloquentBuilder
      */
-    public function scopeOrderByPosition(Builder $builder): Builder
+    public function scopeOrderByPosition(EloquentBuilder $builder): EloquentBuilder
     {
         return $builder->orderByRaw('ISNULL(`position`), `position` ASC');
+    }
+
+    /**
+     * Scope a query to include only short categories.
+     *
+     * @param  EloquentBuilder  $builder
+     * @return EloquentBuilder
+     */
+    public function scopeShort(EloquentBuilder $builder): EloquentBuilder
+    {
+        return $builder->addSelect([
+            'categories.id',
+            'categories.parent_id',
+            'categories.title',
+            'categories.slug',
+            'categories.show_in_menu',
+        ]);
+    }
+
+    /**
+     * Scope a query to include only visible in the menu categories.
+     *
+     * @param  EloquentBuilder  $builder
+     * @return EloquentBuilder
+     */
+    public function scopeShowInMenu(EloquentBuilder $builder): EloquentBuilder
+    {
+        return $builder->where('show_in_menu', true);
     }
 }

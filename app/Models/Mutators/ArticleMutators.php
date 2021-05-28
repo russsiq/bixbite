@@ -3,26 +3,60 @@
 namespace App\Models\Mutators;
 
 use App\Http\Controllers\ArticlesController;
-use Illuminate\Support\Str;
+use App\Models\Article;
+use Illuminate\Support\Carbon;
 
 /**
- * https://schema.org/Article
- * https://github.com/russsiq/art-schema-markup
+ * @property-read ?string $created Get the difference in a human readable format in the current locale.
+ * @property-read ?string $edit_page_url Get the URL of the article edit page.
+ * @property-read bool $is_published Determine that the article has been published.
+ * @property-read string $raw_content Get the raw content of the article.
+ * @property-read ?string $updated Get the difference in a human readable format in the current locale.
+ * @property-read ?string $url Get the article URL.
+ * @property-read integer $views Get the number of views for an article only if this feature is used.
  */
 trait ArticleMutators
 {
     /**
-     * $this->is_published
+     * Get the difference in a human readable format in the current locale.
+     *
+     * @return string|null
+     */
+    public function getCreatedAttribute(): ?string
+    {
+        if ($this->created_at instanceof Carbon) {
+            return $this->created_at->diffForHumans();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the URL of the article edit page.
+     *
+     * @return string|null
+     */
+    public function getEditPageUrlAttribute(): ?string
+    {
+        if (! $this->exists) {
+            return null;
+        }
+
+        return route('articles.edit', $this);
+    }
+
+    /**
+     * Determine that the article has been published.
      *
      * @return boolean
      */
     public function getIsPublishedAttribute(): bool
     {
-        return 1 === $this->state;
+        return Article::STATE['published'] === $this->state;
     }
 
     /**
-     * $this->raw_content
+     * Get the raw content of the article.
      *
      * @return string
      */
@@ -31,69 +65,45 @@ trait ArticleMutators
         return (string) $this->attributes['content'];
     }
 
-    public function getUrlAttribute()
+    /**
+     * Get the difference in a human readable format in the current locale.
+     *
+     * @return string|null
+     */
+    public function getUpdatedAttribute(): ?string
     {
-        return ($this->id and $this->categories->count() > 0  and $this->is_published)
-            ? action([ArticlesController::class, 'article'], [
+        if ($this->updated_at instanceof Carbon) {
+            return $this->updated_at->diffForHumans();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the article URL.
+     *
+     * @return string|null
+     */
+    public function getUrlAttribute(): ?string
+    {
+        if ($this->id and $this->categories->count() > 0  and $this->is_published) {
+            return action([ArticlesController::class, 'article'], [
                 $this->categories->pluck('slug')->implode('_'),
                 $this->id,
                 $this->slug
-            ]) : null;
-    }
+            ]);
+        }
 
-    public function getEditPageAttribute(): ?string
-    {
-        return $this->id ? route('dashboard')."/$this->table/$this->id/edit" : null;
-    }
-
-    public function getViewsAttribute()
-    {
-        return setting('articles.views_used', true) ? $this->attributes['views'] : null;
+        return null;
     }
 
     /**
-     * Get `created` in humans date format.
-     * @return mixed
-     */
-    public function getCreatedAttribute()
-    {
-        return empty($this->attributes['created_at']) ? null : $this->created_at->diffForHumans();
-    }
-
-    /**
-     * Get `updated` in humans date format.
-     * @return mixed
-     */
-    public function getUpdatedAttribute()
-    {
-        return empty($this->attributes['updated_at']) ? null : $this->updated_at->diffForHumans();
-    }
-
-    /**
-     * Get `date_created` in ISO 8601 date format.
-     * @return mixed
-     */
-    public function getDateCreatedAttribute()
-    {
-        return empty($this->attributes['created_at']) ? null : $this->created_at->toIso8601String();
-    }
-
-    /**
-     * Get `date_published` in ISO 8601 date format.
+     * Get the number of views for an article only if this feature is used.
      *
-     * @return mixed
+     * @return integer
      */
-    public function getDatePublishedAttribute()
+    public function getViewsAttribute(): int
     {
-        return empty($this->attributes['published_at']) ? null : $this->published_at->toIso8601String();
-    }
-
-    /**
-     * Get `date_modified` in ISO 8601 date format.
-     * @return mixed
-     */
-    public function getDateModifiedAttribute()
-    {
-        return empty($this->attributes['updated_at']) ? null : $this->updated_at->toIso8601String();
+        return $this->setting->views_used ? $this->attributes['views'] : 0;
     }
 }

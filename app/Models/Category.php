@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Collections\CategoryCollection;
-use App\Models\Contracts\ExtensibleContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -11,50 +10,58 @@ use Illuminate\Support\Facades\DB;
 /**
  * Category model.
  *
- * @property-read int $id
- * @property-read ?int $image_id
- * @property-read int $parent_id
- * @property-read int $position
- * @property-read string $title
- * @property-read string $slug
- * @property-read ?string $alt_url
- * @property-read ?string $info
- * @property-read ?string $meta_description
- * @property-read ?string $meta_keywords
- * @property-read string $meta_robots
- * @property-read bool $show_in_menu
- * @property-read string $order_by
- * @property-read string $direction
- * @property-read int $paginate
- * @property-read ?string $template
+ * @property int $id
+ * @property ?int $image_id
+ * @property int $parent_id
+ * @property int $position
+ * @property string $title
+ * @property string $slug
+ * @property ?string $alt_url
+ * @property ?string $info
+ * @property ?string $meta_description
+ * @property ?string $meta_keywords
+ * @property string $meta_robots
+ * @property bool $show_in_menu
+ * @property string $order_by
+ * @property string $direction
+ * @property int $paginate
+ * @property ?string $template
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read string $url
- * @property-read ?string $edit_page
- * @property-read bool $is_root
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles Get all of the articles for the category.
  *
- * @method \Illuminate\Database\Eloquent\Builder short()
+ * @method static \Database\Factories\CategoryFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Category extends Model implements ExtensibleContract
+class Category extends Model implements
+    Contracts\AttachableContract,
+    Contracts\CustomizableContract,
+    Contracts\ExtensibleContract
 {
-    use Mutators\CategoryMutators;
-    use Relations\Extensible;
-    use Relations\Attachable;
-    use Scopes\CategoryScopes;
     use HasFactory;
+    use Mutators\CategoryMutators;
+    use Relations\AttachableTrait;
+    use Relations\CustomizableTrait;
+    use Relations\ExtensibleTrait;
+    use Scopes\CategoryScopes;
 
+    /**
+     * The default table associated with the model.
+     *
+     * @const string
+     */
     public const TABLE = 'categories';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'image_id' => null,
@@ -75,20 +82,16 @@ class Category extends Model implements ExtensibleContract
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $appends = [
         'url',
-        'edit_page',
+        'edit_page_url',
         'is_root',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'image_id' => 'integer',
@@ -97,14 +100,12 @@ class Category extends Model implements ExtensibleContract
         'show_in_menu' => 'boolean',
         'paginate' => 'integer',
         'url' => 'string',
-        'edit_page' => 'string',
+        'edit_page_url' => 'string',
         'is_root' => 'boolean',
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'image_id',
@@ -125,18 +126,18 @@ class Category extends Model implements ExtensibleContract
     ];
 
     /**
-     * Получить все записи, относящиеся к данной категории.
+     * Get all of the articles for the category.
      *
      * @return MorphToMany
      */
     public function articles()
     {
         return $this->morphedByMany(
-            /* $related */ Article::class,
-            /* $name */ 'categoryable',
-            /* $table */ 'categoryables',
-            /* $foreignPivotKey */ 'category_id',
-            /* $relatedPivotKey */ 'categoryable_id'
+            Article::class,     // $related
+            'categoryable',     // $name
+            'categoryables',    // $table
+            'category_id',      // $foreignPivotKey
+            'categoryable_id',  // $relatedPivotKey
         );
     }
 
@@ -172,6 +173,12 @@ class Category extends Model implements ExtensibleContract
             ->count();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Дальше идет мешанина, которой самое место в Действиях, например, `MassUpdate`.
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * Сбросить позиции для всех категорий и
      * сохранить обновленные модели в базу данных.
@@ -184,7 +191,6 @@ class Category extends Model implements ExtensibleContract
             ->update([
                 'parent_id' => 0,
                 'position' => null,
-
             ]);
     }
 
@@ -221,7 +227,6 @@ class Category extends Model implements ExtensibleContract
                 ->update([
                     'parent_id' => $parent_id,
                     'position' => $m_order,
-
                 ]);
 
             if (array_key_exists('children', $item)) {

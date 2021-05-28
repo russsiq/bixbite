@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
             // BBCMS Middleware
-            \App\Http\Middleware\LastUserActivity::class,
+            \App\Http\Middleware\MustBeOnlineMiddleware::class,
 
         ],
 

@@ -14,7 +14,7 @@
                     <img src="{{ $user->avatar }}" alt="{{ $user->name }}" width="64" class="profile_page__avatar" />
                 </figure>
                 <div class="profile_page__name_wrapper">
-                    <div class="profile_page__name">{{ $user->name }} <b class="{{ $user->isOnline() ? 'is_online' : '' }}"></b></div>
+                    <div class="profile_page__name">{{ $user->name }} <b class="{{ $user->is_online ? 'is_online' : '' }}"></b></div>
                     <div class="profile_page__role">@lang('users.role.'.$user->role)</div>
                 </div>
 
@@ -42,7 +42,7 @@
                         <tr><td>@lang('users.name')</td><td width="28"></td><td>{{ $user->name }}</td></tr>
                         <tr><td>@lang('users.group')</td><td></td><td>@lang('users.role.'.$user->role)</td></tr>
                         <tr><td>@lang('users.created_at')</td><td></td><td>{{ $user->created }}</td></tr>
-                        <tr><td>@lang('users.last_active')</td><td></td><td>{{ $user->lastActive() ?? __('users.never_been') }}</td></tr>
+                        <tr><td>@lang('users.last_active')</td><td></td><td>{{ $user->last_active ?? __('users.never_been') }}</td></tr>
                         <tr><td>@lang('users.articles_count')</td><td></td><td>{{ $user->articles_count ?? '...' }}</td></tr>
                         <tr><td>@lang('users.comments_count')</td><td></td><td>{{ $user->comments_count ?? '...' }}</td></tr>
                         <tr><td>@lang('users.location')</td><td></td><td>{{ $user->location ?? '...' }}</td></tr>

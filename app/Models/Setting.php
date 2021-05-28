@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,33 +14,41 @@ use Russsiq\EnvManager\Facades\EnvManager;
 /**
  * Setting model.
  *
- * @property-read int $id
- * @property-read string $module_name
- * @property-read string $name
- * @property-read string $type
- * @property-read string $value
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property string $module_name
+ * @property string $name
+ * @property string $type
+ * @property string $value
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @property-read \App\Models\Module $module Get the module that the setting belongs to.
+ *
+ * @method static \Database\Factories\SettingFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Setting extends Model
 {
+    use HasFactory;
     use Mutators\SettingMutators;
     use Traits\Dataviewer;
-    use HasFactory;
-
-    public const TABLE = 'settings';
 
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @const string
+     */
+    public const TABLE = 'settings';
+
+    /**
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'module_name' => '',
@@ -50,9 +58,7 @@ class Setting extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'module_name' => 'string',
@@ -62,9 +68,7 @@ class Setting extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'module_name',
@@ -113,9 +117,50 @@ class Setting extends Model
         'ORG_NAME',
     ];
 
+    /**
+     * Cached in-memory settings collection.
+     *
+     * @var EloquentCollection|null
+     */
+    protected static $cachedSettings = null;
+
+    /**
+     * Get the collection of settings for a given module name.
+     *
+     * @param  string|null  $moduleName
+     * @return EloquentCollection
+     */
+    public static function settings(string $moduleName = null): EloquentCollection
+    {
+        if (is_null(static::$cachedSettings)) {
+            static::$cachedSettings = static::all([
+                'module_name',
+                'name',
+                'type',
+                'value',
+            ]);
+        }
+
+        if (is_null($moduleName)) {
+            return static::$cachedSettings;
+        }
+
+        return static::$cachedSettings->where('module_name', $moduleName);
+    }
+
+    /**
+     * Get the module that the setting belongs to.
+     *
+     * @return BelongsTo
+     */
     public function module(): BelongsTo
     {
-        return $this->belongsTo(Module::class, 'module_name', 'name', 'module');
+        return $this->belongsTo(
+            Module::class,  // $related
+            'module_name',  // $foreignKey
+            'name',         // $ownerKey
+            'module',       // $relation
+        );
     }
 
     /**
@@ -123,9 +168,9 @@ class Setting extends Model
      *
      * @param  Module  $module
      * @param  array  $attributes
-     * @return Collection
+     * @return EloquentCollection
      */
-    public static function massUpdateByModule(Module $module, array $attributes): Collection
+    public static function massUpdateByModule(Module $module, array $attributes): EloquentCollection
     {
         // 1 Извлечь все настройки модуля.
         $settings = $module->settings()->get();
@@ -208,8 +253,8 @@ class Setting extends Model
     /**
      * Определить, что переданный тип относится к примитивной типизации.
      *
-     * @param  string $castType
-     * @return bool
+     * @param  string  $castType
+     * @return boolean
      */
     public function isPrimitiveCastTypes(string $castType): bool
     {

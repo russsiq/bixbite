@@ -4,37 +4,45 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Module model.
  *
- * @property-read int $id
- * @property-read string $name
- * @property-read string $title
- * @property-read string $icon
- * @property-read string $info
- * @property-read bool $on_mainpage
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property string $name
+ * @property string $title
+ * @property string $icon
+ * @property string $info
+ * @property bool $on_mainpage
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|Setting[] $settings
+ *
+ * @method static \Database\Factories\ModuleFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Module extends Model
 {
     use HasFactory;
 
+    /**
+     * The default table associated with the model.
+     *
+     * @const string
+     */
     public const TABLE = 'modules';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'name' => '',
@@ -45,9 +53,7 @@ class Module extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'name' => 'string',
@@ -58,9 +64,7 @@ class Module extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'name',
@@ -80,18 +84,17 @@ class Module extends Model
         return 'name';
     }
 
-    public function settings()
+    /**
+     * Get the settings for the current model instance.
+     *
+     * @return HasMany
+     */
+    public function settings(): HasMany
     {
-        return $this->hasMany(Setting::class, 'module_name', 'name');
-    }
-
-    public static function loadLang(string $module_name)
-    {
-        Lang::addJsonPath(dashboard_path('lang'.DS.$module_name));
-    }
-
-    public static function loadView(string $module_name)
-    {
-        // \View::addLocation('path/to/theme/views');
+        return $this->hasMany(
+            Setting::class, // $related
+            'module_name',  // $foreignKey
+            'name',         // $localKey
+        );
     }
 }

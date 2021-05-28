@@ -5,22 +5,16 @@ namespace App\Models\Mutators;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
+/**
+ * Chaos.
+ *
+ * @property-read string $absolute_path
+ * @property-read int $filesize
+ * @property-read string $path
+ * @property-read string $url
+ */
 trait AtachmentMutators
 {
-    /**
-     * Path variations.
-     * Used as `{{ $attachment->path }}` or `{{ $image->getPathAttribute('thumb') }}`.
-     *
-     * @param  string|null $thumbSize Thumbnail size for image file.
-     * @return string|null
-     */
-    public function getPathAttribute($thumbSize = null)
-    {
-        $path = $this->path($thumbSize);
-
-        return $this->storageDisk()->exists($path) ? $path : null;
-    }
-
     /**
      * Absolute path variations.
      * Used as `{{ $attachment->absolute_path }}` or `{{ $image->getAbsolutePathAttribute('thumb') }}`.
@@ -36,6 +30,31 @@ trait AtachmentMutators
     }
 
     /**
+     * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
+     * Used as `{{ $attachment->filesize }}`.
+     *
+     * @return string|null
+     */
+    public function getFilesizeAttribute()
+    {
+        return Str::humanFilesize($this->attributes['filesize']);
+    }
+
+    /**
+     * Path variations.
+     * Used as `{{ $attachment->path }}` or `{{ $image->getPathAttribute('thumb') }}`.
+     *
+     * @param  string|null $thumbSize Thumbnail size for image file.
+     * @return string|null
+     */
+    public function getPathAttribute($thumbSize = null)
+    {
+        $path = $this->path($thumbSize);
+
+        return $this->storageDisk()->exists($path) ? $path : null;
+    }
+
+    /**
      * Url variations.
      * Used as `{{ $attachment->url }}` or `{{ $image->getUrlAttribute('thumb') }}`.
      *
@@ -47,17 +66,6 @@ trait AtachmentMutators
         $path = $this->getPathAttribute($thumbSize);
 
         return $path ? $this->storageDisk()->url(str_replace('\\', '/', $path)) : null;
-    }
-
-    /**
-     * Shows the size of a file in human readable format in bytes to kb, mb, gb, tb.
-     * Used as `{{ $attachment->filesize }}`.
-     *
-     * @return string|null
-     */
-    public function getFilesizeAttribute()
-    {
-        return Str::humanFilesize($this->attributes['filesize']);
     }
 
     /**

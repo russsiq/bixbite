@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class AtachmentsTableSeeder extends Seeder
+class AttachmentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

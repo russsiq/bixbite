@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Contracts\ExtensibleContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,51 +13,58 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * User model.
  *
- * @property-read int $id
- * @property-read string $name
- * @property-read string $email
- * @property-read \Illuminate\Support\Carbon|null $email_verified_at
- * @property-read string $password
- * @property-read string $remember_token
- * @property-read string $role
- * @property-read ?string $avatar
- * @property-read ?string $info
- * @property-read ?string $location
- * @property-read ?string $last_ip
- * @property-read \Illuminate\Support\Carbon|null $logined_at
- * @property-read \Illuminate\Support\Carbon|null $banned_until
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string $remember_token
+ * @property string $role
+ * @property ?string $avatar
+ * @property ?string $info
+ * @property ?string $location
+ * @property ?string $last_ip
+ * @property \Illuminate\Support\Carbon|null $logined_at
+ * @property \Illuminate\Support\Carbon|null $banned_until
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read string $profile
- * @property-read bool $is_online
- * @property-read ?string $logined
+ * @method static \Database\Factories\UserFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class User extends Authenticatable implements MustVerifyEmail, ExtensibleContract
+class User extends Authenticatable implements
+    Contracts\CustomizableContract,
+    Contracts\ExtensibleContract,
+    Contracts\MustBeOnlineContract,
+    MustVerifyEmail
 {
-    use Mutators\UserMutators;
-    use Relations\Extensible;
-    use Traits\Dataviewer;
-    use Traits\hasOnline;
-    use Traits\hasPrivileges;
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
-    public const TABLE = 'users';
+    use Mutators\UserMutators;
+    use Relations\CustomizableTrait;
+    use Relations\ExtensibleTrait;
+    use Traits\Dataviewer;
+    use Traits\MustBeOnlineTrait;
+    use Traits\hasPrivileges;
 
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @const string
+     */
+    public const TABLE = 'users';
+
+    /**
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'name' => null,
@@ -76,9 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail, ExtensibleContrac
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $appends = [
         'is_online',
@@ -87,9 +91,7 @@ class User extends Authenticatable implements MustVerifyEmail, ExtensibleContrac
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'name' => 'string',
@@ -111,9 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail, ExtensibleContrac
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'name',
@@ -129,9 +129,7 @@ class User extends Authenticatable implements MustVerifyEmail, ExtensibleContrac
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $hidden = [
         'password',

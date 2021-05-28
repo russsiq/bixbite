@@ -22,10 +22,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth:sanctum', 'verified', 'password.confirm'])
-    ->get('/dashboard/{any?}', DashboardController::class)
-    ->where('any', '.*')
-    ->name('dashboard');
+Route::prefix('dashboard')
+    ->middleware(['auth:sanctum', 'verified', 'password.confirm'])
+    ->group(function () {
+        $controller = DashboardController::class;
+
+        Route::get('articles/{article}/edit', $controller)->name('articles.edit');
+        Route::get('categories/{category}/edit', $controller)->name('categories.edit');
+
+        Route::get('{any?}', $controller)->where('any', '.*')->name('dashboard');
+    });
 
 Route::middleware('throttle:5,1')
     ->post('articles/{article}/comments', ArticleCommentController::class)

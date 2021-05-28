@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -12,50 +11,55 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 use RuntimeException as FileException;
 
 /**
- * Attachment model.
+ * Attachment model. Chaos.
  *
- * @property-read int $id
- * @property-read int $attachable_id
- * @property-read string $attachable_type
- * @property-read ?int $user_id
- * @property-read ?string $title
- * @property-read ?string $description
- * @property-read string $disk
- * @property-read string $folder
- * @property-read string $type
- * @property-read string $name
- * @property-read string $extension
- * @property-read string $mime_type
- * @property-read int $filesize
- * @property-read array $properties
- * @property-read int $downloads
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property int $attachable_id
+ * @property string $attachable_type
+ * @property ?int $user_id
+ * @property ?string $title
+ * @property ?string $description
+ * @property string $disk
+ * @property string $folder
+ * @property string $type
+ * @property string $name
+ * @property string $extension
+ * @property string $mime_type
+ * @property int $filesize
+ * @property array $properties
+ * @property int $downloads
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read string $url
- * @property-read string $path
- * @property-read string $absolute_path
- * @property-read int $filesize
+ * @property-read Model $attachable Get the parent attachable model.
+ *
+ * @method static \Database\Factories\AttachmentFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Attachment extends Model
+class Attachment extends Model implements
+    Contracts\BelongsToUserContract
 {
-    use Mutators\AtachmentMutators;
-    use Traits\Dataviewer;
     use HasFactory;
-
-    const TABLE = 'attachments';
+    use Mutators\AtachmentMutators;
+    use Relations\BelongsToUserTrait;
+    use Traits\Dataviewer;
 
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @const string
+     */
+    const TABLE = 'attachments';
+
+    /**
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'user_id' => null,
@@ -69,9 +73,7 @@ class Attachment extends Model
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $appends = [
         'url',
@@ -84,9 +86,7 @@ class Attachment extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'user_id' => 'integer',
@@ -104,9 +104,7 @@ class Attachment extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'user_id',
@@ -162,14 +160,19 @@ class Attachment extends Model
         'medium' => 992,
     ];
 
+    /**
+     * Get the parent attachable model.
+     *
+     * @return MorphTo
+     */
     public function attachable(): MorphTo
     {
-        return $this->morphTo();
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
+        return $this->morphTo(
+            'attachable',      // $name
+            'attachable_type', // $type
+            'attachable_id',   // $id
+            'id',              // $ownerKey
+        );
     }
 
     public function thumbSizes()

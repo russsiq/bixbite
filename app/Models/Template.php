@@ -15,13 +15,13 @@ use RecursiveIteratorIterator;
 /**
  * Template model.
  *
- * @property-read int $id
- * @property-read string $filename
- * @property-read string $path
- * @property-read bool $exists
- * @property-read string $content
- * @property-read string $modified
- * @property-read string $size
+ * @property int $id
+ * @property string $filename
+ * @property string $path
+ * @property bool $exists
+ * @property string $content
+ * @property string $modified
+ * @property string $size
  */
 class Template implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {

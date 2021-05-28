@@ -29,9 +29,11 @@ class ArticleFixtures
                 'created_at',
                 'updated_at',
 
-                'url',
-                'edit_page',
+                'edit_page_url',
                 'is_published',
+                // 'raw_content',
+                'updated',
+                'url',
                 'comment_store_url',
             ],
         ];

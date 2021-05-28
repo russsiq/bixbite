@@ -32,7 +32,7 @@ class CategoryFactory extends Factory
             'title' => Str::ucfirst($title),
             'slug' => Str::slug($title),
             'alt_url' => null,
-            'info' => '<p>'.$this->faker->paragraph().'</p>',
+            'info' => $this->faker->paragraph(),
             'meta_description' => $this->faker->text(mt_rand(120, 255)),
             'meta_keywords' => implode(',', $this->faker->words(mt_rand(4, 8))),
             'meta_robots' => $this->faker->randomElement(MetaRobotsRule::DIRECTIVES),

@@ -19,7 +19,7 @@ class TestContentSeeder extends Seeder
             CategoriesTableSeeder::class,
             NotesTableSeeder::class,
             TagsTableSeeder::class,
-            // AtachmentsTableSeeder::class,
+            // AttachmentsTableSeeder::class,
 
             ArticleCategoriesSeeder::class,
             ArticleCommentsSeeder::class,

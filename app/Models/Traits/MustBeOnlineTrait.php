@@ -1,34 +1,50 @@
 <?php
 
-// -----------------------------------------------------------------------------
-//  Для обновления значений в кэше используется Посредник (middleware):
-// -----------------------------------------------------------------------------
-// if ($user = $request->user()) {
-//     cache()->put($user->isOnlineKey(), now(),
-//         now()->addSeconds($user->isOnlineMinutes() * 60)
-//     );
-// }
-
 namespace App\Models\Traits;
 
-trait hasOnline
+/**
+ * @property-read bool $is_online
+ * @property-read string|null $last_active
+ *
+ * @see \App\Http\Middleware\MustBeOnlineMiddleware
+ */
+trait MustBeOnlineTrait
 {
     /**
      * Время, в течении которого считается,
      * что пользователь находится онлайн.
-     * @var int
+     *
+     * @var integer
      */
     protected $isOnlineMinutes = 15;
 
     /**
      * Префикс для ключа в кэше.
+     *
      * @var string
      */
     protected $isOnlinePrefix = 'users.is-online-';
 
     /**
+     * Fix user activity.
+     *
+     * @return void
+     */
+    public function fixActivity(): void
+    {
+        if ($this->exists) {
+            cache()->put(
+                $this->isOnlineKey(),
+                now(),
+                now()->addMinutes($this->isOnlineMinutes())
+            );
+        }
+    }
+
+    /**
      * Формирование динамического атрибута,
      * возвращающего индикацию, что пользователь онлайн.
+     *
      * @return bool
      */
     public function getIsOnlineAttribute(): bool
@@ -37,10 +53,24 @@ trait hasOnline
     }
 
     /**
+     * Получить время, когда пользователь
+     * последний раз проявлял активность.
+     *
+     * @return string|null
+     */
+    public function getLastActiveAttribute(): ?string
+    {
+        return $this->isOnline()
+            ? cache($this->isOnlineKey())->diffForHumans()
+            : $this->logined;
+    }
+
+    /**
      * Проверить, находится ли пользователь онлайн.
+     *
      * @return bool
      */
-    public function isOnline(): bool
+    protected function isOnline(): bool
     {
         return cache()->has($this->isOnlineKey());
     }
@@ -48,9 +78,10 @@ trait hasOnline
     /**
      * Получить ключ, по которому
      * выполняется проверка пользователя на онлайн.
+     *
      * @return string
      */
-    public function isOnlineKey(): string
+    protected function isOnlineKey(): string
     {
         return $this->isOnlinePrefix.$this->id;
     }
@@ -58,22 +89,11 @@ trait hasOnline
     /**
      * Получить время, в течении которого считается,
      * что пользователь находится онлайн.
-     * @return int
+     *
+     * @return integer
      */
-    public function isOnlineMinutes(): int
+    protected function isOnlineMinutes(): int
     {
-        return setting('users.online_minutes', $this->isOnlineMinutes);
-    }
-
-    /**
-     * Получить время, когда пользователь
-     * последний раз проявлял активность.
-     * @return string|null
-     */
-    public function lastActive()
-    {
-        return $this->isOnline()
-            ? cache($this->isOnlineKey())->diffForHumans()
-            : $this->logined;
+        return $this->setting->online_minutes($this->isOnlineMinutes);
     }
 }

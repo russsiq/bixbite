@@ -27,9 +27,9 @@ class CategoryFixtures
                 'created_at',
                 'updated_at',
 
-                'url',
-                'edit_page',
+                'edit_page_url',
                 'is_root',
+                'url',
             ],
         ];
     }

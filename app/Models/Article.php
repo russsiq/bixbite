@@ -2,85 +2,85 @@
 
 namespace App\Models;
 
-use App\Models\Contracts\CommentableContract;
-use App\Models\Contracts\ExtensibleContract;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
 
 /**
  * Article model.
  *
- * @property-read int $id
- * @property-read int $user_id
- * @property-read ?int $image_id
- * @property-read int $state
- * @property-read string $title
- * @property-read string $slug
- * @property-read ?string $teaser
- * @property-read ?string $content
- * @property-read ?string $meta_description
- * @property-read ?string $meta_keywords
- * @property-read string $meta_robots
- * @property-read bool $on_mainpage
- * @property-read bool $is_favorite
- * @property-read bool $is_pinned
- * @property-read bool $is_catpinned
- * @property-read int $allow_com
- * @property-read int $views
- * @property-read \Illuminate\Support\Carbon $published_at
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property int $user_id
+ * @property ?int $image_id
+ * @property int $state
+ * @property string $title
+ * @property string $slug
+ * @property ?string $teaser
+ * @property ?string $content
+ * @property ?string $meta_description
+ * @property ?string $meta_keywords
+ * @property string $meta_robots
+ * @property bool $on_mainpage
+ * @property bool $is_favorite
+ * @property bool $is_pinned
+ * @property bool $is_catpinned
+ * @property int $allow_com
+ * @property int $views
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $published_at
  *
- * @property-read string $url
- * @property-read ?string $edit_page
- * @property-read bool $is_published
- * @property-read string $comment_store_url
+ * @method static \Database\Factories\ArticleFactory factory()
  *
- * @method \Illuminate\Database\Eloquent\Builder favorites()
- * @method \Illuminate\Database\Eloquent\Builder filter(array $filters)
- * @method \Illuminate\Database\Eloquent\Builder drafts()
- * @method \Illuminate\Database\Eloquent\Builder published()
- * @method \Illuminate\Database\Eloquent\Builder unPublished()
- * @method \Illuminate\Database\Eloquent\Builder visibleOnMainpage(bool $isVisible = true)
- * @method static \Illuminate\Database\Eloquent\Builder shortArticle()
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Article extends Model implements ExtensibleContract, CommentableContract
+class Article extends Model implements
+    Contracts\AttachableContract,
+    Contracts\BelongsToUserContract,
+    Contracts\CategoryableContract,
+    Contracts\CommentableContract,
+    Contracts\CustomizableContract,
+    Contracts\ExtensibleContract,
+    Contracts\TaggableContract
 {
+    use HasFactory;
     use Mutators\ArticleMutators;
-    use Relations\Attachable;
-    use Relations\Categoryable;
-    use Relations\Commentable;
-    use Relations\Extensible;
-    use Relations\Taggable;
+    use Relations\AttachableTrait;
+    use Relations\BelongsToUserTrait;
+    use Relations\CategoryableTrait;
+    use Relations\CommentableTrait;
+    use Relations\CustomizableTrait;
+    use Relations\ExtensibleTrait;
+    use Relations\TaggableTrait;
     use Scopes\ArticleScopes;
     use Traits\Dataviewer;
     use Traits\FullTextSearch;
-    use HasFactory;
 
+    /**
+     * The state of the article's publicity.
+     *
+     * @const array
+     */
+    public const STATE = [
+        'draft' => 0,
+        'published' => 1,
+        'unpublished' => 2,
+    ];
+
+    /**
+     * The default table associated with the model.
+     *
+     * @const string
+     */
     public const TABLE = 'articles';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    // public $timestamps = false;
-
-    /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'user_id' => null,
@@ -89,7 +89,7 @@ class Article extends Model implements ExtensibleContract, CommentableContract
         'title' => '',
         'slug' => '',
         'teaser' => null,
-        'content' => null,
+        'content' => '',
         'meta_description' => null,
         'meta_keywords' => null,
         'meta_robots' => 'all',
@@ -102,23 +102,20 @@ class Article extends Model implements ExtensibleContract, CommentableContract
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $appends = [
-        'url',
-        'edit_page',
-        'is_published',
         'comment_store_url',
         'created',
+        'edit_page_url',
+        'is_published',
+        // 'raw_content',
         'updated',
+        'url',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'user_id' => 'integer',
@@ -136,15 +133,13 @@ class Article extends Model implements ExtensibleContract, CommentableContract
         'updated_at' => 'datetime',
 
         'url' => 'string',
-        'edit_page' => 'string',
+        'edit_page_url' => 'string',
         'is_published' => 'boolean',
         'comment_store_url' => 'string',
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'user_id',
@@ -165,12 +160,10 @@ class Article extends Model implements ExtensibleContract, CommentableContract
     ];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $with = [
-        'categories:categories.id,categories.title,categories.slug,categories.template',
+        'categories:categories.id,categories.parent_id,categories.title,categories.slug,categories.template',
     ];
 
     /**
@@ -215,108 +208,4 @@ class Article extends Model implements ExtensibleContract, CommentableContract
         'title',
         'content',
     ];
-
-    /**
-     * Get the user that owns the article.
-     *
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user');
-    }
-
-    /**
-     * Get the settings for the article.
-     *
-     * @return BelongsTo
-     */
-    public function settings(): HasMany
-    {
-        return $this->hasMany(Setting::class, 'module_name');
-    }
-
-    /**
-     * Область запроса, содержащая только избранные записи.
-     *
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeFavorites(Builder $builder): Builder
-    {
-        return $builder->addSelect('articles.is_favorite')
-            ->where('is_favorite', true);
-    }
-
-    /**
-     * Фильтрация записей по часто используемым критериям.
-     *
-     * @param  Builder  $builder
-     * @param  array  $filters
-     * @return Builder
-     */
-    public function scopeFilter(Builder $builder, array $filters): Builder
-    {
-        return $builder->when($filters['month'], function(Builder $builder, string $month) {
-            $builder->addSelect('articles.created_at')
-                ->whereMonth('created_at', Carbon::parse($month)->month);
-        })
-        ->when($filters['year'], function(Builder $builder, int $year) {
-            $builder->addSelect('articles.created_at')
-                ->whereYear('created_at', $year);
-        })
-        ->when($filters['user_id'], function(Builder $builder, int $user_id) {
-            $builder->addSelect('articles.user_id')
-                ->where('user_id', $user_id);
-        });
-    }
-
-    /**
-     * Область запроса, содержащая только черновики.
-     *
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeDrafts(Builder $builder): Builder
-    {
-        return $builder->where('articles.state', 0);
-    }
-
-    /**
-     * Область запроса, содержащая только опубликованные записи.
-     *
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopePublished(Builder $builder): Builder
-    {
-        // if (! $builder->getQuery()->distinct) {
-        //     $builder->addSelect('articles.state');
-        // }
-
-        return $builder->where('articles.state', 1);
-    }
-
-    /**
-     * Область запроса, содержащая только неопубликованные записи.
-     *
-     * @param  Builder  $builder
-     * @return Builder
-     */
-    public function scopeUnPublished(Builder $builder): Builder
-    {
-        return $builder->where('articles.state', 2);
-    }
-
-    /**
-     * Область запроса записей, отображаемых / не отображаемых на главной странице.
-     *
-     * @param  Builder  $builder
-     * @param  boolean  $isVisible
-     * @return Builder
-     */
-    public function scopeVisibleOnMainpage(Builder $builder, bool $isVisible = true): Builder
-    {
-        return $builder->where('articles.on_mainpage', $isVisible);
-    }
 }

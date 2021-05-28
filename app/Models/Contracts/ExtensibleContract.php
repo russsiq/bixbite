@@ -3,27 +3,11 @@
 namespace App\Models\Contracts;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
-/**
- * @property-read Collection $x_fields
- * @method static static|EloquentBuilder|QueryBuilder includeExtensibleAttributes()
- */
 interface ExtensibleContract
 {
-    /**
-     * Get the value of the dynamic attribute `x_fields`.
-     *
-     * @return Collection
-     */
-    public function getXFieldsAttribute(): Collection;
+    public function getXFieldsAttribute(): EloquentCollection;
 
-    /**
-     * Include names of extra fields in the query.
-     *
-     * @param  EloquentBuilder  $builder
-     * @return void
-     */
-    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): void;
+    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): EloquentBuilder;
 }

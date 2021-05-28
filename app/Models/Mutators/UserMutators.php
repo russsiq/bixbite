@@ -2,18 +2,32 @@
 
 namespace App\Models\Mutators;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 
+/**
+ * @property-read ?string $logined Get the difference in a human readable format in the current locale.
+ * @property-read string $profile
+ */
 trait UserMutators
 {
-    public function getProfileAttribute(): ?string
+    public function getAvatarAttribute()
     {
-        return $this->exists ? route('profile.show', $this) : null;
+        return get_avatar($this->email, $this->attributes['avatar']);
     }
 
-    public function getCreatedAttribute()
+    /**
+     * Get the difference in a human readable format in the current locale.
+     *
+     * @return string|null
+     */
+    public function getCreatedAttribute(): ?string
     {
-        return is_null($this->created_at) ? null : $this->asDateTime($this->created_at)->diffForHumans();
+        if ($this->created_at instanceof Carbon) {
+            return $this->created_at->diffForHumans();
+        }
+
+        return null;
     }
 
     public function getLoginedAttribute()
@@ -21,9 +35,9 @@ trait UserMutators
         return is_null($this->logined_at) ? null : $this->asDateTime($this->logined_at)->diffForHumans();
     }
 
-    public function getAvatarAttribute()
+    public function getProfileAttribute(): ?string
     {
-        return get_avatar($this->email, $this->attributes['avatar']);
+        return $this->exists ? route('profile.show', $this) : null;
     }
 
     // Role is guarded, but F12 and final. Remember about safety.

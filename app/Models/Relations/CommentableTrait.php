@@ -5,24 +5,29 @@ namespace App\Models\Relations;
 use App\Models\Collections\CommentCollection;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 
-trait Commentable
+/**
+ * @property-read EloquentCollection|Comment[] $comments Get all of the comments for the current model.
+ * @property-read ?string $comment_store_url Get a non-existing attribute `$commentable->comment_store_url` for html-form.
+ */
+trait CommentableTrait
 {
     /**
-     * Get all comments for the current model.
+     * Get all of the comments for the current model.
      *
      * @return MorphMany
      */
     public function comments(): MorphMany
     {
         return $this->morphMany(
-            Comment::class,
-            'commentable',
-            'commentable_type',
-            'commentable_id',
-            $this->getKeyName()
+            Comment::class,      // $related
+            'commentable',       // $name
+            'commentable_type',  // $type
+            'commentable_id',    // $id
+            $this->getKeyName(), // $localKey
         );
     }
 
@@ -30,7 +35,7 @@ trait Commentable
      * Get a list comments with user relation, if need
      *
      * @param  boolean  $nested
-     * @return mixed  CommentCollection
+     * @return CommentCollection
      */
     public function getComments(bool $nested = false): CommentCollection
     {
@@ -54,10 +59,14 @@ trait Commentable
     /**
      * Get a non-existing attribute `$commentable->comment_store_url` for html-form.
      *
-     * @return string
+     * @return string|null
      */
-    public function getCommentStoreUrlAttribute(): string
+    public function getCommentStoreUrlAttribute(): ?string
     {
+        if (! $this->exists) {
+            return null;
+        }
+
         return route("{$this->table}.comments.store", $this);
     }
 }

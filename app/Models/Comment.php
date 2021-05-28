@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Collections\CommentCollection;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,43 +11,51 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 /**
  * Comment model.
  *
- * @property-read int $id
- * @property-read ?int $user_id
- * @property-read int $parent_id
- * @property-read int $commentable_id
- * @property-read string $commentable_type
- * @property-read string $content
- * @property-read ?string $author_name
- * @property-read ?string $author_email
- * @property-read ?string $author_ip
- * @property-read bool $is_approved
- * @property-read \Illuminate\Support\Carbon $created_at
- * @property-read \Illuminate\Support\Carbon $updated_at
+ * @property int $id
+ * @property ?int $user_id
+ * @property int $parent_id
+ * @property int $commentable_id
+ * @property string $commentable_type
+ * @property string $content
+ * @property ?string $author_name
+ * @property ?string $author_email
+ * @property ?string $author_ip
+ * @property bool $is_approved
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read bool $by_user
- * @property-read string $url
+ * @property-read Model $commentable Get the parent commentable model.
  *
- * @method \Illuminate\Database\Eloquent\Builder approved(bool $isApproved = true)
+ * @method static \Database\Factories\CommentFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Comment extends Model
+class Comment extends Model implements
+    Contracts\BelongsToUserContract,
+    Contracts\CustomizableContract
 {
-    use Mutators\CommentMutators;
-    use Traits\Dataviewer;
     use HasFactory;
-
-    public const TABLE = 'comments';
+    use Mutators\CommentMutators;
+    use Relations\BelongsToUserTrait;
+    use Relations\CustomizableTrait;
+    use Scopes\CommentScopes;
+    use Traits\Dataviewer;
 
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @const string
+     */
+    public const TABLE = 'comments';
+
+    /**
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'parent_id' => 0,
@@ -60,9 +67,7 @@ class Comment extends Model
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $appends = [
         'by_user',
@@ -71,9 +76,7 @@ class Comment extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'parent_id' => 'integer',
@@ -84,9 +87,7 @@ class Comment extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'user_id',
@@ -101,9 +102,7 @@ class Comment extends Model
     ];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $with = [
         'author:users.id,users.name,users.email,users.avatar',
@@ -141,8 +140,9 @@ class Comment extends Model
      */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id', 'user')
+        return $this->user()
             ->withDefault(function (User $user, Comment $comment) {
+                $user->exists = false;
                 $user->id = null;
                 $user->name = $comment->author_name;
                 $user->email = $comment->author_email;
@@ -158,7 +158,12 @@ class Comment extends Model
      */
     public function commentable(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo(
+            'commentable',      // $name
+            'commentable_type', // $type
+            'commentable_id',   // $id
+            'id',               // $ownerKey
+        );
     }
 
     /**
@@ -170,17 +175,5 @@ class Comment extends Model
     public function newCollection(array $models = []): CommentCollection
     {
         return new CommentCollection($models);
-    }
-
-    /**
-     * Scope a query to only include approved / unapproved comments.
-     *
-     * @param  Builder  $builder
-     * @param  boolean  $isApproved
-     * @return Builder
-     */
-    public function scopeApproved(Builder $builder, bool $isApproved = true): Builder
-    {
-        return $builder->where('comments.is_approved', $isApproved);
     }
 }

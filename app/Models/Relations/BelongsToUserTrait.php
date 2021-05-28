@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property-read User $user
+ * @property-read User $user Get the user that owns the current model instance.
  */
-trait BelongsToUser
+trait BelongsToUserTrait
 {
     /**
      * Get the user that owns the current model instance.

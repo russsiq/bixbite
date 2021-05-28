@@ -28,9 +28,9 @@ trait XFieldMutators
     }
 
     /**
-     * Нормализовать префикс атрибута `name`.
+     * Normalize the `name` attribute prefix.
      *
-     * @param  string $name
+     * @param  string  $name
      * @return string
      */
     public function normalizeNameAttributePrefix(string $name): string

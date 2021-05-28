@@ -4,33 +4,34 @@
 
 namespace App\Models;
 
-use Database\Factories\XFieldFactory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * XField model.
  *
- * @property int    $id
+ * @property int $id
  * @property string $extensible
  * @property string $name
  * @property string $type
- * @property array  $params
+ * @property array $params
  * @property string $title
  * @property string $descr
  * @property string $html_flags
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static XFieldFactory factory()
+ * @method static \Database\Factories\XFieldFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class XField extends Model
 {
+    use HasFactory;
     use Mutators\XFieldMutators;
     use Traits\Dataviewer;
-    use HasFactory;
 
     /**
      * The column name prefix in the database tables of the extensible model.
@@ -56,16 +57,12 @@ class XField extends Model
     public const TABLE = 'x_fields';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'type' => 'string',
@@ -76,9 +73,7 @@ class XField extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'type' => 'string',
@@ -86,9 +81,7 @@ class XField extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'extensible',
@@ -149,28 +142,27 @@ class XField extends Model
     /**
      * Cached in-memory extra fields collection.
      *
-     * @var Collection|null
+     * @var EloquentCollection|null
      */
-    protected static $fields = null;
+    protected static $cachedExtraFields = null;
 
     /**
      * Get the collection of extra fields for a given table.
      *
      * @param  string|null  $table
-     * @return Collection
+     * @return EloquentCollection
      */
-    public static function fields(string $table = null): Collection
+    public static function fields(string $table = null): EloquentCollection
     {
-        if (is_null(static::$fields)) {
-            static::$fields = static::all();
+        if (is_null(static::$cachedExtraFields)) {
+            static::$cachedExtraFields = static::all();
         }
 
         if (is_null($table)) {
-            return static::$fields;
+            return static::$cachedExtraFields;
         }
 
-        return static::$fields->where('extensible', $table)
-            ->values();
+        return static::$cachedExtraFields->where('extensible', $table);
     }
 
     /**

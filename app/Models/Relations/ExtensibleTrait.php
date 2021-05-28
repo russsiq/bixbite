@@ -4,16 +4,23 @@ namespace App\Models\Relations;
 
 use App\Models\XField;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Support\Collection;
 
 /**
- * @property-read Collection $x_fields
- * @method static static|EloquentBuilder|QueryBuilder includeExtensibleAttributes()
+ * @property-read EloquentCollection|XField[] $x_fields Get the value of the dynamic attribute `x_fields`.
+ * @method static static|EloquentBuilder|QueryBuilder includeExtensibleAttributes() Include names of extra fields in the query.
  */
-trait Extensible
+trait ExtensibleTrait
 {
+    /**
+     * Cached in-memory extra fields collection.
+     *
+     * @var EloquentCollection|null
+     */
+    protected static $cachedExtraFields = null;
+
     /**
      * The aditional attributes that are mass assignable.
      *
@@ -50,7 +57,7 @@ trait Extensible
         static::registerModelEvent('booted', function ($extensible) {
             /**
              * @var Model $extensible
-             * @var Collection $x_fields
+             * @var EloquentCollection $x_fields
              */
             $x_fields = $extensible->x_fields;
 
@@ -89,22 +96,26 @@ trait Extensible
     /**
      * Get the value of the dynamic attribute `x_fields`.
      *
-     * @return Collection
+     * @return EloquentCollection
      */
-    public function getXFieldsAttribute(): Collection
+    public function getXFieldsAttribute(): EloquentCollection
     {
-        return XField::fields($this->getTable());
+        if (is_null(static::$cachedExtraFields)) {
+            static::$cachedExtraFields = XField::fields($this->getTable());
+        }
+
+        return static::$cachedExtraFields;
     }
 
     /**
      * Include names of extra fields in the query.
      *
      * @param  EloquentBuilder  $builder
-     * @return void
+     * @return EloquentBuilder
      */
-    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): void
+    public function scopeIncludeExtensibleAttributes(EloquentBuilder $builder): EloquentBuilder
     {
-        $builder->addSelect(
+        return $builder->addSelect(
             $this->x_fields->pluck('name')
                 ->map(fn (string $column) => $this->qualifyColumn($column))
                 ->toArray()

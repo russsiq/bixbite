@@ -9,37 +9,42 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * Tag model.
  *
- * @property-read int $id
- * @property-read string $title
- * @property-read string $slug
+ * @property int $id
+ * @property string $title
+ * @property string $slug
  *
- * @property-read string $url
+ * @property-read \App\Models\Article $articles Get all of the articles for the tag.
+ *
+ * @method static \Database\Factories\TagFactory factory()
+ *
+ * @mixin \Illuminate\Database\Query\Builder
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Tag extends Model
 {
-    use Scopes\TagScopes;
     use HasFactory;
+    use Mutators\TagMutators;
+    use Scopes\TagScopes;
 
+    /**
+     * The default table associated with the model.
+     *
+     * @const string
+     */
     public const TABLE = 'tags';
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected $table = self::TABLE;
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
+     * {@inheritDoc}
      */
     public $timestamps = false;
 
     /**
-     * The model's attributes.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $attributes = [
         'title' => '',
@@ -47,18 +52,14 @@ class Tag extends Model
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $appends = [
         'url',
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * {@inheritDoc}
      */
     protected $casts = [
         'title' => 'string',
@@ -67,9 +68,7 @@ class Tag extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
+     * {@inheritDoc}
      */
     protected $fillable = [
         'title',
@@ -77,9 +76,7 @@ class Tag extends Model
     ];
 
     /**
-     * Get the route key for the model.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getRouteKeyName(): string
     {
@@ -94,17 +91,12 @@ class Tag extends Model
     public function articles(): MorphToMany
     {
         return $this->morphedByMany(
-            /* $related */ Article::class,
-            /* $name */ 'taggable',
-            /* $table */ 'taggables',
-            /* $foreignPivotKey */ 'tag_id',
-            /* $relatedPivotKey */ 'taggable_id'
+            Article::class, // $related
+            'taggable',     // $name
+            'taggables',    // $table
+            'tag_id',       // $foreignPivotKey
+            'taggable_id',  // $relatedPivotKey
         );
-    }
-
-    public function getUrlAttribute(): string
-    {
-        return route('tags.tag', $this);
     }
 
     /**
