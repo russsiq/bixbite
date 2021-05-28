@@ -52,7 +52,7 @@ trait ExtensibleTrait
      *
      * @return void
      */
-    public static function bootExtensible(): void
+    public static function bootExtensibleTrait(): void
     {
         static::registerModelEvent('booted', function ($extensible) {
             /**
@@ -82,7 +82,7 @@ trait ExtensibleTrait
      *
      * @return void
      */
-    public function initializeExtensible(): void
+    public function initializeExtensibleTrait(): void
     {
         if (! empty(static::$extraFieldsFillable)) {
             $this->mergeFillable(static::$extraFieldsFillable);
