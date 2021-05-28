@@ -8,21 +8,7 @@ use Illuminate\Contracts\View\View as ViewContract;
 
 class CategoriesComposer
 {
-    /** @var Category */
-    protected $categoryModel;
-
-    /** @var CategoryCollection */
-    protected $categoryCollection;
-
-    /**
-     * Create a new categories composer.
-     *
-     * @param Category $categoryModel
-     */
-    public function __construct(Category $categoryModel)
-    {
-        $this->categoryModel = $categoryModel;
-    }
+    protected ?CategoryCollection $categoryCollection;
 
     /**
      * Bind data to the view.
@@ -55,8 +41,7 @@ class CategoriesComposer
      */
     protected function resolveCategoryCollection(): CategoryCollection
     {
-        return $this->categoryModel->query()
-            ->short()
+        return Category::short()
             ->showInMenu()
             ->orderBy('position')
             ->get()
