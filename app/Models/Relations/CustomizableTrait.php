@@ -24,7 +24,7 @@ trait CustomizableTrait
      *
      * @return void
      */
-    public static function bootCustomizable(): void
+    public static function bootCustomizableTrait(): void
     {
         //
     }
@@ -34,7 +34,7 @@ trait CustomizableTrait
      *
      * @return void
      */
-    public function initializeCustomizable(): void
+    public function initializeCustomizableTrait(): void
     {
         //
     }
