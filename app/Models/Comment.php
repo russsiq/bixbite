@@ -24,7 +24,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read Model $commentable Get the parent commentable model.
+ * @property-read \App\Models\User $author Get the author who created the comment.
+ * @property-read \Illuminate\Database\Eloquent\Model $commentable Get the parent commentable model.
  *
  * @method static \Database\Factories\CommentFactory factory()
  *
