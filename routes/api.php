@@ -54,7 +54,7 @@ Route::group([
             ]);
 
             Route::apiResource('comments', CommentsController::class)->except(['store']);
-            Route::apiResource('tags', TagsController::class)->except(['store']);
+            Route::apiResource('tags', TagsController::class);
             Route::apiResource('users', UsersController::class)->except(['store']);
 
             Route::put('articles', [ArticlesController::class, 'massUpdate'])->name('articles.massUpdate');

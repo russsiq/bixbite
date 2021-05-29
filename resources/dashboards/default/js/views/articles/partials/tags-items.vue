@@ -1,6 +1,6 @@
 <template>
 <div class="tags-group">
-    <div v-for="(tag, index) in tags" class="tag form-control">
+    <div v-for="(tag, index) in tags" class="tag form-control" :key="tag.id">
         <div class="tag-text">{{ tag.title }}</div>
         <button type="button" class="tag-remove" @click="detach(tag, index)">
             <i class="fa fa-times"></i>
@@ -8,13 +8,19 @@
     </div>
 
     <div class="tags-group-input">
-        <input type="text" list="suggested-tags" v-model="tag" maxlength="255" autocomplete="off" placeholder="Добавить тег" class="form-control" @keyup.enter="attach" />
+        <input
+            type="text"
+            list="suggested-tags"
+            v-model="newTag"
+            maxlength="255"
+            autocomplete="off"
+            placeholder="Добавить тег"
+            class="form-control"
+            @keyup.enter="attach" />
     </div>
 
     <datalist id="suggested-tags">
-        <template v-for="(tag, index) in suggestedTags">
-            <option :key="tag.id" :value="tag.title" />
-        </template>
+        <option v-for="tag in suggestedTags" :key="tag.id" :value="tag.title" />
     </datalist>
 </div>
 </template>
@@ -23,7 +29,6 @@
 import debounce from 'lodash/debounce';
 
 import Tag from '@/store/models/tag';
-import Article from '@/store/models/article';
 
 export default {
     props: {
@@ -36,15 +41,15 @@ export default {
             type: Object,
             required: true,
             validator(taggable) {
-                return 'number' === typeof taggable.id &&
-                    'string' === typeof taggable.type;
+                return 'number' === typeof taggable.id
+                    && 'string' === typeof taggable.type;
             }
         }
     },
 
     data() {
         return {
-            tag: '',
+            newTag: '',
             tags: [],
             suggestedTags: [],
         }
@@ -52,14 +57,14 @@ export default {
 
     computed: {
         title() {
-            const title = this.tag.trim()
+            const title = this.newTag.trim()
 
             return title.length >= 3 ? title : '';
         },
     },
 
     watch: {
-        tag(newTag, oldTag) {
+        newTag(newTag, oldTag) {
             this.debouncedGetSuggestions();
         },
 
@@ -77,7 +82,7 @@ export default {
 
     methods: {
         async attach() {
-            if (!this.title) {
+            if (! this.title) {
                 return false;
             }
 
@@ -95,7 +100,7 @@ export default {
                 this.tags.push(result);
             }
 
-            this.tag = '';
+            this.newTag = '';
 
             this.suggestedTags = [];
 
