@@ -6,6 +6,11 @@ use App\Models\Category;
 
 class CategoryObserver
 {
+    public function creating(Category $category): void
+    {
+        $category->position = Category::max('position') + 1;
+    }
+
     /**
      * Обработать событие `saved` модели.
      * @param  Category  $category
@@ -43,6 +48,12 @@ class CategoryObserver
 
         $category->articles()->detach();
         $category->attachments()->get()->each->delete();
+    }
+
+    public function deleted(Category $category)
+    {
+        Category::where('position', '>', $category->position)
+            ->decrement('position');
     }
 
     /**

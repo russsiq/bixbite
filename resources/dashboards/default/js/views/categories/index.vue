@@ -27,7 +27,6 @@
                     <th>Альтернативное имя</th>
                     <th>Шаблон</th>
                     <th>Меню</th>
-                    <!-- <th><i class="fa fa-home"></i></th> -->
                     <th><i class="fa fa-info"></i></th>
                     <th><i class="fa fa-file-image-o"></i></th>
                     <th><i class="fa fa-newspaper-o"></i></th>
@@ -36,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in collection" :key="item.id">
+                <tr v-for="item in collection" :key="item.id" :data-position="item.position">
                     <td></td>
                     <td>{{ item.id }}</td>
                     <td>
@@ -48,7 +47,6 @@
                         <i v-if="item.show_in_menu" title="Да" class="fa fa-check text-success"></i>
                         <i v-else title="Нет" class="fa fa-times text-danger"></i>
                     </td>
-                    <!-- <td></td> -->
                     <td>
                         <i v-if="item.info" :title="item.info" class="fa fa-check text-success"></i>
                         <i v-else title="Нет" class="fa fa-times text-danger"></i>
