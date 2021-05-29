@@ -6,7 +6,7 @@
 
                 @if(pageinfo('is_category'))
                     @can ('update', $category)
-                        <sup><a href="{{ $category->editPage }}"><i class="fa fa-edit"></i></a></sup>
+                        <sup><a href="{{ $category->edit_page_url }}"><i class="fa fa-edit"></i></a></sup>
                     @endcan
                 @endif
             </h2>

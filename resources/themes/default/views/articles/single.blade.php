@@ -11,7 +11,7 @@
                 {{ $article->title }}
 
                 @can ('update', $article)
-                    <sup><a href="{{ $article->editPage }}"><i class="fa fa-edit"></i></a></sup>
+                    <sup><a href="{{ $article->edit_page_url }}"><i class="fa fa-edit"></i></a></sup>
                 @endcan
             </h2>
 
