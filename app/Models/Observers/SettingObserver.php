@@ -18,10 +18,9 @@ class SettingObserver extends BaseObserver
     public function retrieved(Setting $setting): void
     {
         // @NB: в типизации Eloquent нет типа `select`, `email`.
-        if ($setting->isPrimitiveCastTypes($castType = $setting->type)) {
+        if ($setting->hasPrimitiveCastType()) {
             $setting->mergeCasts([
-                'value' => $castType,
-
+                'value' => $setting->type,
             ]);
         }
     }

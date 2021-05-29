@@ -251,13 +251,12 @@ class Setting extends Model
     }
 
     /**
-     * Определить, что переданный тип относится к примитивной типизации.
+     * Определить, что тип настройки относится к примитивному типу.
      *
-     * @param  string  $castType
      * @return boolean
      */
-    public function isPrimitiveCastTypes(string $castType): bool
+    public function hasPrimitiveCastType(): bool
     {
-        return in_array($castType, $this->primitiveCastTypes());
+        return in_array($this->type, $this->primitiveCastTypes());
     }
 }
