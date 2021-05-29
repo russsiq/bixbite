@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
             <image-uploader
-                :attacheable="attachable"
+                :attachable="attachable"
                 :value="article.image_id"
                 @update:image_id="sync('image_id', $event)" />
         </div>
@@ -275,15 +275,15 @@ export default {
                 type: this.$props.model.entity
             },
 
-            taggable: {
+            categoryable: {
                 id: this.$props.id,
                 type: this.$props.model.entity
             },
 
-            categoryable: {
+            taggable: {
                 id: this.$props.id,
                 type: this.$props.model.entity
-            }
+            },
         }
     },
 
