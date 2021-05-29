@@ -38,10 +38,12 @@ class ArticleResource extends JsonResource
         return [
             'meta' => [
                 'setting' => [
-                    'articles' => setting('articles'),
+                    'articles' => $this->resource->settings->pluck('value', 'name')->toArray(),
                 ],
 
-                'x_fields' => $this->resource->x_fields,
+                'x_fields' => [
+                    ...$this->resource->x_fields->toArray(),
+                ],
             ],
         ];
     }

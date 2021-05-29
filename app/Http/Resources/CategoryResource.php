@@ -36,7 +36,9 @@ class CategoryResource extends JsonResource
         return [
             'meta' => [
                 'template_list' => select_dir('custom_views'),
-                'x_fields' => $this->resource->x_fields,
+                'x_fields' => [
+                    ...$this->resource->x_fields->toArray(),
+                ],
             ],
         ];
     }
