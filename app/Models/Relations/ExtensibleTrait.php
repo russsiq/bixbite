@@ -2,10 +2,10 @@
 
 namespace App\Models\Relations;
 
+use App\Models\Contracts\ExtensibleContract;
 use App\Models\XField;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -54,11 +54,8 @@ trait ExtensibleTrait
      */
     public static function bootExtensibleTrait(): void
     {
-        static::registerModelEvent('booted', function ($extensible) {
-            /**
-             * @var Model $extensible
-             * @var EloquentCollection $x_fields
-             */
+        static::registerModelEvent('booted', function (ExtensibleContract $extensible) {
+            /** @var EloquentCollection $x_fields */
             $x_fields = $extensible->x_fields;
 
             static::$extraFieldsFillable = $x_fields->pluck('name')->toArray();
