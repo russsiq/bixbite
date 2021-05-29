@@ -2,7 +2,9 @@
 
 namespace App\Models\Relations;
 
+use App\Models\Contracts\TaggableContract;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -10,6 +12,29 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 trait TaggableTrait
 {
+    /**
+     * Boot the Taggable trait for a model.
+     *
+     * @return void
+     */
+    public static function bootTaggableTrait(): void
+    {
+        static::registerModelEvent('booted', static function (TaggableContract $taggable) {
+            $relation = (string) $taggable->getTable();
+
+            Tag::resolveRelationUsing(
+                $relation,
+                fn (Tag $tagModel): MorphToMany => $tagModel->morphedByMany(
+                    $taggable::class,   // $related
+                    'taggable',         // $name
+                    'taggables',        // $table
+                    'tag_id',           // $foreignPivotKey
+                    'taggable_id',      // $relatedPivotKey
+                )
+            );
+        });
+    }
+
     /**
      * Get all of the tags for the current model.
      *

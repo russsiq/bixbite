@@ -84,22 +84,6 @@ class Tag extends Model
     }
 
     /**
-     * Get all of the articles for the tag.
-     *
-     * @return MorphToMany
-     */
-    public function articles(): MorphToMany
-    {
-        return $this->morphedByMany(
-            Article::class, // $related
-            'taggable',     // $name
-            'taggables',    // $table
-            'tag_id',       // $foreignPivotKey
-            'taggable_id',  // $relatedPivotKey
-        );
-    }
-
-    /**
      * Remove unused tags.
      *
      * @return void

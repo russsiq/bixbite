@@ -3,6 +3,7 @@
 namespace App\Models\Relations;
 
 use App\Models\Category;
+use App\Models\Contracts\CategoryableContract;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -12,6 +13,29 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 trait CategoryableTrait
 {
+    /**
+     * Boot the Categoryable trait for a model.
+     *
+     * @return void
+     */
+    public static function bootCategoryableTrait(): void
+    {
+        static::registerModelEvent('booted', static function (CategoryableContract $categoryable) {
+            $relation = (string) $categoryable->getTable();
+
+            Category::resolveRelationUsing(
+                $relation,
+                fn (Category $categoryModel): MorphToMany => $categoryModel->morphedByMany(
+                    $categoryable::class,   // $related
+                    'categoryable',         // $name
+                    'categoryables',        // $table
+                    'category_id',          // $foreignPivotKey
+                    'categoryable_id',      // $relatedPivotKey
+                )
+            );
+        });
+    }
+
     /**
      * Get all of the categories for the current model.
      *

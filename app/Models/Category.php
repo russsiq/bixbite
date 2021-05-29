@@ -126,22 +126,6 @@ class Category extends Model implements
     ];
 
     /**
-     * Get all of the articles for the category.
-     *
-     * @return MorphToMany
-     */
-    public function articles()
-    {
-        return $this->morphedByMany(
-            Article::class,     // $related
-            'categoryable',     // $name
-            'categoryables',    // $table
-            'category_id',      // $foreignPivotKey
-            'categoryable_id',  // $relatedPivotKey
-        );
-    }
-
-    /**
      * Create a new Eloquent Collection instance.
      *
      * @param  array  $models
