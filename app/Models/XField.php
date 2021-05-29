@@ -144,7 +144,7 @@ class XField extends Model
      *
      * @var EloquentCollection|null
      */
-    protected static $cachedExtraFields = null;
+    protected static ?EloquentCollection $cachedExtraFields = null;
 
     /**
      * Get the collection of extra fields for a given table.
@@ -154,7 +154,7 @@ class XField extends Model
      */
     public static function fields(string $table = null): EloquentCollection
     {
-        if (is_null(static::$cachedExtraFields)) {
+        if (! static::$cachedExtraFields instanceof EloquentCollection) {
             static::$cachedExtraFields = static::all();
         }
 
