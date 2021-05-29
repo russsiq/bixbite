@@ -2,7 +2,10 @@
 <form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
-            <image-uploader :value="article.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
+            <image-uploader
+                :attacheable="attachable"
+                :value="article.image_id"
+                @update:image_id="sync('image_id', $event)" />
         </div>
 
         <div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">

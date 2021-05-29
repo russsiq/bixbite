@@ -27,7 +27,16 @@ export default {
         value: {
             type: Number,
             default: null,
-        }
+        },
+
+        attachable: {
+            type: Object,
+            required: true,
+            validator(attachable) {
+                return 'number' === typeof attachable.id
+                    && 'string' === typeof attachable.type;
+            }
+        },
     },
 
     data() {
@@ -44,7 +53,10 @@ export default {
                 this.errors = [];
 
                 const formData = new FormData();
+
                 formData.append('file', this.takeAttachmentFromInput(event, 'image.*'));
+                formData.append('attachable_id', this.$props.attachable.id);
+                formData.append('attachable_type', this.$props.attachable.type);
 
                 const image = await Attachment.$create(formData);
 

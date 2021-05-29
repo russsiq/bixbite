@@ -27,11 +27,12 @@ const figureHandler = async function(quill, attachable) {
             // Save current cursor position.
             const range = quill.getSelection(true);
 
-            if (!input.files || !input.files.length) {
+            if (! input.files || ! input.files.length) {
                 throw new Error(__('No files selected.'));
             }
 
             const formData = new FormData();
+
             formData.append('file', input.files[0]);
             formData.append('attachable_id', attachable.id);
             formData.append('attachable_type', attachable.type);

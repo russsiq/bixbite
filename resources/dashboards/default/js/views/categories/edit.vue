@@ -46,13 +46,16 @@
     <div class="card card-default">
         <div class="card-header"><i class="fa fa-th-list"></i> Параметры для главной страницы</div>
         <div class="card-body">
-            <div class="mb-3 row">
+            <div v-if="category.id" class="mb-3 row">
                 <div class="col-sm-7">
                     <label class="control-label">Прикрепленное изображение</label>
                     <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к категории.</small>
                 </div>
                 <div class="col-sm-5">
-                    <image-uploader :value.number="category.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
+                    <image-uploader
+                        :attachable="attachable"
+                        :value.number="category.image_id"
+                        @update:image_id="sync('image_id', $event)" />
                 </div>
             </div>
 
@@ -239,6 +242,11 @@ export default {
                 paginate: 8,
                 order_by: 'id',
                 template: null,
+            },
+
+            attachable: {
+                id: this.$props.id,
+                type: this.$props.model.entity
             },
         }
     },
