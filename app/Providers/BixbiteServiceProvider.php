@@ -58,6 +58,8 @@ use App\Http\Responses\SuccessfulCommentCreateResponse;
 use App\Support\BixBite;
 use App\Support\CacheFile;
 use App\Support\PageInfo;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
@@ -66,8 +68,8 @@ use Illuminate\Support\ServiceProvider;
 class BixbiteServiceProvider extends ServiceProvider
 {
     /**
-     * Все синглтоны (одиночки) контейнера,
-     * которые должны быть зарегистрированы.
+     * All of the container singletons that should be registered.
+     *
      * @var array
      */
     public $singletons = [
@@ -111,34 +113,25 @@ class BixbiteServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Все связывания контейнера,
-     * которые должны быть зарегистрированы.
+     * All of the container bindings that should be registered.
+     *
      * @var array
      */
     public $bindings = [
-
+        //
     ];
 
     /**
-     * Загрузка любых служб приложения.
+     * Bootstrap any application services.
+     *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         \Illuminate\Support\Arr::mixin(new \App\Mixins\ArrMixin);
         \Illuminate\Support\Facades\File::mixin(new \App\Mixins\FileMixin);
         \Illuminate\Support\Facades\Lang::mixin(new \App\Mixins\LangMixin);
         \Illuminate\Support\Str::mixin(new \App\Mixins\StrMixin);
-
-        \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
-        \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
-        \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
-        \App\Models\Attachment::observe(\App\Models\Observers\AttachmentObserver::class);
-        \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
-        \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
-        \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
-        \App\Models\User::observe(\App\Models\Observers\UserObserver::class);
-        \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
 
         Relation::morphMap([
             \App\Models\Article::TABLE => \App\Models\Article::class,
@@ -157,13 +150,41 @@ class BixbiteServiceProvider extends ServiceProvider
         Blade::if('role', function (string $environment) {
             return $environment === user('role');
         });
+
+        $this->app->booted(function (ApplicationContract $app) {
+            $app->call([$this, 'registerModelObservers']);
+        });
     }
 
     /**
-     * Регистрация любых служб приложения.
+     * Register observers with the model.
+     *
+     * @param  ConnectionInterface  $connection
      * @return void
      */
-    public function register()
+    public function registerModelObservers(ConnectionInterface $connection): void
+    {
+        // Observers use initialized model instances.
+        // We can only observe models if there is a database in the current connection.
+        if ($connection->getDatabaseName()) {
+            \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
+            \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
+            \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
+            \App\Models\Attachment::observe(\App\Models\Observers\AttachmentObserver::class);
+            \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
+            \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
+            \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
+            \App\Models\User::observe(\App\Models\Observers\UserObserver::class);
+            \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
+        }
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register(): void
     {
         // Only singleton. We only need one copy.
         $this->app->singleton('cachefile', function () {
