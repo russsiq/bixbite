@@ -71,7 +71,9 @@ class Store extends AttachmentRequest
         $title = preg_replace('/[-_хx\d]+$/u', '', $title);
         $title = preg_replace('/\.tar$/', '', $title);
         $title = empty($title) ? Str::random(8) : $title;
-        $properties = $this->input('properties', null);
+
+        $properties = $this->input('properties', []);
+
         if ('image' == $type) {
             [$properties['width'], $properties['height']] = getimagesize($file->getPathname());
         }
@@ -161,7 +163,7 @@ class Store extends AttachmentRequest
             'mime_type' => [
                 'required',
                 'string',
-
+                'not_in:application/octet-stream',
             ],
 
             'name' => [
