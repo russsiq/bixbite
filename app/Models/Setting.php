@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Russsiq\EnvManager\Facades\EnvManager;
 
 /**
@@ -132,13 +134,19 @@ class Setting extends Model
      */
     public static function settings(string $moduleName = null): EloquentCollection
     {
-        if (is_null(static::$cachedSettings)) {
-            static::$cachedSettings = static::all([
-                'module_name',
-                'name',
-                'type',
-                'value',
-            ]);
+        if (! static::$cachedSettings instanceof EloquentCollection) {
+            try {
+                static::$cachedSettings = static::all([
+                    'module_name',
+                    'name',
+                    'type',
+                    'value',
+                ]);
+            } catch (QueryException $th) {
+                Log::error($th->getMessage());
+
+                static::$cachedSettings = EloquentCollection::make();
+            }
         }
 
         if (is_null($moduleName)) {

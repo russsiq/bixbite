@@ -159,24 +159,21 @@ class BixbiteServiceProvider extends ServiceProvider
     /**
      * Register observers with the model.
      *
-     * @param  ConnectionInterface  $connection
+     * Observers use initialized model instances.
+     *
      * @return void
      */
-    public function registerModelObservers(ConnectionInterface $connection): void
+    public function registerModelObservers(): void
     {
-        // Observers use initialized model instances.
-        // We can only observe models if there is a database in the current connection.
-        if ($connection->getDatabaseName()) {
-            \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
-            \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
-            \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
-            \App\Models\Attachment::observe(\App\Models\Observers\AttachmentObserver::class);
-            \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
-            \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
-            \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
-            \App\Models\User::observe(\App\Models\Observers\UserObserver::class);
-            \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
-        }
+        \App\Models\Article::observe(\App\Models\Observers\ArticleObserver::class);
+        \App\Models\Category::observe(\App\Models\Observers\CategoryObserver::class);
+        \App\Models\Comment::observe(\App\Models\Observers\CommentObserver::class);
+        \App\Models\Attachment::observe(\App\Models\Observers\AttachmentObserver::class);
+        \App\Models\Note::observe(\App\Models\Observers\NoteObserver::class);
+        \App\Models\Privilege::observe(\App\Models\Observers\PrivilegeObserver::class);
+        \App\Models\Setting::observe(\App\Models\Observers\SettingObserver::class);
+        \App\Models\User::observe(\App\Models\Observers\UserObserver::class);
+        \App\Models\XField::observe(\App\Models\Observers\XFieldObserver::class);
     }
 
     /**

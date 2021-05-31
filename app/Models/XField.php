@@ -7,6 +7,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 /**
  * XField model.
@@ -155,7 +157,13 @@ class XField extends Model
     public static function fields(string $table = null): EloquentCollection
     {
         if (! static::$cachedExtraFields instanceof EloquentCollection) {
-            static::$cachedExtraFields = static::all();
+            try {
+                static::$cachedExtraFields = static::all();
+            } catch (QueryException $th) {
+                Log::error($th->getMessage());
+
+                static::$cachedExtraFields = EloquentCollection::make();
+            }
         }
 
         if (is_null($table)) {
