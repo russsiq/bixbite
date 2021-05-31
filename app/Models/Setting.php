@@ -124,7 +124,7 @@ class Setting extends Model
      *
      * @var EloquentCollection|null
      */
-    protected static $cachedSettings = null;
+    protected static ?EloquentCollection $cachedSettings = null;
 
     /**
      * Get the collection of settings for a given module name.
