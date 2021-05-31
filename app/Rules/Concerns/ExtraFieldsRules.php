@@ -41,7 +41,7 @@ trait ExtraFieldsRules
 
                 case 'array':
                     array_push($rules, 'string', Rule::in(
-                        collect($field->params)->pluck('key')
+                        array_column($field->params, 'key')
                     ));
                     break;
 
