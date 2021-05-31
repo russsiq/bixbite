@@ -16,7 +16,7 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('image_id')->nullable()->constrained('attachments')->onDelete('cascade');
+            $table->foreignId('image_id')->nullable()->constrained('attachments')->onDelete('set null');
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
