@@ -55,18 +55,6 @@ class ArticleObserver extends BaseObserver
             $this->request->input('tags', [])
         ));
 
-        $dirty = $article->getDirty();
-
-        // Set new or delete old article image.
-        // By default if image set, then input with name `image_id` not visible.
-        if (array_key_exists('image_id', $dirty)) {
-            // Deleting always.
-            $this->deleteImage($article);
-
-            // Attaching.
-            $this->attachImage($article);
-        }
-
         // Always clear cache.
         $this->addToCacheKeys([
             'articles-single-'.$article->id => false,
@@ -85,10 +73,6 @@ class ArticleObserver extends BaseObserver
         $article->tags()->detach();
         $article->categories()->detach();
         $article->comments()->get(['id'])->each->delete();
-        $article->attachments()->get()->each->delete();
-
-        // Deleting always.
-        $this->deleteImage($article);
 
         // Always clear cache.
         $this->addToCacheKeys([
@@ -104,39 +88,5 @@ class ArticleObserver extends BaseObserver
     public function deleted(Article $article): void
     {
         $this->forgetCacheByKeys($article);
-    }
-
-    /**
-     * Прикрепить изображение к указанной записи.
-     * @param  Article  $article
-     * @return void
-     */
-    protected function attachImage(Article $article): void
-    {
-        if (is_int($image_id = $article->image_id)) {
-            $article->attachments()
-                ->getRelated()
-                ->whereId($image_id)
-                ->update([
-                    'attachable_type' => $article->getMorphClass(),
-                    'attachable_id' => $article->id,
-                ]);
-        }
-    }
-
-    /**
-     * Открепить и удалить изображение от указанной записи.
-     * @param  Article  $article
-     * @return void
-     */
-    protected function deleteImage(Article $article): void
-    {
-        if (is_int($image_id = $article->getOriginal('image_id'))) {
-            $article->attachments()
-                ->whereId($image_id)
-                ->get()
-                ->each
-                ->delete();
-        }
     }
 }

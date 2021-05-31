@@ -3,6 +3,7 @@
 namespace App\Models\Relations;
 
 use App\Models\Attachment;
+use App\Models\Contracts\AttachableContract;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -14,6 +15,18 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 trait AttachableTrait
 {
     /**
+     * Boot the Attachable trait for a model.
+     *
+     * @return void
+     */
+    public static function bootAttachableTrait(): void
+    {
+        static::deleting(function (AttachableContract $attachable) {
+            $attachable->attachments()->get()->each->delete();
+        });
+    }
+
+    /**
      * Get all of the current model attachments.
      *
      * @return MorphMany
@@ -21,11 +34,11 @@ trait AttachableTrait
     public function attachments(): MorphMany
     {
         return $this->morphMany(
-            Attachment::class,  // $related
-            'attachable',       // $name
-            'attachable_type',  // $type
-            'attachable_id',    // $id
-            $this->getKeyName(), // $localKey
+            Attachment::class,      // $related
+            'attachable',           // $name
+            'attachable_type',      // $type
+            'attachable_id',        // $id
+            $this->getKeyName(),    // $localKey
         );
     }
 
@@ -46,6 +59,11 @@ trait AttachableTrait
      */
     public function getImageAttribute(): ?Attachment
     {
-        return $this->images->where('id', $this->image_id)->first();
+        if ($this->exists
+            && array_key_exists('image_id', $this->attributes)) {
+            return $this->images->where('id', $this->image_id)->first();
+        }
+
+        return null;
     }
 }
