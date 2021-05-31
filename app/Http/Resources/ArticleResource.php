@@ -41,9 +41,7 @@ class ArticleResource extends JsonResource
                     'articles' => $this->resource->settings->pluck('value', 'name')->toArray(),
                 ],
 
-                'x_fields' => [
-                    ...$this->resource->x_fields->toArray(),
-                ],
+                'x_fields' => $this->resource->x_fields->toArray(),
             ],
         ];
     }
