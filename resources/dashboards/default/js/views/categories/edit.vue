@@ -53,8 +53,8 @@
                 </div>
                 <div class="col-sm-5">
                     <image-uploader
-                        :attachable="attachable"
-                        :value.number="category.image_id"
+                        :attachable="morphable"
+                        :value="category.image_id"
                         @update:image_id="sync('image_id', $event)" />
                 </div>
             </div>
@@ -243,11 +243,6 @@ export default {
                 order_by: 'id',
                 template: null,
             },
-
-            attachable: {
-                id: this.$props.id,
-                type: this.$props.model.entity
-            },
         }
     },
 
@@ -278,6 +273,13 @@ export default {
          */
         isEditMode() {
             return this.$props.id > 0;
+        },
+
+        morphable() {
+            return {
+                id: this.$props.id,
+                type: this.$props.model.entity,
+            }
         },
     },
 

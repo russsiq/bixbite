@@ -1,6 +1,6 @@
 <template>
 <label class="image__uploader" :for="'image__uploader_'+_uid" @click="onClickHandler">
-    <image-preview v-if="value" :image_id.number="value" @destroy="destroy"></image-preview>
+    <image-preview v-if="value" :image_id="value" @destroy="destroy"></image-preview>
     <div v-else class="image__uploader__states">
         <input :id="'image__uploader_'+_uid" type="file" class="image__uploader__input" accept="image/*" @change="upload">
 

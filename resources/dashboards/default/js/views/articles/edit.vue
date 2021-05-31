@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
             <image-uploader
-                :attachable="attachable"
+                :attachable="morphable"
                 :value="article.image_id"
                 @update:image_id="sync('image_id', $event)" />
         </div>
@@ -27,7 +27,7 @@
             <div class="mb-3 has-float-label">
                 <label class="control-label">Категории</label>
                 <category-selector
-                        :categoryable="categoryable"
+                        :categoryable="morphable"
                         :value="article.categories"
                         :multiple="true"
                         @update:categories="sync('categories', $event)"
@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="mb-3">
-                <quill-editor :attachable="attachable" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
+                <quill-editor :attachable="morphable" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
                     </div>
                     <div id="card_tags">
                         <div class="card-body">
-                            <tags-items :taggable="taggable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
+                            <tags-items :taggable="morphable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
                         </div>
                     </div>
                 </div>
@@ -269,21 +269,6 @@ export default {
             date_at: null,
 
             saveTimer: null,
-
-            attachable: {
-                id: this.$props.id,
-                type: this.$props.model.entity
-            },
-
-            categoryable: {
-                id: this.$props.id,
-                type: this.$props.model.entity
-            },
-
-            taggable: {
-                id: this.$props.id,
-                type: this.$props.model.entity
-            },
         }
     },
 
@@ -338,6 +323,13 @@ export default {
                 ];
 
                 return states[state] || 'неизвестно';
+            }
+        },
+
+        morphable() {
+            return {
+                id: this.$props.id,
+                type: this.$props.model.entity,
             }
         },
     },

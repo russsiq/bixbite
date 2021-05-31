@@ -25,7 +25,10 @@
                         <small class="form-text d-block text-muted">Вы можете прикрепить изображение непосредственно к заметке.</small>
                     </div>
                     <div class="col-sm-5">
-                        <image-uploader :value="note.image_id" @update:image_id="sync('image_id', $event)"></image-uploader>
+                        <image-uploader
+                            :attachable="morphable"
+                            :value="note.image_id"
+                            @update:image_id="sync('image_id', $event)" />
                     </div>
                 </div>
             </template>
@@ -94,6 +97,13 @@ export default {
          */
         isEditMode() {
             return this.$props.id > 0;
+        },
+
+        morphable() {
+            return {
+                id: this.$props.id,
+                type: this.$props.model.entity,
+            }
         },
     },
 
