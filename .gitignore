@@ -1,5 +1,4 @@
 # remove files and folders
-/resources/themes/bixbite
 /uploads
 /node_modules
 /public/hot
@@ -19,5 +18,3 @@ package-lock.json
 yarn-error.log
 
 !/storage/app/uploads/avatars/noavatar.png
-resources/themes/default/public/mix-manifest.json
-resources/dashboards/default/public/mix-manifest.json
