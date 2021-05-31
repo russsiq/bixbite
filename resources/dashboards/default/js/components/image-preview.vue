@@ -99,7 +99,6 @@ export default {
                     description: this.image.description,
                 })
                 .then(response => {
-                    console.log(response);
                     this.closeModal();
                 });
         },
