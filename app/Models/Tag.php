@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 /**
  * Tag model.
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string $title
  * @property string $slug
  *
- * @property-read \App\Models\Article $articles Get all of the articles for the tag.
+ * @property-read EloquentCollection|\App\Models\Article[] $articles Get all of the articles for the tag.
  *
  * @method static \Database\Factories\TagFactory factory()
  *

@@ -33,6 +33,10 @@ trait TaggableTrait
                 )
             );
         });
+
+        static::deleting(function (TaggableContract $taggable) {
+            $taggable->tags()->detach();
+        });
     }
 
     /**

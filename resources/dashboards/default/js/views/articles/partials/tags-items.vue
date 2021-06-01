@@ -86,34 +86,34 @@ export default {
                 return false;
             }
 
-            const finded = this.suggestedTags.find(tag => this.title === tag.title);
-
-            if (finded) {
-                this.tags.push(finded);
-            } else {
-                const result = await Tag.$create({
+            const attached = this.suggestedTags.find(
+                    tag => this.title === tag.title
+                ) || await Tag.$create({
                     title: this.title,
-                    taggable_id: this.taggable.id,
-                    taggable_type: this.taggable.type,
                 });
 
-                this.tags.push(result);
+            if (! this.tags.some(tag => this.title === tag.title)) {
+                this.tags.push(attached);
+
+                await Tag.$attach({
+                        taggable: { ...this.taggable },
+                        tag: { ...attached },
+                    });
             }
 
             this.newTag = '';
 
             this.suggestedTags = [];
-
-            this.$emit('update:tags', this.tags);
         },
 
-        detach(tag, index) {
-            const id = tag.id;
+        async detach(detached, index) {
 
-            this.$emit(
-                'update:tags',
-                this.tags.filter((tag) => id !== tag.id)
-            );
+            await Tag.$detach({
+                    taggable: { ...this.taggable },
+                    tag: { ...detached },
+                });
+
+            this.tags = this.tags.filter((tag) => detached.id !== tag.id);
         },
 
         getSuggestions() {
@@ -178,7 +178,7 @@ export default {
     text-decoration: none;
     text-align: center;
     outline: none;
-    color: var(--danger);
+    color: var(--bs-danger);
     padding: 0;
     border: 0;
     font-weight: 300;
@@ -188,5 +188,6 @@ export default {
 .tags-group-input {
     flex-grow: 1;
     margin: 5px;
+    min-width: 280px;
 }
 </style>

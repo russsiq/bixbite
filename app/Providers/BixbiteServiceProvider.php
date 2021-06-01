@@ -20,6 +20,12 @@ use App\Actions\Note\CreateNoteAction;
 use App\Actions\Note\DeleteNoteAction;
 use App\Actions\Note\FetchNoteAction;
 use App\Actions\Note\UpdateNoteAction;
+use App\Actions\Tag\AttachTagAction;
+use App\Actions\Tag\CreateTagAction;
+use App\Actions\Tag\DeleteTagAction;
+use App\Actions\Tag\DetachTagAction;
+use App\Actions\Tag\FetchTagAction;
+use App\Actions\Tag\UpdateTagAction;
 use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserPasswordAction;
 use App\Actions\User\UpdateUserProfileInformationAction;
@@ -45,6 +51,12 @@ use App\Contracts\Actions\Note\CreatesNote;
 use App\Contracts\Actions\Note\DeletesNote;
 use App\Contracts\Actions\Note\FetchesNote;
 use App\Contracts\Actions\Note\UpdatesNote;
+use App\Contracts\Actions\Tag\AttachesTag;
+use App\Contracts\Actions\Tag\CreatesTag;
+use App\Contracts\Actions\Tag\DeletesTag;
+use App\Contracts\Actions\Tag\DetachesTag;
+use App\Contracts\Actions\Tag\FetchesTag;
+use App\Contracts\Actions\Tag\UpdatesTag;
 use App\Contracts\Actions\User\DeletesUsers;
 use App\Contracts\Actions\User\UpdatesUserPasswords;
 use App\Contracts\Actions\User\UpdatesUserProfileInformation;
@@ -67,6 +79,15 @@ use Illuminate\Support\ServiceProvider;
 
 class BixbiteServiceProvider extends ServiceProvider
 {
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
+        //
+    ];
+
     /**
      * All of the container singletons that should be registered.
      *
@@ -99,6 +120,13 @@ class BixbiteServiceProvider extends ServiceProvider
         FetchesNote::class => FetchNoteAction::class,
         UpdatesNote::class => UpdateNoteAction::class,
 
+        AttachesTag::class => AttachTagAction::class,
+        CreatesTag::class => CreateTagAction::class,
+        DeletesTag::class => DeleteTagAction::class,
+        DetachesTag::class => DetachTagAction::class,
+        FetchesTag::class => FetchTagAction::class,
+        UpdatesTag::class => UpdateTagAction::class,
+
         UpdatesUserProfileInformation::class => UpdateUserProfileInformationAction::class,
         UpdatesUserPasswords::class => UpdateUserPasswordAction::class,
         DeletesUsers::class => DeleteUserAction::class,
@@ -110,15 +138,6 @@ class BixbiteServiceProvider extends ServiceProvider
 
         // BixBite Responses ...
         SuccessfulCommentCreateResponseContract::class => SuccessfulCommentCreateResponse::class,
-    ];
-
-    /**
-     * All of the container bindings that should be registered.
-     *
-     * @var array
-     */
-    public $bindings = [
-        //
     ];
 
     /**

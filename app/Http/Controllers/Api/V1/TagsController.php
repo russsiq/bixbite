@@ -2,123 +2,95 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Tag\Store as StoreTagRequest;
-use App\Http\Requests\Api\V1\Tag\TagRequest;
-use App\Http\Requests\Api\V1\Tag\Update as UpdateTagRequest;
+use App\Contracts\Actions\Tag\CreatesTag;
+use App\Contracts\Actions\Tag\DeletesTag;
+use App\Contracts\Actions\Tag\FetchesTag;
+use App\Contracts\Actions\Tag\UpdatesTag;
 use App\Http\Resources\TagCollection;
 use App\Http\Resources\TagResource;
 use App\Models\Tag;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class TagsController extends ApiController
+class TagsController extends Controller
 {
     /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Tag::class, 'tag');
-    }
-
-    /**
-     * Отобразить список тегов.
+     * Display a listing of the resource.
      *
-     * @param TagRequest $request
+     * @param  FetchesTag  $fetcher
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(TagRequest $request): JsonResponse
+    public function index(FetchesTag $fetcher, Request $request): JsonResponse
     {
-        $suggestion = $request->validated();
-
-        $tags = Tag::withCount([
-            'articles',
-        ])
-        ->when($suggestion['title'], function (Builder $query, string $title) {
-            return $query->searchByKeyword($title);
-        })
-        ->get();
-
-        $collection = new TagCollection($tags);
-
-        return $collection->response()
+        return TagCollection::make(
+            $fetcher->fetchCollection($request->all())
+        )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Сохранить вновь созданный тег в хранилище.
+     * Store a newly created resource in storage.
      *
-     * @param  StoreTagRequest  $request
+     * @param  CreatesTag  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(StoreTagRequest $request): JsonResponse
+    public function store(CreatesTag $creator, Request $request): JsonResponse
     {
-        $data = $request->validated();
-
-        $tag = Tag::create($data);
-
-        if (isset($data['taggable_type'])) {
-            $tag->{$data['taggable_type']}()
-                ->attach($data['taggable_id']);
-
-            $tag->load($data['taggable_type']);
-        }
-
-        $resource = new TagResource($tag);
-
-        return $resource->response()
+        return TagResource::make(
+            $creator->create($request->all())
+        )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Tag  $tag
+     * @param  FetchesTag  $fetcher
+     * @param  Request  $request
+     * @param  mixed  $field
      * @return JsonResponse
      */
-    public function show(Tag $tag): JsonResponse
+    public function show(FetchesTag $fetcher, Request $request, mixed $field): JsonResponse
     {
-        $tag->articles_count = $tag->articles()->count();
-
-        $resource = new TagResource($tag);
-
-        return $resource->response()
+        return TagResource::make(
+            $fetcher->fetch($field, $request->all())
+        )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateTagRequest  $request
+     * @param  UpdatesTag  $updater
+     * @param  Request  $request
      * @param  Tag  $tag
      * @return JsonResponse
      */
-    public function update(UpdateTagRequest $request, Tag $tag): JsonResponse
+    public function update(UpdatesTag $updater, Request $request, Tag $tag): JsonResponse
     {
-        $data = $request->validated();
-
-        $tag->update($data);
-
-        if (isset($data['taggable_type'])) {
-            $tag->{$data['taggable_type']}()->attach($data['taggable_id']);
-        }
-
-        $resource = new TagResource($tag);
-
-        return $resource->response()
+        return TagResource::make(
+            $updater->update($tag, $request->all())
+        )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
+     * @param  DeletesTag  $deleter
      * @param  Tag  $tag
      * @return JsonResponse
      */
-    public function destroy(Tag $tag): JsonResponse
+    public function destroy(DeletesTag $deleter, Tag $tag): JsonResponse
     {
-        $tag->delete();
+        $deleter->delete($tag);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

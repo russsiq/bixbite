@@ -113,7 +113,7 @@
                     </div>
                     <div id="card_tags">
                         <div class="card-body">
-                            <tags-items :taggable="morphable" :value="article.tags" @update:tags="sync('tags', $event)"></tags-items>
+                            <tags-items :taggable="morphable" :value="article.tags"></tags-items>
                         </div>
                     </div>
                 </div>

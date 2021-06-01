@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ArticleTagController;
 use App\Http\Controllers\Api\V1\ArticlesController;
+use App\Http\Controllers\Api\V1\AttachmentsController;
 use App\Http\Controllers\Api\V1\CategoriesController;
 use App\Http\Controllers\Api\V1\CommentsController;
-use App\Http\Controllers\Api\V1\AttachmentsController;
 use App\Http\Controllers\Api\V1\NotesController;
 use App\Http\Controllers\Api\V1\PrivilegesController;
 use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\TaggableController;
 use App\Http\Controllers\Api\V1\TagsController;
 use App\Http\Controllers\Api\V1\TemplatesController;
 use App\Http\Controllers\Api\V1\UserProfileController;
@@ -42,6 +44,7 @@ Route::group([
             ],
 
         ], function () {
+
             Route::apiResources([
                 'articles' => ArticlesController::class,
                 'attachments' => AttachmentsController::class,
@@ -49,15 +52,26 @@ Route::group([
                 'notes' => NotesController::class,
                 'privileges' => PrivilegesController::class,
                 'settings' => SettingsController::class,
+                'tags' => TagsController::class,
                 'templates' => TemplatesController::class,
                 'x_fields' => XFieldsController::class,
             ]);
 
             Route::apiResource('comments', CommentsController::class)->except(['store']);
-            Route::apiResource('tags', TagsController::class);
             Route::apiResource('users', UsersController::class)->except(['store']);
 
             Route::put('articles', [ArticlesController::class, 'massUpdate'])->name('articles.massUpdate');
             Route::put('comments', [CommentsController::class, 'massUpdate'])->name('comments.massUpdate');
+
+            Route::prefix('taggable')
+                ->where([
+                    'taggable_type' => '[a-z_]+',
+                    'taggable_id' => '[0-9]+',
+                    'tag_id' => '[0-9]+',
+                ])
+                ->group(function () {
+                    Route::post('{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'store'])->name('taggable.store');
+                    Route::delete('{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'destroy'])->name('taggable.destroy');
+                });
         });
     });

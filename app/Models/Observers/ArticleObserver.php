@@ -48,13 +48,6 @@ class ArticleObserver extends BaseObserver
             $article->state = 0;
         }
 
-        $article->tags()->sync(array_map(
-            function (array $tag) use ($article) {
-                return (int) $tag['id'];
-            },
-            $this->request->input('tags', [])
-        ));
-
         // Always clear cache.
         $this->addToCacheKeys([
             'articles-single-'.$article->id => false,
@@ -70,7 +63,6 @@ class ArticleObserver extends BaseObserver
      */
     public function deleting(Article $article): void
     {
-        $article->tags()->detach();
         $article->categories()->detach();
         $article->comments()->get(['id'])->each->delete();
 

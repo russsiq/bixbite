@@ -27,8 +27,6 @@ class TagFactory extends Factory
         return [
             'title' => Str::ucfirst($title),
             'slug' => Str::slug($title),
-            'created_at' => $this->faker->dateTimeBetween(),
-            'updated_at' => $this->faker->dateTimeBetween(),
         ];
     }
 }

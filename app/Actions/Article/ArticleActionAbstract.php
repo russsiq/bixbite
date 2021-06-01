@@ -57,35 +57,6 @@ abstract class ArticleActionAbstract extends ActionAbstract
                 'integer',
                 'exists:attachments,id',
             ],*/
-
-            'tags' => [
-                'nullable',
-                'array',
-
-            ],
-
-            'tags.*.id' => [
-                'required',
-                'integer',
-                'exists:tags,id',
-
-            ],
-
-            'tags.*.title' => [
-                'bail',
-                'required',
-                'string',
-                'max:255',
-                'regex:/^[0-9\w\s]+$/u',
-            ],
-
-            'tags.*.slug' => [
-                'bail',
-                'required',
-                'string',
-                'max:255',
-                'alpha_dash',
-            ],
         ];
     }
 
