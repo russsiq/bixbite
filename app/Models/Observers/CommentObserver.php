@@ -2,27 +2,17 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\Comment;
 
-/**
- * Наблюдатель модели `Comment`.
- */
 class CommentObserver extends BaseObserver
 {
-    /**
-     * Обработать событие `deleting` модели.
-     * @param  Comment  $comment
-     * @return void
-     */
-    public function deleting(Comment $comment)
+    public function deleting(Comment $comment): void
     {
         $comment->where('parent_id', $comment->id)
             ->get([
                 'id',
-
+                'parent_id',
             ])
-            ->each
-            ->delete();
+            ->each->delete();
     }
 }
