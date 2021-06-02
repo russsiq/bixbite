@@ -113,7 +113,7 @@
                     </div>
                     <div id="card_tags">
                         <div class="card-body">
-                            <tags-items :taggable="morphable" :value="article.tags"></tags-items>
+                            <tags-items :taggable="morphable" :value.sync="article.tags"></tags-items>
                         </div>
                     </div>
                 </div>

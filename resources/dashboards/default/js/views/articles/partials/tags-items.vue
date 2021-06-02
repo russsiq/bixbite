@@ -82,23 +82,25 @@ export default {
 
     methods: {
         async attach() {
-            if (! this.title) {
+            const title = this.title;
+
+            if (! title) {
                 return false;
             }
 
-            const attached = this.suggestedTags.find(
-                    tag => this.title === tag.title
-                ) || await Tag.$create({
-                    title: this.title,
-                });
+            this.debouncedGetSuggestions.flush;
 
-            if (! this.tags.some(tag => this.title === tag.title)) {
+            await this.getSuggestions();
+
+            const attached = this.suggestedTags.find(tag => title === tag.title) || await Tag.$create({ title });
+
+            if (! this.tags.some(tag => title === tag.title)) {
                 this.tags.push(attached);
 
                 await Tag.$attach({
-                        taggable: { ...this.taggable },
-                        tag: { ...attached },
-                    });
+                    taggable: { ...this.taggable },
+                    tag: { ...attached },
+                });
             }
 
             this.newTag = '';
@@ -109,33 +111,34 @@ export default {
         async detach(detached, index) {
 
             await Tag.$detach({
-                    taggable: { ...this.taggable },
-                    tag: { ...detached },
-                });
+                taggable: { ...this.taggable },
+                tag: { ...detached },
+            });
 
-            this.tags = this.tags.filter((tag) => detached.id !== tag.id);
+            this.tags.splice(index, 1);
         },
 
-        getSuggestions() {
-            if (this.suggestedTags && this.suggestedTags.some(tag => this.title === tag.title)) {
+        async getSuggestions() {
+            const title = this.title;
+
+            if (! title) {
+                return false;
+            }
+
+            if (this.suggestedTags && this.suggestedTags.some(tag => title === tag.title)) {
                 return false;
             }
 
             this.suggestedTags = [];
 
-            this.fetchSuggestions();
-        },
+            const collection = await Tag.$fetch({
+                params: {
+                    title,
+                }
+            });
 
-        fetchSuggestions() {
-            this.title && Tag.$fetch({
-                    params: {
-                        title: this.title,
-                    }
-                })
-                .then((collection) => {
-                    this.suggestedTags = collection || []
-                });
-        }
+            this.suggestedTags = collection || [];
+        },
     }
 }
 </script>
