@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Gate as AccessGate;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard as AuthGuard;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Validation\Validator;
@@ -18,6 +19,7 @@ abstract class ActionAbstract
 
     protected ?AuthGuard $authGuard;
     protected ?AccessGate $accessGate;
+    protected ?EventDispatcher $dispatcher;
     protected ?Translator $translator;
     protected ?ValidationFactory $validationFactory;
 
@@ -107,6 +109,37 @@ abstract class ActionAbstract
         return $this->accessGate
             ?? $this->accessGate = $this->container->make(
                 AccessGate::class);
+    }
+
+    /**
+     * Fire the given event for the model.
+     *
+     * @param  string  $model
+     * @param  string  $event
+     * @param  mixed  $payload
+     * @param  boolean  $halt
+     * @return mixed
+     */
+    protected function fireModelEvent(
+        string $model,
+        string $event,
+        mixed $payload = [],
+        bool $halt = false
+    ): mixed {
+        return $this->dispatcher()
+            ->dispatch("eloquent.{$event}: {$model}", $payload, $halt);
+    }
+
+    /**
+     * Get the event dispatcher instance.
+     *
+     * @return EventDispatcher
+     */
+    protected function dispatcher(): EventDispatcher
+    {
+        return $this->dispatcher
+            ?? $this->dispatcher = $this->container->make(
+                EventDispatcher::class);
     }
 
     /**
