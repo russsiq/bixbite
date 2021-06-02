@@ -14,7 +14,7 @@
             v-model="newTag"
             maxlength="255"
             autocomplete="off"
-            placeholder="Добавить тег"
+            placeholder="Наберите имя тега и нажмите ввод"
             class="form-control"
             @keyup.enter="attach" />
     </div>
