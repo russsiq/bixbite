@@ -43,11 +43,13 @@ Route::group([
             ->group(function () {
                 Route::name('taggable.store')
                     ->post(
-                        '{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'store']
+                        '{taggable_type}/{taggable_id}/tags/{tag_id}',
+                        [TaggableController::class, 'store']
                     );
                 Route::name('taggable.destroy')
                     ->delete(
-                        '{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'destroy']
+                        '{taggable_type}/{taggable_id}/tags/{tag_id}',
+                        [TaggableController::class, 'destroy']
                     );
             });
 
