@@ -25,12 +25,11 @@
     ],
     "require": {
         "php": "8.0.*",
-        "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.4",
         "guzzlehttp/guzzle": "^7.3.0",
         "laravel/fortify": "^1.7.13",
-        "laravel/framework": "^8.43.0",
+        "laravel/framework": "^8.44.0",
         "laravel/sanctum": "^2.11.1",
         "laravel/tinker": "^2.6.1",
         "russsiq/laravel-assistant": "^0.3.1",
@@ -40,8 +39,9 @@
         "russsiq/laravel-zipper": "^0.2.3"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5.7",
+        "barryvdh/laravel-debugbar": "^3.6.0",
         "brianium/paratest": "^6.3.0",
+        "doctrine/dbal": "^3.1",
         "facade/ignition": "^2.9.0",
         "fakerphp/faker": "^1.14.1",
         "mockery/mockery": "^1.4.3",
