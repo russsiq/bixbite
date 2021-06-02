@@ -41,8 +41,14 @@ Route::group([
                 'tag_id' => '[0-9]+',
             ])
             ->group(function () {
-                Route::post('{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'store'])->name('taggable.store');
-                Route::delete('{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'destroy'])->name('taggable.destroy');
+                Route::name('taggable.store')
+                    ->post(
+                        '{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'store']
+                    );
+                Route::name('taggable.destroy')
+                    ->delete(
+                        '{taggable_type}/{taggable_id}/tags/{tag_id}', [TaggableController::class, 'destroy']
+                    );
             });
 
         Route::apiResources([
