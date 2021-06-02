@@ -31,7 +31,7 @@ abstract class NoteActionAbstract extends ActionAbstract
      */
     protected function prepareForValidation(array $input): array
     {
-        $input['user_id'] = $this->user()->getAuthIdentifier();
+        $input['user_id'] = $this->user() ? $this->user()->getAuthIdentifier() : null;
         $input['image_id'] = $input['image_id'] ?? null;
         $input['title'] = Str::teaser($input['title'] ?? null, 255, '');
 
