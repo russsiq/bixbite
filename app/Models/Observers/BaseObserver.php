@@ -2,7 +2,6 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use Illuminate\Database\Eloquent\Model as ParentModel;
 
 /**
@@ -20,12 +19,14 @@ abstract class BaseObserver
 {
     /**
      * Массив ключей для очистки кэша.
+     *
      * @var array
      */
     protected $keysToForgetCache = [];
 
     /**
      * Очистить кэш модели по заданным в массиве ключам.
+     *
      * @param  ParentModel  $entity
      * @return void
      */
@@ -46,6 +47,7 @@ abstract class BaseObserver
 
     /**
      * Добавить новые ключи в масив ключей для очистки кэша.
+     *
      * @return void
      */
     protected function addToCacheKeys(array $keys): void

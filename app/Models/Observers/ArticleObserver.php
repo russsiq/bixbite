@@ -2,36 +2,48 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\Article;
 use Illuminate\Http\Request;
 
-/**
- * Наблюдатель модели `Article`.
- */
 class ArticleObserver extends BaseObserver
 {
     /**
-     * [$request description]
-     * @var Request
+     * The request instance.
      */
-    protected $request;
+    protected Request $request;
 
     /**
-     * Массив ключей для очистки кэша.
-     * @var array
+     * Create a new Observer.
+     *
+     * @param  Request  $request
+     * @return void
      */
-    protected $keysToForgetCache = [
-
-    ];
-
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
     /**
-     * Обработать событие `saved` модели.
+     * Handle the Article "saving" event.
+     *
+     * @param  Article  $article
+     * @return void
+     */
+    public function saving(Article $article): void
+    {
+        if ($article->state && $article->categories->isEmpty()) {
+            $article->state = 0;
+        }
+
+        // Always clear cache.
+        $this->addToCacheKeys([
+            'articles-single-'.$article->id => false,
+        ]);
+    }
+
+    /**
+     * Handle the Article "saved" event.
+     *
      * @param  Article  $article
      * @return void
      */
@@ -44,27 +56,18 @@ class ArticleObserver extends BaseObserver
             $this->request->input('categories', [])
         ));
 
-        if ($article->state && $article->categories->isEmpty()) {
-            $article->state = 0;
-        }
-
-        // Always clear cache.
-        $this->addToCacheKeys([
-            'articles-single-'.$article->id => false,
-        ]);
-
         $this->forgetCacheByKeys($article);
     }
 
     /**
-     * Обработать событие `deleting` модели.
+     * Handle the Article "deleting" event.
+     *
      * @param  Article  $article
      * @return void
      */
     public function deleting(Article $article): void
     {
         $article->categories()->detach();
-        $article->comments()->get(['id'])->each->delete();
 
         // Always clear cache.
         $this->addToCacheKeys([
@@ -73,7 +76,8 @@ class ArticleObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `deleting` модели.
+     * Handle the Article "deleted" event.
+     *
      * @param  Article  $article
      * @return void
      */

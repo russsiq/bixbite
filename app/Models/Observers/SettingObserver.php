@@ -2,16 +2,13 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\Setting;
 
-/**
- * Наблюдатель модели `Setting`.
- */
-class SettingObserver extends BaseObserver
+class SettingObserver
 {
     /**
-     * Обработать событие `retrieved` модели.
+     * Handle the Setting "retrieved" event.
+     *
      * @param  Setting  $setting
      * @return void
      */
@@ -26,7 +23,8 @@ class SettingObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `saved` модели.
+     * Handle the Setting "saved" event.
+     *
      * @param  Setting  $setting
      * @return void
      */
@@ -37,19 +35,22 @@ class SettingObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `massUpdateByModule` модели.
+     * Handle the Setting "massUpdateByModule" event.
+     *
      * @param  Setting  $setting
      * @return void
      */
-    public function massUpdateByModule(Setting $setting)
+    public function massUpdateByModule(Setting $setting): void
     {
         //
     }
 
     /**
      * Update setting lang file with format json.
+     *
+     * @return Setting
      */
-    protected function langUpdate(Setting $setting)
+    protected function langUpdate(Setting $setting): Setting
     {
         $path = dashboard_path('lang'.DS.$setting->module->name).DS.app_locale().'.json';
         $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];

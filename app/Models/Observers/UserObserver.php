@@ -2,19 +2,16 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\UploadedFile;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * Наблюдатель модели `User`.
- */
-class UserObserver extends BaseObserver
+class UserObserver
 {
     /**
-     * Обработать событие `updating` модели.
+     * Handle the User "updating" event.
+     *
      * @param  User  $user
      * @return void
      */
@@ -42,7 +39,8 @@ class UserObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `saved` модели.
+     * Handle the User "saved" event.
+     *
      * @param  User  $user
      * @return void
      */
@@ -59,7 +57,8 @@ class UserObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `deleting` модели.
+     * Handle the User "deleting" event.
+     *
      * @param  User  $user
      * @return void
      */
@@ -94,7 +93,8 @@ class UserObserver extends BaseObserver
     }
 
     /**
-     * Прикрепить аватар к указанному пользователю..
+     * Attach an avatar to the specified user.
+     *
      * @param  User  $user
      * @param  UploadedFile  $avatar
      * @return void
@@ -117,8 +117,10 @@ class UserObserver extends BaseObserver
     }
 
     /**
-     * Открепить и удалить аватар от указанного пользователя.
+     * Remove the avatar of the specified user.
+     *
      * @param  User  $user
+     * @param  UploadedFile  $avatar
      * @return void
      */
     protected function deleteAvatar(User $user): void

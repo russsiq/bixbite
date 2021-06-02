@@ -2,12 +2,8 @@
 
 namespace App\Models\Observers;
 
-// Сторонние зависимости.
 use App\Models\Privilege;
 
-/**
- * Наблюдатель модели `Privilege`.
- */
 class PrivilegeObserver extends BaseObserver
 {
     /**

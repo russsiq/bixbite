@@ -7,7 +7,8 @@ use App\Models\Attachment;
 class AttachmentObserver extends BaseObserver
 {
     /**
-     * Обработать событие `updating` модели.
+     * Handle the Attachment "updating" event.
+     *
      * @param  Attachment  $attachment
      * @return void
      */
@@ -28,7 +29,8 @@ class AttachmentObserver extends BaseObserver
     }
 
     /**
-     * Обработать событие `deleting` модели.
+     * Handle the Attachment "deleting" event.
+     *
      * @param  Attachment  $attachment
      * @return void
      */

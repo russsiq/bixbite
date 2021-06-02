@@ -13,10 +13,8 @@ class XFieldObserver
 {
     /**
      * The Schema Builder instance.
-     *
-     * @var SchemaBuilder
      */
-    protected $schemaBuilder;
+    protected SchemaBuilder $schemaBuilder;
 
     /**
      * Create a new Observer instance.

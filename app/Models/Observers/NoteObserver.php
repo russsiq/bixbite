@@ -2,6 +2,6 @@
 
 namespace App\Models\Observers;
 
-class NoteObserver extends BaseObserver
+class NoteObserver
 {
 }
