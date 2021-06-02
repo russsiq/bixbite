@@ -24,7 +24,9 @@ class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticl
         );
 
         $this->article->update(
-            $this->validate($input)
+            $this->validate(
+                $this->prepareForValidation($input)
+            )
         );
 
         $this->article->load([

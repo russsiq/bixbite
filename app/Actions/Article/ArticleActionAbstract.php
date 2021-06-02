@@ -7,8 +7,10 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Rules\MetaRobotsRule;
 use App\Rules\SqlTextLengthRule;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
+use Russsiq\DomManipulator\Facades\DOMManipulator;
 
 abstract class ArticleActionAbstract extends ActionAbstract
 {
@@ -20,6 +22,65 @@ abstract class ArticleActionAbstract extends ActionAbstract
      * @return array
      */
     abstract protected function rules(): array;
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @param  array  $input
+     * @return array
+     */
+    protected function prepareForValidation(array $input): array
+    {
+        $input['user_id'] = $this->user() ? $this->user()->getAuthIdentifier() : null;
+        $input['image_id'] = $input['image_id'] ?? null;
+
+        if (empty($input['categories']) || empty($input['state'])) {
+            $input['state'] = Article::STATE['draft'];
+        }
+
+        $input['title'] = Str::teaser($input['title'] ?? null, 255, '');
+
+        // if (! setting('articles.manual_slug', false)) {
+            // if (empty($input['slug']) && ! empty($input['title'])) {
+                $input['slug'] = Str::slug(
+                    $input['title'], '-', setting('system.translite_code', 'ru__gost_2000_b')
+                );
+            // }
+        // }
+
+        $input['teaser'] = Str::teaser($input['teaser'] ?? null, 255, '');
+        $input['content'] = $this->prepareContent($input['content'] ?? null);
+        $input['meta_description'] = Str::teaser($input['meta_description'] ?? null, 255, '');
+        $input['meta_keywords'] = Str::teaser($input['meta_keywords'] ?? null, 255, '');
+        $input['meta_robots'] = $input['meta_robots'] ?? 'all';
+        $input['on_mainpage'] = $input['on_mainpage'] ?? true;
+        $input['is_favorite'] = $input['is_favorite'] ?? false;
+        $input['is_pinned'] = $input['is_pinned'] ?? false;
+        $input['is_catpinned'] = $input['is_catpinned'] ?? false;
+        $input['allow_com'] = $input['allow_com'] ?? Article::COMMENTS_ALLOWS['by_default'];
+        $input['views'] = $input['views'] ?? 0;
+
+        return $input;
+    }
+
+    /**
+     * Prepare the content for validation.
+     *
+     * @param  string|null  $content
+     * @return string
+     */
+    protected function prepareContent(?string $content): string
+    {
+        if (is_null($content)) {
+            return (string) $content;
+        }
+
+        $content = DOMManipulator::removeEmoji($content);
+
+        return DOMManipulator::wrapAsDocument($content)
+            ->revisionPreTag()
+            ->remove('script');
+    }
 
     protected function relationshipsRules()
     {
@@ -119,7 +180,7 @@ abstract class ArticleActionAbstract extends ActionAbstract
             'state' => [
                 'required',
                 'integer',
-                'in:0,1,2',
+                Rule::in(array_values(Article::STATE)),
             ],
         ];
     }

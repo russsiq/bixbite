@@ -18,8 +18,11 @@ class CreateArticleAction extends ArticleActionAbstract implements CreatesArticl
         $this->authorize('create', Article::class);
 
         $this->article = Article::create(
-            $this->validate($input)
-        )->fresh();
+                $this->validate(
+                    $this->prepareForValidation($input)
+                )
+            )
+            ->fresh();
 
         return $this->article;
     }
