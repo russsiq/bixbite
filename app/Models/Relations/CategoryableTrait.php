@@ -34,6 +34,10 @@ trait CategoryableTrait
                 )
             );
         });
+
+        static::deleting(function (CategoryableContract $categoryable) {
+            $categoryable->categories()->detach();
+        });
     }
 
     /**

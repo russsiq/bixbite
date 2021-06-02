@@ -67,8 +67,6 @@ class ArticleObserver extends BaseObserver
      */
     public function deleting(Article $article): void
     {
-        $article->categories()->detach();
-
         // Always clear cache.
         $this->addToCacheKeys([
             'articles-single-'.$article->id => false,

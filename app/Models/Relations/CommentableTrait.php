@@ -4,6 +4,7 @@ namespace App\Models\Relations;
 
 use App\Models\Collections\CommentCollection;
 use App\Models\Comment;
+use App\Models\Contracts\CommentableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -15,6 +16,18 @@ use Illuminate\Support\Facades\Auth;
  */
 trait CommentableTrait
 {
+    /**
+     * Boot the Commentable trait for a model.
+     *
+     * @return void
+     */
+    public static function bootCommentableTrait(): void
+    {
+        static::deleting(function (CommentableContract $commentable) {
+            $commentable->comments()->get(['id'])->each->delete();
+        });
+    }
+
     /**
      * Get all of the comments for the current model.
      *
