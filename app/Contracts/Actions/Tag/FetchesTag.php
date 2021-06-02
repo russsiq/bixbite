@@ -11,11 +11,11 @@ interface FetchesTag
     /**
      * Validate query parameters and return a specified tag.
      *
-     * @param  mixed  $field
+     * @param  integer  $id
      * @param  array  $input
      * @return Tag
      */
-    public function fetch(mixed $field, array $input): Tag;
+    public function fetch(int $id, array $input): Tag;
 
     /**
      * Validate query parameters and return a collection of tags.

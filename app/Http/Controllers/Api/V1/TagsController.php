@@ -52,13 +52,13 @@ class TagsController extends Controller
      *
      * @param  FetchesTag  $fetcher
      * @param  Request  $request
-     * @param  mixed  $field
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(FetchesTag $fetcher, Request $request, mixed $field): JsonResponse
+    public function show(FetchesTag $fetcher, Request $request, int $id): JsonResponse
     {
         return TagResource::make(
-            $fetcher->fetch($field, $request->all())
+            $fetcher->fetch($id, $request->all())
         )
             ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
