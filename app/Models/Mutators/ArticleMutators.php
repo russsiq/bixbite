@@ -51,7 +51,8 @@ trait ArticleMutators
      */
     public function getIsPublishedAttribute(): bool
     {
-        return Article::STATE['published'] === $this->state;
+        return Article::STATE['published'] === $this->state
+            && $this->categories->count() > 0;
     }
 
     /**
@@ -85,7 +86,7 @@ trait ArticleMutators
      */
     public function getUrlAttribute(): ?string
     {
-        if ($this->exists && $this->is_published && $this->categories->count() > 0) {
+        if ($this->exists && $this->is_published) {
             return route('articles.article', [
                 $this->categories->pluck('slug')->implode('_'),
                 $this->id,
