@@ -153,7 +153,6 @@
                     </div>
                 </div>
             </div>
-            <pre v-if="isDebug">{{ article }}</pre>
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
@@ -220,6 +219,8 @@
             </div>
         </div>
     </div>
+
+    <pre v-if="isDebug" class="debug_box">{{ article.tags }}</pre>
 </form>
 </template>
 
@@ -423,3 +424,15 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.debug_box {
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+    white-space: pre-wrap;
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+</style>
