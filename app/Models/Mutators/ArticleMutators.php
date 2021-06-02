@@ -2,7 +2,6 @@
 
 namespace App\Models\Mutators;
 
-use App\Http\Controllers\ArticlesController;
 use App\Models\Article;
 use Illuminate\Support\Carbon;
 
@@ -86,8 +85,8 @@ trait ArticleMutators
      */
     public function getUrlAttribute(): ?string
     {
-        if ($this->id and $this->categories->count() > 0  and $this->is_published) {
-            return action([ArticlesController::class, 'article'], [
+        if ($this->exists && $this->is_published && $this->categories->count() > 0) {
+            return route('articles.article', [
                 $this->categories->pluck('slug')->implode('_'),
                 $this->id,
                 $this->slug
