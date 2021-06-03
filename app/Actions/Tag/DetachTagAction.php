@@ -36,7 +36,11 @@ class DetachTagAction extends TagActionAbstract implements DetachesTag
      */
     protected function resolveTag(int $id): Tag
     {
-        return Tag::findOrFail($id);
+        return Tag::withoutEvents(
+            fn () => Tag::withoutGlobalScopes()
+                ->withOnly([])
+                ->findOrFail($id, ['id'])
+        );
     }
 
     /**
@@ -50,7 +54,11 @@ class DetachTagAction extends TagActionAbstract implements DetachesTag
     {
         $model = Relation::getMorphedModel($type);
 
-        return $model::findOrFail($id);
+        return $model::withoutEvents(
+            fn () => $model::withoutGlobalScopes()
+                ->withOnly([])
+                ->findOrFail($id, ['id'])
+        );
     }
 
     /**
