@@ -85,20 +85,6 @@ abstract class ArticleActionAbstract extends ActionAbstract
     protected function relationshipsRules()
     {
         return [
-            // Отношения, которых тут быть не должно.
-            'categories' => [
-                'nullable',
-                'array',
-
-            ],
-
-            'categories.*.id' => [
-                'required',
-                'integer',
-                'exists:categories,id',
-
-            ],
-
             /*'attachments' => [
                 'nullable',
                 'array',

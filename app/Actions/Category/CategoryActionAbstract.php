@@ -5,6 +5,7 @@ namespace App\Actions\Category;
 use App\Actions\ActionAbstract;
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\Contracts\CategoryableContract;
 use App\Rules\MetaRobotsRule;
 use App\Rules\SqlTextLengthRule;
 use Illuminate\Support\Str;
@@ -16,6 +17,7 @@ use Russsiq\DomManipulator\Facades\DOMManipulator;
 abstract class CategoryActionAbstract extends ActionAbstract
 {
     protected ?Category $category = null;
+    protected ?CategoryableContract $categoryable = null;
 
     /**
      * Get the validation rules that apply to the action.

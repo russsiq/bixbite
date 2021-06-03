@@ -1,37 +1,110 @@
 <template>
 <form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
-    <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
-            <image-uploader
-                :attachable="morphable"
-                :value="article.image_id"
-                @update:image_id="sync('image_id', $event)" />
-        </div>
+    <div class="">
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a href="#pane-main" data-toggle="tab" class="nav-link active">Основное содержимое</a>
+            </li>
+            <li class="nav-item">
+                <a href="#pane-advanced" data-toggle="tab" class="nav-link">Дополнительно</a>
+            </li>
+        </ul>
 
-        <div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">
-            <div class="mb-3 has-float-label">
-                <label class="control-label">Заголовок</label>
-                <div class="input-group">
-                    <input type="text" v-model="article.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
-                    <a v-if="article.is_published" :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
+        <br>
+
+        <div class="tab-content">
+            <div id="pane-main" class="tab-pane active">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-3 mb-2 order-first">
+                        <image-uploader
+                            :attachable="morphable"
+                            :value="article.image_id"
+                            @update:image_id="sync('image_id', $event)" />
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-5 mb-2 order-last">
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Заголовок</label>
+                            <div class="input-group">
+                                <input type="text" v-model="article.title" maxlength="255" class="form-control" placeholder="Заголовок записи ..." autocomplete="off" required />
+                                <a v-if="article.is_published" :href="article.url" target="_blank" class="btn btn-outline-primary"><i class="fa fa-external-link"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 has-float-label">
+                            <label class="control-label">Предисловие</label>
+                            <textarea v-model="article.teaser" rows="4" maxlength="255" class="form-control noresize" placeholder="Заинтересуйте свою аудиторию ..." @keydown.13.prevent></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
+                        <div class="card card-default card-table">
+                            <div class="card-header">Сводная информация</div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>Автор</td>
+                                            <td>{{ article.user && article.user.name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Состояние</td>
+                                            <td><span :class="classState(article.state)">{{ titleState(article.state) }}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Дата создания</td>
+                                            <td>{{ article.created_at | dateToString }}</td>
+                                        </tr>
+                                        <tr v-if="article.updated_at">
+                                            <td>Дата обновления</td>
+                                            <td>{{ article.updated_at | dateToString }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-3 has-float-label">
-                <label class="control-label">Предисловие</label>
-                <textarea v-model="article.teaser" rows="4" maxlength="255" class="form-control noresize" placeholder="Заинтересуйте свою аудиторию ..." @keydown.13.prevent></textarea>
-            </div>
-        </div>
+            <div id="pane-advanced" class="tab-pane">
+                <div class="row">
+                    <div class="col-12 col-lg-8 mb-2">
+                        <div v-if="setting.manual_meta" class="card card-default">
+                            <div class="card-header">Мета данные</div>
+                            <div class="card-body">
+                                <div class="mb-3 has-float-label">
+                                    <label class="control-label">Описание</label>
+                                    <textarea v-model="article.meta_description" rows="2" maxlength="255" class="form-control"></textarea>
+                                </div>
+                                <div class="mb-3 has-float-label">
+                                    <label class="control-label">Ключевые слова</label>
+                                    <input type="text" v-model="article.meta_keywords" maxlength="255" class="form-control" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 has-float-label">
+                                    <label class="control-label">Инструкции для поисковых роботов</label>
+                                    <select class="form-select" v-model="article.meta_robots">
+                                        <option value="all">По умолчанию</option>
+                                        <option value="noindex">noindex</option>
+                                        <option value="nofollow">nofollow</option>
+                                        <option value="none">none</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-2 order-lg-last">
-            <div class="mb-3 has-float-label">
-                <label class="control-label">Категории</label>
-                <category-selector
-                        :categoryable="morphable"
-                        :value="article.categories"
-                        :multiple="true"
-                        @update:categories="sync('categories', $event)"
-                    ></category-selector>
+                    <div class="col-12 col-lg-4 mb-2">
+                        <div class="card card-default">
+                            <div class="card-header">Категории</div>
+                            <div class="card-body p-0">
+                                <multi-category-selector
+                                    :categoryable="morphable"
+                                    v-model="article.categories" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,7 +112,7 @@
     <div class="row">
         <div class="col-sm-12 mb-2">
             <div class="mb-3">
-                <quill-editor :attachable="morphable" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson"></quill-editor>
+                <quill-editor :attachable="morphable" :value="article.content" @input="update('content', $event)" @json="updateAttributesFromJson" />
             </div>
         </div>
     </div>
@@ -47,30 +120,6 @@
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
             <div id="accordion">
-
-                <div v-if="setting.manual_meta" class="card card-default">
-                    <div class="card-header"><i class="fa fa-header text-muted"></i> Мета данные</div>
-                    <div class="card-body">
-                        <div class="mb-3 has-float-label">
-                            <label class="control-label">Описание</label>
-                            <textarea v-model="article.meta_description" rows="3" maxlength="255" class="form-control"></textarea>
-                        </div>
-                        <div class="mb-3 has-float-label">
-                            <label class="control-label">Ключевые слова</label>
-                            <input type="text" v-model="article.meta_keywords" maxlength="255" class="form-control" autocomplete="off" />
-                        </div>
-                        <div class="mb-3 has-float-label">
-                            <label class="control-label">Инструкции для поисковых роботов</label>
-                            <select class="form-select" v-model="article.meta_robots">
-                                <option value="all">По умолчанию</option>
-                                <option value="noindex">noindex</option>
-                                <option value="nofollow">nofollow</option>
-                                <option value="none">none</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
                 <div v-if="x_fields.length" class="card card-default">
                     <div class="card-header"><i class="fa fa-puzzle-piece"></i> Дополнительные поля</div>
                     <div class="card-body">
@@ -156,32 +205,6 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-            <div class="card card-default card-table">
-                <div class="card-header">Сводная информация</div>
-                <div class="card-body table-responsive">
-                    <table class="table table-sm">
-                        <tbody>
-                            <tr>
-                                <td>Автор</td>
-                                <td>{{ article.user && article.user.name }}</td>
-                            </tr>
-                            <tr>
-                                <td>Состояние</td>
-                                <td><span :class="classState(article.state)">{{ titleState(article.state) }}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Дата создания</td>
-                                <td>{{ article.created_at | dateToString }}</td>
-                            </tr>
-                            <tr v-if="article.updated_at">
-                                <td>Дата обновления</td>
-                                <td>{{ article.updated_at | dateToString }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <div class="card card-default">
                 <div class="card-header">Параметры публикации</div>
                 <div class="card-body">
@@ -237,7 +260,8 @@ import QuillEditor from '@/components/quill-editor.vue';
 import ImageUploader from '@/components/image-uploader.vue';
 import InputDatetimeLocal from '@/components/input-datetime-local.vue';
 
-import CategorySelector from './partials/category-selector.vue';
+// import CategorySelector from './partials/category-selector.vue';
+import MultiCategorySelector from './partials/multi-category-selector.vue';
 import TagsItems from './partials/tags-items';
 
 export default {
@@ -246,7 +270,8 @@ export default {
     components: {
         'image-uploader': ImageUploader,
         'input-datetime-local': InputDatetimeLocal,
-        'category-selector': CategorySelector,
+        // 'category-selector': CategorySelector,
+        'multi-category-selector': MultiCategorySelector,
         'tags-items': TagsItems,
         'quill-editor': QuillEditor,
     },

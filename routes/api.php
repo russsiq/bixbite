@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\ArticlesController;
 use App\Http\Controllers\Api\V1\AttachmentsController;
 use App\Http\Controllers\Api\V1\CategoriesController;
+use App\Http\Controllers\Api\V1\CategoryableController;
 use App\Http\Controllers\Api\V1\CommentsController;
 use App\Http\Controllers\Api\V1\NotesController;
 use App\Http\Controllers\Api\V1\PrivilegesController;
@@ -33,6 +34,30 @@ Route::group([
 
         Route::put('articles', [ArticlesController::class, 'massUpdate'])->name('articles.massUpdate');
         Route::put('comments', [CommentsController::class, 'massUpdate'])->name('comments.massUpdate');
+
+        Route::prefix('categoryable')
+            ->where([
+                'categoryable_type' => '[a-z_]+',
+                'categoryable_id' => '[0-9]+',
+                'category_id' => '[0-9]+',
+            ])
+            ->group(function () {
+                Route::name('categoryable.update')
+                    ->put(
+                        '{categoryable_type}/{categoryable_id}/categories',
+                        [CategoryableController::class, 'update']
+                    );
+                Route::name('categoryable.store')
+                    ->post(
+                        '{categoryable_type}/{categoryable_id}/categories/{category_id}',
+                        [CategoryableController::class, 'store']
+                    );
+                Route::name('categoryable.destroy')
+                    ->delete(
+                        '{categoryable_type}/{categoryable_id}/categories/{category_id}',
+                        [CategoryableController::class, 'destroy']
+                    );
+            });
 
         Route::prefix('taggable')
             ->where([
