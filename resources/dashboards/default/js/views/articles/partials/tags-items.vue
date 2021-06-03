@@ -20,7 +20,7 @@
     </div>
 
     <datalist id="suggested-tags">
-        <option v-for="tag in suggestedTags" :key="tag.id" :value="`${tag.title} (${tag.articles_count})`" />
+        <option v-for="tag in suggestedTags" :key="tag.id" :value="tag.title" />
     </datalist>
 </div>
 </template>
@@ -57,7 +57,7 @@ export default {
 
     computed: {
         title() {
-            const title = this.newTag.trim()
+            const title = this.newTag.trim();
 
             return title.length >= 3 ? title : '';
         },
