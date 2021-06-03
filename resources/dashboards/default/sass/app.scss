@@ -461,14 +461,14 @@ label.control-label {
     position: relative;
 }
 
-.has-float-label label {
+.has-float-label > label {
     color: #888;
-    font-size: 75%;
-    left: .75rem;
+    font-size: 88%;
+    left: 0.75rem;
     line-height: 1;
     padding: 0 1px;
     position: absolute;
-    top: -.5em;
+    top: -0.5em;
     z-index: 4;
 }
 
