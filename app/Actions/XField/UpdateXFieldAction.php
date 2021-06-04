@@ -36,8 +36,6 @@ class UpdateXFieldAction extends XFieldActionAbstract implements UpdatesXField
     {
         return array_merge(
             $this->paramsRules(),
-            $this->paramsKeyRules(),
-            $this->paramsValueRules(),
             $this->titleRules(),
             $this->descrRules(),
             $this->htmlFlagsRules(),

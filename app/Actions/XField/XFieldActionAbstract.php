@@ -114,17 +114,7 @@ abstract class XFieldActionAbstract extends ActionAbstract
                 'required',
                 'array',
             ],
-        ];
-    }
 
-    /**
-     * Get the validation rules used to validate `params.*.key` field.
-     *
-     * @return array
-     */
-    protected function paramsKeyRules(): array
-    {
-        return [
             'params.0.key' => [
                 'nullable',
                 'string',
@@ -139,17 +129,7 @@ abstract class XFieldActionAbstract extends ActionAbstract
                 'max:255',
                 'alpha_dash',
             ],
-        ];
-    }
 
-    /**
-     * Get the validation rules used to validate `params.*.value` field.
-     *
-     * @return array
-     */
-    protected function paramsValueRules(): array
-    {
-        return [
             'params.*.value' => [
                 'bail',
                 'required',
