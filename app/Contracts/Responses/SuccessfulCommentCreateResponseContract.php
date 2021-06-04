@@ -12,7 +12,7 @@ interface SuccessfulCommentCreateResponseContract extends Responsable
      * @const string[]
      */
     public const STATUSES = [
-        'Your comment was successfully added, however this item requires that all comments be moderated by the owner before they are publicly displayed.',
+        'Your comment has been successfully added to the moderation queue.',
         'Your comment was successfully added.'
     ];
 

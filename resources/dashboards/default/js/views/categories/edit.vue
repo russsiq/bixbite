@@ -150,33 +150,33 @@
     </div>
 
     <div v-if="x_fields.length" class="card card-default">
-        <div class="card-header"><i class="fa fa-th-list"></i> Дополнительные поля</div>
+        <div class="card-header"><i class="fa fa-puzzle-piece"></i> Дополнительные поля</div>
         <div class="card-body">
-            <div v-for="field in x_fields" class="mb-3 row" :key="field.id">
-                <div class="col-sm-7">
-                    <label class="control-label">{{ field.title }}</label>
-                    <small class="form-text d-block text-muted">{{ field.descr }}</small>
-                </div>
+            <div v-for="field in x_fields" :key="field.id" class="mb-3 row">
                 <div class="col-sm-5">
+                    <label class="control-label">{{ field.title }}</label>
+                    <small class="form-text d-block text-muted">{{ field.description }}</small>
+                </div>
+                <div class="col-sm-7">
                     <template v-if="'string' === field.type">
-                        <input type="text" v-model="category[field.name]" class="form-control" />
+                        <input type="text" v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
                     </template>
                     <template v-else-if="'integer' === field.type">
-                        <input type="number" v-model="category[field.name]" class="form-control" />
+                        <input type="number" v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
                     </template>
                     <template v-else-if="'boolean' === field.type">
-                        <input type="checkbox" v-model="category[field.name]" />
-                    </template>
-                    <template v-else-if="'array' === field.type">
-                        <select class="form-select" v-model="category[field.name]">
-                            <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
-                        </select>
-                    </template>
-                    <template v-else-if="'text' === field.type">
-                        <textarea v-model="category[field.name]" rows="4" class="form-control"></textarea>
+                        <input type="checkbox" v-model="article[field.name]" v-bind="field.raw_html_flags" />
                     </template>
                     <template v-else-if="'timestamp' === field.type">
-                        <input-datetime-local v-model="category[field.name]" class="form-control"></input-datetime-local>
+                        <input-datetime-local v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
+                    </template>
+                    <template v-else-if="'text' === field.type">
+                        <textarea v-model="article[field.name]" rows="4" class="form-control" v-bind="field.raw_html_flags"></textarea>
+                    </template>
+                    <template v-else-if="'array' === field.type">
+                        <select class="form-select" v-model="article[field.name]" v-bind="field.raw_html_flags">
+                            <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
+                        </select>
                     </template>
 
                     <div v-else class="alert alert-danger">Неизвестный тип поля.</div>

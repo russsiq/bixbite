@@ -30,7 +30,7 @@ class XFieldFactory extends Factory
             'type' => $this->faker->randomElement(XField::fieldTypes()),
             'params' => [],
             'title' => $this->faker->text(mt_rand(8, 48)),
-            'descr' => null,
+            'description' => null,
             'html_flags' => [],
             'created_at' => null,
             'updated_at' => null,

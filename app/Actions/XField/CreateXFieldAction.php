@@ -38,7 +38,7 @@ class CreateXFieldAction extends XFieldActionAbstract implements CreatesXField
             $this->typeRules(),
             $this->paramsRules(),
             $this->titleRules(),
-            $this->descrRules(),
+            $this->descriptionRules(),
             $this->htmlFlagsRules(),
         );
     }

@@ -39,7 +39,7 @@ abstract class XFieldActionAbstract extends ActionAbstract
             // 'params.*.key' => ...,
             // 'params.*.value' => ...,
             'title' => $this->translate('title'),
-            'descr' => $this->translate('descr'),
+            'description' => $this->translate('description'),
             'html_flags' => $this->translate('html_flags'),
         ];
     }
@@ -157,14 +157,14 @@ abstract class XFieldActionAbstract extends ActionAbstract
     }
 
     /**
-     * Get the validation rules used to validate `descr` field.
+     * Get the validation rules used to validate `description` field.
      *
      * @return array
      */
-    protected function descrRules(): array
+    protected function descriptionRules(): array
     {
         return [
-            'descr' => [
+            'description' => [
                 'nullable',
                 'string',
                 'max:500',

@@ -15,6 +15,8 @@
                 @endcan
             </h2>
 
+            {{ $article->x_price }}
+
             <p class="single_article__teaser">{{ $article->teaser }}</p>
 
             @if ($image = $article->image)

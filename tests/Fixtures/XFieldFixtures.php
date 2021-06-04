@@ -14,7 +14,7 @@ class XFieldFixtures
                 'type',
                 'params' => [],
                 'title',
-                'descr',
+                'description',
                 'html_flags' => [],
                 'created_at',
                 'updated_at',

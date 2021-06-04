@@ -102,7 +102,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-7 control-label">Краткое описание</label>
                 <div class="col-sm-5">
-                    <textarea v-model="form.descr" rows="4" class="form-control"></textarea>
+                    <textarea v-model="form.description" rows="4" class="form-control"></textarea>
                 </div>
             </div>
 
