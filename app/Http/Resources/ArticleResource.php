@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\XFieldCollection;
 use App\Models\Article;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -41,7 +42,9 @@ class ArticleResource extends JsonResource
                     'articles' => $this->resource->settings->pluck('value', 'name')->toArray(),
                 ],
 
-                'x_fields' => $this->resource->x_fields->toArray(),
+                'x_fields' => [
+                    ...XFieldCollection::make($this->resource->x_fields)->toArray($request),
+                ],
             ],
         ];
     }
