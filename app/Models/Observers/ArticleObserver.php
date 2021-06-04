@@ -8,22 +8,6 @@ use Illuminate\Http\Request;
 class ArticleObserver extends BaseObserver
 {
     /**
-     * The request instance.
-     */
-    protected Request $request;
-
-    /**
-     * Create a new Observer.
-     *
-     * @param  Request  $request
-     * @return void
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
-    /**
      * Handle the Article "saving" event.
      *
      * @param  Article  $article
@@ -49,13 +33,6 @@ class ArticleObserver extends BaseObserver
      */
     public function saved(Article $article): void
     {
-        $article->categories()->sync(array_map(
-            function (array $category) use ($article) {
-                return (int) $category['id'];
-            },
-            $this->request->input('categories', [])
-        ));
-
         $this->forgetCacheByKeys($article);
     }
 
