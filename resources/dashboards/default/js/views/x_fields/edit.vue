@@ -5,7 +5,10 @@
         <div class="card-body">
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Расширяемая таблица<small class="form-text d-block text-muted">К этой таблице в БД будет добавлено поле.</small></label>
+                <label class="col-sm-7 control-label">
+                    Расширяемая таблица
+                    <small class="form-text d-block text-muted">К этой таблице в БД будет добавлено поле.</small>
+                </label>
                 <div class="col-sm-5">
                     <template v-if="isEditMode">
                         <input type="text" v-model="form.extensible" class="form-control" required readonly />
@@ -39,40 +42,49 @@
                 </div>
             </div>
 
-            <div v-if="isArrayType" class="mb-3 row">
-                <label class="col-sm-7 control-label">Список пар <small class="form-text d-block text-muted">Список пар <u>ключ => значение</u> для доп. поля типа <b>array</b>.</small></label>
-                <div class="col-sm-5">
-                    <table v-if="form.params.length" class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Ключ</th>
-                                <th>Значение</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(param, index) in form.params">
-                                <td><input type="text" v-model="param.key" class="form-control form-control-sm" /></td>
-                                <td><input type="text" v-model="param.value" class="form-control form-control-sm" /></td>
-                                <td><button type="button" @click="delParam(index)" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <template v-if="isArrayType">
+                <div class="mb-3 row">
+                    <label class="col-sm-7 control-label">
+                        Список пар
+                        <small class="form-text d-block text-muted">Список пар <u>ключ => значение</u> для доп. поля типа <b>array</b>.</small>
+                    </label>
+                    <div class="col-sm-5">
+                        <table v-if="form.params.length" class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Ключ</th>
+                                    <th>Значение</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(param, index) in form.params" :key="index">
+                                    <td><input type="text" v-model="param.key" class="form-control form-control-sm" /></td>
+                                    <td><input type="text" v-model="param.value" class="form-control form-control-sm" /></td>
+                                    <td>
+                                        <button type="button" @click="delParam(index)" class="btn btn-sm btn-outline-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <button type="button" @click="addParam" class="btn btn-sm btn-outline-success">Добавить пару</button>
+                        <button type="button" @click="addParam" class="btn btn-sm btn-outline-success">Добавить пару</button>
+                    </div>
                 </div>
-            </div>
 
-            <div v-if="isArrayType" class="mb-3 row">
-                <label class="col-sm-7 control-label">Предварительный просмотр
-                    <small class="form-text d-block text-muted">Так будет выглядеть дополнительное поле, т.е. в форме выпадающего списка.</small>
-                </label>
-                <div class="col-sm-5">
-                    <select class="form-select">
-                        <option v-for="(param, index) in form.params" :key="index" :value="param.key">{{ param.value }}</option>
-                    </select>
+                <div class="mb-3 row">
+                    <label class="col-sm-7 control-label">Предварительный просмотр
+                        <small class="form-text d-block text-muted">Так будет выглядеть дополнительное поле, т.е. в форме выпадающего списка.</small>
+                    </label>
+                    <div class="col-sm-5">
+                        <select class="form-select">
+                            <option v-for="(param, index) in form.params" :key="index" :value="param.key">{{ param.value }}</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+            </template>
         </div>
     </div>
 
@@ -95,9 +107,32 @@
             </div>
 
             <div class="mb-3 row">
-                <label class="col-sm-7 control-label">Атрибуты <small class="form-text d-block text-muted">Например, <code><b>required</b></code>, <code>disabled</code>, <code>placeholder</code>, <code>onclick</code>, <code>autocomplete="off"</code>, <code>style</code>, <code>rows</code> и т.д.<br>Записываются в одну строку. Валидацию на правильность написания не проходят, передаются как есть.</small></label>
+                <label class="col-sm-7 control-label">Атрибуты <small class="form-text d-block text-muted">Например, <code><b>required</b></code>, <code>disabled</code>, <code>placeholder</code>, <code>onclick</code>, <code>autocomplete="off"</code>, <code>style</code>, <code>rows</code> и т.д.<br>Каждый атрибут и его возможное значение записывается с новой строки.<br>Валидацию на правильность написания не проходят, передаются как есть.</small></label>
                 <div class="col-sm-5">
-                    <textarea v-model="form.html_flags" rows="4" class="form-control"></textarea>
+                    <!-- <textarea v-model="form.html_flags" rows="4" class="form-control"></textarea> -->
+
+                    <table v-if="form.html_flags" class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Атрибут</th>
+                                <th>Значение</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(attribute, index) in form.html_flags" :key="index">
+                                <td><input type="text" v-model="attribute.key" class="form-control form-control-sm" /></td>
+                                <td><input type="text" v-model="attribute.value" class="form-control form-control-sm" /></td>
+                                <td>
+                                    <button type="button" @click="delHtmlFlag(index)" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="button" @click="addHtmlFlag" class="btn btn-sm btn-outline-success">Добавить пару</button>
                 </div>
             </div>
         </div>
@@ -153,6 +188,7 @@ export default {
             form: {
                 name: null,
                 params: [],
+                html_flags: [],
             },
         }
     },
@@ -198,12 +234,23 @@ export default {
         addParam(event) {
             this.form.params.push({
                 key: null,
-                value: null
+                value: null,
             });
         },
 
         delParam(index) {
             this.form.params.splice(index, 1);
+        },
+
+        addHtmlFlag(event) {
+            this.form.html_flags.push({
+                key: null,
+                value: '',
+            });
+        },
+
+        delHtmlFlag(index) {
+            this.form.html_flags.splice(index, 1);
         },
 
         save() {
@@ -212,12 +259,12 @@ export default {
                         ...this.form
                     })
                     .then(this.fillForm);
-            } else {
-                this.$props.model.$create({
-                        ...this.form
-                    })
-                    .then(this.fillForm);
             }
+
+            this.$props.model.$create({
+                    ...this.form
+                })
+                .then(this.fillForm);
         },
     },
 }

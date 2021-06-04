@@ -182,8 +182,22 @@ abstract class XFieldActionAbstract extends ActionAbstract
         return [
             'html_flags' => [
                 'nullable',
+                'array',
+            ],
+
+            'html_flags.*.key' => [
+                'bail',
+                'required',
                 'string',
-                'max:500',
+                'max:255',
+                'regex:/^[\w\d\_\-]+$/',
+            ],
+
+            'html_flags.*.value' => [
+                'bail',
+                'nullable',
+                'string',
+                'max:255',
             ],
         ];
     }

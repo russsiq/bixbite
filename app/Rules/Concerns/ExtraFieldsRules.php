@@ -22,9 +22,12 @@ trait ExtraFieldsRules
                 'bail',
             ];
 
-            if (! str_contains($field->html_flags, 'required')) {
-                array_push($rules, 'nullable');
-            }
+            array_push(
+                $rules,
+                $field->html_flags->contains('key', 'required')
+                    ? 'required'
+                    : 'nullable'
+            );
 
             switch ($field->type) {
                 case 'integer':
@@ -57,6 +60,12 @@ trait ExtraFieldsRules
                     array_push($rules, $field->type);
                     break;
             }
+
+            $field->html_flags->map(function ($attribute) use (&$rules) {
+                if ('min' === $attribute['key']) {
+                    array_push($rules, 'min:'.$attribute['value']);
+                }
+            });
 
             $extraFields[$field->name] = $rules;
 

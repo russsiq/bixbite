@@ -19,10 +19,10 @@ class CreateXFieldsTable extends Migration
             $table->string('extensible');
             $table->string('name', XField::maximumLengthColumnName());
             $table->string('type')->default('string');
-            $table->json('params')->default('{}');
+            $table->json('params')->default('[]');
             $table->string('title')->nullable();
             $table->text('descr')->length(500)->nullable();
-            $table->text('html_flags')->length(500)->nullable();
+            $table->json('html_flags')->default('[]');
             $table->timestamps();
 
             // disabled or except or used or activated.

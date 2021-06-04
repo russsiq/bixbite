@@ -28,10 +28,10 @@ class XFieldFactory extends Factory
             'extensible' => $this->faker->randomElement(XField::extensibles()),
             'name' => $this->faker->unique()->regexify("/^[a-z0-9_]{2,{$limit}}$/"),
             'type' => $this->faker->randomElement(XField::fieldTypes()),
-            'params' => '{}',
+            'params' => [],
             'title' => $this->faker->text(mt_rand(8, 48)),
             'descr' => null,
-            'html_flags' => null,
+            'html_flags' => [],
             'created_at' => null,
             'updated_at' => null,
         ];

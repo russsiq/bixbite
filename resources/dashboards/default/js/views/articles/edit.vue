@@ -130,24 +130,24 @@
                             </div>
                             <div class="col-sm-7">
                                 <template v-if="'string' === field.type">
-                                    <input type="text" v-model="article[field.name]" class="form-control" />
+                                    <input type="text" v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
                                 </template>
                                 <template v-else-if="'integer' === field.type">
-                                    <input type="number" v-model="article[field.name]" class="form-control" />
+                                    <input type="number" v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
                                 </template>
                                 <template v-else-if="'boolean' === field.type">
-                                    <input type="checkbox" v-model="article[field.name]" />
-                                </template>
-                                <template v-else-if="'array' === field.type">
-                                    <select class="form-select" v-model="article[field.name]">
-                                        <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
-                                    </select>
-                                </template>
-                                <template v-else-if="'text' === field.type">
-                                    <textarea v-model="article[field.name]" rows="4" class="form-control"></textarea>
+                                    <input type="checkbox" v-model="article[field.name]" v-bind="field.raw_html_flags" />
                                 </template>
                                 <template v-else-if="'timestamp' === field.type">
-                                    <input-datetime-local v-model="article[field.name]" class="form-control"></input-datetime-local>
+                                    <input-datetime-local v-model="article[field.name]" class="form-control" v-bind="field.raw_html_flags" />
+                                </template>
+                                <template v-else-if="'text' === field.type">
+                                    <textarea v-model="article[field.name]" rows="4" class="form-control" v-bind="field.raw_html_flags"></textarea>
+                                </template>
+                                <template v-else-if="'array' === field.type">
+                                    <select class="form-select" v-model="article[field.name]" v-bind="field.raw_html_flags">
+                                        <option v-for="(param, index) in field.params" :key="index" :value="param.key">{{ param.value }}</option>
+                                    </select>
                                 </template>
 
                                 <div v-else class="alert alert-danger">Неизвестный тип поля.</div>
@@ -376,6 +376,11 @@ export default {
     },
 
     methods: {
+        classHtmlFlags(attributes)
+        {
+            console.log(attributes);
+        },
+
         fillForm(article) {
             clearTimeout(this.saveTimer);
 

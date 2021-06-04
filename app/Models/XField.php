@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Log;
  * @property array $params
  * @property string $title
  * @property string $descr
- * @property string $html_flags
+ * @property EloquentCollection $html_flags
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -68,10 +68,18 @@ class XField extends Model
      */
     protected $attributes = [
         'type' => 'string',
-        'params' => '{}',
+        'params' => '[]',
         'title' => null,
         'descr' => null,
-        'html_flags' => null,
+        'html_flags' => '[]',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $appends = [
+        'inline_html_flags',
+        'raw_html_flags',
     ];
 
     /**
@@ -80,6 +88,9 @@ class XField extends Model
     protected $casts = [
         'type' => 'string',
         'params' => 'array',
+        'html_flags' => 'collection',
+        'inline_html_flags' => 'string',
+        'raw_html_flags' => 'array',
     ];
 
     /**

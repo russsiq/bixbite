@@ -12,12 +12,15 @@ class XFieldFixtures
                 'extensible',
                 'name',
                 'type',
-                'params',
+                'params' => [],
                 'title',
                 'descr',
-                'html_flags',
+                'html_flags' => [],
                 'created_at',
                 'updated_at',
+
+                'inline_html_flags',
+                'raw_html_flags' => [],
             ],
         ];
     }
