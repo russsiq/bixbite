@@ -1,4 +1,7 @@
 {
+    "A category with child categories cannot contain entries associated with it.": "Категория с дочерними категориями не может содержать связанные с ней записи.",
+    "You have not specified the main category.": "Вы не указали основную категорию.",
+    "There can only be one main category.": "Может быть только одна основная категория.",
     "Unknown extensible extra fields table: [:extensible].": "Неизвестная расширяемая таблица дополнительных полей [:extensible].",
     "Unknown extra field type: [:type].": "Неизвестный тип дополнительного поля: [:type].",
     "Column [:name] in table [:table] already exists.": "Столбец [:name] в таблице [:table] уже существует.",

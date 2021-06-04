@@ -5,12 +5,16 @@ namespace App\Actions\Category;
 use App\Contracts\Actions\Category\SyncsCategory;
 use App\Models\Category;
 use App\Models\Contracts\CategoryableContract;
+use Illuminate\Collections\ItemNotFoundException;
+use Illuminate\Collections\MultipleItemsFoundException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class SyncCategoryAction extends CategoryActionAbstract implements SyncsCategory
 {
     protected ?EloquentCollection $categories;
+    protected $stopOnFirstFailure = true;
 
     /**
      * Validate and sync the categories associations.
@@ -97,6 +101,7 @@ class SyncCategoryAction extends CategoryActionAbstract implements SyncsCategory
                 'required',
                 'integer',
                 'min:1',
+                'distinct:strict',
 
             ],
 
@@ -105,5 +110,37 @@ class SyncCategoryAction extends CategoryActionAbstract implements SyncsCategory
                 'boolean',
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  Validator  $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty()) {
+                $attributes = $validator->attributes();
+                $categories = collect($attributes)->only('categories')->flatten(1);
+
+                try {
+                    $categories->sole('is_main', true);
+
+                    if (Category::whereIn('parent_id', $categories->pluck('category_id'))->count()) {
+                        $errorMessage = 'A category with child categories cannot contain entries associated with it.';
+                    }
+                } catch (ItemNotFoundException $th) {
+                    $errorMessage = 'You have not specified the main category.';
+                } catch (MultipleItemsFoundException $th) {
+                    $errorMessage = 'There can only be one main category.';
+                } finally {
+                    if (isset($errorMessage)) {
+                        $validator->errors()->add('categories', $this->translate($errorMessage));
+                    }
+                }
+            }
+        });
     }
 }
