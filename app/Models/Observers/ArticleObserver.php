@@ -3,7 +3,6 @@
 namespace App\Models\Observers;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
 
 class ArticleObserver extends BaseObserver
 {
@@ -15,10 +14,6 @@ class ArticleObserver extends BaseObserver
      */
     public function saving(Article $article): void
     {
-        if ($article->state && $article->categories->isEmpty()) {
-            $article->state = 0;
-        }
-
         // Always clear cache.
         $this->addToCacheKeys([
             'articles-single-'.$article->id => false,
