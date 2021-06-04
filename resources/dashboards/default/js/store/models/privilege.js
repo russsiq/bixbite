@@ -1,13 +1,7 @@
 import Model from '@/store/model';
 
 class Privilege extends Model {
-    static fields() {
-        return {
-
-        }
-    }
+    static entity = 'privileges';
 }
-
-Privilege.entity = 'privileges';
 
 export default Privilege;

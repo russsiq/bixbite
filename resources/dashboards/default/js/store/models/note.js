@@ -1,30 +1,7 @@
 import Model from '@/store/model';
 
-import User from './user';
-import Attachment from './attachment';
-
 class Note extends Model {
-    static fields() {
-        return {
-            id: this.attr(null),
-            user_id: this.number().nullable(),
-            image_id: this.number().nullable(),
-
-            title: this.string(),
-            slug: this.string(),
-            description: this.string(),
-            is_completed: this.boolean(false),
-
-            // Связи с другими сущностями.
-            user: this.belongsTo(User, 'user_id'),
-            attachments: this.morphMany(Attachment, 'attachable_id', 'attachable_type'),
-            image: this.hasOne(Attachment, 'id', 'image_id'),
-
-            // Временные метки.
-            created_at: this.string(),
-            updated_at: this.string().nullable(),
-        }
-    }
+    static entity = 'notes';
 
     /**
      * Получить CSS класс для кнопки,
@@ -39,7 +16,5 @@ class Note extends Model {
         }
     }
 }
-
-Note.entity = 'notes';
 
 export default Note;
