@@ -18,7 +18,7 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  FetchesArticle  $fetcher
+     * @param  FetchesCategory  $fetcher
      * @param  Request  $request
      * @return JsonResponse
      */
