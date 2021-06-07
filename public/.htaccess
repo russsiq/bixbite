@@ -46,8 +46,9 @@ DirectoryIndex index.php
 <IfModule mod_mime.c>
     AddType image/x-icon .ico
     AddType image/svg+xml .svg .svgz
+    AddType image/bmp .bmp
     AddType image/gif .gif
-    AddType image/jpeg .jpg .jpeg .jpe
+    AddType image/jpeg .jpg .jpeg
     AddType image/png .png
     AddType text/css .css
     AddType application/x-javascript .js
@@ -56,7 +57,7 @@ DirectoryIndex index.php
     AddType video/quicktime .mov .qt
     AddType audio/mpeg .mp3 .m4a
     AddType video/mp4 .mp4 .m4v
-    AddType video/mpeg .mpeg .mpg .mpe
+    AddType video/mpeg .mpeg .mpg
     AddType application/zip .zip
 </ifModule>
 
@@ -65,6 +66,7 @@ DirectoryIndex index.php
     ExpiresDefault "access 3 days"
     ExpiresByType image/x-icon "access plus 1 months"
     ExpiresByType image/svg+xml "access plus 1 months"
+    ExpiresByType image/bmp "access plus 1 months"
     ExpiresByType image/gif "access plus 1 months"
     ExpiresByType image/jpeg "access plus 1 months"
     ExpiresByType image/png "access plus 1 months"
@@ -87,11 +89,4 @@ DirectoryIndex index.php
     AddOutputFilterByType DEFLATE text/xml application/xml application/xhtml+xml application/rss+xml
     AddOutputFilterByType DEFLATE application/json
     AddOutputFilterByType DEFLATE application/vnd.ms-fontobject application/x-font-ttf font/opentype font/otf font/ttf image/svg+xml image/x-icon
-    # Remove browser bugs (only needed for really old browsers)
-    <IfModule mod_setenvif.c>
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-        Header append Vary User-Agent
-    </IfModule>
 </ifModule>
