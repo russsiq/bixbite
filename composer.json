@@ -82,14 +82,6 @@
         }
     },
     "scripts": {
-        "test": [
-            "@php artisan config:clear",
-            "vendor/bin/phpunit"
-        ],
-        "test-win": [
-            "@php artisan config:clear",
-            "vendor\\bin\\phpunit"
-        ],
         "testdox": [
             "@php artisan config:clear",
             "vendor\\bin\\phpunit --testdox-html tests/testdox.html",
