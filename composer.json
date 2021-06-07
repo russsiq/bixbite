@@ -52,14 +52,14 @@
         "russsiq/laravel-zipper": "^0.2.3"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.6.0",
+        "barryvdh/laravel-debugbar": "^3.6.1",
         "brianium/paratest": "^6.3.0",
         "doctrine/dbal": "^3.1.0",
         "facade/ignition": "^2.10.1",
         "fakerphp/faker": "^1.14.1",
         "mockery/mockery": "^1.4.3",
         "nunomaduro/collision": "^5.4.0",
-        "phpunit/phpunit": "^9.5.4"
+        "phpunit/phpunit": "^9.5.5"
     },
     "autoload": {
         "psr-4": {
