@@ -42,7 +42,7 @@
         "fruitcake/laravel-cors": "^2.0.4",
         "guzzlehttp/guzzle": "^7.3.0",
         "laravel/fortify": "^1.7.13",
-        "laravel/framework": "^8.45.1",
+        "laravel/framework": "^8.46.0",
         "laravel/sanctum": "^2.11.1",
         "laravel/tinker": "^2.6.1",
         "russsiq/laravel-assistant": "^0.3.1",
