@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Contracts\Responses\SuccessfulCommentCreateResponseContract;
-use App\Http\Controllers\ArticleCommentController;
 use App\Models\Article;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Tests\TestCase;
-use \Illuminate\Testing\TestResponse;
 
 /**
  * @coversDefaultClass \App\Http\Controllers\ArticleCommentController
@@ -39,7 +35,7 @@ class ArticleCommentControllerTest extends TestCase
 
         $response->assertSessionHasNoErrors();
         $response->assertSessionHasAll([
-            'status' => SuccessfulCommentCreateResponseContract::STATUSES[1],
+            'status' => trans(SuccessfulCommentCreateResponseContract::STATUSES[1]),
         ]);
     }
 }
