@@ -30,7 +30,7 @@ class FetchCommentResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'comments';
+    public const JSON_API_PREFIX = Comment::TABLE;
 
     /**
      * @covers ::index

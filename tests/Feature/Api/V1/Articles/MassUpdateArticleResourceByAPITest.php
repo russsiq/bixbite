@@ -27,7 +27,7 @@ class MassUpdateArticleResourceByAPITest extends TestCase
     use InteractsWithPolicy;
     use RefreshDatabase;
 
-    public const JSON_API_PREFIX = 'articles';
+    public const JSON_API_PREFIX = Article::TABLE;
 
     /**
      * @covers ::massUpdate
