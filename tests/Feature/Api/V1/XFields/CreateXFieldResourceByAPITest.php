@@ -90,7 +90,7 @@ class CreateXFieldResourceByAPITest extends TestCase
      */
     public function test_super_admin_can_create_x_field_with_minimal_provided_data()
     {
-        $this->assertDatabaseCount(XField::TABLE, 0);
+        $super_admin = $this->loginSuperAdminSPA();
 
         $data = [
             'extensible' => array_rand(array_flip(XField::extensibles())),
@@ -103,7 +103,7 @@ class CreateXFieldResourceByAPITest extends TestCase
             'name' => XField::getModel()->normalizeNameAttributePrefix($data['name']),
         ]);
 
-        $super_admin = $this->loginSuperAdminSPA();
+        $this->assertDatabaseCount(XField::TABLE, 0);
 
         $response = $this->assertAuthenticated()
             ->postJsonApi('store', [], $data)
