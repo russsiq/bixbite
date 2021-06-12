@@ -2,110 +2,95 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Api\V1\Attachment\Store as StoreAttachmentRequest;
-use App\Http\Requests\Api\V1\Attachment\Update as UpdateAttachmentRequest;
+use App\Contracts\Actions\Attachment\CreatesAttachment;
+use App\Contracts\Actions\Attachment\DeletesAttachment;
+use App\Contracts\Actions\Attachment\FetchesAttachment;
+use App\Contracts\Actions\Attachment\UpdatesAttachment;
 use App\Http\Resources\AttachmentCollection;
 use App\Http\Resources\AttachmentResource;
 use App\Models\Attachment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class AttachmentsController extends ApiController
+class AttachmentsController extends Controller
 {
     /**
-     * Создать экземпляр контроллера.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Attachment::class, 'file');
-    }
-
-    /**
-     * Отобразить список сущностей с дополнительной фильтрацией,
-     * включая связанные сущности.
+     * Display a listing of the resource.
      *
+     * @param  FetchesAttachment  $fetcher
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(FetchesAttachment $fetcher, Request $request): JsonResponse
     {
-        $attachments = Attachment::with([
-            'user',
-            'attachable',
-        ])
-            ->advancedFilter($request->all());
-
-        $collection = new AttachmentCollection($attachments);
-
-        return $collection->response()
+        return AttachmentCollection::make(
+                $fetcher->fetchCollection($request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_PARTIAL_CONTENT);
     }
 
     /**
-     * Создать и сохранить сущность в хранилище.
+     * Store a newly created resource in storage.
      *
-     * @param  StoreAttachmentRequest  $request
+     * @param  CreatesAttachment  $creator
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function store(StoreAttachmentRequest $request)
+    public function store(CreatesAttachment $creator, Request $request): JsonResponse
     {
-        $attachment = app(Attachment::class)
-            ->manageUpload($request->file('file'), $request->except('file'));
-
-        $resource = new AttachmentResource($attachment);
-
-        return $resource->additional([
-            'message' => __('msg.uploaded_success'),
-        ])
+        return AttachmentResource::make(
+                $creator->create($request->all())
+            )
             ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
-     * Отобразить сущность.
+     * Display the specified resource.
      *
-     * @param  Attachment  $attachment
+     * @param  FetchesAttachment  $fetcher
+     * @param  Request  $request
+     * @param  integer  $id
      * @return JsonResponse
      */
-    public function show(Attachment $attachment)
+    public function show(FetchesAttachment $fetcher, Request $request, int $id): JsonResponse
     {
-        $attachment->load([
-            'user',
-            'attachable',
-        ]);
-
-        $resource = new AttachmentResource($attachment);
-
-        return $resource->response()
+        return AttachmentResource::make(
+                $fetcher->fetch($id, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
-     * Обновить сущность в хранилище.
+     * Update the specified resource in storage.
      *
-     * @param  UpdateAttachmentRequest  $request
+     * @param  UpdatesAttachment  $updater
+     * @param  Request  $request
      * @param  Attachment  $attachment
      * @return JsonResponse
      */
-    public function update(UpdateAttachmentRequest $request, Attachment $attachment)
+    public function update(UpdatesAttachment $updater, Request $request, Attachment $attachment): JsonResponse
     {
-        $attachment->update($request->validated());
-
-        $resource = new AttachmentResource($attachment);
-
-        return $resource->response()
+        return AttachmentResource::make(
+                $updater->update($attachment, $request->all())
+            )
+            ->response()
             ->setStatusCode(JsonResponse::HTTP_ACCEPTED);
     }
 
     /**
-     * Удалить сущность из хранилища.
+     * Remove the specified resource from storage.
      *
+     * @param  DeletesAttachment  $deleter
      * @param  Attachment  $attachment
      * @return JsonResponse
      */
-    public function destroy(Attachment $attachment)
+    public function destroy(DeletesAttachment $deleter, Attachment $attachment): JsonResponse
     {
-        $attachment->delete();
+        $deleter->delete($attachment);
 
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

@@ -82,31 +82,6 @@ abstract class ArticleActionAbstract extends ActionAbstract
             ->remove('script');
     }
 
-    protected function relationshipsRules()
-    {
-        return [
-            /*'attachments' => [
-                'nullable',
-                'array',
-            ],
-
-            'attachments.*' => [
-                'integer',
-                'exists:attachments,id',
-            ],
-
-            'images' => [
-                'nullable',
-                'array',
-            ],
-
-            'images.*' => [
-                'integer',
-                'exists:attachments,id',
-            ],*/
-        ];
-    }
-
     /**
      * Get the validation rules used to validate `user_id` field.
      *

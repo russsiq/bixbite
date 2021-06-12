@@ -18,7 +18,7 @@ class AttachmentObserver extends BaseObserver
             $disk = $attachment->storageDisk();
             $disk->rename($this->originalPath($attachment), $attachment->path());
 
-            if ('image' == $attachment->type) {
+            if ('image' === $attachment->type) {
                 foreach ($attachment->thumbSizes() as $size => $value) {
                     if ($disk->exists($old_path = $this->originalPath($attachment, $size))) {
                         $disk->rename($old_path, $attachment->path($size));

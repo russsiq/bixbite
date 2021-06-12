@@ -33,7 +33,7 @@ const figureHandler = async function(quill, attachable) {
 
             const formData = new FormData();
 
-            formData.append('file', input.files[0]);
+            formData.append('uploaded_file', input.files[0]);
             formData.append('attachable_id', attachable.id);
             formData.append('attachable_type', attachable.type);
 

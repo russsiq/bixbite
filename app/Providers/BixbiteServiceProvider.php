@@ -7,6 +7,10 @@ use App\Actions\Article\DeleteArticleAction;
 use App\Actions\Article\FetchArticleAction;
 use App\Actions\Article\MassUpdateArticleAction;
 use App\Actions\Article\UpdateArticleAction;
+use App\Actions\Attachment\CreateAttachmentAction;
+use App\Actions\Attachment\DeleteAttachmentAction;
+use App\Actions\Attachment\FetchAttachmentAction;
+use App\Actions\Attachment\UpdateAttachmentAction;
 use App\Actions\Category\AttachCategoryAction;
 use App\Actions\Category\CreateCategoryAction;
 use App\Actions\Category\DeleteCategoryAction;
@@ -41,6 +45,10 @@ use App\Contracts\Actions\Article\DeletesArticle;
 use App\Contracts\Actions\Article\FetchesArticle;
 use App\Contracts\Actions\Article\MassUpdatesArticle;
 use App\Contracts\Actions\Article\UpdatesArticle;
+use App\Contracts\Actions\Attachment\CreatesAttachment;
+use App\Contracts\Actions\Attachment\DeletesAttachment;
+use App\Contracts\Actions\Attachment\FetchesAttachment;
+use App\Contracts\Actions\Attachment\UpdatesAttachment;
 use App\Contracts\Actions\Category\AttachesCategory;
 use App\Contracts\Actions\Category\CreatesCategory;
 use App\Contracts\Actions\Category\DeletesCategory;
@@ -109,6 +117,11 @@ class BixbiteServiceProvider extends ServiceProvider
         FetchesArticle::class => FetchArticleAction::class,
         UpdatesArticle::class => UpdateArticleAction::class,
         MassUpdatesArticle::class => MassUpdateArticleAction::class,
+
+        CreatesAttachment::class => CreateAttachmentAction::class,
+        DeletesAttachment::class => DeleteAttachmentAction::class,
+        FetchesAttachment::class => FetchAttachmentAction::class,
+        UpdatesAttachment::class => UpdateAttachmentAction::class,
 
         AttachesCategory::class => AttachCategoryAction::class,
         CreatesCategory::class => CreateCategoryAction::class,

@@ -29,7 +29,6 @@ class AttachmentFixtures
                 'url',
                 'path',
                 'absolute_path',
-                'filesize',
             ],
         ];
     }

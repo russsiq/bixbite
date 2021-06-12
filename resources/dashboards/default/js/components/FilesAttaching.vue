@@ -200,7 +200,7 @@ export default {
             }
 
             let formData = new FormData();
-            formData.append('file', this.attachments[key].file);
+            formData.append('uploaded_file', this.attachments[key].file);
             formData.append('attachable_id', this.$props.attachable_id)
             formData.append('attachable_type', this.$props.attachable_type)
 

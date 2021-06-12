@@ -99,6 +99,7 @@ export default {
                     description: this.image.description,
                 })
                 .then(response => {
+                    this.fillForm(response);
                     this.closeModal();
                 });
         },

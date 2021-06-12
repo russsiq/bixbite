@@ -47,11 +47,25 @@ class Attachment extends Model implements
     use Traits\Dataviewer;
 
     /**
+     * The name of the input field.
+     *
+     * @const string
+     */
+    public const UPLOADED_FILE = 'uploaded_file';
+
+    /**
+     * The default mime type by `Symfony\Component\HttpFoundation\File\UploadedFile`.
+     *
+     * @const string
+     */
+    public const UNKNOWN_MIME_TYPE = 'application/octet-stream';
+
+    /**
      * The table associated with the model.
      *
      * @const string
      */
-    const TABLE = 'attachments';
+    public const TABLE = 'attachments';
 
     /**
      * {@inheritDoc}
@@ -79,7 +93,6 @@ class Attachment extends Model implements
         'url',
         'path',
         'absolute_path',
-        'filesize',
         // 'picture_box',
         // 'media_player',
         // 'download_button',
@@ -97,7 +110,6 @@ class Attachment extends Model implements
         'url' => 'string',
         'path' => 'string',
         'absolute_path' => 'string',
-        'filesize' => 'integer',
         // 'picture_box' => 'string',
         // 'media_player' => 'string',
         // 'download_button' => 'string',
@@ -229,15 +241,12 @@ class Attachment extends Model implements
 
         $disk->makeDirectory($data['type'].DS.$data['folder']);
 
-        // $name = $data['name'];
-        // dump($name[0]);
-
         // Manipulate whith image file. Block mass uploading images.
-        if ($isLocalDisk and 'image' == $data['type'] and ! (bool) request('mass_uploading')) {
+        if ($isLocalDisk && 'image' === $data['type']) {
             $this->storeAsImage($file, $data);
         }
         // Manipulate whith archive file.
-        elseif ($isLocalDisk and in_array($data['type'], ['forbidden', 'other'])) {
+        elseif ($isLocalDisk && 'other' === $data['type']) {
             $this->storeAsZip($file, $data);
         }
         // Default store.
@@ -301,6 +310,10 @@ class Attachment extends Model implements
 
         // Prepare local variables.
         $properties = [];
+        [$properties['width'], $properties['height']] = getimagesize(
+            $file->getPathname()
+        );
+
         $disk = $this->storageDisk($data['disk']);
         $path_prefix = $data['type'].DS.$data['folder'].DS;
         $path_suffix = DS.$data['name'].'.'.$data['extension'];

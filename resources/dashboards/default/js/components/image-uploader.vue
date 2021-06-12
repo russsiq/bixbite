@@ -1,5 +1,5 @@
 <template>
-<label class="image__uploader" :for="'image__uploader_'+_uid" @click="onClickHandler">
+<label class="image__uploader" :for="'image__uploader_'+_uid">
     <image-preview v-if="value" :image_id="value" @destroy="destroy"></image-preview>
     <div v-else class="image__uploader__states">
         <input :id="'image__uploader_'+_uid" type="file" class="image__uploader__input" accept="image/*" @change="upload">
@@ -15,6 +15,20 @@
 import Attachment from '@/store/models/attachment';
 
 import ImagePreview from '@/components/image-preview';
+
+class FileNotSpecified extends TypeError {
+    constructor(message = 'Необходимо выбрать файл.') {
+        super(message);
+        this.name = 'FileNotSpecified';
+    }
+}
+
+class WrongExtensionFileError extends TypeError {
+    constructor(message = 'Выбранный вами файл в данный момент не поддерживается.') {
+        super(message);
+        this.name = 'WrongExtensionFileError';
+    }
+}
 
 export default {
     name: 'image-uploader',
@@ -42,7 +56,6 @@ export default {
     data() {
         return {
             state: null,
-            errors: [],
         }
     },
 
@@ -50,11 +63,10 @@ export default {
         async upload(event) {
             try {
                 this.state = 'uploading';
-                this.errors = [];
 
                 const formData = new FormData();
 
-                formData.append('file', this.takeAttachmentFromInput(event, 'image.*'));
+                formData.append('uploaded_file', this.takeAttachmentFromInput(event, 'image.*'));
                 formData.append('attachable_id', this.$props.attachable.id);
                 formData.append('attachable_type', this.$props.attachable.type);
 
@@ -64,7 +76,11 @@ export default {
 
                 this.$emit('update:image_id', image.id);
             } catch (error) {
-                !error.response && console.log(error);
+                if (error instanceof FileNotSpecified || error instanceof WrongExtensionFileError) {
+                    alert(error.message);
+                } else if (! error.response) {
+                    console.log(error);
+                }
 
                 this.state = 'error';
                 this.destroy();
@@ -79,12 +95,12 @@ export default {
         takeAttachmentFromInput(event, pattern) {
             const files = event.target.files;
 
-            if (!files.length) {
-                throw new Error('Необходимо выбрать файл.');
+            if (! files.length) {
+                throw new FileNotSpecified;
             }
 
-            if (!files[0].type.match(pattern)) {
-                throw new Error('Выбранный вами файл в данный момент не поддерживается.');
+            if (pattern && ! files[0].type.match(pattern)) {
+                throw new WrongExtensionFileError;
             }
 
             return files[0];
@@ -92,10 +108,6 @@ export default {
 
         destroy() {
             this.$emit('update:image_id', null);
-        },
-
-        onClickHandler(event) {
-            // console.log(event.target);
         },
     }
 }

@@ -6,6 +6,7 @@
     "Unknown extra field type: [:type].": "Неизвестный тип дополнительного поля: [:type].",
     "Column [:name] in table [:table] already exists.": "Столбец [:name] в таблице [:table] уже существует.",
     "Column [:name] in table [:table] does not exists.": "Столбца [:name] в таблице [:table] не существует.",
+    "File type :EXTENSION (:mime_type) is not supported.": "Тип файла :EXTENSION (:mime_type) не поддерживается.",
 
     "A fresh verification link has been sent to your email address.": "Новая ссылка для подтверждения была отправлена на ваш email-адрес.",
     "A new verification link has been sent to the email address you provided during registration.": "Новая ссылка для подтверждения была отправлена на ваш email-адрес, указанный при регистрации.",

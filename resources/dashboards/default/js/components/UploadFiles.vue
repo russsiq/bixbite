@@ -51,9 +51,9 @@
             handleFiles() {
                 this.files = []
                 this.files.splice(0)
-                
+
                 let uploadFiles = this.$refs.files.files
-                
+
                 Array.from(uploadFiles, (file, index) => {
                     Object.assign(file, {
                         id: 0,
@@ -64,7 +64,7 @@
                     })
                     this.files.push(file)
                 })
-                
+
                 this.submitFiles()
             },
             removeFile( key ) {
@@ -80,22 +80,22 @@
                         return ! (item.id > 0);
                     })
                 }
-                
+
                 // Check how many elements are left.
                 if (! this.files.length) {
                     return confirm('Upload complete. Reload this page?') ? document.location.reload(true) : true ;
                 }
             },
             async uploadFile(i) {
-                
+
                 let formData = new FormData();
-                formData.append('file', this.files[i]);
+                formData.append('uploaded_file', this.files[i]);
                 formData.append('mass_uploading', true);
-                
+
                 this.files.splice(i, 1, Object.assign(this.files[i], {
                     state: 'uploading',
                 }))
-                
+
                 try {
                     const response = await axios({
                         method: 'post',
@@ -105,11 +105,11 @@
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-                    
+
                     if (! response.data.file) {
                         throw new Error(response.data.message);
                     }
-                    
+
                     this.files.splice(i, 1, Object.assign(this.files[i], {
                         id: response.data.file.id,
                         url: response.data.file.url,
@@ -128,7 +128,7 @@
                 if (! this.$refs.files.files.length) {
                     return alert('Nothing to upload');
                 }
-                
+
                 for( let i = 0; i < this.files.length; i++ ) {
                     if(! this.files[i].id) this.uploadFile(i);
                 }
