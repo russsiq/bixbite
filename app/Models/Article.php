@@ -157,6 +157,8 @@ class Article extends Model implements
         'is_pinned',
         'is_catpinned',
         'allow_com',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -178,6 +180,7 @@ class Article extends Model implements
         'content',
         'views',
         'created_at',
+        'updated_at',
         'attachments.count',
         'categories.id',
         'comments.content',
@@ -197,6 +200,7 @@ class Article extends Model implements
         'title',
         'views',
         'created_at',
+        'updated_at',
     ];
 
     /**
