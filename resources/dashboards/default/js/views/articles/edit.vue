@@ -1,5 +1,5 @@
 <template>
-<form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save">
+<form v-if="showedForm" action="" method="post" @submit.prevent="save" @keydown.ctrl.83.prevent="save" @input="runTimer">
     <div class="">
         <ul class="nav nav-tabs">
             <li class="nav-item active">
@@ -190,7 +190,7 @@
                                     <!-- <td>{{ attachment.category }}</td> -->
                                     <td class="text-right d-print-none">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-link" @click="attachmentDelete(attachment)">
+                                            <button type="button" class="btn btn-link" @click="deleteAttachment(attachment)">
                                                 <i class="fa fa-trash-o text-danger"></i>
                                             </button>
                                         </div>
@@ -220,11 +220,11 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="control-label"><input type="radio" v-model="date_at" :value="null" /> Естесственное формирование даты</label>
-                        <label class="control-label"><input type="radio" v-model="date_at" value="currdate" /> Установить текущую дату</label>
-                        <label class="control-label"><input type="radio" v-model="date_at" value="customdate" /> Установить дату вручную</label>
+                        <label class="control-label"><input type="radio" v-model="date_at" value="current" /> Установить текущую дату</label>
+                        <label class="control-label"><input type="radio" v-model="date_at" value="custom" /> Установить дату вручную</label>
                     </div>
 
-                    <div v-if="'customdate' === date_at" class="mb-3">
+                    <div v-if="'custom' === date_at" class="mb-3">
                         <input-datetime-local v-model="article.created_at" class="form-control"></input-datetime-local>
                     </div>
                 </div>
@@ -376,17 +376,10 @@ export default {
     },
 
     methods: {
-        classHtmlFlags(attributes)
-        {
-            console.log(attributes);
-        },
-
         fillForm(article) {
             clearTimeout(this.saveTimer);
 
             this.article = Object.assign({}, this.article, article);
-
-            this.saveTimer = setTimeout(this.save, this.saveInterval);
         },
 
         updateAttributesFromJson(data) {
@@ -411,38 +404,37 @@ export default {
         },
 
         /**
-         * Отправить данные по текущей Заметки на сервер.
+         * Отправить данные по текущей Записи на сервер.
          */
         save() {
             // Очищаем предыдущий таймер,
             // чтобы не было зацикливаний.
             clearTimeout(this.saveTimer);
 
+            this.checkAndSetDate();
+
             this.$props.model.$update(this.$props.id, {
                     ...this.article,
-                    // Дополнительные поля.
-                    // Переписать на сторону клиента.
-                    date_at: this.date_at
                 })
                 .then(this.fillForm);
         },
 
-        attachmentDelete(attachment) {
+        deleteAttachment(attachment) {
             if (this.article.image_id === attachment.id) {
                 return alert(`Это основное изображение записи.`)
             }
 
-            if (!confirm(`Хотите удалить это изображение [${attachment.id}] с сервера?`)) {
+            if (! confirm(`Хотите удалить это изображение [${attachment.id}] с сервера?`)) {
                 return false;
             }
 
-            const quillComponent = this.$children.find((component) => {
-                return component.editor && component.editor instanceof Quill;
-            });
+            const quillComponent = this.$children.find(
+                component => component.editor && component.editor instanceof Quill
+            );
 
             const html = quillComponent.editor.root;
             const [...images] = html.querySelectorAll('figure');
-            const selectedImage = images.find(image => +image.dataset.id === attachment.id);
+            const selectedImage = images.find(image => parseInt(image.dataset.id, 10) === attachment.id);
 
             selectedImage && selectedImage.remove();
 
@@ -451,6 +443,37 @@ export default {
                     this.save();
                 });
         },
+    },
+
+    runTimer() {
+        // Если таймер не запущен, то запускаем его.
+        if (! this.saveTimer) {
+            this.saveTimer = setTimeout(this.save, this.saveInterval);
+        }
+    },
+
+    checkAndSetDate() {
+        switch (this.date_at) {
+            // Если необходимо задать текущую Дату.
+            case 'current':
+                this.article.created_at = new Date;
+                this.article.updated_at = null;
+                break;
+
+            // Если необходимо взять Дату из поля ввода.
+            case 'custom':
+                this.article.created_at = this.article.created_at;
+                this.article.updated_at = null;
+                break;
+
+            // По умолчанию оставляем Дату создания и обновляем Дату обновления.
+            default:
+                this.article.created_at = this.article.created_at || new Date;
+                this.article.updated_at = new Date;
+                break;
+        }
+
+        this.date_at = null;
     },
 }
 </script>
