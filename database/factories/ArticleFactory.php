@@ -45,7 +45,6 @@ class ArticleFactory extends Factory
             'is_catpinned' => $this->faker->boolean(),
             'allow_com' => mt_rand(0, 2),
             'views' => mt_rand(0, 240),
-            // 'published_at' => $this->faker->dateTimeBetween(),
             'created_at' => $this->faker->dateTimeBetween(),
             'updated_at' => $this->faker->dateTimeBetween(),
         ];

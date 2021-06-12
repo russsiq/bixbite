@@ -64,7 +64,6 @@ class UpdateArticleAction extends ArticleActionAbstract implements UpdatesArticl
             $this->isCatpinnedRules(),
             $this->allowedCommentsRules(),
             $this->viewsRules(),
-            $this->publishedAtRules(),
             $this->createdAtRules(),
             $this->updatedAtRules(),
         );

@@ -351,21 +351,6 @@ abstract class ArticleActionAbstract extends ActionAbstract
     }
 
     /**
-     * Get the validation rules used to validate `published_at` field.
-     *
-     * @return array
-     */
-    protected function publishedAtRules(): array
-    {
-        return [
-            'published_at' => [
-                'nullable',
-                'date',
-            ],
-        ];
-    }
-
-    /**
      * Get the validation rules used to validate `created_at` field.
      *
      * @return array

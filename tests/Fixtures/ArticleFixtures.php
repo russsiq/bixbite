@@ -25,7 +25,6 @@ class ArticleFixtures
                 'is_catpinned',
                 'allow_com',
                 'views',
-                'published_at',
                 'created_at',
                 'updated_at',
 

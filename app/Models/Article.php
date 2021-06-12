@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $views
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $published_at
  *
  * @method static \Database\Factories\ArticleFactory factory()
  *
@@ -128,7 +127,6 @@ class Article extends Model implements
         'is_catpinned' => 'boolean',
         'allow_com' => 'integer',
         'views' => 'integer',
-        'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
 

@@ -32,7 +32,6 @@ class CreateArticlesTable extends Migration
             $table->boolean('is_catpinned')->default(false);
             $table->unsignedTinyInteger('allow_com')->default(2)->comment('0: deny; 1: allow; 2: by default');
             $table->unsignedInteger('views')->default(0);
-            $table->timestamp('published_at');
             $table->timestamps();
 
             $table->index('user_id');
