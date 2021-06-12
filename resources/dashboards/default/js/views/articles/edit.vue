@@ -443,38 +443,38 @@ export default {
                     this.save();
                 });
         },
-    },
 
-    runTimer() {
-        // Если таймер не запущен, то запускаем его.
-        if (! this.saveTimer) {
-            this.saveTimer = setTimeout(this.save, this.saveInterval);
-        }
-    },
+        runTimer() {
+            // Если таймер не запущен, то запускаем его.
+            if (! this.saveTimer) {
+                this.saveTimer = setTimeout(this.save, this.saveInterval);
+            }
+        },
 
-    checkAndSetDate() {
-        switch (this.date_at) {
-            // Если необходимо задать текущую Дату.
-            case 'current':
-                this.article.created_at = new Date;
-                this.article.updated_at = null;
-                break;
+        checkAndSetDate() {
+            switch (this.date_at) {
+                // Если необходимо задать текущую Дату.
+                case 'current':
+                    this.article.created_at = new Date;
+                    this.article.updated_at = null;
+                    break;
 
-            // Если необходимо взять Дату из поля ввода.
-            case 'custom':
-                this.article.created_at = this.article.created_at;
-                this.article.updated_at = null;
-                break;
+                // Если необходимо взять Дату из поля ввода.
+                case 'custom':
+                    this.article.created_at = this.article.created_at;
+                    this.article.updated_at = null;
+                    break;
 
-            // По умолчанию оставляем Дату создания и обновляем Дату обновления.
-            default:
-                this.article.created_at = this.article.created_at || new Date;
-                this.article.updated_at = new Date;
-                break;
-        }
+                // По умолчанию оставляем Дату создания и обновляем Дату обновления.
+                default:
+                    this.article.created_at = this.article.created_at || new Date;
+                    this.article.updated_at = new Date;
+                    break;
+            }
 
-        this.date_at = null;
-    },
+            this.date_at = null;
+        },
+    }
 }
 </script>
 
