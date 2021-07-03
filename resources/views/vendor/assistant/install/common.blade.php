@@ -15,7 +15,7 @@
 
 	<fieldset>
 		<legend>@lang('Register')</legend>
-		<div class="mb-3 row @error('name') is-invalid @enderror">
+		<div class="form-group row @error('name') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('Name')</label>
 			<div class="col-sm-9">
 				<input type="text" name="name" value="{{ old('name', '') }}" placeholder="admin" class="form-control" />
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 
-		<div class="mb-3 row @error('email') is-invalid @enderror">
+		<div class="form-group row @error('email') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('Email')</label>
 			<div class="col-sm-9">
 				<input type="email" name="email" value="{{ old('email', '') }}" placeholder="{{ $email }}" class="form-control" />
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 
-		<div class="mb-3 row @error('password') is-invalid @enderror">
+		<div class="form-group row @error('password') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">@lang('Password')</label>
 			<div class="col-sm-9">
 				<input type="password" name="password" value="" placeholder="********" class="form-control" autocomplete="new-password"  />
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 
-		<div class="mb-3 row">
+		<div class="form-group row">
 			<label class="col-sm-3 col-form-label">@lang('Confirm Password')</label>
 			<div class="col-sm-9">
 				<input type="password" name="password_confirmation" placeholder="********" class="form-control" autocomplete="new-password"  />
