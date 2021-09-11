@@ -174,7 +174,7 @@ class BixbiteServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\Lang::mixin(new \App\Mixins\LangMixin);
         \Illuminate\Support\Str::mixin(new \App\Mixins\StrMixin);
 
-        Relation::morphMap([
+        Relation::enforceMorphMap([
             \App\Models\Article::TABLE => \App\Models\Article::class,
             \App\Models\Category::TABLE => \App\Models\Category::class,
             \App\Models\Comment::TABLE => \App\Models\Comment::class,
