@@ -1,20 +1,24 @@
-# remove files and folders
-/uploads
+# Игнорирование каталогов и файлов
+/.idea
+/.vagrant
+/.vscode
 /node_modules
 /public/hot
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
-/.vagrant
+/uploads
 .env
 .env.backup
 .phpunit.result.cache
 composer.lock
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
 laravel-apidoc-generator.md
 npm-debug.log
 package-lock.json
 yarn-error.log
 
+# Исключения
 !/storage/app/uploads/avatars/noavatar.png

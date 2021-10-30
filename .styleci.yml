@@ -1,6 +1,6 @@
 risky: false
-version: 7
 preset: laravel
+version: 8
 disabled:
   - no_unused_imports
 finder:

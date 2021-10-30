@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class CreateFailedJobsTable extends Migration
 {
     /**
-     * Запустить миграции.
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
@@ -24,7 +25,8 @@ class CreateFailedJobsTable extends Migration
     }
 
     /**
-     * Обратить миграции.
+     * Reverse the migrations.
+     *
      * @return void
      */
     public function down()

@@ -65,7 +65,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'debugbar.disable' => \App\Http\Middleware\DebugbarDisable::class,
@@ -75,27 +74,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-    ];
-
-    /**
-     * Список посредников, отсортированный по приоритетности.
-     *
-     * Заставит неглобальных посредников всегда быть в заданном порядке.
-     *
-     * @var array
-     */
-    protected $middlewarePriority = [
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        // Эта строка из документации, но зачем это?
-        // https://laravel.com/docs/7.x/middleware#sorting-middleware
-        // \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
-        \App\Http\Middleware\Authenticate::class,
-        \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
 
     ];
 }

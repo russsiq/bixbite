@@ -12,6 +12,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * Карта политик приложения.
+     *
      * @var array
      */
     protected $policies = [
@@ -31,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Регистрация любых аутентификационных / авторизационных служб.
+     *
      * @return void
      */
     public function boot()
@@ -56,6 +58,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Регистрация глобальных политик,
      * прежде всего, не имеющих связей с моделями БД.
+     *
      * @return void
      */
     public function registerGlobalPolicies()
