@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\BixBiteContract;
-use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory as ViewFactoryContract;
 use Illuminate\Contracts\View\View;
@@ -31,7 +31,7 @@ class DashboardController extends Controller
 
         return $view->make('dashboard', [
             'scriptVariables' => [
-                'page_language' => str_replace('_', '-', $app->getLocale()),
+                'lang' => str_replace('_', '-', $app->getLocale()),
                 'app_name' => $config->get('app.name'),
                 'app_locale' => $app->getLocale(),
                 // 'locale' => $bixbite->locale(),
