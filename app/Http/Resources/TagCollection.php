@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Tag;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TagCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class TagCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = Tag::class;
+    public $collects = TagResource::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,8 +32,6 @@ class TagCollection extends ResourceCollection
      */
     public function with($request): array
     {
-        $model = $this->collects::getModel();
-
         return [
             //
         ];

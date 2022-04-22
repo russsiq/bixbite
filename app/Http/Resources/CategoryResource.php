@@ -9,11 +9,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class CategoryResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Category
+     * @var string
      */
-    public $resource;
+    public $model = Category::class;
 
     /**
      * Transform the resource into an array.
@@ -38,9 +38,7 @@ class CategoryResource extends JsonResource
             'meta' => [
                 'template_list' => select_dir('custom_views'),
 
-                'x_fields' => [
-                    ...XFieldCollection::make($this->resource->x_fields)->toArray($request),
-                ],
+                'x_fields' => $this->resource->x_fields->toArray(),
             ],
         ];
     }

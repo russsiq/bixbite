@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Template;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TemplateCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class TemplateCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = Template::class;
+    public $collects = TemplateResource::class;
 
     /**
      * Transform the resource into a JSON array.

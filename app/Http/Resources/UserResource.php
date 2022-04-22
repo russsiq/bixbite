@@ -9,11 +9,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var User
+     * @var string
      */
-    public $resource;
+    public $model = User::class;
 
     /**
      * Transform the resource into an array.

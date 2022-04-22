@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Note;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class NoteCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class NoteCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = Note::class;
+    public $collects = NoteResource::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,8 +32,6 @@ class NoteCollection extends ResourceCollection
      */
     public function with($request): array
     {
-        $model = $this->collects::getModel();
-
         return [
             //
         ];

@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TemplateResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Template
+     * @var string
      */
-    public $resource;
+    public $model = Template::class;
 
     /**
      * Transform the resource into an array.

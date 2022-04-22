@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SettingResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Setting
+     * @var string
      */
-    public $resource;
+    public $model = Setting::class;
 
     /**
      * Transform the resource into an array.

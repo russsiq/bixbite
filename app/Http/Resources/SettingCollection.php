@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Setting;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class SettingCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class SettingCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = Setting::class;
+    public $collects = SettingResource::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,8 +32,6 @@ class SettingCollection extends ResourceCollection
      */
     public function with($request): array
     {
-        $model = $this->collects::getModel();
-
         return [
             //
         ];

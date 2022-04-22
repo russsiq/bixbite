@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class NoteResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Note
+     * @var string
      */
-    public $resource;
+    public $model = Note::class;
 
     /**
      * Transform the resource into an array.
@@ -50,10 +50,10 @@ class NoteResource extends JsonResource
     {
         return [
             'attachments' => $this->whenLoaded('attachments', fn () =>
-                AttachmentCollection::make($this->resource->getRelation('attachments'))->toArray($request)
+                new AttachmentCollection($this->resource->getRelation('attachments'))
             ),
             'user' => $this->whenLoaded('user', fn () =>
-                UserResource::make($this->resource->getRelation('user'))->toArray($request)
+                new UserResource($this->resource->getRelation('user'))
             ),
         ];
     }

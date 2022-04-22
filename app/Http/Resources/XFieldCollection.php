@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\XField;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class XFieldCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class XFieldCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = XField::class;
+    public $collects = XFieldResource::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,12 +32,14 @@ class XFieldCollection extends ResourceCollection
      */
     public function with($request): array
     {
-        $model = $this->collects::getModel();
+        $model = optional(
+            $this->collection->first()
+        )->getModel();
 
         return [
             'meta' => [
-                'orderableColumns' => $model->orderableColumns(),
-                'allowedFilters' => $model->allowedFilters(),
+                'orderableColumns' => $model ? $model->orderableColumns() : [],
+                'allowedFilters' => $model ? $model->allowedFilters() : [],
             ],
         ];
     }

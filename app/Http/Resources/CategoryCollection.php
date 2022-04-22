@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Category;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CategoryCollection extends ResourceCollection
@@ -12,7 +11,7 @@ class CategoryCollection extends ResourceCollection
      *
      * @var string
      */
-    public $collects = Category::class;
+    public $collects = CategoryResource::class;
 
     /**
      * Transform the resource into a JSON array.
@@ -33,8 +32,6 @@ class CategoryCollection extends ResourceCollection
      */
     public function with($request): array
     {
-        $model = $this->collects::getModel();
-
         return [
             //
         ];

@@ -54,12 +54,16 @@ trait Dataviewer
 
     public function orderableColumns()
     {
-        return $this->orderableColumns;
+        return property_exists($this, 'orderableColumns')
+            ? $this->orderableColumns
+            : [$this->getKeyName()];
     }
 
     public function allowedFilters()
     {
-        return $this->allowedFilters;
+        return property_exists($this, 'allowedFilters')
+            ? $this->allowedFilters
+            : [$this->getKeyName()];
     }
 
     public function allowedFilterOperators()

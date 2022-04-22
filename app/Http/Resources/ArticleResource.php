@@ -9,11 +9,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ArticleResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Article
+     * @var string
      */
-    public $resource;
+    public $model = Article::class;
 
     /**
      * Transform the resource into an array.
@@ -42,9 +42,7 @@ class ArticleResource extends JsonResource
                     'articles' => $this->resource->settings->pluck('value', 'name')->toArray(),
                 ],
 
-                'x_fields' => [
-                    ...XFieldCollection::make($this->resource->x_fields)->toArray($request),
-                ],
+                'x_fields' => $this->resource->x_fields->toArray(),
             ],
         ];
     }
@@ -59,19 +57,19 @@ class ArticleResource extends JsonResource
     {
         return [
             'attachments' => $this->whenLoaded('attachments', fn () =>
-                AttachmentCollection::make($this->resource->getRelation('attachments'))->toArray($request)
+                new AttachmentCollection($this->resource->getRelation('attachments'))
             ),
             'categories' => $this->whenLoaded('categories', fn () =>
-                CategoryCollection::make($this->resource->getRelation('categories'))->toArray($request)
+                new CategoryCollection($this->resource->getRelation('categories'))
             ),
             'comments' => $this->whenLoaded('comments', fn () =>
-                CommentCollection::make($this->resource->getRelation('comments'))->toArray($request)
+                new CommentCollection($this->resource->getRelation('comments'))
             ),
             'tags' => $this->whenLoaded('tags', fn () =>
-                TagCollection::make($this->resource->getRelation('tags'))->toArray($request)
+                new TagCollection($this->resource->getRelation('tags'))
             ),
             'user' => $this->whenLoaded('user', fn () =>
-                UserResource::make($this->resource->getRelation('user'))->toArray($request)
+                new UserResource($this->resource->getRelation('user'))
             ),
         ];
     }

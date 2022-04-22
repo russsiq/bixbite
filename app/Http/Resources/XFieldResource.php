@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class XFieldResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var XField
+     * @var string
      */
-    public $resource;
+    public $model = XField::class;
 
     /**
      * Transform the resource into an array.

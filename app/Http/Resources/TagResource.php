@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TagResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Tag
+     * @var string
      */
-    public $resource;
+    public $model = Tag::class;
 
     /**
      * Transform the resource into an array.

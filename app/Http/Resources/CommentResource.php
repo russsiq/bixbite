@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class CommentResource extends JsonResource
 {
     /**
-     * The resource instance.
+     * The default model associated with the resource.
      *
-     * @var Comment
+     * @var string
      */
-    public $resource;
+    public $model = Comment::class;
 
     /**
      * Transform the resource into an array.
