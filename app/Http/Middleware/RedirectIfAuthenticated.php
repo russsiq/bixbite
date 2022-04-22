@@ -7,20 +7,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Перенаправление на главную страницу сайта со страницы,
- * которая доступна только гостям сайта,
- * т.е. неаутентифицированным пользователям.
- */
 class RedirectIfAuthenticated
 {
     /**
-     * Обработка входящего запроса.
+     * Handle an incoming request.
      *
-     * @param  Request  $request
-     * @param  Closure  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @param  string|null  ...$guards
-     * @return mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {

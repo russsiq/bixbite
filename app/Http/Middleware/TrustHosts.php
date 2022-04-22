@@ -7,15 +7,14 @@ use Illuminate\Http\Middleware\TrustHosts as Middleware;
 class TrustHosts extends Middleware
 {
     /**
-     * Получить шаблоны хоста, которым следует доверять.
+     * Get the host patterns that should be trusted.
      *
-     * @return array
+     * @return array<int, string|null>
      */
     public function hosts()
     {
         return [
             $this->allSubdomainsOfApplicationUrl(),
-
         ];
     }
 }

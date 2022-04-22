@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Абстрактный класс базового контроллера.
@@ -51,7 +52,7 @@ abstract class BaseController extends Controller
         if (is_array($route)) {
             $url = route(array_shift($route), $route);
         } elseif (strpos($route, '/') === false) {
-            if (\Route::has($route)) {
+            if (Route::has($route)) {
                 $url = route($route);
             } else {
                 abort(404, "Route named $route does not exist.");

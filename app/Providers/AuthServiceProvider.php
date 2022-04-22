@@ -11,9 +11,9 @@ use Laravel\Sanctum\Sanctum;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Карта политик приложения.
+     * The policy mappings for the application.
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [
         \App\Models\Article::class => \App\Policies\ArticlePolicy::class,
@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Регистрация любых аутентификационных / авторизационных служб.
+     * Register any authentication / authorization services.
      *
      * @return void
      */
