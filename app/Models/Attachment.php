@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter as LocalAdapter;
 use RuntimeException as FileException;
 
 /**
@@ -237,7 +237,7 @@ class Attachment extends Model implements
     {
         $data = $this->attributes;
         $disk = $this->storageDisk($data['disk']);
-        $isLocalDisk = $disk->getDriver()->getAdapter() instanceof LocalAdapter;
+        $isLocalDisk = $disk->getAdapter() instanceof LocalAdapter;
 
         $disk->makeDirectory($data['type'].DS.$data['folder']);
 
@@ -274,7 +274,7 @@ class Attachment extends Model implements
         $disk = $this->storageDisk($data['disk']);
 
         // Make zip archive name with full path.
-        $zipname = $disk->getDriver()->getAdapter()->getPathPrefix()
+        $zipname = $disk->getAdapter()->getPathPrefix()
                   .$data['type'].DS.$data['folder'].DS
                   .$data['name'].'.'.$data['extension'] . '.zip';
 

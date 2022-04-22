@@ -16,12 +16,12 @@ class AttachmentObserver extends BaseObserver
     {
         if ($this->originalPath($attachment) !== $attachment->path()) {
             $disk = $attachment->storageDisk();
-            $disk->rename($this->originalPath($attachment), $attachment->path());
+            $disk->move($this->originalPath($attachment), $attachment->path());
 
             if ('image' === $attachment->type) {
                 foreach ($attachment->thumbSizes() as $size => $value) {
                     if ($disk->exists($old_path = $this->originalPath($attachment, $size))) {
-                        $disk->rename($old_path, $attachment->path($size));
+                        $disk->move($old_path, $attachment->path($size));
                     }
                 }
             }
@@ -42,7 +42,11 @@ class AttachmentObserver extends BaseObserver
         if ('image' === $attachment->type) {
             // Automatically seting null image_id, see in migration to attachment.
             foreach ($attachment->thumbSizes() as $size => $value) {
-                $disk->delete($attachment->getPathAttribute($size));
+                $attachmentPath = $attachment->getPathAttribute($size);
+
+                if (! is_null($attachmentPath) && $disk->exists($attachmentPath)) {
+                    $disk->delete($attachmentPath);
+                }
             }
         }
     }

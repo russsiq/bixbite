@@ -133,7 +133,7 @@ abstract class UserActionAbstract extends ActionAbstract
                 'bail',
                 'required',
                 'string',
-                'password',
+                'current_password',
             ],
         ];
     }
