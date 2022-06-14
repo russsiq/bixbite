@@ -340,7 +340,7 @@
     "The :attribute must contain at least one letter.": "Поле :attribute должно содержать минимум одну букву.",
     "The :attribute must contain at least one number.": "Поле :attribute должно содержать минимум одну цифру.",
     "The :attribute must contain at least one symbol.": "Поле :attribute должно содержать минимум один спец символ.",
-    "The :attribute must contain at least one uppercase and one lowercase letter.": "Поле :attribute должно содержать как минимум по одному символу в нижнем и верхнем регистрах.",
+    "The :attribute must contain at least one uppercase and one lowercase letter.": "Поле :attribute должно содержать как минимум одну прописную и одну строчную букву.",
     "The :resource was created!": "Ресурс :resource создан!",
     "The :resource was deleted!": "Ресурс :resource удалён!",
     "The :resource was restored!": "Ресурс :resource восстановлен!",

@@ -55,4 +55,4 @@ const app = new Vue({
 // window.LoadingLayer = app.$loading;
 window.Notification = app.$notification;
 
-require('./script');
+import './script';

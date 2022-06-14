@@ -1,6 +1,39 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v9.1.5...9.x)
+## [Unreleased](https://github.com/laravel/laravel/compare/v9.1.10...9.x)
+
+## [v9.1.10](https://github.com/laravel/laravel/compare/v9.1.9...v9.1.10) - 2022-06-07
+
+### Changed
+
+- Add language line by @taylorotwell in https://github.com/laravel/laravel/commit/b084aacc5ad105e39c2b058e9523e73655be8d1f
+- Improve Pusher configuration for easy development by @oanhnn in https://github.com/laravel/laravel/pull/5897
+
+## [v9.1.9](https://github.com/laravel/laravel/compare/v9.1.8...v9.1.9) - 2022-05-28
+
+### Changed
+
+- Switch to ESM imports by @jessarcher in https://github.com/laravel/laravel/pull/5895
+
+## [v9.1.8](https://github.com/laravel/laravel/compare/v9.1.7...v9.1.8) - 2022-05-05
+
+### Changed
+
+- Add local_domain option to smtp configuration by @bintzandt in https://github.com/laravel/laravel/pull/5877
+- Add specific test user in seeder by @driesvints in https://github.com/laravel/laravel/pull/5879
+
+## [v9.1.7](https://github.com/laravel/laravel/compare/v9.1.6...v9.1.7) - 2022-05-03
+
+### Changed
+
+- Deprecation log stack trace option by @driesvints in https://github.com/laravel/laravel/pull/5874
+
+## [v9.1.6](https://github.com/laravel/laravel/compare/v9.1.5...v9.1.6) - 2022-04-20
+
+### Changed
+
+- Move password lines into main translation file by @taylorotwell in https://github.com/laravel/laravel/commit/db0d052ece1c17c506633f4c9f5604b65e1cc3a4
+- Add missing maintenance to config by @ibrunotome in https://github.com/laravel/laravel/pull/5868
 
 ## [v9.1.5](https://github.com/laravel/laravel/compare/v9.1.4...v9.1.5) - 2022-04-12
 

@@ -17,7 +17,7 @@ window.__ = function(key, replace) {
 /**
  * Load all of this project's JavaScript dependencies.
  */
-require('./bootstrap');
+import './bootstrap';
 
 import Vue from 'vue';
 
